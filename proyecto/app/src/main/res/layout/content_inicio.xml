@@ -9,11 +9,20 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="activities.MainActivity"
-    tools:showIn="@layout/activity_main">
+    tools:context=".activities.InicioActivity"
+    tools:showIn="@layout/activity_inicio">
 
-    <TextView
+    <Button
+        android:id="@+id/btnIniciar"
+        android:text="Iniciar sesion"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!" />
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:layout_marginTop="15dp"
+        android:layout_below="@id/btnIniciar"
+        android:id="@+id/btnRegistrarse"
+        android:text="Registrarse"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 </RelativeLayout>
