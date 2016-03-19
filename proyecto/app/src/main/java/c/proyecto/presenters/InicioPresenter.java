@@ -5,6 +5,7 @@ import android.app.Activity;
 import java.lang.ref.WeakReference;
 
 import c.proyecto.interfaces.InicioPresenterOps;
+import c.proyecto.models.Usuario;
 
 
 /**
@@ -27,7 +28,7 @@ public class InicioPresenter implements InicioPresenterOps {
 
     @Override
     public boolean createNewUser() {
-        return false;
+        return Usuario.createNewUser();
     }
 
     @Override
