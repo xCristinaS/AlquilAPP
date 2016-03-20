@@ -15,29 +15,29 @@ import c.proyecto.R;
 import c.proyecto.models.Anuncio;
 
 
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private boolean isMyAdv;
     private List<Anuncio> mDatos;
     private View emptyView;
 
 
-    public RecyclerViewAdapter(boolean isMyAdv){
+    public MyRecyclerViewAdapter(boolean isMyAdv){
         mDatos = new ArrayList<>();
         this.isMyAdv = isMyAdv;
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View visitaView;
-        final RecyclerView.ViewHolder viewHolder;
+        View anuncioView;
+        RecyclerView.ViewHolder viewHolder;
 
         if(isMyAdv){
-            visitaView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_anuncio, parent, false);
-            viewHolder = new AnuncioViewHolder(visitaView);
+            anuncioView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_anuncio, parent, false);
+            viewHolder = new AnuncioViewHolder(anuncioView);
         }else{
-            visitaView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_mi_anuncio, parent, false);
-            viewHolder = new MiAnuncioViewHolder(visitaView);
+            anuncioView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_mi_anuncio, parent, false);
+            viewHolder = new MiAnuncioViewHolder(anuncioView);
         }
         return viewHolder;
     }
@@ -52,7 +52,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public int getItemCount() {
         return mDatos.size();
     }
-
 
     //VIEWHOLDERS
     static class AnuncioViewHolder extends RecyclerView.ViewHolder{
@@ -74,7 +73,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             imgAvatar = (ImageView) itemView.findViewById(R.id.imgAvatar);
         }
         public void onBind(Anuncio anuncio){
-
+            lblCalle.setText(anuncio.getDireccion());
         }
     }
     static class MiAnuncioViewHolder extends RecyclerView.ViewHolder{
@@ -104,6 +103,15 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public void replaceAll(List<Anuncio> anuncios){
         mDatos.clear();
         mDatos.addAll(anuncios);
+        notifyDataSetChanged();
+    }
+
+    public List<Anuncio> getmDatos() {
+        return mDatos;
+    }
+
+    public void setmDatos(List<Anuncio> mDatos) {
+        this.mDatos = mDatos;
         notifyDataSetChanged();
     }
 }

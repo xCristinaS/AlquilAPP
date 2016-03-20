@@ -1,9 +1,7 @@
 package c.proyecto.fragments;
 
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -27,6 +25,7 @@ public class PrincipalFragment extends Fragment {
     private MainPresenter mPresenter;
     private SectionsPagerAdapter vpAdapter;
     private ViewPager viewPager;
+    private TabLayout tabLayout;
 
     @Nullable
     @Override
@@ -45,22 +44,21 @@ public class PrincipalFragment extends Fragment {
         vpAdapter = new SectionsPagerAdapter(getChildFragmentManager());
         viewPager = (ViewPager) getActivity().findViewById(R.id.container);
         viewPager.setAdapter(vpAdapter);
+        viewPager.setOffscreenPageLimit(2);
+        tabLayout = (TabLayout) getActivity().findViewById(R.id.tabs);
 
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 switch (tab.getPosition()) {
                     case 0:
-                        if (getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
-                            moverFab(300, R.drawable.ic_photo_camera_white_24dp);
-                        else {
-                            //Consigue la posición exacta en pantalla del final del imgFoto
-                            int posFinal = (int) (fab.getY() - ((EditorFragment) getItem(0)).getPosDebajoImgFoto());
-                            moverFab(-posFinal, R.drawable.ic_photo_camera_white_24dp);
-                        }
+
                         break;
                     case 1:
-                        moverFab(0, R.drawable.ic_add);
+                        mPresenter.getAdverts();
+                        break;
+                    case 2:
+
                         break;
                 }
                 //Coloca como tab actual la presionada
@@ -77,20 +75,20 @@ public class PrincipalFragment extends Fragment {
 
             }
         });
-        final TabLayout tabLayout = (TabLayout) getActivity().findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
     }
 
     public void advertsHaveBeenObtained(ArrayList<Anuncio> anuncios){
-        RecyclerViewFragment f = (RecyclerViewFragment)vpAdapter.getItem(viewPager.getCurrentItem());
+        MyRecyclerViewFragment f = (MyRecyclerViewFragment)vpAdapter.getItem(tabLayout.getSelectedTabPosition());
         f.getmAdapter().replaceAll(anuncios);
+        //f.getmAdapter().setmDatos(anuncios);
     }
 
     //Adaptader
     class SectionsPagerAdapter extends CachedFragmentPagerAdapter {
-        RecyclerViewFragment frgSolicitudes;
-        RecyclerViewFragment frgAnuncios;
-        RecyclerViewFragment frgMisAnuncios;
+        MyRecyclerViewFragment frgSolicitudes;
+        MyRecyclerViewFragment frgAnuncios;
+        MyRecyclerViewFragment frgMisAnuncios;
 
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -109,15 +107,15 @@ public class PrincipalFragment extends Fragment {
             switch (position) {
                 case 0:
                     if (frgSolicitudes == null)
-                        frgSolicitudes = RecyclerViewFragment.newInstance(false);
+                        frgSolicitudes = MyRecyclerViewFragment.newInstance(false);
                     return frgSolicitudes;
                 case 1:
                     if (frgAnuncios == null)
-                        frgAnuncios = RecyclerViewFragment.newInstance(false);
+                        frgAnuncios = MyRecyclerViewFragment.newInstance(false);
                     return frgAnuncios;
                 case 2:
                     if (frgMisAnuncios == null)
-                        frgAnuncios = RecyclerViewFragment.newInstance(true);
+                        frgAnuncios = MyRecyclerViewFragment.newInstance(true);
                     return frgAnuncios;
             }
             return null;
