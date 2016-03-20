@@ -46,21 +46,35 @@ public class PrincipalFragment extends Fragment {
         viewPager = (ViewPager) getActivity().findViewById(R.id.container);
         viewPager.setAdapter(vpAdapter);
 
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            public void onTabSelected(TabLayout.Tab tab) {
+                switch (tab.getPosition()) {
+                    case 0:
+                        if (getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
+                            moverFab(300, R.drawable.ic_photo_camera_white_24dp);
+                        else {
+                            //Consigue la posición exacta en pantalla del final del imgFoto
+                            int posFinal = (int) (fab.getY() - ((EditorFragment) getItem(0)).getPosDebajoImgFoto());
+                            moverFab(-posFinal, R.drawable.ic_photo_camera_white_24dp);
+                        }
+                        break;
+                    case 1:
+                        moverFab(0, R.drawable.ic_add);
+                        break;
+                }
+                //Coloca como tab actual la presionada
+                viewPager.setCurrentItem(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
 
             }
 
             @Override
-            public void onPageSelected(int position) {
+            public void onTabReselected(TabLayout.Tab tab) {
 
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-                if (viewPager.getCurrentItem()== 1)
-                    mPresenter.getAdverts();
             }
         });
         final TabLayout tabLayout = (TabLayout) getActivity().findViewById(R.id.tabs);
