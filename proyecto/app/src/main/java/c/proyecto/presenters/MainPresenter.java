@@ -31,17 +31,22 @@ public class MainPresenter implements MainPresenterOps {
     }
 
     @Override
-    public ArrayList<Anuncio> getAdverts() {
-        return Anuncio.getAdverts();
+    public void getAdverts() {
+        Anuncio.getAdverts(this);
     }
 
     @Override
-    public ArrayList<Anuncio> getAllUserSubs(Usuario usuario) {
-        return new ArrayList<Anuncio>();
+    public void getAllUserSubs(Usuario usuario) {
+
     }
 
     @Override
-    public ArrayList<Anuncio> getAllUserPublishAdverts(Usuario usuario) {
-        return new ArrayList<Anuncio>();
+    public void getAllUserPublishAdverts(Usuario usuario) {
+
+    }
+
+    @Override
+    public void onAdvertsRequestedResponsed(ArrayList<Anuncio> anuncios) {
+        activity.get().onAdvertsRequestedResponsed(anuncios);
     }
 }

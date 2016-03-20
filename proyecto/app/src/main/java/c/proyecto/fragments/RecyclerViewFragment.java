@@ -21,8 +21,6 @@ import c.proyecto.models.Anuncio;
 
 public class RecyclerViewFragment extends Fragment {
 
-
-    private static final String ARG_ANUNCIOS = "anuncios";
     private static final String ARG_IS_MY_ADV = "ismyADv";
     //Views
     private RecyclerView rvLista;
@@ -32,10 +30,9 @@ public class RecyclerViewFragment extends Fragment {
     private ArrayList<Anuncio> mAnuncios;
     private boolean isMyAdv;
 
-    public static RecyclerViewFragment newInstance(ArrayList<Anuncio> anuncios, boolean isMyAdv) {
+    public static RecyclerViewFragment newInstance(boolean isMyAdv) {
 
         Bundle args = new Bundle();
-        args.putParcelableArrayList(ARG_ANUNCIOS, anuncios);
         args.putBoolean(ARG_IS_MY_ADV, isMyAdv);
 
         RecyclerViewFragment fragment = new RecyclerViewFragment();
@@ -53,13 +50,12 @@ public class RecyclerViewFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         Bundle args = getArguments();
-        mAnuncios = args.getParcelableArrayList(ARG_ANUNCIOS);
         isMyAdv = args.getBoolean(ARG_IS_MY_ADV);
 
         rvLista = (RecyclerView) getActivity().findViewById(R.id.rvLista);
         rvLista.setHasFixedSize(true);
 
-        mAdapter = new RecyclerViewAdapter(mAnuncios, isMyAdv);
+        mAdapter = new RecyclerViewAdapter(isMyAdv);
         rvLista.setAdapter(mAdapter);
         mLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         rvLista.setLayoutManager(mLayoutManager);

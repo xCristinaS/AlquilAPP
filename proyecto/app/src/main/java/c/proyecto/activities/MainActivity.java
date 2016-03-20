@@ -3,19 +3,24 @@ package c.proyecto.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.util.ArrayList;
+
 import c.proyecto.R;
 import c.proyecto.fragments.PrincipalFragment;
+import c.proyecto.interfaces.MainActivityOps;
+import c.proyecto.models.Anuncio;
 import c.proyecto.models.Usuario;
 import c.proyecto.presenters.MainPresenter;
 
 /**
  * Created by aleja on 19/03/2016.
  */
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MainActivityOps{
 
     private static final String ARG_USUARIO = "usuario_extra";
     private MainPresenter mPresenter;
@@ -55,11 +60,14 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    public MainPresenter getmPresenter(){
-        return mPresenter;
-    }
-
     public Usuario getUser() {
         return user;
+    }
+
+    @Override
+    public void onAdvertsRequestedResponsed(ArrayList<Anuncio> anuncios) {
+        Fragment f = getSupportFragmentManager().findFragmentById(R.id.frmContenido);
+        if (f instanceof PrincipalFragment)
+            ((PrincipalFragment) f).advertsHaveBeenObtained(anuncios);
     }
 }

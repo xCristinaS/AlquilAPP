@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import c.proyecto.R;
 import c.proyecto.interfaces.InicioActivityOps;
+import c.proyecto.models.Anuncio;
 import c.proyecto.models.Usuario;
 import c.proyecto.presenters.InicioPresenter;
 

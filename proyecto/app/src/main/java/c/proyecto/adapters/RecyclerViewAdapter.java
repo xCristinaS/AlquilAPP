@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import c.proyecto.R;
@@ -21,14 +22,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private View emptyView;
 
 
-    public RecyclerViewAdapter(List<Anuncio> datos, boolean isMyAdv){
-        mDatos = datos;
+    public RecyclerViewAdapter(boolean isMyAdv){
+        mDatos = new ArrayList<>();
         this.isMyAdv = isMyAdv;
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        //Se infla el item de Visita
         View visitaView;
         final RecyclerView.ViewHolder viewHolder;
 
@@ -39,9 +39,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             visitaView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_mi_anuncio, parent, false);
             viewHolder = new MiAnuncioViewHolder(visitaView);
         }
-
         return viewHolder;
-
     }
 
     @Override
@@ -103,7 +101,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     //Manejo del Adaptador
-
     public void replaceAll(List<Anuncio> anuncios){
         mDatos.clear();
         mDatos.addAll(anuncios);

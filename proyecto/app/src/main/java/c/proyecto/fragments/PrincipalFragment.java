@@ -12,16 +12,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+
 import c.proyecto.R;
 import c.proyecto.activities.MainActivity;
 import c.proyecto.adapters.CachedFragmentPagerAdapter;
+import c.proyecto.models.Anuncio;
 import c.proyecto.models.Usuario;
 import c.proyecto.presenters.MainPresenter;
 
 
-public class PrincipalFragment extends Fragment{
+public class PrincipalFragment extends Fragment {
 
-    MainPresenter mPresenter;
+    private MainPresenter mPresenter;
     private SectionsPagerAdapter vpAdapter;
     private ViewPager viewPager;
 
@@ -39,14 +42,17 @@ public class PrincipalFragment extends Fragment{
     }
 
     private void confViewPager() {
-            vpAdapter = new SectionsPagerAdapter(getChildFragmentManager());
-            viewPager = (ViewPager) getActivity().findViewById(R.id.container);
-            viewPager.setAdapter(vpAdapter);
+        vpAdapter = new SectionsPagerAdapter(getChildFragmentManager());
+        viewPager = (ViewPager) getActivity().findViewById(R.id.container);
+        viewPager.setAdapter(vpAdapter);
 
-            final TabLayout tabLayout = (TabLayout) getActivity().findViewById(R.id.tabs);
-            tabLayout.setupWithViewPager(viewPager);
+        final TabLayout tabLayout = (TabLayout) getActivity().findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(viewPager);
     }
 
+    public void advertsHaveBeenObtained(ArrayList<Anuncio> anuncios){
+        RecyclerViewFragment f = (RecyclerViewFragment)vpAdapter.getItem(viewPager.getCurrentItem());
+    }
 
     //Adaptader
     class SectionsPagerAdapter extends CachedFragmentPagerAdapter {
@@ -66,21 +72,20 @@ public class PrincipalFragment extends Fragment{
         //Especifica que fragmento irá en cada página del viewPager
         @Override
         public Fragment getItem(int position) {
-            MainPresenter presenter = ((MainActivity) getActivity()).getmPresenter();
             Usuario u = ((MainActivity) getActivity()).getUser();
 
-            switch (position){
+            switch (position) {
                 case 0:
-                    if(frgSolicitudes == null)
-                        frgSolicitudes = RecyclerViewFragment.newInstance(presenter.getAllUserSubs(u), false);
+                    if (frgSolicitudes == null)
+                        frgSolicitudes = RecyclerViewFragment.newInstance(false);
                     return frgSolicitudes;
                 case 1:
-                    if(frgAnuncios == null)
-                        frgAnuncios = RecyclerViewFragment.newInstance(presenter.getAdverts(), false);
+                    if (frgAnuncios == null)
+                        frgAnuncios = RecyclerViewFragment.newInstance(false);
                     return frgAnuncios;
                 case 2:
-                    if(frgMisAnuncios == null)
-                        frgAnuncios  = RecyclerViewFragment.newInstance(presenter.getAllUserPublishAdverts(u), true);
+                    if (frgMisAnuncios == null)
+                        frgAnuncios = RecyclerViewFragment.newInstance(true);
                     return frgAnuncios;
             }
             return null;
