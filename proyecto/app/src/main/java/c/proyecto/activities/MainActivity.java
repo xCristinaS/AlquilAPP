@@ -1,10 +1,13 @@
 package c.proyecto.activities;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import c.proyecto.models.Usuario;
 import c.proyecto.presenters.MainPresenter;
 
 /**
@@ -12,16 +15,24 @@ import c.proyecto.presenters.MainPresenter;
  */
 public class MainActivity extends AppCompatActivity {
 
+    private static final String ARG_USUARIO = "usuario_extra";
     private MainPresenter mPresenter;
+    private Usuario user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initViews();
+        if (getIntent().hasExtra(ARG_USUARIO))
+            user = getIntent().getParcelableExtra(ARG_USUARIO);
     }
 
     private void initViews() {
         mPresenter = MainPresenter.getPresentador(this);
+    }
+
+    public static void start(Activity a, Usuario u){
+        a.startActivity(new Intent(a, MainActivity.class).putExtra(ARG_USUARIO, u));
     }
 
     @Override
@@ -40,5 +51,9 @@ public class MainActivity extends AppCompatActivity {
 
     public MainPresenter getmPresenter(){
         return mPresenter;
+    }
+
+    public Usuario getUser() {
+        return user;
     }
 }

@@ -11,13 +11,13 @@ import android.view.ViewGroup;
 import c.proyecto.R;
 import c.proyecto.activities.MainActivity;
 import c.proyecto.adapters.CachedFragmentPagerAdapter;
+import c.proyecto.models.Usuario;
 import c.proyecto.presenters.MainPresenter;
 
 
 public class PrincipalFragment extends Fragment{
 
     MainPresenter mPresenter;
-
 
     @Nullable
     @Override
@@ -47,20 +47,21 @@ public class PrincipalFragment extends Fragment{
         @Override
         public Fragment getItem(int position) {
             MainPresenter presenter = ((MainActivity) getActivity()).getmPresenter();
+            Usuario u = ((MainActivity) getActivity()).getUser();
 
             switch (position){
                 case 0:
                     if(frgSolicitudes == null)
-                        frgSolicitudes = RecyclerViewFragment.newInstance();
+                        frgSolicitudes = RecyclerViewFragment.newInstance(presenter.getAllUserSubs(u), false);
 
                     return frgSolicitudes;
                 case 1:
                     if(frgAnuncios == null)
-                        frgAnuncios = VisitasFragment.newInstance(mAlumno);
+                        frgAnuncios = RecyclerViewFragment.newInstance(presenter.getAdverts(), false);
                     return frgAnuncios;
                 case 2:
                     if(frgMisAnuncios == null)
-                        frgAnuncios  = new RecyclerViewFragment();
+                        frgAnuncios  = RecyclerViewFragment.newInstance(presenter.getAllUserPublishAdverts(u), true);
                     return frgAnuncios;
             }
             return null;

@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import c.proyecto.activities.MainActivity;
 import c.proyecto.interfaces.MainPresenterOps;
 import c.proyecto.models.Anuncio;
+import c.proyecto.models.Usuario;
 
 /**
  * Created by Cristina on 20/03/2016.
@@ -31,16 +32,16 @@ public class MainPresenter implements MainPresenterOps {
 
     @Override
     public ArrayList<Anuncio> getAdverts() {
-        return null;
+        return Anuncio.getAdverts();
     }
 
     @Override
-    public ArrayList<Anuncio> getAllUserSubs(String userEmail) {
-        return null;
+    public ArrayList<Anuncio> getAllUserSubs(Usuario usuario) {
+        return new ArrayList<Anuncio>();
     }
 
     @Override
-    public ArrayList<Anuncio> getAllUserPublishAdverts(String userEmail) {
-        return null;
+    public ArrayList<Anuncio> getAllUserPublishAdverts(Usuario usuario) {
+        return new ArrayList<Anuncio>();
     }
 }
