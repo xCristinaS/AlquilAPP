@@ -5,5 +5,6 @@ package c.proyecto.interfaces;
  */
 public interface InicioPresenterOps {
     public boolean createNewUser(String email, String contra);
-    public boolean singInRequested();
+    public void singInRequested(String email, String contra);
+    public void onSingInSuccess();
 }

@@ -1,17 +1,21 @@
 package c.proyecto.models;
 
+import com.firebase.client.ChildEventListener;
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Random;
+
+import c.proyecto.presenters.InicioPresenter;
 
 /**
  * Created by Cristina on 19/03/2016.
  */
 public class Usuario {
-    private String id, email,contra, nombre, apellidos, nacionalidad, profesion, comentario_desc, foto, fecha_nacimiento;
+
+    private String email,contra, nombre, apellidos, nacionalidad, profesion, comentario_desc, foto, fecha_nacimiento;
     private int ordenado, fiestero, sociable, activo;
     private ArrayList<String> itemsDescriptivos, itemsHabitos;
 
@@ -47,13 +51,22 @@ public class Usuario {
         return true;
     }
 
-    public String getId() {
-        return id;
+    public static void signIn(String email, final String contra, final InicioPresenter presentador){
+        Firebase mFirebase = new Firebase("https://proyectofinaldam.firebaseio.com/usuarios/usuario_"+email.hashCode()+"/");
+        mFirebase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getValue(Usuario.class).getContra().equals(contra))
+                    presentador.onSingInSuccess();
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public String getEmail() {
         return email;

@@ -33,7 +33,7 @@ public class InicioActivity extends AppCompatActivity implements InicioOps{
         findViewById(R.id.btnIniciar).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presentador.singInRequested();
+                presentador.singInRequested("Pepe", "12245654");
             }
         });
 
@@ -62,6 +62,6 @@ public class InicioActivity extends AppCompatActivity implements InicioOps{
 
     @Override
     public void enter() {
-
+        Toast.makeText(InicioActivity.this,"Logueado", Toast.LENGTH_SHORT).show();
     }
 }

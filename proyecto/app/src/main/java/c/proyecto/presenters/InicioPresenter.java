@@ -4,6 +4,7 @@ import android.app.Activity;
 
 import java.lang.ref.WeakReference;
 
+import c.proyecto.activities.InicioActivity;
 import c.proyecto.interfaces.InicioPresenterOps;
 import c.proyecto.models.Usuario;
 
@@ -13,16 +14,18 @@ import c.proyecto.models.Usuario;
  */
 public class InicioPresenter implements InicioPresenterOps {
 
-    private WeakReference<Activity> activity;
+    private static WeakReference<InicioActivity> activity;
     private static InicioPresenter presentador;
 
     private InicioPresenter(Activity activity){
-        this.activity = new WeakReference<>(activity);
+        this.activity = new WeakReference<>((InicioActivity)activity);
     }
 
-    public static InicioPresenter getPresentador(Activity activity){
+    public static InicioPresenter getPresentador(Activity a){
         if (presentador == null)
-            presentador = new InicioPresenter(activity);
+            presentador = new InicioPresenter(a);
+        else
+            activity = new WeakReference<>((InicioActivity)a);
         return presentador;
     }
 
@@ -32,7 +35,12 @@ public class InicioPresenter implements InicioPresenterOps {
     }
 
     @Override
-    public boolean singInRequested() {
-        return false;
+    public void singInRequested(String email, String contra) {
+        Usuario.signIn(email, contra, this);
+    }
+
+    @Override
+    public void onSingInSuccess() {
+        activity.get().enter();
     }
 }
