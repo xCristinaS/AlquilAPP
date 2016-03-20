@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import c.proyecto.Constantes;
 import c.proyecto.R;
 import c.proyecto.models.Anuncio;
 
@@ -83,6 +84,36 @@ public class DetallesAnuncioFragment extends Fragment {
     }
 
     private void mostrarDatos() {
-        Picasso.with(getActivity()).load(mAnuncio.)
+        Picasso.with(getActivity()).load(mAnuncio.getImagenes().get(0)).into(imgFoto);
+        //Conseguir foto y nombre del anunciante
+
+        lblPrecio.setText(String.format("%.2f%s", mAnuncio.getPrecio(), Constantes.MONEDA));
+        lblTamano.setText(mAnuncio.getTamanio()+Constantes.UNIDAD);
+        switch (mAnuncio.getTipo_vivienda()){
+            case Constantes.HABITACION:
+                imgTipoVivienda.setImageResource(R.drawable.habitacion);
+                imgCamas.setImageResource(R.drawable.cama);
+                lblCamas.setText(Constantes.CAMAS);
+                break;
+            case Constantes.CASA:
+                imgTipoVivienda.setImageResource(R.drawable.casa);
+                imgCamas.setImageResource(R.drawable.habitacion);
+                lblCamas.setText(Constantes.HABITACION);
+                break;
+            case Constantes.PISO:
+                imgTipoVivienda.setImageResource(R.drawable.piso);
+                imgCamas.setImageResource(R.drawable.habitacion);
+                lblCamas.setText(Constantes.HABITACION);
+                break;
+        }
+        lblTipoVivienda.setText(mAnuncio.getTipo_vivienda());
+        lblNumCamas.setText(String.valueOf(mAnuncio.getHabitaciones_o_camas()));
+        //Num Huespedes
+
+        if(mAnuncio.getDescripcion().isEmpty())
+            lblDescripcionNoDisponible.setVisibility(View.VISIBLE);
+        else
+            lblDescripcion.setText(mAnuncio.getDescripcion());
+
     }
 }

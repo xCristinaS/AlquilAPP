@@ -144,7 +144,7 @@
                 android:id="@+id/lblNumHuespedes"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="4"
+                android:text="0"
                 android:textStyle="bold"
                 android:layout_toRightOf="@id/groupHuespedes"
                 android:layout_toEndOf="@id/groupHuespedes"
@@ -237,7 +237,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="Descripción no disponible"/>
+                android:text="Descripción no disponible"
+                android:visibility="gone"/>
             <TextView
                 android:id="@+id/lblDescripcion"
                 android:layout_width="wrap_content"
