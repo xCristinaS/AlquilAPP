@@ -1,92 +1,252 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent">
-
-    <ImageView
-        android:id="@+id/imgFoto"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:src="@drawable/borrar1"/>
-
-    <!-- Degradado negro + flecha blanca-->
-    <ImageView
-        android:layout_width="match_parent"
-        android:scaleType="centerCrop"
-        android:layout_height="wrap_content"
-        android:src="@drawable/degradado_negro"
-        android:layout_alignBottom="@id/imgFoto"/>
-
     <RelativeLayout
-        android:id="@+id/groupAvatar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/imgFoto"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginStart="16dp"
-        >
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
         <ImageView
-            android:id="@+id/imgAvatar"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:src="@drawable/default_user"
-            />
-        <TextView
-            android:id="@+id/lblNombre"
-            android:layout_width="wrap_content"
+            android:id="@+id/imgFoto"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:src="@drawable/borrar1"/>
+
+        <!-- Degradado negro + flecha blanca-->
+        <ImageView
+            android:layout_width="match_parent"
+            android:scaleType="centerCrop"
             android:layout_height="wrap_content"
-            android:layout_below="@id/imgAvatar"
-            android:textStyle="bold"
-            android:text="Alejandro"
-            android:layout_centerHorizontal="true"
-            />
+            android:src="@drawable/degradado_negro"
+            android:layout_alignBottom="@id/imgFoto"/>
 
-    </RelativeLayout>
-
-    <!-- Shape rectangulo -->
-    <RelativeLayout
-        android:id="@+id/shapeRectangulo"
-        android:layout_width="match_parent"
-        android:layout_height="90dp"
-        android:background="@color/colorShape"
-        android:layout_below="@id/groupAvatar"
-        >
         <RelativeLayout
+            android:id="@+id/groupAvatar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@id/imgFoto"
             android:layout_marginTop="20dp"
-            android:paddingLeft="50dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
             >
             <ImageView
-                android:id="@+id/imgHabitacion"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:src="@drawable/habitacion"
+                android:id="@+id/imgAvatar"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:src="@drawable/default_user"
                 />
+            <TextView
+                android:id="@+id/lblNombre"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/imgAvatar"
+                android:textStyle="bold"
+                android:text="Alejandro"
+                android:layout_centerHorizontal="true"
+                />
+
+        </RelativeLayout>
+
+        <!-- Shape rectangulo -->
+        <RelativeLayout
+            android:id="@+id/shapeRectangulo"
+            android:layout_width="match_parent"
+            android:layout_height="90dp"
+            android:background="@color/colorShape"
+            android:layout_below="@id/groupAvatar"
+            >
+            <LinearLayout
+                android:id="@+id/groupCamas"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="50dp"
+                android:orientation="vertical"
+                android:layout_centerHorizontal="true"
+                >
+                <ImageView
+                    android:id="@+id/imgCamas"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/cama"
+                    android:layout_gravity="center"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="Camas"
+                    />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/lblNumCamas"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2"
+                android:textStyle="bold"
+                android:layout_toRightOf="@id/groupCamas"
+                android:layout_toEndOf="@id/groupCamas"
+                android:layout_marginTop="30dp"
+                android:layout_marginLeft="6dp"
+
+                />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_toLeftOf="@id/groupCamas"
+                android:layout_toStartOf="@id/groupCamas"
+                android:layout_marginRight="5dp"
+                android:orientation="vertical"
+                >
+                <ImageView
+                    android:id="@+id/imgTipoVivienda"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/habitacion"
+                    android:layout_gravity="center"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="Habitación"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/groupHuespedes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical"
+                android:layout_toRightOf="@id/groupCamas"
+                android:layout_toEndOf="@id/groupCamas"
+                android:layout_marginLeft="40dp"
+                >
+                <ImageView
+                    android:id="@+id/imgHuespedes"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/ic_huespedes"
+                    android:layout_gravity="center"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="Huéspedes"
+                    />
+            </LinearLayout>
+            <TextView
+                android:id="@+id/lblNumHuespedes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="4"
+                android:textStyle="bold"
+                android:layout_toRightOf="@id/groupHuespedes"
+                android:layout_toEndOf="@id/groupHuespedes"
+                android:layout_marginTop="30dp"
+                />
+
+        </RelativeLayout>
+
+        <!-- Divider -->
+        <View
+            android:id="@+id/dividerAvatar"
+            style="@style/verticalDivider"
+            android:layout_below="@id/imgFoto"
+            android:layout_above="@id/shapeRectangulo"
+            android:layout_toRightOf="@id/groupAvatar"
+            android:layout_toEndOf="@id/groupAvatar"
+            android:layout_marginTop="12dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="12dp"
+            />
+        <!-- Precio -->
+        <TextView
+            android:id="@+id/lblTituloPrecio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Precio:"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_below="@id/imgFoto"
+            android:layout_alignTop="@id/groupAvatar"
+            android:layout_toRightOf="@id/dividerAvatar"
+            android:layout_toEndOf="@id/dividerAvatar"
+            android:layout_marginLeft="15dp"
+            />
+        <TextView
+            android:id="@+id/lblPrecio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="223€"
+            android:layout_toRightOf="@id/lblTituloPrecio"
+            android:layout_toEndOf="@id/lblTituloPrecio"
+            android:layout_alignBaseline="@id/lblTituloPrecio"
+            android:layout_marginLeft="10dp"
+            />
+        <!-- Tamaño -->
+        <TextView
+            android:id="@+id/lblTituloTamano"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tamaño:"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_below="@id/lblTituloPrecio"
+            android:layout_toRightOf="@id/dividerAvatar"
+            android:layout_toEndOf="@id/dividerAvatar"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="15dp"
+            />
+        <TextView
+            android:id="@+id/lblTamano"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="15m2"
+            android:layout_toRightOf="@id/lblTituloTamano"
+            android:layout_toEndOf="@id/lblTituloTamano"
+            android:layout_alignBaseline="@id/lblTituloTamano"
+            android:layout_marginLeft="10dp"
+            />
+        
+        <!-- Prestaciones -->
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rvPrestaciones"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_below="@id/shapeRectangulo"
+            />
+
+        <!-- Descripción -->
+        <RelativeLayout
+            android:id="@+id/shapeComentario"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:background="@color/colorShape"
+            android:layout_below="@id/rvPrestaciones"
+            >
+            <!-- Cuando el anuncio no contiene descripción -->
+            <TextView
+                android:id="@+id/lblDescripcionNoDisponible"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="Descripción no disponible"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/imgHabitacion"
-                android:layout_centerHorizontal="true"
-                android:text="Habitacion"/>
+                android:maxLines="5"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"/>
         </RelativeLayout>
 
+        <!-- Mapa Google -->
 
     </RelativeLayout>
 
-    <!-- Divider -->
-    <View
-        style="@style/verticalDivider"
-        android:layout_below="@id/imgFoto"
-        android:layout_above="@id/shapeRectangulo"
-        android:layout_toRightOf="@id/groupAvatar"
-        android:layout_toEndOf="@id/groupAvatar"
-        android:layout_marginTop="12dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginBottom="12dp"
-        />
-
-
-</RelativeLayout>
+</ScrollView>
