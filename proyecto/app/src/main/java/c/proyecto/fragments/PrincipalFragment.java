@@ -1,5 +1,6 @@
 package c.proyecto.fragments;
 
+import android.app.Dialog;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -49,6 +50,8 @@ public class PrincipalFragment extends Fragment {
         final TabLayout tabLayout = (TabLayout) getActivity().findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
     }
+
+
 
     public void advertsHaveBeenObtained(ArrayList<Anuncio> anuncios){
         RecyclerViewFragment f = (RecyclerViewFragment)vpAdapter.getItem(viewPager.getCurrentItem());

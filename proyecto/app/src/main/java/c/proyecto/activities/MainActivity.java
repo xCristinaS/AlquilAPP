@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps{
     private void initViews() {
         mPresenter = MainPresenter.getPresentador(this);
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.frmContenido, DetallesAnuncioFragment.newInstance(new Anuncio())).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.frmContenido, new PrincipalFragment()).commit();
     }
 
     public static void start(Activity a, Usuario u){

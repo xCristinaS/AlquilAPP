@@ -1,6 +1,7 @@
 package c.proyecto.fragments;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -15,13 +16,15 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+
 import c.proyecto.Constantes;
 import c.proyecto.R;
 import c.proyecto.adapters.PrestacionesAdapter;
 import c.proyecto.models.Anuncio;
 
 
-public class DetallesAnuncioFragment extends Fragment {
+public class DetallesAnuncioFragment extends Fragment implements PrestacionesAdapter.IPrestacionAdapter {
 
     private static final String ARG_ANUNCIO = "anuncio";
     private Anuncio mAnuncio;
@@ -90,7 +93,7 @@ public class DetallesAnuncioFragment extends Fragment {
 
     private void confRecyclerview() {
         rvPrestaciones.setHasFixedSize(true);
-        mPrestacionesAdapter = new PrestacionesAdapter(mAnuncio.getPrestaciones());
+        mPrestacionesAdapter = new PrestacionesAdapter(mAnuncio.getPrestaciones(), this);
         rvPrestaciones.setAdapter(mPrestacionesAdapter);
 
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
@@ -130,5 +133,25 @@ public class DetallesAnuncioFragment extends Fragment {
         else
             lblDescripcion.setText(mAnuncio.getDescripcion());
 
+    }
+
+    @Override
+    public void onPrestacionClicked() {
+        mostrarDialogoPrestaciones();
+    }
+
+    private void mostrarDialogoPrestaciones() {
+        final Dialog dialog = new Dialog(getContext());
+        dialog.setTitle("Prestaciones");
+        dialog.setContentView(R.layout.fragment_recycler_view);
+        rvPrestaciones = (RecyclerView) dialog.findViewById(R.id.rvLista);
+        ArrayList<Integer> prueba = new ArrayList<>();
+        prueba.add(R.drawable.parking);
+        prueba.add(R.drawable.wifi);
+        rvPrestaciones.setAdapter(new PrestacionesAdapter(prueba, this));
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        rvPrestaciones.setLayoutManager(mLayoutManager);
+        rvPrestaciones.setItemAnimator(new DefaultItemAnimator());
+        dialog.show();
     }
 }
