@@ -12,7 +12,7 @@ import c.proyecto.presenters.MainPresenter;
  */
 public class MainActivity extends AppCompatActivity {
 
-    private MainPresenter presentador;
+    private MainPresenter mPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initViews() {
-        presentador = MainPresenter.getPresentador(this);
+        mPresenter = MainPresenter.getPresentador(this);
     }
 
     @Override
@@ -36,5 +36,9 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
         return true;
+    }
+
+    public MainPresenter getmPresenter(){
+        return mPresenter;
     }
 }
