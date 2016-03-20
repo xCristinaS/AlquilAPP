@@ -1,4 +1,4 @@
-package c.proyecto.activities;
+package c.proyecto.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -23,6 +23,6 @@ public class PrincipalFragment extends Fragment{
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-     
+
     }
 }
