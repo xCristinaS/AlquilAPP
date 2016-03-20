@@ -1,9 +1,13 @@
 package c.proyecto.fragments;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +22,8 @@ import c.proyecto.presenters.MainPresenter;
 public class PrincipalFragment extends Fragment{
 
     MainPresenter mPresenter;
+    private SectionsPagerAdapter vpAdapter;
+    private ViewPager viewPager;
 
     @Nullable
     @Override
@@ -29,8 +35,17 @@ public class PrincipalFragment extends Fragment{
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mPresenter = MainPresenter.getPresentador(getActivity());
+        confViewPager();
     }
 
+    private void confViewPager() {
+            vpAdapter = new SectionsPagerAdapter(getChildFragmentManager());
+            viewPager = (ViewPager) getActivity().findViewById(R.id.container);
+            viewPager.setAdapter(vpAdapter);
+
+            final TabLayout tabLayout = (TabLayout) getActivity().findViewById(R.id.tabs);
+            tabLayout.setupWithViewPager(viewPager);
+    }
 
 
     //Adaptader
@@ -43,6 +58,11 @@ public class PrincipalFragment extends Fragment{
             super(fm);
         }
 
+        @Override
+        public int getCount() {
+            return 3;
+        }
+
         //Especifica que fragmento irá en cada página del viewPager
         @Override
         public Fragment getItem(int position) {
@@ -53,7 +73,6 @@ public class PrincipalFragment extends Fragment{
                 case 0:
                     if(frgSolicitudes == null)
                         frgSolicitudes = RecyclerViewFragment.newInstance(presenter.getAllUserSubs(u), false);
-
                     return frgSolicitudes;
                 case 1:
                     if(frgAnuncios == null)

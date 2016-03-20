@@ -7,6 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import c.proyecto.R;
+import c.proyecto.fragments.PrincipalFragment;
 import c.proyecto.models.Usuario;
 import c.proyecto.presenters.MainPresenter;
 
@@ -19,9 +21,11 @@ public class MainActivity extends AppCompatActivity {
     private MainPresenter mPresenter;
     private Usuario user;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.content_main);
         initViews();
         if (getIntent().hasExtra(ARG_USUARIO))
             user = getIntent().getParcelableExtra(ARG_USUARIO);
@@ -29,6 +33,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void initViews() {
         mPresenter = MainPresenter.getPresentador(this);
+
+        getSupportFragmentManager().beginTransaction().replace(R.id.frmContenido, new PrincipalFragment()).commit();
     }
 
     public static void start(Activity a, Usuario u){
