@@ -16,23 +16,75 @@
         android:src="@drawable/degradado_negro"
         android:layout_alignBottom="@id/imgFoto"/>
 
-    <ImageView
-        android:id="@+id/imgAvatar"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+    <RelativeLayout
+        android:id="@+id/groupAvatar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_below="@id/imgFoto"
-        android:src="@drawable/default_user"
         android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
         android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
-        />
+        >
+        <ImageView
+            android:id="@+id/imgAvatar"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:src="@drawable/default_user"
+            />
+        <TextView
+            android:id="@+id/lblNombre"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/imgAvatar"
+            android:textStyle="bold"
+            android:text="Alejandro"
+            android:layout_centerHorizontal="true"
+            />
+
+    </RelativeLayout>
+
+    <!-- Shape rectangulo -->
+    <RelativeLayout
+        android:id="@+id/shapeRectangulo"
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:background="@color/colorShape"
+        android:layout_below="@id/groupAvatar"
+        >
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:paddingLeft="50dp"
+            >
+            <ImageView
+                android:id="@+id/imgHabitacion"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/habitacion"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/imgHabitacion"
+                android:layout_centerHorizontal="true"
+                android:text="Habitacion"/>
+        </RelativeLayout>
+
+
+    </RelativeLayout>
+
+    <!-- Divider -->
     <View
         style="@style/verticalDivider"
         android:layout_below="@id/imgFoto"
-        android:layout_toRightOf="@id/imgAvatar"
-        android:layout_toEndOf="@id/imgAvatar"
+        android:layout_above="@id/shapeRectangulo"
+        android:layout_toRightOf="@id/groupAvatar"
+        android:layout_toEndOf="@id/groupAvatar"
         android:layout_marginTop="12dp"
         android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
         android:layout_marginBottom="12dp"
         />
 
