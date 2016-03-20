@@ -71,6 +71,7 @@
                     android:layout_gravity="center"
                     />
                 <TextView
+                    android:id="@+id/lblCamas"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -107,6 +108,7 @@
                     android:layout_gravity="center"
                     />
                 <TextView
+                    android:id="@+id/lblTipoVivienda"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -212,7 +214,7 @@
             android:layout_alignBaseline="@id/lblTituloTamano"
             android:layout_marginLeft="10dp"
             />
-        
+
         <!-- Prestaciones -->
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rvPrestaciones"
@@ -237,6 +239,7 @@
                 android:layout_centerInParent="true"
                 android:text="Descripción no disponible"/>
             <TextView
+                android:id="@+id/lblDescripcion"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:maxLines="5"
