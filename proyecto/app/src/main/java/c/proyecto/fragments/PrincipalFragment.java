@@ -1,4 +1,4 @@
-package c.proyecto.activities;
+package c.proyecto.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,6 +12,7 @@ import c.proyecto.interfaces.InicioPresenterOps;
 
 
 public class PrincipalFragment extends Fragment{
+
     InicioPresenterOps presenter;
 
     @Nullable
@@ -23,6 +24,5 @@ public class PrincipalFragment extends Fragment{
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-     
     }
 }

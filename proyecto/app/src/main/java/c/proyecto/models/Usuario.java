@@ -7,6 +7,7 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import c.proyecto.presenters.InicioPresenter;
 
@@ -45,14 +46,14 @@ public class Usuario {
     }
 
     public static boolean createNewUser(String email, String contra) {
-        Firebase mFirebase = new Firebase("https://proyectofinaldam.firebaseio.com/usuarios/usuario_"+email.hashCode()+"/");
+        Firebase mFirebase = new Firebase("https://proyectofinaldam.firebaseio.com/usuarios/usuario-"+email.hashCode()+"/");
         Usuario u = new Usuario(email, contra);
         mFirebase.setValue(u);
         return true;
     }
 
     public static void signIn(String email, final String contra, final InicioPresenter presentador){
-        Firebase mFirebase = new Firebase("https://proyectofinaldam.firebaseio.com/usuarios/usuario_"+email.hashCode()+"/");
+        Firebase mFirebase = new Firebase("https://proyectofinaldam.firebaseio.com/usuarios/usuario-"+email.hashCode()+"/");
         mFirebase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -66,7 +67,6 @@ public class Usuario {
             }
         });
     }
-
 
     public String getEmail() {
         return email;

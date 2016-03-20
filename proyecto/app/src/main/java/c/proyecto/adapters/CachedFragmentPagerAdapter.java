@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import java.lang.ref.WeakReference;
 
 public class CachedFragmentPagerAdapter extends FragmentPagerAdapter {
-
         // SparseArray de referencias débiles a los fragmentos gestionados por el adaptador.
         private final SparseArray<WeakReference<Fragment>> mFragmentos = new SparseArray<>();
 
@@ -49,7 +48,4 @@ public class CachedFragmentPagerAdapter extends FragmentPagerAdapter {
             mFragmentos.remove(position);
             super.destroyItem(container, position, object);
         }
-
-
-
 }

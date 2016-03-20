@@ -1,8 +1,6 @@
 package c.proyecto.activities;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -11,10 +9,10 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import c.proyecto.R;
-import c.proyecto.interfaces.InicioOps;
+import c.proyecto.interfaces.InicioActivityOps;
 import c.proyecto.presenters.InicioPresenter;
 
-public class InicioActivity extends AppCompatActivity implements InicioOps{
+public class InicioActivity extends AppCompatActivity implements InicioActivityOps {
 
     private InicioPresenter presentador;
 
