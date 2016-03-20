@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:scaleType="centerCrop"
         android:layout_height="wrap_content"
-        android:src="@drawable/degradadoNegro"
+        android:src="@drawable/degradado_negro"
         android:layout_alignBottom="@id/imgFoto"/>
 
     <ImageView
@@ -28,7 +28,13 @@
         />
     <View
         style="@style/verticalDivider"
-        android:layout_toRightOf="@id/imgAvatar"/>
+        android:layout_below="@id/imgFoto"
+        android:layout_toRightOf="@id/imgAvatar"
+        android:layout_toEndOf="@id/imgAvatar"
+        android:layout_marginTop="12dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginBottom="12dp"
+        />
 
 
 </RelativeLayout>
