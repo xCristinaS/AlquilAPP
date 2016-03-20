@@ -40,7 +40,7 @@ public class InicioActivity extends AppCompatActivity implements InicioOps{
         findViewById(R.id.btnRegistrarse).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (presentador.createNewUser())
+                if (presentador.createNewUser("Pepe", "12245654"))
                     Toast.makeText(InicioActivity.this,"Se ha creado", Toast.LENGTH_SHORT).show();
             }
         });

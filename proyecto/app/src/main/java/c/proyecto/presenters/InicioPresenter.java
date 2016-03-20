@@ -27,8 +27,8 @@ public class InicioPresenter implements InicioPresenterOps {
     }
 
     @Override
-    public boolean createNewUser() {
-        return Usuario.createNewUser();
+    public boolean createNewUser(String email, String contra) {
+        return Usuario.createNewUser(email, contra);
     }
 
     @Override
