@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/imgFoto"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:src="@drawable/borrar1"/>
+
+    <!-- Degradado negro + flecha blanca-->
+    <ImageView
+        android:layout_width="match_parent"
+        android:scaleType="centerCrop"
+        android:layout_height="wrap_content"
+        android:src="@drawable/degradado_negro"
+        android:layout_alignBottom="@id/imgFoto"/>
+
+    <ImageView
+        android:id="@+id/imgAvatar"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_below="@id/imgFoto"
+        android:src="@drawable/default_user"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        />
+    <View
+        style="@style/verticalDivider"
+        android:layout_below="@id/imgFoto"
+        android:layout_toRightOf="@id/imgAvatar"
+        android:layout_toEndOf="@id/imgAvatar"
+        android:layout_marginTop="12dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginBottom="12dp"
+        />
+
+
+</RelativeLayout>
