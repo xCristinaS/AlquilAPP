@@ -9,6 +9,7 @@ import com.firebase.client.ValueEventListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import c.proyecto.R;
 import c.proyecto.presenters.MainPresenter;
 
 
@@ -19,7 +20,8 @@ public class Anuncio implements Parcelable {
 
     private String titulo, tipo_vivienda, anunciante, direccion, poblacion, provincia, descripcion;
     private int habitaciones_o_camas, numero_banios, tamanio, numero;
-    private ArrayList<String> imagenes, prestaciones;
+    private ArrayList<String> imagenes;
+    private ArrayList<Integer> prestaciones;
     private HashMap<String, Boolean> solicitantes;
     private float precio;
 
@@ -40,9 +42,11 @@ public class Anuncio implements Parcelable {
         solicitantes = new HashMap<>();
         imagenes.add("foto1.png");
         imagenes.add("foto2.png");
-        prestaciones.add("lavadora.png");
-        prestaciones.add("secadora.png");
-        prestaciones.add("wifi.png");
+        prestaciones.add(R.drawable.ascensor);
+        prestaciones.add(R.drawable.parking);
+        prestaciones.add(R.drawable.lavadora);
+        prestaciones.add(R.drawable.prohibido_fumar);
+        prestaciones.add(R.drawable.wifi);
         solicitantes.put("u-2483914", true);
         precio = 350;
     }
@@ -171,11 +175,11 @@ public class Anuncio implements Parcelable {
         this.imagenes = imagenes;
     }
 
-    public ArrayList<String> getPrestaciones() {
+    public ArrayList<Integer> getPrestaciones() {
         return prestaciones;
     }
 
-    public void setPrestaciones(ArrayList<String> prestaciones) {
+    public void setPrestaciones(ArrayList<Integer> prestaciones) {
         this.prestaciones = prestaciones;
     }
 
@@ -203,8 +207,6 @@ public class Anuncio implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        
-
         dest.writeString(this.titulo);
         dest.writeString(this.tipo_vivienda);
         dest.writeString(this.anunciante);
@@ -217,7 +219,7 @@ public class Anuncio implements Parcelable {
         dest.writeInt(this.tamanio);
         dest.writeInt(this.numero);
         dest.writeStringList(this.imagenes);
-        dest.writeStringList(this.prestaciones);
+        dest.writeList(this.prestaciones);
         dest.writeSerializable(this.solicitantes);
         dest.writeFloat(this.precio);
     }
@@ -235,16 +237,19 @@ public class Anuncio implements Parcelable {
         this.tamanio = in.readInt();
         this.numero = in.readInt();
         this.imagenes = in.createStringArrayList();
-        this.prestaciones = in.createStringArrayList();
+        this.prestaciones = new ArrayList<Integer>();
+        in.readList(this.prestaciones, Integer.class.getClassLoader());
         this.solicitantes = (HashMap<String, Boolean>) in.readSerializable();
         this.precio = in.readFloat();
     }
 
     public static final Creator<Anuncio> CREATOR = new Creator<Anuncio>() {
+        @Override
         public Anuncio createFromParcel(Parcel source) {
             return new Anuncio(source);
         }
 
+        @Override
         public Anuncio[] newArray(int size) {
             return new Anuncio[size];
         }

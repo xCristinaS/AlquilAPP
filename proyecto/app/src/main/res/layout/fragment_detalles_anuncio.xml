@@ -218,7 +218,8 @@
         <!-- Prestaciones -->
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rvPrestaciones"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_centerHorizontal="true"
             android:layout_height="100dp"
             android:layout_below="@id/shapeRectangulo"
             />

@@ -11,6 +11,8 @@ import android.view.MenuItem;
 import java.util.ArrayList;
 
 import c.proyecto.R;
+import c.proyecto.adapters.PrestacionesAdapter;
+import c.proyecto.fragments.DetallesAnuncioFragment;
 import c.proyecto.fragments.PrincipalFragment;
 import c.proyecto.interfaces.MainActivityOps;
 import c.proyecto.models.Anuncio;
@@ -39,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps{
     private void initViews() {
         mPresenter = MainPresenter.getPresentador(this);
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.frmContenido, new PrincipalFragment()).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.frmContenido, DetallesAnuncioFragment.newInstance(new Anuncio())).commit();
     }
 
     public static void start(Activity a, Usuario u){

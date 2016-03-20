@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +17,7 @@ import com.squareup.picasso.Picasso;
 
 import c.proyecto.Constantes;
 import c.proyecto.R;
+import c.proyecto.adapters.PrestacionesAdapter;
 import c.proyecto.models.Anuncio;
 
 
@@ -36,6 +39,7 @@ public class DetallesAnuncioFragment extends Fragment {
     private RecyclerView rvPrestaciones;
     private TextView lblDescripcionNoDisponible;
     private TextView lblDescripcion;
+    private PrestacionesAdapter mPrestacionesAdapter;
 
 
     public static DetallesAnuncioFragment newInstance(Anuncio anuncio) {
@@ -60,6 +64,7 @@ public class DetallesAnuncioFragment extends Fragment {
 
         //Comprobar si es mi anuncio.
 
+        confRecyclerview();
         mostrarDatos();
 
     }
@@ -81,6 +86,16 @@ public class DetallesAnuncioFragment extends Fragment {
         rvPrestaciones = (RecyclerView) act.findViewById(R.id.rvPrestaciones);
         lblDescripcionNoDisponible = (TextView) act.findViewById(R.id.lblDescripcionNoDisponible);
         lblDescripcion = (TextView) act.findViewById(R.id.lblDescripcion);
+    }
+
+    private void confRecyclerview() {
+        rvPrestaciones.setHasFixedSize(true);
+        mPrestacionesAdapter = new PrestacionesAdapter(mAnuncio.getPrestaciones());
+        rvPrestaciones.setAdapter(mPrestacionesAdapter);
+
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        rvPrestaciones.setLayoutManager(mLayoutManager);
+        rvPrestaciones.setItemAnimator(new DefaultItemAnimator());
     }
 
     private void mostrarDatos() {
