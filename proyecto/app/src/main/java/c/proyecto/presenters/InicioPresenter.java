@@ -30,7 +30,7 @@ public class InicioPresenter implements InicioPresenterOps {
     }
 
     @Override
-    public boolean createNewUser(String email, String contra) {
+    public Usuario createNewUser(String email, String contra) {
         return Usuario.createNewUser(email, contra);
     }
 
@@ -40,7 +40,7 @@ public class InicioPresenter implements InicioPresenterOps {
     }
 
     @Override
-    public void onSingInSuccess() {
-        activity.get().enter();
+    public void onSingInSuccess(Usuario u) {
+        activity.get().enter(u);
     }
 }

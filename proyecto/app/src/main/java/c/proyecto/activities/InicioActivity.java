@@ -1,8 +1,7 @@
 package c.proyecto.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -11,10 +10,12 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import c.proyecto.R;
-import c.proyecto.interfaces.InicioOps;
+import c.proyecto.interfaces.InicioActivityOps;
+import c.proyecto.models.Anuncio;
+import c.proyecto.models.Usuario;
 import c.proyecto.presenters.InicioPresenter;
 
-public class InicioActivity extends AppCompatActivity implements InicioOps{
+public class InicioActivity extends AppCompatActivity implements InicioActivityOps {
 
     private InicioPresenter presentador;
 
@@ -40,7 +41,7 @@ public class InicioActivity extends AppCompatActivity implements InicioOps{
         findViewById(R.id.btnRegistrarse).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (presentador.createNewUser("Pepe", "12245654"))
+                if (presentador.createNewUser("Pepe", "12245654") != null)
                     Toast.makeText(InicioActivity.this,"Se ha creado", Toast.LENGTH_SHORT).show();
             }
         });
@@ -61,7 +62,7 @@ public class InicioActivity extends AppCompatActivity implements InicioOps{
     }
 
     @Override
-    public void enter() {
-        Toast.makeText(InicioActivity.this,"Logueado", Toast.LENGTH_SHORT).show();
+    public void enter(Usuario u) {
+        MainActivity.start(this, u);
     }
 }

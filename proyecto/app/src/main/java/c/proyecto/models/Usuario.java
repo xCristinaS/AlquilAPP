@@ -1,5 +1,8 @@
 package c.proyecto.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
@@ -7,33 +10,26 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
+import c.proyecto.R;
 import c.proyecto.presenters.InicioPresenter;
 
 /**
  * Created by Cristina on 19/03/2016.
  */
-public class Usuario {
+public class Usuario implements Parcelable{
 
     private String email,contra, nombre, apellidos, nacionalidad, profesion, comentario_desc, foto, fecha_nacimiento;
     private int ordenado, fiestero, sociable, activo;
     private ArrayList<String> itemsDescriptivos, itemsHabitos;
 
     public Usuario(){
-        String sin_esp = "Sin especificar";
-        email = sin_esp;
-        contra = sin_esp;
-        nombre = sin_esp;
-        apellidos = sin_esp;
-        nacionalidad = sin_esp;
-        profesion = sin_esp;
-        comentario_desc = sin_esp;
-        foto = sin_esp;
+        foto = "default_user.png";
         ordenado = 0;
         fiestero = 0;
         sociable = 0;
         activo = 0;
-        fecha_nacimiento = sin_esp;
         itemsDescriptivos = new ArrayList<>();
         itemsHabitos = new ArrayList<>();
     }
@@ -44,20 +40,21 @@ public class Usuario {
         this.contra = contra;
     }
 
-    public static boolean createNewUser(String email, String contra) {
-        Firebase mFirebase = new Firebase("https://proyectofinaldam.firebaseio.com/usuarios/usuario_"+email.hashCode()+"/");
+    public static Usuario createNewUser(String email, String contra) {
+        Firebase mFirebase = new Firebase("https://proyectofinaldam.firebaseio.com/usuarios/u-"+email.hashCode()+"/");
         Usuario u = new Usuario(email, contra);
         mFirebase.setValue(u);
-        return true;
+        return u;
     }
 
     public static void signIn(String email, final String contra, final InicioPresenter presentador){
-        Firebase mFirebase = new Firebase("https://proyectofinaldam.firebaseio.com/usuarios/usuario_"+email.hashCode()+"/");
+        Firebase mFirebase = new Firebase("https://proyectofinaldam.firebaseio.com/usuarios/u-"+email.hashCode()+"/");
         mFirebase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.getValue(Usuario.class).getContra().equals(contra))
-                    presentador.onSingInSuccess();
+                Usuario u = dataSnapshot.getValue(Usuario.class);
+                if (u.getContra().equals(contra))
+                    presentador.onSingInSuccess(u);
             }
 
             @Override
@@ -66,7 +63,6 @@ public class Usuario {
             }
         });
     }
-
 
     public String getEmail() {
         return email;
@@ -187,4 +183,56 @@ public class Usuario {
     public void setItemsHabitos(ArrayList<String> itemsHabitos) {
         this.itemsHabitos = itemsHabitos;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.email);
+        dest.writeString(this.contra);
+        dest.writeString(this.nombre);
+        dest.writeString(this.apellidos);
+        dest.writeString(this.nacionalidad);
+        dest.writeString(this.profesion);
+        dest.writeString(this.comentario_desc);
+        dest.writeString(this.foto);
+        dest.writeString(this.fecha_nacimiento);
+        dest.writeInt(this.ordenado);
+        dest.writeInt(this.fiestero);
+        dest.writeInt(this.sociable);
+        dest.writeInt(this.activo);
+        dest.writeStringList(this.itemsDescriptivos);
+        dest.writeStringList(this.itemsHabitos);
+    }
+
+    protected Usuario(Parcel in) {
+        this.email = in.readString();
+        this.contra = in.readString();
+        this.nombre = in.readString();
+        this.apellidos = in.readString();
+        this.nacionalidad = in.readString();
+        this.profesion = in.readString();
+        this.comentario_desc = in.readString();
+        this.foto = in.readString();
+        this.fecha_nacimiento = in.readString();
+        this.ordenado = in.readInt();
+        this.fiestero = in.readInt();
+        this.sociable = in.readInt();
+        this.activo = in.readInt();
+        this.itemsDescriptivos = in.createStringArrayList();
+        this.itemsHabitos = in.createStringArrayList();
+    }
+
+    public static final Creator<Usuario> CREATOR = new Creator<Usuario>() {
+        public Usuario createFromParcel(Parcel source) {
+            return new Usuario(source);
+        }
+
+        public Usuario[] newArray(int size) {
+            return new Usuario[size];
+        }
+    };
 }
