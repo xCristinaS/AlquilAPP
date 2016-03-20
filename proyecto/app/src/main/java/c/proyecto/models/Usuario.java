@@ -9,6 +9,7 @@ import com.firebase.client.ValueEventListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import c.proyecto.R;
 import c.proyecto.presenters.InicioPresenter;
 
 /**
@@ -21,20 +22,11 @@ public class Usuario {
     private ArrayList<String> itemsDescriptivos, itemsHabitos;
 
     public Usuario(){
-        String sin_esp = "Sin especificar";
-        email = sin_esp;
-        contra = sin_esp;
-        nombre = sin_esp;
-        apellidos = sin_esp;
-        nacionalidad = sin_esp;
-        profesion = sin_esp;
-        comentario_desc = sin_esp;
-        foto = sin_esp;
+        foto = "default_user.png";
         ordenado = 0;
         fiestero = 0;
         sociable = 0;
         activo = 0;
-        fecha_nacimiento = sin_esp;
         itemsDescriptivos = new ArrayList<>();
         itemsHabitos = new ArrayList<>();
     }
@@ -45,11 +37,11 @@ public class Usuario {
         this.contra = contra;
     }
 
-    public static boolean createNewUser(String email, String contra) {
+    public static Usuario createNewUser(String email, String contra) {
         Firebase mFirebase = new Firebase("https://proyectofinaldam.firebaseio.com/usuarios/usuario-"+email.hashCode()+"/");
         Usuario u = new Usuario(email, contra);
         mFirebase.setValue(u);
-        return true;
+        return u;
     }
 
     public static void signIn(String email, final String contra, final InicioPresenter presentador){
@@ -57,8 +49,9 @@ public class Usuario {
         mFirebase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.getValue(Usuario.class).getContra().equals(contra))
-                    presentador.onSingInSuccess();
+                Usuario u = dataSnapshot.getValue(Usuario.class);
+                if (u.getContra().equals(contra))
+                    presentador.onSingInSuccess(u);
             }
 
             @Override

@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import c.proyecto.R;
 import c.proyecto.interfaces.InicioActivityOps;
+import c.proyecto.models.Usuario;
 import c.proyecto.presenters.InicioPresenter;
 
 public class InicioActivity extends AppCompatActivity implements InicioActivityOps {
@@ -38,7 +39,7 @@ public class InicioActivity extends AppCompatActivity implements InicioActivityO
         findViewById(R.id.btnRegistrarse).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (presentador.createNewUser("Pepe", "12245654"))
+                if (presentador.createNewUser("Pepe", "12245654") != null)
                     Toast.makeText(InicioActivity.this,"Se ha creado", Toast.LENGTH_SHORT).show();
             }
         });
@@ -59,7 +60,7 @@ public class InicioActivity extends AppCompatActivity implements InicioActivityO
     }
 
     @Override
-    public void enter() {
+    public void enter(Usuario u) {
         Toast.makeText(InicioActivity.this,"Logueado", Toast.LENGTH_SHORT).show();
     }
 }
