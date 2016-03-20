@@ -32,7 +32,7 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         View anuncioView;
         RecyclerView.ViewHolder viewHolder;
 
-        if(isMyAdv){
+        if(!isMyAdv){
             anuncioView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_anuncio, parent, false);
             viewHolder = new AnuncioViewHolder(anuncioView);
         }else{

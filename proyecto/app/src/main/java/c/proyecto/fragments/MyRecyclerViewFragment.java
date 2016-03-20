@@ -60,7 +60,7 @@ public class MyRecyclerViewFragment extends Fragment {
         rvLista.setAdapter(mAdapter);
         rvLista.setLayoutManager(mLayoutManager);
         rvLista.setItemAnimator(new DefaultItemAnimator());
-        rvLista.setHasFixedSize(true);
+        //rvLista.setHasFixedSize(true);
     }
 
     public MyRecyclerViewAdapter getmAdapter() {

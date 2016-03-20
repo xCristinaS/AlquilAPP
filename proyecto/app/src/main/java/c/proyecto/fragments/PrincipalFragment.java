@@ -44,9 +44,8 @@ public class PrincipalFragment extends Fragment {
         vpAdapter = new SectionsPagerAdapter(getChildFragmentManager());
         viewPager = (ViewPager) getActivity().findViewById(R.id.container);
         viewPager.setAdapter(vpAdapter);
-        viewPager.setOffscreenPageLimit(2);
         tabLayout = (TabLayout) getActivity().findViewById(R.id.tabs);
-
+        tabLayout.setupWithViewPager(viewPager);
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -75,13 +74,11 @@ public class PrincipalFragment extends Fragment {
 
             }
         });
-        tabLayout.setupWithViewPager(viewPager);
     }
 
     public void advertsHaveBeenObtained(ArrayList<Anuncio> anuncios){
-        MyRecyclerViewFragment f = (MyRecyclerViewFragment)vpAdapter.getItem(tabLayout.getSelectedTabPosition());
+        MyRecyclerViewFragment f = (MyRecyclerViewFragment)vpAdapter.getItem(1);
         f.getmAdapter().replaceAll(anuncios);
-        //f.getmAdapter().setmDatos(anuncios);
     }
 
     //Adaptader
