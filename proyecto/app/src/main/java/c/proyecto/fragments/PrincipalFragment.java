@@ -46,6 +46,23 @@ public class PrincipalFragment extends Fragment {
         viewPager = (ViewPager) getActivity().findViewById(R.id.container);
         viewPager.setAdapter(vpAdapter);
 
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+                if (viewPager.getCurrentItem()== 1)
+                    mPresenter.getAdverts();
+            }
+        });
         final TabLayout tabLayout = (TabLayout) getActivity().findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
     }
@@ -79,17 +96,14 @@ public class PrincipalFragment extends Fragment {
                 case 0:
                     if (frgSolicitudes == null)
                         frgSolicitudes = RecyclerViewFragment.newInstance(false);
-                    mPresenter.getAllUserSubs(u);
                     return frgSolicitudes;
                 case 1:
                     if (frgAnuncios == null)
                         frgAnuncios = RecyclerViewFragment.newInstance(false);
-                    mPresenter.getAdverts();
                     return frgAnuncios;
                 case 2:
                     if (frgMisAnuncios == null)
                         frgAnuncios = RecyclerViewFragment.newInstance(true);
-                    mPresenter.getAllUserPublishAdverts(u);
                     return frgAnuncios;
             }
             return null;
