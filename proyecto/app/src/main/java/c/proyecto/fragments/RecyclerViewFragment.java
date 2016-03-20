@@ -61,4 +61,8 @@ public class RecyclerViewFragment extends Fragment {
         rvLista.setLayoutManager(mLayoutManager);
         rvLista.setItemAnimator(new DefaultItemAnimator());
     }
+
+    public RecyclerViewAdapter getmAdapter() {
+        return mAdapter;
+    }
 }

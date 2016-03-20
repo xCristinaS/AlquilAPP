@@ -52,6 +52,7 @@ public class PrincipalFragment extends Fragment {
 
     public void advertsHaveBeenObtained(ArrayList<Anuncio> anuncios){
         RecyclerViewFragment f = (RecyclerViewFragment)vpAdapter.getItem(viewPager.getCurrentItem());
+        f.getmAdapter().replaceAll(anuncios);
     }
 
     //Adaptader
@@ -78,14 +79,17 @@ public class PrincipalFragment extends Fragment {
                 case 0:
                     if (frgSolicitudes == null)
                         frgSolicitudes = RecyclerViewFragment.newInstance(false);
+                    mPresenter.getAllUserSubs(u);
                     return frgSolicitudes;
                 case 1:
                     if (frgAnuncios == null)
                         frgAnuncios = RecyclerViewFragment.newInstance(false);
+                    mPresenter.getAdverts();
                     return frgAnuncios;
                 case 2:
                     if (frgMisAnuncios == null)
                         frgAnuncios = RecyclerViewFragment.newInstance(true);
+                    mPresenter.getAllUserPublishAdverts(u);
                     return frgAnuncios;
             }
             return null;
