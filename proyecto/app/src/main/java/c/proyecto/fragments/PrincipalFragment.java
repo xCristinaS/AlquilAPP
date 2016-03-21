@@ -49,59 +49,29 @@ public class PrincipalFragment extends Fragment {
         viewPager.setAdapter(vpAdapter);
         tabLayout = (TabLayout) getActivity().findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
-        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                switch (tab.getPosition()) {
-                    case 0:
-                        mPresenter.getAllUserSubs(user);
-                        break;
-                    case 1:
-                        mPresenter.getAdverts(user);
-                        break;
-                    case 2:
-                        mPresenter.getAllUserPublishedAdverts(user);
-                        break;
-                }
-                //Coloca como tab actual la presionada
-                viewPager.setCurrentItem(tab.getPosition());
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
-
+        viewPager.setOffscreenPageLimit(2);
+        mPresenter.getAllUserSubs(user);
+        mPresenter.getAllUserPublishedAdverts(user);
+        mPresenter.getAdverts(user);
+        viewPager.setCurrentItem(1);
     }
 
-    public void advertsHaveBeenObtained(ArrayList<Anuncio> anuncios){
-        if (tabLayout.getSelectedTabPosition() == 1) {
-            MyRecyclerViewFragment f = (MyRecyclerViewFragment) vpAdapter.getItem(1);
-            if (f.getmAdapter().getAdapter_type() == MyRecyclerViewAdapter.ADAPTER_TYPE_ADVS)
-                f.getmAdapter().replaceAll(anuncios);
-        }
+    public void advertsHaveBeenObtained(ArrayList<Anuncio> anuncios) {
+        MyRecyclerViewFragment f = (MyRecyclerViewFragment) vpAdapter.getItem(1);
+        if (f.getmAdapter().getAdapter_type() == MyRecyclerViewAdapter.ADAPTER_TYPE_ADVS)
+            f.getmAdapter().replaceAll(anuncios);
     }
 
     public void userSubsHaveBeenObtained(ArrayList<Anuncio> anuncios) {
-        if (tabLayout.getSelectedTabPosition() == 0) {
-            MyRecyclerViewFragment f = (MyRecyclerViewFragment) vpAdapter.getItem(0);
-            if (f.getmAdapter().getAdapter_type() == MyRecyclerViewAdapter.ADAPTER_TYPE_SUBS)
-                f.getmAdapter().replaceAll(anuncios);
-        }
+        MyRecyclerViewFragment f = (MyRecyclerViewFragment) vpAdapter.getItem(0);
+        if (f.getmAdapter().getAdapter_type() == MyRecyclerViewAdapter.ADAPTER_TYPE_SUBS)
+            f.getmAdapter().replaceAll(anuncios);
     }
 
     public void advertsPublishedByUserObtained(ArrayList<Anuncio> anuncios) {
-        if (tabLayout.getSelectedTabPosition() == 2) {
-            MyRecyclerViewFragment f = (MyRecyclerViewFragment) vpAdapter.getItem(2);
-            if (f.getmAdapter().getAdapter_type() == MyRecyclerViewAdapter.ADAPTER_TYPE_MY_ADVS)
-                f.getmAdapter().replaceAll(anuncios);
-        }
+        MyRecyclerViewFragment f = (MyRecyclerViewFragment) vpAdapter.getItem(2);
+        if (f.getmAdapter().getAdapter_type() == MyRecyclerViewAdapter.ADAPTER_TYPE_MY_ADVS)
+            f.getmAdapter().replaceAll(anuncios);
     }
 
     //Adaptader
