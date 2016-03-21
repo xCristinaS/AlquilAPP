@@ -30,8 +30,8 @@ public class InicioPresenter implements InicioPresenterOps {
     }
 
     @Override
-    public Usuario createNewUser(String email, String contra) {
-        return Usuario.createNewUser(email, contra);
+    public Usuario createNewUser(String email, String contra, String nombre, String apellidos) {
+        return Usuario.createNewUser(email, contra, nombre, apellidos);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package c.proyecto.interfaces;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import c.proyecto.models.Anuncio;
 import c.proyecto.models.Usuario;
@@ -15,4 +16,6 @@ public interface MainPresenterOps {
     void onAdvertsRequestedResponsed(ArrayList<Anuncio> anuncios);
     void onUserSubsRequestedResponsed(ArrayList<Anuncio> anuncios);
     void onUserPublishedAdvertsRequestedResponsed(ArrayList<Anuncio> anuncios);
+    void removeUserAdvert(Anuncio a);
+    void removeUserSub(Anuncio a, Usuario u);
 }

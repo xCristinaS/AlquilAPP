@@ -4,6 +4,7 @@ import android.app.Activity;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.List;
 
 import c.proyecto.activities.MainActivity;
 import c.proyecto.interfaces.MainPresenterOps;
@@ -58,5 +59,15 @@ public class MainPresenter implements MainPresenterOps {
     @Override
     public void onUserPublishedAdvertsRequestedResponsed(ArrayList<Anuncio> anuncios) {
         activity.get().onUserPublishedAdvertsRequestedResponsed(anuncios);
+    }
+
+    @Override
+    public void removeUserAdvert(Anuncio a) {
+        Anuncio.removeUserAdvert(a);
+    }
+
+    @Override
+    public void removeUserSub(Anuncio a, Usuario u) {
+        Anuncio.removeUserSub(a, u);
     }
 }

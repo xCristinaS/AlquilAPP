@@ -30,7 +30,7 @@ public class InicioActivity extends AppCompatActivity implements InicioActivityO
         findViewById(R.id.btnIniciar).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presentador.singInRequested("Pepe", "12245654");
+                presentador.singInRequested("alejandro", "1234");
             }
         });
 
@@ -38,6 +38,8 @@ public class InicioActivity extends AppCompatActivity implements InicioActivityO
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(InicioActivity.this, RegistroActivity.class));
+                //Usuario.createNewUser("cristina", "1234", "cristina", "sola");
+                //Usuario.createNewUser("alejandro", "1234", "alejandro", "torres");
             }
         });
     }
@@ -58,6 +60,14 @@ public class InicioActivity extends AppCompatActivity implements InicioActivityO
 
     @Override
     public void enter(Usuario u) {
+        /*
+        for (int i = 0; i < 3; i++)
+            Anuncio.createNewAnuncio("12052659", "titulo del anuncio " + i, "direccion de vivienda", "12", "poblacion", "provincia");
+            */
+        /*
+        for (int i = 0; i < 8; i++)
+            Anuncio.createNewAnuncio("-386798187", "titulo del anuncio " + i, "direccion de vivienda", "12", "poblacion", "provincia");
+*/
         MainActivity.start(this, u);
     }
 }

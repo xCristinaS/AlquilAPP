@@ -20,41 +20,53 @@ import c.proyecto.presenters.InicioPresenter;
  */
 public class Usuario implements Parcelable{
 
-    private String email,contra, nombre, apellidos, nacionalidad, profesion, comentario_desc, foto, fecha_nacimiento;
+    private static final String URL_USERS = "https://proyectofinaldam.firebaseio.com/usuarios/";
+
+    private String key, email,contra, nombre, apellidos, nacionalidad, profesion, comentario_desc, foto, fecha_nacimiento;
     private int ordenado, fiestero, sociable, activo;
     private ArrayList<String> itemsDescriptivos, itemsHabitos;
 
     public Usuario(){
+        itemsDescriptivos = new ArrayList<>();
+        itemsHabitos = new ArrayList<>();
+        //paBorrarPruebas();
+    }
+
+    private void paBorrarPruebas(){
         foto = "default_user.png";
         ordenado = 0;
         fiestero = 0;
         sociable = 0;
         activo = 0;
-        itemsDescriptivos = new ArrayList<>();
-        itemsHabitos = new ArrayList<>();
     }
 
-    public Usuario(String email, String contra) {
+    public Usuario(String email, String contra, String nombre, String apellidos, String key) {
         this();
         this.email = email;
         this.contra = contra;
+        this.nombre = nombre;
+        this.apellidos = apellidos;
+        this.key = key;
     }
 
-    public static Usuario createNewUser(String email, String contra) {
-        Firebase mFirebase = new Firebase("https://proyectofinaldam.firebaseio.com/usuarios/u-"+email.hashCode()+"/");
-        Usuario u = new Usuario(email, contra);
+    public static Usuario createNewUser(String email, String contra, String nombre, String apellidos) {
+        String key = String.valueOf(email.hashCode()+contra.hashCode()+nombre.hashCode()+apellidos.hashCode());
+        Firebase mFirebase = new Firebase(URL_USERS+key+"/");
+        Usuario u = new Usuario(email, contra, nombre, apellidos, key);
         mFirebase.setValue(u);
         return u;
     }
 
-    public static void signIn(String email, final String contra, final InicioPresenter presentador){
-        Firebase mFirebase = new Firebase("https://proyectofinaldam.firebaseio.com/usuarios/u-"+email.hashCode()+"/");
+    public static void signIn(final String email, final String contra, final InicioPresenter presentador){
+        Firebase mFirebase = new Firebase(URL_USERS);
         mFirebase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Usuario u = dataSnapshot.getValue(Usuario.class);
-                if (u.getContra().equals(contra))
-                    presentador.onSingInSuccess(u);
+                for (DataSnapshot data : dataSnapshot.getChildren()) {
+                    Usuario u = data.getValue(Usuario.class);
+                    if (u.getContra().equals(contra) && u.getEmail().equals(email))
+                        presentador.onSingInSuccess(u);
+                }
             }
 
             @Override
@@ -184,6 +196,14 @@ public class Usuario implements Parcelable{
         this.itemsHabitos = itemsHabitos;
     }
 
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -191,6 +211,7 @@ public class Usuario implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.key);
         dest.writeString(this.email);
         dest.writeString(this.contra);
         dest.writeString(this.nombre);
@@ -209,6 +230,7 @@ public class Usuario implements Parcelable{
     }
 
     protected Usuario(Parcel in) {
+        this.key = in.readString();
         this.email = in.readString();
         this.contra = in.readString();
         this.nombre = in.readString();
