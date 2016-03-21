@@ -9,4 +9,6 @@ import c.proyecto.models.Anuncio;
  */
 public interface MainActivityOps {
     void onAdvertsRequestedResponsed(ArrayList<Anuncio> anuncios);
+    void onUserSubsRequestedResponsed(ArrayList<Anuncio> anuncios);
+    void onUserPublishedAdvertsRequestedResponsed(ArrayList<Anuncio> anuncios);
 }

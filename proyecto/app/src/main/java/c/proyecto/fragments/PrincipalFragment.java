@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import c.proyecto.R;
 import c.proyecto.activities.MainActivity;
 import c.proyecto.adapters.CachedFragmentPagerAdapter;
+import c.proyecto.adapters.MyRecyclerViewAdapter;
 import c.proyecto.models.Anuncio;
 import c.proyecto.models.Usuario;
 import c.proyecto.presenters.MainPresenter;
@@ -26,6 +27,7 @@ public class PrincipalFragment extends Fragment {
     private SectionsPagerAdapter vpAdapter;
     private ViewPager viewPager;
     private TabLayout tabLayout;
+    private Usuario user;
 
     @Nullable
     @Override
@@ -37,6 +39,7 @@ public class PrincipalFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mPresenter = MainPresenter.getPresentador(getActivity());
+        user = ((MainActivity) getActivity()).getUser();
         confViewPager();
     }
 
@@ -51,13 +54,13 @@ public class PrincipalFragment extends Fragment {
             public void onTabSelected(TabLayout.Tab tab) {
                 switch (tab.getPosition()) {
                     case 0:
-
+                        mPresenter.getAllUserSubs(user);
                         break;
                     case 1:
-                        mPresenter.getAdverts();
+                        mPresenter.getAdverts(user);
                         break;
                     case 2:
-
+                        mPresenter.getAllUserPublishedAdverts(user);
                         break;
                 }
                 //Coloca como tab actual la presionada
@@ -74,11 +77,31 @@ public class PrincipalFragment extends Fragment {
 
             }
         });
+
     }
 
     public void advertsHaveBeenObtained(ArrayList<Anuncio> anuncios){
-        MyRecyclerViewFragment f = (MyRecyclerViewFragment)vpAdapter.getItem(1);
-        f.getmAdapter().replaceAll(anuncios);
+        if (tabLayout.getSelectedTabPosition() == 1) {
+            MyRecyclerViewFragment f = (MyRecyclerViewFragment) vpAdapter.getItem(1);
+            if (f.getmAdapter().getAdapter_type() == MyRecyclerViewAdapter.ADAPTER_TYPE_ADVS)
+                f.getmAdapter().replaceAll(anuncios);
+        }
+    }
+
+    public void userSubsHaveBeenObtained(ArrayList<Anuncio> anuncios) {
+        if (tabLayout.getSelectedTabPosition() == 0) {
+            MyRecyclerViewFragment f = (MyRecyclerViewFragment) vpAdapter.getItem(0);
+            if (f.getmAdapter().getAdapter_type() == MyRecyclerViewAdapter.ADAPTER_TYPE_SUBS)
+                f.getmAdapter().replaceAll(anuncios);
+        }
+    }
+
+    public void advertsPublishedByUserObtained(ArrayList<Anuncio> anuncios) {
+        if (tabLayout.getSelectedTabPosition() == 2) {
+            MyRecyclerViewFragment f = (MyRecyclerViewFragment) vpAdapter.getItem(2);
+            if (f.getmAdapter().getAdapter_type() == MyRecyclerViewAdapter.ADAPTER_TYPE_MY_ADVS)
+                f.getmAdapter().replaceAll(anuncios);
+        }
     }
 
     //Adaptader
@@ -99,21 +122,19 @@ public class PrincipalFragment extends Fragment {
         //Especifica que fragmento irá en cada página del viewPager
         @Override
         public Fragment getItem(int position) {
-            Usuario u = ((MainActivity) getActivity()).getUser();
-
             switch (position) {
                 case 0:
                     if (frgSolicitudes == null)
-                        frgSolicitudes = MyRecyclerViewFragment.newInstance(false);
+                        frgSolicitudes = MyRecyclerViewFragment.newInstance(MyRecyclerViewAdapter.ADAPTER_TYPE_SUBS);
                     return frgSolicitudes;
                 case 1:
                     if (frgAnuncios == null)
-                        frgAnuncios = MyRecyclerViewFragment.newInstance(false);
+                        frgAnuncios = MyRecyclerViewFragment.newInstance(MyRecyclerViewAdapter.ADAPTER_TYPE_ADVS);
                     return frgAnuncios;
                 case 2:
                     if (frgMisAnuncios == null)
-                        frgAnuncios = MyRecyclerViewFragment.newInstance(true);
-                    return frgAnuncios;
+                        frgMisAnuncios = MyRecyclerViewFragment.newInstance(MyRecyclerViewAdapter.ADAPTER_TYPE_MY_ADVS);
+                    return frgMisAnuncios;
             }
             return null;
         }

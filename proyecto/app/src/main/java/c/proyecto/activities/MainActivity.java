@@ -70,4 +70,18 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps{
         if (f instanceof PrincipalFragment)
             ((PrincipalFragment) f).advertsHaveBeenObtained(anuncios);
     }
+
+    @Override
+    public void onUserSubsRequestedResponsed(ArrayList<Anuncio> anuncios) {
+        Fragment f = getSupportFragmentManager().findFragmentById(R.id.frmContenido);
+        if (f instanceof PrincipalFragment)
+            ((PrincipalFragment) f).userSubsHaveBeenObtained(anuncios);
+    }
+
+    @Override
+    public void onUserPublishedAdvertsRequestedResponsed(ArrayList<Anuncio> anuncios) {
+        Fragment f = getSupportFragmentManager().findFragmentById(R.id.frmContenido);
+        if (f instanceof PrincipalFragment)
+            ((PrincipalFragment) f).advertsPublishedByUserObtained(anuncios);
+    }
 }

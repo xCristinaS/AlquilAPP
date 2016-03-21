@@ -17,14 +17,18 @@ import c.proyecto.models.Anuncio;
 
 public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private boolean isMyAdv;
+    public static final int ADAPTER_TYPE_SUBS = 0;
+    public static final int ADAPTER_TYPE_ADVS = 1;
+    public static final int ADAPTER_TYPE_MY_ADVS = 2;
+
+    private int adapter_type;
     private List<Anuncio> mDatos;
     private View emptyView;
 
 
-    public MyRecyclerViewAdapter(boolean isMyAdv){
+    public MyRecyclerViewAdapter(int adapter_type){
         mDatos = new ArrayList<>();
-        this.isMyAdv = isMyAdv;
+        this.adapter_type = adapter_type;
     }
 
     @Override
@@ -32,7 +36,7 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         View anuncioView;
         RecyclerView.ViewHolder viewHolder;
 
-        if(!isMyAdv){
+        if(adapter_type != ADAPTER_TYPE_MY_ADVS){
             anuncioView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_anuncio, parent, false);
             viewHolder = new AnuncioViewHolder(anuncioView);
         }else{
@@ -46,11 +50,17 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if(holder instanceof AnuncioViewHolder)
             ((AnuncioViewHolder) holder).onBind(mDatos.get(position));
+        else
+            ((MiAnuncioViewHolder) holder).onBind(mDatos.get(position));
     }
 
     @Override
     public int getItemCount() {
         return mDatos.size();
+    }
+
+    public int getAdapter_type() {
+        return adapter_type;
     }
 
     //VIEWHOLDERS
@@ -74,6 +84,11 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         }
         public void onBind(Anuncio anuncio){
             lblCalle.setText(anuncio.getDireccion());
+            lblNumero.setText(String.valueOf(anuncio.getNumero()));
+            lblPoblacion.setText(anuncio.getPoblacion());
+            lblProvincia.setText(anuncio.getProvincia());
+            lblPrecio.setText(String.valueOf(anuncio.getPrecio()));
+            // IMG AVATAR
         }
     }
     static class MiAnuncioViewHolder extends RecyclerView.ViewHolder{
@@ -95,7 +110,12 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             imgAvatar = (ImageView) itemView.findViewById(R.id.imgAvatar);
         }
         public void onBind(Anuncio anuncio){
-
+            lblCalle.setText(anuncio.getDireccion());
+            lblNumero.setText(String.valueOf(anuncio.getNumero()));
+            lblPoblacion.setText(anuncio.getPoblacion());
+            lblProvincia.setText(anuncio.getProvincia());
+            lblSubs.setText(String.valueOf(anuncio.getSolicitantes().size()));
+            // IMG AVATAR
         }
     }
 
@@ -108,10 +128,5 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     public List<Anuncio> getmDatos() {
         return mDatos;
-    }
-
-    public void setmDatos(List<Anuncio> mDatos) {
-        this.mDatos = mDatos;
-        notifyDataSetChanged();
     }
 }
