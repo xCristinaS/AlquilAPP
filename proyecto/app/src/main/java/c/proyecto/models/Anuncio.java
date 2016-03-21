@@ -2,12 +2,15 @@ package c.proyecto.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import com.firebase.client.ChildEventListener;
+
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 
 import c.proyecto.R;
 import c.proyecto.pojo.Prestacion;
@@ -19,6 +22,9 @@ import c.proyecto.presenters.MainPresenter;
  */
 public class Anuncio implements Parcelable {
 
+    private static final String URL_ANUNCIOS = "https://proyectofinaldam.firebaseio.com/anuncios/";
+    private static final String URL_SOLICITUDES = "https://proyectofinaldam.firebaseio.com/solicitudes/";
+
     private String titulo, tipo_vivienda, anunciante, direccion, poblacion, provincia, descripcion;
     private int habitaciones_o_camas, numero_banios, tamanio, numero;
     private ArrayList<String> imagenes;
@@ -27,48 +33,101 @@ public class Anuncio implements Parcelable {
     private float precio;
 
     public Anuncio() {
-        titulo = "mi2Anuncio";
-        anunciante = "u-141414";
-        tipo_vivienda = "piso";
-        direccion = "C/ clavel";
-        poblacion = "la linea";
-        provincia = "Sevilla";
-        descripcion = "un piso precioso";
-        habitaciones_o_camas = 2;
-        numero = 121;
-        numero_banios = 2;
-        tamanio = 54;
         imagenes = new ArrayList<>();
         prestaciones = new ArrayList<>();
         solicitantes = new HashMap<>();
-        imagenes.add("foto1.png");
-        imagenes.add("foto2.png");
-        prestaciones.add(new Prestacion(R.drawable.ascensor,"Ascensor"));
-        prestaciones.add(new Prestacion(R.drawable.parking,"Parking"));
-        prestaciones.add(new Prestacion(R.drawable.wifi,"Wifi"));
-        solicitantes.put("u-2483914", true);
-        precio = 350;
+        //paNuevoAnuncioPruebas();
+    }
+
+    private void paNuevoAnuncioPruebas(){
+        titulo = "tituloAnuncio";
+        tipo_vivienda = "casa";
+        anunciante = "u-101010";
+        direccion = "direccion vivienda";
+        poblacion = "poblacion vivienda";
+        provincia = "provincia";
+        descripcion = "muy confortable";
+        habitaciones_o_camas = 3;
+        numero_banios = 2;
+        tamanio = 100;
+        numero = 102;
+        prestaciones.add(new Prestacion(R.drawable.apto_mascotas, "apto mascotas"));
+        prestaciones.add(new Prestacion(R.drawable.aire_acondicionado, "aire acondicionado"));
+        prestaciones.add(new Prestacion(R.drawable.ascensor, "ascensor"));
+        prestaciones.add(new Prestacion(R.drawable.calefaccion, "calefacción"));
+        precio = 315;
     }
 
     public static Anuncio createNewAnuncio() {
         Anuncio a = new Anuncio();
-        Firebase mFirebase = new Firebase("https://proyectofinaldam.firebaseio.com/anuncios/" + a.anunciante + "_" + a.titulo + "/");
+        Firebase mFirebase = new Firebase(URL_ANUNCIOS + a.anunciante + "_" + a.titulo + "_" + new Random().nextInt() + "/");
         mFirebase.setValue(a);
         return a;
     }
 
-    public static void getAdverts(final MainPresenter presentador) {
-        Firebase mFirebase = new Firebase("https://proyectofinaldam.firebaseio.com/anuncios/");
-
+    public static void getAdverts(final MainPresenter presentador, final Usuario u) {
+        Firebase mFirebase = new Firebase(URL_ANUNCIOS);
         mFirebase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 ArrayList<Anuncio> anuncios = new ArrayList<>();
-                for (DataSnapshot data: dataSnapshot.getChildren()) {
-                    Anuncio a = data.getValue(Anuncio.class);
-                    anuncios.add(a);
-                }
+                for (DataSnapshot data : dataSnapshot.getChildren())
+                    if (!data.getKey().contains("u-" + u.getEmail().hashCode())) {
+                        Anuncio a = data.getValue(Anuncio.class);
+                        if (!a.solicitantes.containsKey("u-" + u.getEmail().hashCode()))
+                            anuncios.add(a);
+                    }
                 presentador.onAdvertsRequestedResponsed(anuncios);
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+    }
+
+    public static void getUserSubs(final Usuario u, final MainPresenter presentador) {
+        final Firebase mFirebase = new Firebase(URL_SOLICITUDES);
+        final ArrayList<Anuncio> anuncios = new ArrayList<>();
+        mFirebase.child("u-"+u.getEmail().hashCode()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (final DataSnapshot data : dataSnapshot.getChildren()) {
+                    String advertKey = data.getKey();
+                    new Firebase(URL_ANUNCIOS).child(advertKey).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            anuncios.add(dataSnapshot.getValue(Anuncio.class));
+                            presentador.onUserSubsRequestedResponsed(anuncios);
+                        }
+
+                        @Override
+                        public void onCancelled(FirebaseError firebaseError) {
+
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+    }
+
+    public static void getAdvertsPublishedByUser(final Usuario u, final MainPresenter presentador) {
+        Firebase mFirebase = new Firebase(URL_ANUNCIOS);
+        mFirebase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                ArrayList<Anuncio> anuncios = new ArrayList<>();
+                for (DataSnapshot data : dataSnapshot.getChildren())
+                    if (data.getKey().contains("u-" + u.getEmail().hashCode())) {
+                        anuncios.add(data.getValue(Anuncio.class));
+                    }
+                presentador.onUserPublishedAdvertsRequestedResponsed(anuncios);
             }
 
             @Override
@@ -253,5 +312,26 @@ public class Anuncio implements Parcelable {
             return new Anuncio[size];
         }
     };
+
+    @Override
+    public String toString() {
+        return "Anuncio{" +
+                "titulo='" + titulo + '\'' +
+                ", tipo_vivienda='" + tipo_vivienda + '\'' +
+                ", anunciante='" + anunciante + '\'' +
+                ", direccion='" + direccion + '\'' +
+                ", poblacion='" + poblacion + '\'' +
+                ", provincia='" + provincia + '\'' +
+                ", descripcion='" + descripcion + '\'' +
+                ", habitaciones_o_camas=" + habitaciones_o_camas +
+                ", numero_banios=" + numero_banios +
+                ", tamanio=" + tamanio +
+                ", numero=" + numero +
+                ", imagenes=" + imagenes +
+                ", prestaciones=" + prestaciones +
+                ", solicitantes=" + solicitantes +
+                ", precio=" + precio +
+                '}';
+    }
 }
 

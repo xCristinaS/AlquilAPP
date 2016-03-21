@@ -40,8 +40,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps{
 
     private void initViews() {
         mPresenter = MainPresenter.getPresentador(this);
-
-        getSupportFragmentManager().beginTransaction().replace(R.id.frmContenido, DetallesAnuncioFragment.newInstance(new Anuncio())).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.frmContenido, new PrincipalFragment()).commit();
     }
 
     public static void start(Activity a, Usuario u){
@@ -71,5 +70,19 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps{
         Fragment f = getSupportFragmentManager().findFragmentById(R.id.frmContenido);
         if (f instanceof PrincipalFragment)
             ((PrincipalFragment) f).advertsHaveBeenObtained(anuncios);
+    }
+
+    @Override
+    public void onUserSubsRequestedResponsed(ArrayList<Anuncio> anuncios) {
+        Fragment f = getSupportFragmentManager().findFragmentById(R.id.frmContenido);
+        if (f instanceof PrincipalFragment)
+            ((PrincipalFragment) f).userSubsHaveBeenObtained(anuncios);
+    }
+
+    @Override
+    public void onUserPublishedAdvertsRequestedResponsed(ArrayList<Anuncio> anuncios) {
+        Fragment f = getSupportFragmentManager().findFragmentById(R.id.frmContenido);
+        if (f instanceof PrincipalFragment)
+            ((PrincipalFragment) f).advertsPublishedByUserObtained(anuncios);
     }
 }
