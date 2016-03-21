@@ -22,7 +22,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".activities.MainActivity" />
-        <activity android:name=".activities.RegistroActivity"></activity>
+        <activity
+            android:name=".activities.RegistroActivity"
+            android:label="Registro"
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>
