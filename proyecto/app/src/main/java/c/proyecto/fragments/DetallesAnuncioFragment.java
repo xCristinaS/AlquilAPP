@@ -1,26 +1,27 @@
 package c.proyecto.fragments;
 
 import android.app.Activity;
-import android.app.Dialog;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
-
 import c.proyecto.Constantes;
 import c.proyecto.R;
 import c.proyecto.adapters.PrestacionesAdapter;
+import c.proyecto.adapters.PrestacionesDetalladasAdapter;
 import c.proyecto.models.Anuncio;
 
 
@@ -141,17 +142,25 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
     }
 
     private void mostrarDialogoPrestaciones() {
-        final Dialog dialog = new Dialog(getContext());
-        dialog.setTitle("Prestaciones");
-        dialog.setContentView(R.layout.fragment_recycler_view);
-        rvPrestaciones = (RecyclerView) dialog.findViewById(R.id.rvLista);
-        ArrayList<Integer> prueba = new ArrayList<>();
-        prueba.add(R.drawable.parking);
-        prueba.add(R.drawable.wifi);
-        rvPrestaciones.setAdapter(new PrestacionesAdapter(prueba, this));
+        final AlertDialog dialog = new AlertDialog.Builder(getActivity()).create();
+        final View dialogView = View.inflate(getActivity(), R.layout.dialog_prestaciones_detalladas, null);
+        dialog.setView(dialogView);
+        dialog.setCanceledOnTouchOutside(true);
+
+
+        rvPrestaciones = (RecyclerView) dialogView.findViewById(R.id.rvPrestaciones);
+
+
+        rvPrestaciones.setAdapter(new PrestacionesDetalladasAdapter(mAnuncio.getPrestaciones()));
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         rvPrestaciones.setLayoutManager(mLayoutManager);
         rvPrestaciones.setItemAnimator(new DefaultItemAnimator());
+
         dialog.show();
+        Point boundsScreen = new Point();
+        getActivity().getWindowManager().getDefaultDisplay().getSize(boundsScreen);
+
+        dialog.getWindow().setLayout((int)(boundsScreen.x * Constantes.PORCENTAJE_PANTALLA), WindowManager.LayoutParams.WRAP_CONTENT);
     }
+
 }

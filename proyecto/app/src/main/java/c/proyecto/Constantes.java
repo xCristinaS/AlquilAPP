@@ -10,5 +10,8 @@ public final class Constantes {
     public static final String HABITACION = "Habitación";
     public static final String CAMAS = "Camas";
 
+    //Dialogo Prestaciones Detalladas
+    public static final float PORCENTAJE_PANTALLA = 0.65f;
+
 }
 
