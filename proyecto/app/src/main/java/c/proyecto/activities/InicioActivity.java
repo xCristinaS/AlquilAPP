@@ -11,7 +11,6 @@ import android.widget.Toast;
 
 import c.proyecto.R;
 import c.proyecto.interfaces.InicioActivityOps;
-import c.proyecto.models.Anuncio;
 import c.proyecto.models.Usuario;
 import c.proyecto.presenters.InicioPresenter;
 
@@ -38,8 +37,7 @@ public class InicioActivity extends AppCompatActivity implements InicioActivityO
         findViewById(R.id.btnRegistrarse).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (presentador.createNewUser("Pepe", "12245654") != null)
-                    Toast.makeText(InicioActivity.this,"Se ha creado", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(InicioActivity.this, RegistroActivity.class));
             }
         });
     }

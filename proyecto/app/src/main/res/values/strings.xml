@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">proyecto</string>
     <string name="action_settings">Settings</string>
-    
+
     <!-- TabLayout -->
     <string name="tab_solicitudes">Solicitudes</string>
     <string name="tab_anuncios">Anuncios</string>

@@ -8,43 +8,82 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    android:background="@color/colorFondoAplicacion">
 
     <ImageView
+        android:id="@+id/imgLogo"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_centerHorizontal="true"
         android:src="@drawable/logo"
         android:layout_marginTop="30dp"
         />
-    <EditText
-        android:id="@+id/txtUser"
+    <com.github.florent37.materialtextfield.MaterialTextField
+        android:id="@+id/mTUser"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:hint="Usuario"
+        app:mtf_image="@drawable/ic_action_user"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="200dp"
+        android:layout_below="@id/imgLogo"
+        android:layout_marginTop="25dp"
+        >
+        <EditText
+            android:id="@+id/txtUser"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Usuario"
+            android:maxLines="1"
+            />
+    </com.github.florent37.materialtextfield.MaterialTextField>
 
-        />
-    <EditText
-        android:id="@+id/txtPass"
+    <com.github.florent37.materialtextfield.MaterialTextField
+        android:id="@+id/mTPass"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:hint="Contraseña"
+        app:mtf_image="@drawable/ic_key"
+        android:layout_below="@id/mTUser"
         android:layout_centerHorizontal="true"
-        android:inputType="textPassword"
-        android:layout_below="@id/txtUser"
-        android:layout_marginTop="15dp"
+        >
+        <EditText
+            android:id="@+id/txtPass"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:hint="Contraseña"
+            android:layout_centerHorizontal="true"
+            android:inputType="textPassword"
+            android:maxLines="1"
+
+            />
+    </com.github.florent37.materialtextfield.MaterialTextField>
+
+    <android.support.v7.widget.SwitchCompat
+        android:id="@+id/swRememberMe"
+        android:layout_alignLeft="@id/mTPass"
+        android:layout_alignStart="@id/mTPass"
+        android:layout_marginTop="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/mTPass"
         />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txtPass"
+        android:text="Recuérdame"
+        android:layout_alignBaseline="@id/swRememberMe"
+        android:layout_toRightOf="@id/swRememberMe"
+        android:layout_toEndOf="@id/swRememberMe"
+        android:layout_marginLeft="5dp"/>
     <Button
         android:id="@+id/btnIniciar"
         android:text="Iniciar sesión"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_below="@id/txtPass"
+        android:layout_below="@id/swRememberMe"
         android:layout_marginTop="40dp"
-        android:background="@color/colorPrimary"
+        android:background="@color/colorAccent"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
 
