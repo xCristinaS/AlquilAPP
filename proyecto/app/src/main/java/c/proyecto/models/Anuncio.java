@@ -38,7 +38,7 @@ public class Anuncio implements Parcelable {
         imagenes = new ArrayList<>();
         prestaciones = new ArrayList<>();
         solicitantes = new HashMap<>();
-        //paNuevoAnuncioPruebas();
+        paNuevoAnuncioPruebas();
     }
 
     public Anuncio(String key) {
@@ -99,6 +99,7 @@ public class Anuncio implements Parcelable {
     public static void getUserSubs(final Usuario u, final MainPresenter presentador) {
         final Firebase mFirebase = new Firebase(URL_SOLICITUDES), mFirebaseAnuncios = new Firebase(URL_ANUNCIOS);
         final ArrayList<Anuncio> anuncios = new ArrayList<>();
+        ArrayList<String> advsKeys = new ArrayList<>();
         mFirebase.child(u.getKey()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
