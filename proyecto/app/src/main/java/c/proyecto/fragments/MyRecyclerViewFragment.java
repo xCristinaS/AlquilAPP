@@ -6,13 +6,16 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
 import c.proyecto.R;
+import c.proyecto.activities.MainActivity;
 import c.proyecto.adapters.MyRecyclerViewAdapter;
 import c.proyecto.models.Anuncio;
 
@@ -60,6 +63,25 @@ public class MyRecyclerViewFragment extends Fragment {
         rvLista.setLayoutManager(mLayoutManager);
         rvLista.setItemAnimator(new DefaultItemAnimator());
         //rvLista.setHasFixedSize(true);
+
+        if (adapter_type == MyRecyclerViewAdapter.ADAPTER_TYPE_MY_ADVS || adapter_type == MyRecyclerViewAdapter.ADAPTER_TYPE_SUBS) {// Se crea el helper.
+            ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(ItemTouchHelper.DOWN, ItemTouchHelper.RIGHT) {
+                @Override
+                public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                    return true;
+                }
+
+                @Override
+                public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                    if (adapter_type == MyRecyclerViewAdapter.ADAPTER_TYPE_MY_ADVS)
+                        ((MainActivity) getActivity()).getmPresenter().removeUserAdvert(mAdapter.getAdvert(viewHolder.getAdapterPosition()));
+                    else
+                        ((MainActivity) getActivity()).getmPresenter().removeUserSub(mAdapter.getAdvert(viewHolder.getAdapterPosition()), ((PrincipalFragment) getParentFragment()).getUser());
+                    mAdapter.notifyDataSetChanged();
+                }
+            });
+            itemTouchHelper.attachToRecyclerView(rvLista);
+        }
     }
 
     public MyRecyclerViewAdapter getmAdapter() {

@@ -133,7 +133,16 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         notifyDataSetChanged();
     }
 
+    public void setmDatos(List<Anuncio> mDatos) {
+        this.mDatos = mDatos;
+        notifyDataSetChanged();
+    }
+
     public List<Anuncio> getmDatos() {
         return mDatos;
+    }
+
+    public Anuncio getAdvert(int position){
+        return mDatos.get(position);
     }
 }

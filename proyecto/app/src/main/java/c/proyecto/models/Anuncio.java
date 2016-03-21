@@ -2,14 +2,16 @@ package c.proyecto.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import com.firebase.client.ChildEventListener;
 
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
+
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Random;
 
 import c.proyecto.R;
@@ -25,7 +27,7 @@ public class Anuncio implements Parcelable {
     private static final String URL_ANUNCIOS = "https://proyectofinaldam.firebaseio.com/anuncios/";
     private static final String URL_SOLICITUDES = "https://proyectofinaldam.firebaseio.com/solicitudes/";
 
-    private String titulo, tipo_vivienda, anunciante, direccion, poblacion, provincia, descripcion;
+    private String key, titulo, tipo_vivienda, anunciante, direccion, poblacion, provincia, descripcion;
     private int habitaciones_o_camas, numero_banios, tamanio, numero;
     private ArrayList<String> imagenes;
     private ArrayList<Prestacion> prestaciones;
@@ -39,7 +41,12 @@ public class Anuncio implements Parcelable {
         //paNuevoAnuncioPruebas();
     }
 
-    private void paNuevoAnuncioPruebas(){
+    public Anuncio(String key) {
+        this();
+        this.key = key;
+    }
+
+    private void paNuevoAnuncioPruebas() {
         titulo = "tituloAnuncio";
         tipo_vivienda = "casa";
         anunciante = "u-101010";
@@ -55,12 +62,14 @@ public class Anuncio implements Parcelable {
         prestaciones.add(new Prestacion(R.drawable.aire_acondicionado, "aire acondicionado"));
         prestaciones.add(new Prestacion(R.drawable.ascensor, "ascensor"));
         prestaciones.add(new Prestacion(R.drawable.calefaccion, "calefacción"));
+        solicitantes.put("12052659", true);
         precio = 315;
     }
 
-    public static Anuncio createNewAnuncio() {
-        Anuncio a = new Anuncio();
-        Firebase mFirebase = new Firebase(URL_ANUNCIOS + a.anunciante + "_" + a.titulo + "_" + new Random().nextInt() + "/");
+    public static Anuncio createNewAnuncio(String anunciante, String titulo, String direccion, String numero, String poblacion, String provincia) {
+        String key = anunciante + "_" + String.valueOf(titulo.hashCode() + direccion.hashCode() + numero.hashCode() + poblacion.hashCode() + provincia.hashCode());
+        Anuncio a = new Anuncio(key);
+        Firebase mFirebase = new Firebase(URL_ANUNCIOS + key + "/");
         mFirebase.setValue(a);
         return a;
     }
@@ -72,9 +81,9 @@ public class Anuncio implements Parcelable {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 ArrayList<Anuncio> anuncios = new ArrayList<>();
                 for (DataSnapshot data : dataSnapshot.getChildren())
-                    if (!data.getKey().contains("u-" + u.getEmail().hashCode())) {
+                    if (!data.getKey().contains(u.getKey())) {
                         Anuncio a = data.getValue(Anuncio.class);
-                        if (!a.solicitantes.containsKey("u-" + u.getEmail().hashCode()))
+                        if (!a.solicitantes.containsKey(u.getKey()))
                             anuncios.add(a);
                     }
                 presentador.onAdvertsRequestedResponsed(anuncios);
@@ -88,18 +97,24 @@ public class Anuncio implements Parcelable {
     }
 
     public static void getUserSubs(final Usuario u, final MainPresenter presentador) {
-        final Firebase mFirebase = new Firebase(URL_SOLICITUDES);
+        final Firebase mFirebase = new Firebase(URL_SOLICITUDES), mFirebaseAnuncios = new Firebase(URL_ANUNCIOS);
         final ArrayList<Anuncio> anuncios = new ArrayList<>();
-        mFirebase.child("u-"+u.getEmail().hashCode()).addValueEventListener(new ValueEventListener() {
+        mFirebase.child(u.getKey()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (final DataSnapshot data : dataSnapshot.getChildren()) {
                     String advertKey = data.getKey();
-                    new Firebase(URL_ANUNCIOS).child(advertKey).addValueEventListener(new ValueEventListener() {
+                    mFirebaseAnuncios.child(advertKey).addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
-                            anuncios.add(dataSnapshot.getValue(Anuncio.class));
-                            presentador.onUserSubsRequestedResponsed(anuncios);
+                            Anuncio a = dataSnapshot.getValue(Anuncio.class);
+                            if (!anuncios.contains(a))
+                                anuncios.add(a);
+                            else {
+                                anuncios.remove(a);
+                                anuncios.add(a);
+                            }
+                            presentador.onUserSubsRequestedResponsed((ArrayList<Anuncio>) anuncios);
                         }
 
                         @Override
@@ -124,7 +139,7 @@ public class Anuncio implements Parcelable {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 ArrayList<Anuncio> anuncios = new ArrayList<>();
                 for (DataSnapshot data : dataSnapshot.getChildren())
-                    if (data.getKey().contains("u-" + u.getEmail().hashCode())) {
+                    if (data.getKey().contains(u.getKey())) {
                         anuncios.add(data.getValue(Anuncio.class));
                     }
                 presentador.onUserPublishedAdvertsRequestedResponsed(anuncios);
@@ -135,6 +150,25 @@ public class Anuncio implements Parcelable {
 
             }
         });
+    }
+
+    public static void removeUserAdvert(Anuncio a) {
+        String keySolicitante;
+        Firebase mFirebase = new Firebase(URL_ANUNCIOS + a.getKey() + "/");
+        mFirebase.setValue(null);
+        Iterator it = a.getSolicitantes().keySet().iterator();
+        mFirebase = new Firebase(URL_SOLICITUDES);
+        while (it.hasNext()){
+            keySolicitante = (String)it.next();
+            mFirebase.child(keySolicitante).child(a.getKey()).setValue(null);
+        }
+    }
+
+    public static void removeUserSub(Anuncio a, Usuario u) {
+        Firebase mFirebase = new Firebase(URL_ANUNCIOS).child(a.getKey()).child("solicitantes").child(u.getKey());
+        mFirebase.setValue(null);
+        mFirebase = new Firebase(URL_SOLICITUDES).child(u.getKey()).child(a.getKey());
+        mFirebase.setValue(null);
     }
 
     public String getTitulo() {
@@ -257,61 +291,13 @@ public class Anuncio implements Parcelable {
         this.precio = precio;
     }
 
-
-    @Override
-    public int describeContents() {
-        return 0;
+    public String getKey() {
+        return key;
     }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.titulo);
-        dest.writeString(this.tipo_vivienda);
-        dest.writeString(this.anunciante);
-        dest.writeString(this.direccion);
-        dest.writeString(this.poblacion);
-        dest.writeString(this.provincia);
-        dest.writeString(this.descripcion);
-        dest.writeInt(this.habitaciones_o_camas);
-        dest.writeInt(this.numero_banios);
-        dest.writeInt(this.tamanio);
-        dest.writeInt(this.numero);
-        dest.writeStringList(this.imagenes);
-        dest.writeList(this.prestaciones);
-        dest.writeSerializable(this.solicitantes);
-        dest.writeFloat(this.precio);
+    public void setKey(String key) {
+        this.key = key;
     }
-
-    protected Anuncio(Parcel in) {
-        this.titulo = in.readString();
-        this.tipo_vivienda = in.readString();
-        this.anunciante = in.readString();
-        this.direccion = in.readString();
-        this.poblacion = in.readString();
-        this.provincia = in.readString();
-        this.descripcion = in.readString();
-        this.habitaciones_o_camas = in.readInt();
-        this.numero_banios = in.readInt();
-        this.tamanio = in.readInt();
-        this.numero = in.readInt();
-        this.imagenes = in.createStringArrayList();
-        this.prestaciones = new ArrayList<Prestacion>();
-        in.readList(this.prestaciones, Prestacion.class.getClassLoader());
-        this.solicitantes = (HashMap<String, Boolean>) in.readSerializable();
-        this.precio = in.readFloat();
-    }
-
-    public static final Creator<Anuncio> CREATOR = new Creator<Anuncio>() {
-        @Override
-        public Anuncio createFromParcel(Parcel source) {
-            return new Anuncio(source);
-        }
-
-        @Override
-        public Anuncio[] newArray(int size) {
-            return new Anuncio[size];
-        }
-    };
 
     @Override
     public String toString() {
@@ -333,5 +319,59 @@ public class Anuncio implements Parcelable {
                 ", precio=" + precio +
                 '}';
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.key);
+        dest.writeString(this.titulo);
+        dest.writeString(this.tipo_vivienda);
+        dest.writeString(this.anunciante);
+        dest.writeString(this.direccion);
+        dest.writeString(this.poblacion);
+        dest.writeString(this.provincia);
+        dest.writeString(this.descripcion);
+        dest.writeInt(this.habitaciones_o_camas);
+        dest.writeInt(this.numero_banios);
+        dest.writeInt(this.tamanio);
+        dest.writeInt(this.numero);
+        dest.writeStringList(this.imagenes);
+        dest.writeTypedList(prestaciones);
+        dest.writeSerializable(this.solicitantes);
+        dest.writeFloat(this.precio);
+    }
+
+    protected Anuncio(Parcel in) {
+        this.key = in.readString();
+        this.titulo = in.readString();
+        this.tipo_vivienda = in.readString();
+        this.anunciante = in.readString();
+        this.direccion = in.readString();
+        this.poblacion = in.readString();
+        this.provincia = in.readString();
+        this.descripcion = in.readString();
+        this.habitaciones_o_camas = in.readInt();
+        this.numero_banios = in.readInt();
+        this.tamanio = in.readInt();
+        this.numero = in.readInt();
+        this.imagenes = in.createStringArrayList();
+        this.prestaciones = in.createTypedArrayList(Prestacion.CREATOR);
+        this.solicitantes = (HashMap<String, Boolean>) in.readSerializable();
+        this.precio = in.readFloat();
+    }
+
+    public static final Creator<Anuncio> CREATOR = new Creator<Anuncio>() {
+        public Anuncio createFromParcel(Parcel source) {
+            return new Anuncio(source);
+        }
+
+        public Anuncio[] newArray(int size) {
+            return new Anuncio[size];
+        }
+    };
 }
 

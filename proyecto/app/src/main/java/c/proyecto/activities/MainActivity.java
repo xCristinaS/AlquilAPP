@@ -65,6 +65,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps{
         return user;
     }
 
+    public MainPresenter getmPresenter(){
+        return mPresenter;
+    }
+
     @Override
     public void onAdvertsRequestedResponsed(ArrayList<Anuncio> anuncios) {
         Fragment f = getSupportFragmentManager().findFragmentById(R.id.frmContenido);

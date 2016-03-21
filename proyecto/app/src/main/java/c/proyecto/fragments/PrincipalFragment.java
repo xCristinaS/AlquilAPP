@@ -69,14 +69,17 @@ public class PrincipalFragment extends Fragment {
     public void userSubsHaveBeenObtained(ArrayList<Anuncio> anuncios) { // devueltas las solicitudes, actualizo el adaptador
         MyRecyclerViewFragment f = (MyRecyclerViewFragment) vpAdapter.getItem(0);
         if (f.getmAdapter().getAdapter_type() == MyRecyclerViewAdapter.ADAPTER_TYPE_SUBS)
-            f.getmAdapter().replaceAll(anuncios);
+            f.getmAdapter().setmDatos(anuncios);
     }
 
     public void advertsPublishedByUserObtained(ArrayList<Anuncio> anuncios) { // devueltas las publicaciones, actualizo el adaptador
         MyRecyclerViewFragment f = (MyRecyclerViewFragment) vpAdapter.getItem(2);
         if (f.getmAdapter().getAdapter_type() == MyRecyclerViewAdapter.ADAPTER_TYPE_MY_ADVS)
             f.getmAdapter().replaceAll(anuncios);
+    }
 
+    public Usuario getUser() {
+        return user;
     }
 
     //Adaptader
