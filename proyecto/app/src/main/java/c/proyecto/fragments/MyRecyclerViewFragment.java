@@ -73,11 +73,12 @@ public class MyRecyclerViewFragment extends Fragment {
 
                 @Override
                 public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                    Anuncio a = mAdapter.getAdvert(viewHolder.getAdapterPosition());
                     if (adapter_type == MyRecyclerViewAdapter.ADAPTER_TYPE_MY_ADVS)
-                        ((MainActivity) getActivity()).getmPresenter().removeUserAdvert(mAdapter.getAdvert(viewHolder.getAdapterPosition()));
+                        ((MainActivity) getActivity()).getmPresenter().removeUserAdvert(a);
                     else
-                        ((MainActivity) getActivity()).getmPresenter().removeUserSub(mAdapter.getAdvert(viewHolder.getAdapterPosition()), ((PrincipalFragment) getParentFragment()).getUser());
-                    mAdapter.notifyDataSetChanged();
+                        ((MainActivity) getActivity()).getmPresenter().removeUserSub(a, ((PrincipalFragment) getParentFragment()).getUser());
+                    mAdapter.removeItem(a);
                 }
             });
             itemTouchHelper.attachToRecyclerView(rvLista);

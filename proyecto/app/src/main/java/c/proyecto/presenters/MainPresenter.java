@@ -32,36 +32,6 @@ public class MainPresenter implements MainPresenterOps {
     }
 
     @Override
-    public void getAdverts(Usuario usuario) {
-        Anuncio.getAdverts(this, usuario);
-    }
-
-    @Override
-    public void getAllUserSubs(Usuario usuario) {
-        Anuncio.getUserSubs(usuario, this);
-    }
-
-    @Override
-    public void getAllUserPublishedAdverts(Usuario usuario) {
-        Anuncio.getAdvertsPublishedByUser(usuario, this);
-    }
-
-    @Override
-    public void onAdvertsRequestedResponsed(ArrayList<Anuncio> anuncios) {
-        activity.get().onAdvertsRequestedResponsed(anuncios);
-    }
-
-    @Override
-    public void onUserSubsRequestedResponsed(ArrayList<Anuncio> anuncios) {
-        activity.get().onUserSubsRequestedResponsed(anuncios);
-    }
-
-    @Override
-    public void onUserPublishedAdvertsRequestedResponsed(ArrayList<Anuncio> anuncios) {
-        activity.get().onUserPublishedAdvertsRequestedResponsed(anuncios);
-    }
-
-    @Override
     public void removeUserAdvert(Anuncio a) {
         Anuncio.removeUserAdvert(a);
     }
@@ -69,5 +39,50 @@ public class MainPresenter implements MainPresenterOps {
     @Override
     public void removeUserSub(Anuncio a, Usuario u) {
         Anuncio.removeUserSub(a, u);
+    }
+
+    @Override
+    public void initializeFirebaseListeners(Usuario usuario){
+        Anuncio.initializeFirebaseListeners(this, usuario);
+    }
+
+    @Override
+    public void advertHasBeenObtained(Anuncio a){
+        activity.get().advertHasBeenObtained(a);
+    }
+
+    @Override
+    public void adverHasBeenModified(Anuncio a){
+        activity.get().adverHasBeenModified(a);
+    }
+
+    @Override
+    public void subHasBeenObtained(Anuncio a){
+        activity.get().subHasBeenObtained(a);
+    }
+
+    @Override
+    public void subHasBeenModified(Anuncio a){
+        activity.get().subHasBeenModified(a);
+    }
+
+    @Override
+    public void userAdvertHasBeenObtained(Anuncio a){
+        activity.get().userAdvertHasBeenObtained(a);
+    }
+
+    @Override
+    public void userAdvertHasBeenModified(Anuncio a){
+        activity.get().userAdvertHasBeenModified(a);
+    }
+
+    @Override
+    public void removeSub(Anuncio a){
+        activity.get().removeSub(a);
+    }
+
+    @Override
+    public void detachListeners() {
+        Anuncio.detachFirebaseListeners();
     }
 }

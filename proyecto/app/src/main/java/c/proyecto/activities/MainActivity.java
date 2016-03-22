@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps{
 
     private void initViews() {
         mPresenter = MainPresenter.getPresentador(this);
+
         getSupportFragmentManager().beginTransaction().replace(R.id.frmContenido, new PrincipalFragment()).commit();
     }
 
@@ -70,23 +71,57 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps{
     }
 
     @Override
-    public void onAdvertsRequestedResponsed(ArrayList<Anuncio> anuncios) {
+    public void advertHasBeenObtained(Anuncio a){
         Fragment f = getSupportFragmentManager().findFragmentById(R.id.frmContenido);
         if (f instanceof PrincipalFragment)
-            ((PrincipalFragment) f).advertsHaveBeenObtained(anuncios);
+            ((PrincipalFragment) f).addAdvertToAdapter(a);
     }
 
     @Override
-    public void onUserSubsRequestedResponsed(ArrayList<Anuncio> anuncios) {
+    public void adverHasBeenModified(Anuncio a){
         Fragment f = getSupportFragmentManager().findFragmentById(R.id.frmContenido);
         if (f instanceof PrincipalFragment)
-            ((PrincipalFragment) f).userSubsHaveBeenObtained(anuncios);
+            ((PrincipalFragment) f).replaceAdvertFromAdapter(a);
     }
 
     @Override
-    public void onUserPublishedAdvertsRequestedResponsed(ArrayList<Anuncio> anuncios) {
+    public void subHasBeenObtained(Anuncio a){
         Fragment f = getSupportFragmentManager().findFragmentById(R.id.frmContenido);
         if (f instanceof PrincipalFragment)
-            ((PrincipalFragment) f).advertsPublishedByUserObtained(anuncios);
+            ((PrincipalFragment) f).addSubToAdapter(a);
+    }
+
+    @Override
+    public void subHasBeenModified(Anuncio a){
+        Fragment f = getSupportFragmentManager().findFragmentById(R.id.frmContenido);
+        if (f instanceof PrincipalFragment)
+            ((PrincipalFragment) f).replaceSubFromAdapter(a);
+    }
+
+    @Override
+    public void userAdvertHasBeenObtained(Anuncio a){
+        Fragment f = getSupportFragmentManager().findFragmentById(R.id.frmContenido);
+        if (f instanceof PrincipalFragment)
+            ((PrincipalFragment) f).addUserAdvertToAdapter(a);
+    }
+
+    @Override
+    public void userAdvertHasBeenModified(Anuncio a){
+        Fragment f = getSupportFragmentManager().findFragmentById(R.id.frmContenido);
+        if (f instanceof PrincipalFragment)
+            ((PrincipalFragment) f).replaceUserAdvertFromAdapter(a);
+    }
+
+    @Override
+    public void removeSub(Anuncio a){
+        Fragment f = getSupportFragmentManager().findFragmentById(R.id.frmContenido);
+        if (f instanceof PrincipalFragment)
+            ((PrincipalFragment) f).removeSub(a);
+    }
+
+    @Override
+    protected void onDestroy() {
+        mPresenter.detachListeners();
+        super.onDestroy();
     }
 }

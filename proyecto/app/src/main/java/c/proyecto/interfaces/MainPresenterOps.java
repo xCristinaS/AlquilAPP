@@ -10,12 +10,15 @@ import c.proyecto.models.Usuario;
  * Created by Cristina on 20/03/2016.
  */
 public interface MainPresenterOps {
-    void getAdverts(Usuario u);
-    void getAllUserSubs(Usuario u);
-    void getAllUserPublishedAdverts(Usuario u);
-    void onAdvertsRequestedResponsed(ArrayList<Anuncio> anuncios);
-    void onUserSubsRequestedResponsed(ArrayList<Anuncio> anuncios);
-    void onUserPublishedAdvertsRequestedResponsed(ArrayList<Anuncio> anuncios);
     void removeUserAdvert(Anuncio a);
     void removeUserSub(Anuncio a, Usuario u);
+    void initializeFirebaseListeners(Usuario usuario);
+    void advertHasBeenObtained(Anuncio a);
+    void adverHasBeenModified(Anuncio a);
+    void subHasBeenObtained(Anuncio a);
+    void subHasBeenModified(Anuncio a);
+    void userAdvertHasBeenObtained(Anuncio a);
+    void userAdvertHasBeenModified(Anuncio a);
+    void removeSub(Anuncio a);
+    void detachListeners();
 }

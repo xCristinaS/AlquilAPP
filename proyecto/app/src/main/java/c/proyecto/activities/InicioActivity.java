@@ -9,6 +9,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.firebase.client.Firebase;
+
 import c.proyecto.R;
 import c.proyecto.interfaces.InicioActivityOps;
 import c.proyecto.models.Anuncio;
@@ -64,11 +66,17 @@ public class InicioActivity extends AppCompatActivity implements InicioActivityO
 /*
         for (int i = 0; i < 20; i++)
             Anuncio.createNewAnuncio("12052659", "titulo del anuncio " + i, "direccion de vivienda", "12", "poblacion", "provincia");
+
 */
-        /*
+/*
         for (int i = 0; i < 8; i++)
             Anuncio.createNewAnuncio("-386798187", "titulo del anuncio " + i, "direccion de vivienda", "12", "poblacion", "provincia");
 */
         MainActivity.start(this, u);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 }

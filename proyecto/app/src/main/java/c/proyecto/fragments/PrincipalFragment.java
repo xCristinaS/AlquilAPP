@@ -54,33 +54,57 @@ public class PrincipalFragment extends Fragment {
         tabLayout = (TabLayout) getActivity().findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
         viewPager.setOffscreenPageLimit(2);
-        mPresenter.getAllUserSubs(user); // llamo al presentador para obtener las solicitudes del usuario
-        mPresenter.getAllUserPublishedAdverts(user); // `` ´´ los anuncios publicados por el usuario
-        mPresenter.getAdverts(user); // `` ´´para conseguir los anuncios
+        mPresenter.initializeFirebaseListeners(user);
         viewPager.setCurrentItem(1); // el fragmento principal será el de anuncios
     }
 
-    public void advertsHaveBeenObtained(ArrayList<Anuncio> anuncios) { // devueltos los anuncios, actualizo el adaptador
+    public void addAdvertToAdapter(Anuncio a){
         MyRecyclerViewFragment f = (MyRecyclerViewFragment) vpAdapter.getItem(1);
         if (f.getmAdapter().getAdapter_type() == MyRecyclerViewAdapter.ADAPTER_TYPE_ADVS)
-            f.getmAdapter().replaceAll(anuncios);
+            f.getmAdapter().addItem(a);
     }
 
-    public void userSubsHaveBeenObtained(ArrayList<Anuncio> anuncios) { // devueltas las solicitudes, actualizo el adaptador
+    public void replaceAdvertFromAdapter(Anuncio a){
+        MyRecyclerViewFragment f = (MyRecyclerViewFragment) vpAdapter.getItem(1);
+        if (f.getmAdapter().getAdapter_type() == MyRecyclerViewAdapter.ADAPTER_TYPE_ADVS)
+            f.getmAdapter().replaceItem(a);
+    }
+
+    public void addSubToAdapter(Anuncio a){
         MyRecyclerViewFragment f = (MyRecyclerViewFragment) vpAdapter.getItem(0);
         if (f.getmAdapter().getAdapter_type() == MyRecyclerViewAdapter.ADAPTER_TYPE_SUBS)
-            f.getmAdapter().replaceAll(anuncios);
+            f.getmAdapter().addItem(a);
     }
 
-    public void advertsPublishedByUserObtained(ArrayList<Anuncio> anuncios) { // devueltas las publicaciones, actualizo el adaptador
+    public void replaceSubFromAdapter(Anuncio a){
+        MyRecyclerViewFragment f = (MyRecyclerViewFragment) vpAdapter.getItem(0);
+        if (f.getmAdapter().getAdapter_type() == MyRecyclerViewAdapter.ADAPTER_TYPE_SUBS)
+            f.getmAdapter().replaceItem(a);
+    }
+
+    public void addUserAdvertToAdapter(Anuncio a){
         MyRecyclerViewFragment f = (MyRecyclerViewFragment) vpAdapter.getItem(2);
         if (f.getmAdapter().getAdapter_type() == MyRecyclerViewAdapter.ADAPTER_TYPE_MY_ADVS)
-            f.getmAdapter().replaceAll(anuncios);
+            f.getmAdapter().addItem(a);
+    }
+
+    public void replaceUserAdvertFromAdapter(Anuncio a){
+        MyRecyclerViewFragment f = (MyRecyclerViewFragment) vpAdapter.getItem(2);
+        if (f.getmAdapter().getAdapter_type() == MyRecyclerViewAdapter.ADAPTER_TYPE_MY_ADVS)
+            f.getmAdapter().replaceItem(a);
+    }
+
+    public void removeSub(Anuncio a){
+        MyRecyclerViewFragment f = (MyRecyclerViewFragment) vpAdapter.getItem(0);
+        if (f.getmAdapter().getAdapter_type() == MyRecyclerViewAdapter.ADAPTER_TYPE_SUBS)
+            f.getmAdapter().removeItem(a);
     }
 
     public Usuario getUser() {
         return user;
     }
+
+    
 
     //Adaptader
     class SectionsPagerAdapter extends CachedFragmentPagerAdapter {
