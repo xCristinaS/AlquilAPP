@@ -15,6 +15,8 @@ import java.util.List;
 
 import c.proyecto.R;
 import c.proyecto.models.Anuncio;
+import c.proyecto.models.Usuario;
+import c.proyecto.presenters.MainPresenter;
 
 
 public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -25,7 +27,7 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         void desactivarMultiseleccion();
     }
 
-    public interface  OnAdapterItemClick {
+    public interface OnAdapterItemClick {
 
     }
 
@@ -38,13 +40,17 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     private OnAdapterItemLongClick listenerLongClick;
     private OnAdapterItemClick listenerItemClick;
     private View emptyView;
+    private MainPresenter presenter;
     private SparseBooleanArray mSelectedItems = new SparseBooleanArray();
     private boolean multiDeletionModeActivated = false;
+    private Usuario user;
 
 
-    public MyRecyclerViewAdapter(int adapter_type) {
+    public MyRecyclerViewAdapter(int adapter_type, MainPresenter presenter, Usuario user) {
         mDatos = new ArrayList<>();
+        this.presenter = presenter;
         this.adapter_type = adapter_type;
+        this.user = user;
     }
 
     @Override
@@ -113,16 +119,13 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         }
     }
 
-    public boolean removeSelections() {
-        boolean resp = true;
+    public void removeSelections() {
         List<Integer> seleccionados = getSelectedItemsPositions();
         Collections.sort(seleccionados, Collections.reverseOrder());
         for (int i = 0; i < seleccionados.size(); i++) {
             int pos = seleccionados.get(i);
-            if (removeItem(pos))
-                resp = false;
+            removeItem(pos);
         }
-        return resp;
     }
 
     public List<Integer> getSelectedItemsPositions() {
@@ -133,9 +136,12 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         return items;
     }
 
-    private boolean removeItem(int pos) {
-
-        return false;
+    private void removeItem(int pos) {
+        if (adapter_type == ADAPTER_TYPE_MY_ADVS)
+            presenter.removeUserAdvert(mDatos.get(pos));
+        else
+            presenter.removeUserSub(mDatos.get(pos), user);
+        removeItem(mDatos.get(pos));
     }
 
     public void disableMultiDeletionMode() {

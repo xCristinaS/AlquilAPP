@@ -58,10 +58,14 @@ public class PrincipalFragment extends Fragment {
         viewPager.setCurrentItem(1); // el fragmento principal será el de anuncios
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            }
 
             @Override
-            public void onPageSelected(int position) {}
+            public void onPageSelected(int position) {
+                MyRecyclerViewFragment fragmento = (MyRecyclerViewFragment) vpAdapter.getItem(viewPager.getCurrentItem());
+                ((MyRecyclerViewAdapter.OnAdapterItemLongClick) getActivity()).setAdapterAllowMultiDeletion(fragmento.getmAdapter());
+            }
 
             @Override
             public void onPageScrollStateChanged(int state) {
@@ -72,43 +76,43 @@ public class PrincipalFragment extends Fragment {
         });
     }
 
-    public void addAdvertToAdapter(Anuncio a){
+    public void addAdvertToAdapter(Anuncio a) {
         MyRecyclerViewFragment f = (MyRecyclerViewFragment) vpAdapter.getItem(1);
         if (f.getmAdapter().getAdapter_type() == MyRecyclerViewAdapter.ADAPTER_TYPE_ADVS)
             f.getmAdapter().addItem(a);
     }
 
-    public void replaceAdvertFromAdapter(Anuncio a){
+    public void replaceAdvertFromAdapter(Anuncio a) {
         MyRecyclerViewFragment f = (MyRecyclerViewFragment) vpAdapter.getItem(1);
         if (f.getmAdapter().getAdapter_type() == MyRecyclerViewAdapter.ADAPTER_TYPE_ADVS)
             f.getmAdapter().replaceItem(a);
     }
 
-    public void addSubToAdapter(Anuncio a){
+    public void addSubToAdapter(Anuncio a) {
         MyRecyclerViewFragment f = (MyRecyclerViewFragment) vpAdapter.getItem(0);
         if (f.getmAdapter().getAdapter_type() == MyRecyclerViewAdapter.ADAPTER_TYPE_SUBS)
             f.getmAdapter().addItem(a);
     }
 
-    public void replaceSubFromAdapter(Anuncio a){
+    public void replaceSubFromAdapter(Anuncio a) {
         MyRecyclerViewFragment f = (MyRecyclerViewFragment) vpAdapter.getItem(0);
         if (f.getmAdapter().getAdapter_type() == MyRecyclerViewAdapter.ADAPTER_TYPE_SUBS)
             f.getmAdapter().replaceItem(a);
     }
 
-    public void addUserAdvertToAdapter(Anuncio a){
+    public void addUserAdvertToAdapter(Anuncio a) {
         MyRecyclerViewFragment f = (MyRecyclerViewFragment) vpAdapter.getItem(2);
         if (f.getmAdapter().getAdapter_type() == MyRecyclerViewAdapter.ADAPTER_TYPE_MY_ADVS)
             f.getmAdapter().addItem(a);
     }
 
-    public void replaceUserAdvertFromAdapter(Anuncio a){
+    public void replaceUserAdvertFromAdapter(Anuncio a) {
         MyRecyclerViewFragment f = (MyRecyclerViewFragment) vpAdapter.getItem(2);
         if (f.getmAdapter().getAdapter_type() == MyRecyclerViewAdapter.ADAPTER_TYPE_MY_ADVS)
             f.getmAdapter().replaceItem(a);
     }
 
-    public void removeSub(Anuncio a){
+    public void removeSub(Anuncio a) {
         MyRecyclerViewFragment f = (MyRecyclerViewFragment) vpAdapter.getItem(0);
         if (f.getmAdapter().getAdapter_type() == MyRecyclerViewAdapter.ADAPTER_TYPE_SUBS)
             f.getmAdapter().removeItem(a);

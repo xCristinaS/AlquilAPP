@@ -87,7 +87,9 @@ public class InicioActivity extends AppCompatActivity implements InicioActivityO
 /*
         for (int i = 0; i < 8; i++)
             Anuncio.createNewAnuncio("-386798187", "titulo del anuncio " + i, "direccion de vivienda", "12", "poblacion", "provincia");
-*/      if(u != null){
+*/
+
+        if(u != null){
             //Guardará en las preferencias el usuario para la próxima ves que entre.
             if(swRememberMe.isChecked())
                 editor.putString(Constantes.KEY_REMEMBER_ME, txtUser.getText().toString());

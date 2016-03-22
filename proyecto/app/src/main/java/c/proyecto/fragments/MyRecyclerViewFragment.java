@@ -19,6 +19,7 @@ import c.proyecto.R;
 import c.proyecto.activities.MainActivity;
 import c.proyecto.adapters.MyRecyclerViewAdapter;
 import c.proyecto.models.Anuncio;
+import c.proyecto.presenters.MainPresenter;
 
 
 public class MyRecyclerViewFragment extends Fragment {
@@ -58,7 +59,7 @@ public class MyRecyclerViewFragment extends Fragment {
         adapter_type = args.getInt(ARG_ADAPTER_TYPE);
 
         rvLista = (RecyclerView) getView().findViewById(R.id.rvLista);
-        mAdapter = new MyRecyclerViewAdapter(adapter_type);
+        mAdapter = new MyRecyclerViewAdapter(adapter_type, MainPresenter.getPresentador(getActivity()), ((PrincipalFragment)getParentFragment()).getUser());
         mLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
 
         rvLista.setAdapter(mAdapter);
@@ -69,25 +70,6 @@ public class MyRecyclerViewFragment extends Fragment {
         if (adapter_type == MyRecyclerViewAdapter.ADAPTER_TYPE_MY_ADVS || adapter_type == MyRecyclerViewAdapter.ADAPTER_TYPE_SUBS) {
             mAdapter.setListenerLongClick(listenerLongClick);
             mAdapter.setListenerItemClick(listenerItemClick);
-            /*
-            ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(ItemTouchHelper.DOWN, ItemTouchHelper.RIGHT) {
-                @Override
-                public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-                    return true;
-                }
-
-                @Override
-                public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-                    Anuncio a = mAdapter.getAdvert(viewHolder.getAdapterPosition());
-                    if (adapter_type == MyRecyclerViewAdapter.ADAPTER_TYPE_MY_ADVS)
-                        ((MainActivity) getActivity()).getmPresenter().removeUserAdvert(a);
-                    else
-                        ((MainActivity) getActivity()).getmPresenter().removeUserSub(a, ((PrincipalFragment) getParentFragment()).getUser());
-                    mAdapter.removeItem(a);
-                }
-            });
-            itemTouchHelper.attachToRecyclerView(rvLista);
-            */
         }
     }
 
@@ -95,7 +77,6 @@ public class MyRecyclerViewFragment extends Fragment {
     public void onAttach(Context context) {
         listenerLongClick = (MyRecyclerViewAdapter.OnAdapterItemLongClick) context;
         listenerItemClick = (MyRecyclerViewAdapter.OnAdapterItemClick) context;
-        listenerLongClick.setAdapterAllowMultiDeletion(mAdapter);
         super.onAttach(context);
     }
 
