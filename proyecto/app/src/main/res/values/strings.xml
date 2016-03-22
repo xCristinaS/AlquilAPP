@@ -7,5 +7,14 @@
     <string name="tab_anuncios">Anuncios</string>
     <string name="tab_mis_anuncios">Mis Anuncios</string>
 
+    <!-- NAV DRAWER -->
+    <string name="navigation_drawer_open">Abrir</string>
+    <string name="navigation_drawer_close">Cerrar</string>
+    <string name="title_nav_home">Inicio</string>
+    <string name="title_nav_new_adv">Crear anuncio</string>
+    <string name="title_nav_edit_profile">Editar perfil</string>
+    <string name="title_nav_messages">Mensajes</string>
+    <string name="title_nav_preferences">Preferencias</string>
+    <string name="title_nav_sign_of">Cerrar Sesión</string>
 
 </resources>
