@@ -51,9 +51,11 @@ public class RegistroActivity extends AppCompatActivity implements RegistroActiv
             if(!areFieldsEmpty()){
                 if (!existUser()) {
                     if(comprobarPass()){
-                        presentador.register(txtUser.getText().toString(), txtPass.getText().toString(), txtNombre.getText().toString(), txtApellidos.getText().toString());
+                        Usuario u = presentador.register(txtUser.getText().toString(), txtPass.getText().toString(), txtNombre.getText().toString(), txtApellidos.getText().toString());
                         //Iniciar Sesion con el usuario creado
-                        onBackPressed();
+                        MainActivity.start(RegistroActivity.this, u);
+                        finish();
+
                     }else
                         txtRepeatPass.setError("Las contraseñas no son iguales");
                 } else
@@ -97,10 +99,6 @@ public class RegistroActivity extends AppCompatActivity implements RegistroActiv
         return !txtPass.getText().toString().isEmpty() && txtPass.getText().toString().equals(txtRepeatPass.getText().toString());
     }
 
-    @Override
-    public void enter(Usuario u) {
-
-    }
 
 
 }

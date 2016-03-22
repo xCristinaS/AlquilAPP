@@ -35,4 +35,6 @@ public class RegistroPresenter implements RegistroPresenterOps{
     public boolean checkUser(String user) {
         return Usuario.amIRegistered(user);
     }
+
+
 }
