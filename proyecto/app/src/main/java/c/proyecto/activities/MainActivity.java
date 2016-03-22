@@ -157,7 +157,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
                 break;
             case R.id.nav_preferences:
                 break;
-            case R.id.nav_sign_of:
+            case R.id.nav_sign_off:
                 break;
         }
         return true;
