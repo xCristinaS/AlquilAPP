@@ -63,6 +63,9 @@ public class InicioActivity extends AppCompatActivity implements InicioActivityO
     private void checkSavedUser() {
         //Coloca el usuario guardado en el txtUser si el usuario activó el switch de recordar la última vez que inicio sesión.
         txtUser.setText(preferences.getString(Constantes.KEY_REMEMBER_ME, ""));
+        //Si ha recordado el usuario dejará activado el swift
+        if(!txtUser.getText().toString().isEmpty())
+            swRememberMe.setChecked(true);
     }
 
 
@@ -84,6 +87,7 @@ public class InicioActivity extends AppCompatActivity implements InicioActivityO
                 editor.putString(Constantes.KEY_REMEMBER_ME, "");
             editor.apply();
             MainActivity.start(this, u);
+            finish();
         }
         else
             Toast.makeText(this, "Datos Incorrectos", Toast.LENGTH_SHORT).show();
