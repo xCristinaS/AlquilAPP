@@ -103,7 +103,11 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
     }
 
     private void mostrarDatos() {
-        Picasso.with(getActivity()).load(mAnuncio.getImagenes().get(0)).into(imgFoto);
+        if(mAnuncio.getImagenes().size()>0)
+           Picasso.with(getActivity()).load(mAnuncio.getImagenes().get(0)).error(R.drawable.default_user).into(imgFoto);
+        else
+            Picasso.with(getActivity()).load(R.drawable.default_user).error(R.drawable.default_user).into(imgFoto);
+
         //Conseguir foto y nombre del anunciante
 
         lblPrecio.setText(String.format("%.2f%s", mAnuncio.getPrecio(), Constantes.MONEDA));

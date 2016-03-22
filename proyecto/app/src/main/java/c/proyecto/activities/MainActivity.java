@@ -181,6 +181,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
     }
 
     @Override
+    public void onItemClick(Anuncio anuncio) {
+        DetallesAnuncioActivity.start(this,anuncio);
+    }
+
+    @Override
     public void onItemLongClick() {
         toolbar.getMenu().findItem(R.id.eliminar).setVisible(true);
         toolbar.getMenu().findItem(R.id.limpiar).setVisible(true);

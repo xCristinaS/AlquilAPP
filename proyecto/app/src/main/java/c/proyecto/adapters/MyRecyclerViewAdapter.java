@@ -28,7 +28,7 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
 
     public interface OnAdapterItemClick {
-
+        void onItemClick(Anuncio anuncio);
     }
 
     public static final int ADAPTER_TYPE_SUBS = 0;
@@ -79,7 +79,7 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             @Override
             public void onClick(View v) {
                 if (!multiDeletionModeActivated) {
-                    //listenerItemClick.onItemClick(alumno);
+                    listenerItemClick.onItemClick(mDatos.get(position));
                 } else {
                     if (holder.itemView.isActivated()) {
                         holder.itemView.setActivated(false);

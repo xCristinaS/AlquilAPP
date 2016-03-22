@@ -66,7 +66,7 @@ public class MyRecyclerViewFragment extends Fragment {
         rvLista.setLayoutManager(mLayoutManager);
         rvLista.setItemAnimator(new DefaultItemAnimator());
         //rvLista.setHasFixedSize(true);
-
+        mAdapter.setListenerItemClick(listenerItemClick);
         if (adapter_type == MyRecyclerViewAdapter.ADAPTER_TYPE_MY_ADVS || adapter_type == MyRecyclerViewAdapter.ADAPTER_TYPE_SUBS) {
             mAdapter.setListenerLongClick(listenerLongClick);
             mAdapter.setListenerItemClick(listenerItemClick);
