@@ -127,19 +127,32 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
 
     //Manejo del Adaptador
-    public void replaceAll(List<Anuncio> anuncios) {
-        mDatos.clear();
-        mDatos.addAll(anuncios);
-        notifyDataSetChanged();
+    public void addItem(Anuncio a){
+        boolean stop = false;
+        for (int i = 0; !stop && i < mDatos.size(); i++)
+            if (a.getKey().equals(mDatos.get(i).getKey()))
+                stop = true;
+
+        if (!stop)
+            mDatos.add(a);
+        notifyItemInserted(mDatos.indexOf(a));
     }
 
-    public void setmDatos(List<Anuncio> mDatos) {
-        this.mDatos = mDatos;
-        notifyDataSetChanged();
+    public void removeItem(Anuncio a){
+        int position = mDatos.indexOf(a);
+        mDatos.remove(a);
+        notifyItemRemoved(position);
     }
 
-    public List<Anuncio> getmDatos() {
-        return mDatos;
+    public void replaceItem(Anuncio a){
+        boolean stop = false;
+        for (int i = 0; !stop && i < mDatos.size(); i++)
+            if (a.getKey().equals(mDatos.get(i).getKey())) {
+                mDatos.remove(i);
+                mDatos.add(i, a);
+                stop = true;
+            }
+        notifyDataSetChanged();
     }
 
     public Anuncio getAdvert(int position){

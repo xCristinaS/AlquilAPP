@@ -3,6 +3,7 @@ package c.proyecto.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
@@ -33,6 +34,9 @@ public class Anuncio implements Parcelable {
     private ArrayList<Prestacion> prestaciones;
     private HashMap<String, Boolean> solicitantes;
     private float precio;
+    private static boolean userSubRemoved = false;
+    private static Firebase mFirebase;
+    private static ChildEventListener listener;
 
     public Anuncio() {
         imagenes = new ArrayList<>();
@@ -74,101 +78,72 @@ public class Anuncio implements Parcelable {
         return a;
     }
 
-    public static void getAdverts(final MainPresenter presentador, final Usuario u) {
-        Firebase mFirebase = new Firebase(URL_ANUNCIOS);
-        mFirebase.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                ArrayList<Anuncio> anuncios = new ArrayList<>();
-                for (DataSnapshot data : dataSnapshot.getChildren())
-                    if (!data.getKey().contains(u.getKey())) {
-                        Anuncio a = data.getValue(Anuncio.class);
-                        if (!a.solicitantes.containsKey(u.getKey()))
-                            anuncios.add(a);
-                    }
-                presentador.onAdvertsRequestedResponsed(anuncios);
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-
-            }
-        });
-    }
-
-    public static void getUserSubs(final Usuario u, final MainPresenter presentador) {
-        final Firebase mFirebase = new Firebase(URL_SOLICITUDES), mFirebaseAnuncios = new Firebase(URL_ANUNCIOS);
-        final ArrayList<Anuncio> anuncios = new ArrayList<>();
-        mFirebase.child(u.getKey()).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (final DataSnapshot data : dataSnapshot.getChildren()) {
-                    String advertKey = data.getKey();
-                    mFirebaseAnuncios.child(advertKey).addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            Anuncio a = dataSnapshot.getValue(Anuncio.class);
-                            if (!anuncios.contains(a))
-                                anuncios.add(a);
-                            else {
-                                anuncios.remove(a);
-                                anuncios.add(a);
-                            }
-                            presentador.onUserSubsRequestedResponsed((ArrayList<Anuncio>) anuncios);
-                        }
-
-                        @Override
-                        public void onCancelled(FirebaseError firebaseError) {
-
-                        }
-                    });
+    public static void initializeFirebaseListeners(final MainPresenter presentador, final Usuario u) {
+        if (listener == null && mFirebase == null) {
+            mFirebase = new Firebase(URL_ANUNCIOS);
+            listener = new ChildEventListener() {
+                @Override
+                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                    Anuncio a = dataSnapshot.getValue(Anuncio.class);
+                    if (dataSnapshot.getKey().contains(u.getKey()))
+                        presentador.userAdvertHasBeenObtained(a);
+                    else if (a.solicitantes.containsKey(u.getKey()))
+                        presentador.subHasBeenObtained(a);
+                    else
+                        presentador.advertHasBeenObtained(a);
                 }
-            }
 
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
+                @Override
+                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                    Anuncio a = dataSnapshot.getValue(Anuncio.class);
+                    if (dataSnapshot.getKey().contains(u.getKey()))
+                        presentador.userAdvertHasBeenModified(a);
+                    else if (!userSubRemoved && a.solicitantes.containsKey(u.getKey()))
+                        presentador.subHasBeenModified(a);
+                    else if (userSubRemoved)
+                        presentador.advertHasBeenObtained(a);
+                    else
+                        presentador.adverHasBeenModified(a);
 
-            }
-        });
+                    userSubRemoved = false;
+                }
+
+                @Override
+                public void onChildRemoved(DataSnapshot dataSnapshot) {
+                    Anuncio a = dataSnapshot.getValue(Anuncio.class);
+                    if (a.solicitantes.containsKey(u.getKey()))
+                        presentador.removeSub(a);
+                }
+
+                @Override
+                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                }
+
+                @Override
+                public void onCancelled(FirebaseError firebaseError) {
+
+                }
+            };
+        }
+        mFirebase.addChildEventListener(listener);
     }
 
-    public static void getAdvertsPublishedByUser(final Usuario u, final MainPresenter presentador) {
-        Firebase mFirebase = new Firebase(URL_ANUNCIOS);
-        mFirebase.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                ArrayList<Anuncio> anuncios = new ArrayList<>();
-                for (DataSnapshot data : dataSnapshot.getChildren())
-                    if (data.getKey().contains(u.getKey())) {
-                        anuncios.add(data.getValue(Anuncio.class));
-                    }
-                presentador.onUserPublishedAdvertsRequestedResponsed(anuncios);
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-
-            }
-        });
+    public static void detachFirebaseListeners() {
+        mFirebase.removeEventListener(listener);
+        listener = null;
+        mFirebase = null;
     }
 
     public static void removeUserAdvert(Anuncio a) {
-        String keySolicitante;
         Firebase mFirebase = new Firebase(URL_ANUNCIOS + a.getKey() + "/");
         mFirebase.setValue(null);
-        Iterator it = a.getSolicitantes().keySet().iterator();
-        mFirebase = new Firebase(URL_SOLICITUDES);
-        while (it.hasNext()){
-            keySolicitante = (String)it.next();
-            mFirebase.child(keySolicitante).child(a.getKey()).setValue(null);
-        }
     }
 
     public static void removeUserSub(Anuncio a, Usuario u) {
         Firebase mFirebase = new Firebase(URL_ANUNCIOS).child(a.getKey()).child("solicitantes").child(u.getKey());
         mFirebase.setValue(null);
-        mFirebase = new Firebase(URL_SOLICITUDES).child(u.getKey()).child(a.getKey());
-        mFirebase.setValue(null);
+        userSubRemoved = true;
     }
 
     public String getTitulo() {

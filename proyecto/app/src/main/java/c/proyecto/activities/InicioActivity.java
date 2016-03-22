@@ -9,11 +9,16 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
 import com.github.florent37.materialtextfield.MaterialTextField;
 
 import c.proyecto.Constantes;
+
+import com.firebase.client.Firebase;
+
 import c.proyecto.R;
 import c.proyecto.interfaces.InicioActivityOps;
+import c.proyecto.models.Anuncio;
 import c.proyecto.models.Usuario;
 import c.proyecto.presenters.InicioPresenter;
 
@@ -74,9 +79,12 @@ public class InicioActivity extends AppCompatActivity implements InicioActivityO
         SharedPreferences.Editor editor = preferences.edit();
         /*
         for (int i = 0; i < 3; i++)
+/*
+        for (int i = 0; i < 20; i++)
             Anuncio.createNewAnuncio("12052659", "titulo del anuncio " + i, "direccion de vivienda", "12", "poblacion", "provincia");
-            */
-        /*
+
+*/
+/*
         for (int i = 0; i < 8; i++)
             Anuncio.createNewAnuncio("-386798187", "titulo del anuncio " + i, "direccion de vivienda", "12", "poblacion", "provincia");
 */      if(u != null){
@@ -93,4 +101,8 @@ public class InicioActivity extends AppCompatActivity implements InicioActivityO
             Toast.makeText(this, "Datos Incorrectos", Toast.LENGTH_SHORT).show();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
 }
