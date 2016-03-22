@@ -27,11 +27,11 @@ import c.proyecto.presenters.MainPresenter;
 
 public class PrincipalFragment extends Fragment {
 
-    private MainPresenter mPresenter;
+    private static MainPresenter mPresenter;
+    private static Usuario user;
     private SectionsPagerAdapter vpAdapter;
     private ViewPager viewPager;
     private TabLayout tabLayout;
-    private Usuario user;
 
     @Nullable
     @Override
@@ -56,6 +56,20 @@ public class PrincipalFragment extends Fragment {
         viewPager.setOffscreenPageLimit(2);
         mPresenter.initializeFirebaseListeners(user);
         viewPager.setCurrentItem(1); // el fragmento principal será el de anuncios
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
+
+            @Override
+            public void onPageSelected(int position) {}
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+                MyRecyclerViewFragment f = (MyRecyclerViewFragment) vpAdapter.getItem(viewPager.getCurrentItem());
+                if (f != null)
+                    f.disableMultideletion();
+            }
+        });
     }
 
     public void addAdvertToAdapter(Anuncio a){

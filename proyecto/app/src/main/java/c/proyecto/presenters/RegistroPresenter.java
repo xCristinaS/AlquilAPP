@@ -33,7 +33,7 @@ public class RegistroPresenter implements RegistroPresenterOps{
 
     @Override
     public boolean checkUser(String user) {
-        return Usuario.amIRegistered(user);
+        return Usuario.amIRegistrered(user);
     }
 
 
