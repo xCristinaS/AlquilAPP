@@ -19,6 +19,7 @@ import c.proyecto.presenters.InicioPresenter;
 public class Usuario implements Parcelable{
 
     private static final String URL_USERS = "https://proyectofinaldam.firebaseio.com/usuarios/";
+    private static boolean registered;
 
     private String key, email,contra, nombre, apellidos, nacionalidad, profesion, comentario_desc, foto, fecha_nacimiento;
     private int ordenado, fiestero, sociable, activo;
@@ -56,22 +57,22 @@ public class Usuario implements Parcelable{
     }
 
     public static void signIn(final String email, final String contra, final InicioPresenter presentador){
-        Firebase mFirebase = new Firebase(URL_USERS);
-        mFirebase.addValueEventListener(new ValueEventListener() {
+        Firebase firebase = new Firebase(URL_USERS);
+        firebase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 boolean stop = false;
                 Iterator i = dataSnapshot.getChildren().iterator();
                 //Recorre todos los usuarios comprobando que el pasado por parámetro existe
-                while (i.hasNext() && !stop){
-                    Usuario u = ((DataSnapshot)i.next()).getValue(Usuario.class);
-                    if (u.getContra().equals(contra) && u.getEmail().equals(email)){
+                while (i.hasNext() && !stop) {
+                    Usuario u = ((DataSnapshot) i.next()).getValue(Usuario.class);
+                    if (u.getContra().equals(contra) && u.getEmail().equals(email)) {
                         stop = true;
                         presentador.onSingInResponsed(u);
                     }
                 }
                 //Si no ha encontrado ninguna semejanza con los usuarios de la BDD devolverá null
-                if(!stop)
+                if (!stop)
                     presentador.onSingInResponsed(null);
             }
 
@@ -80,6 +81,36 @@ public class Usuario implements Parcelable{
 
             }
         });
+    }
+    //Comprueba si existe algún usuario con este usuario.
+    public static boolean amIRegistered(final String user){
+        Firebase firebase = new Firebase(URL_USERS);
+
+        firebase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                boolean stop = false;
+                Iterator i = dataSnapshot.getChildren().iterator();
+                //Recorre todos los usuarios comprobando si existe un usuario con ese Email
+                while (i.hasNext() && !stop) {
+                    Usuario u = ((DataSnapshot) i.next()).getValue(Usuario.class);
+                    if (u.getEmail().equals(user))
+                        stop = true;
+                }
+                //Guarrería estática, CAMBIAR Cristina -.-
+                if(stop)
+                    registered = true;
+                else
+                    registered = false;
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+
+        return registered;
     }
 
     public String getEmail() {
