@@ -21,12 +21,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.MainActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".activities.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.RegistroActivity"
             android:label="Registro"
             android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity android:name=".activities.DetallesAnuncioActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
     </application>
 
 </manifest>
