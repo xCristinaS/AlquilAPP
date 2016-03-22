@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import c.proyecto.presenters.InicioPresenter;
+import c.proyecto.presenters.RegistroPresenter;
 
 /**
  * Created by Cristina on 19/03/2016.
@@ -58,7 +59,7 @@ public class Usuario implements Parcelable{
 
     public static void signIn(final String email, final String contra, final InicioPresenter presentador){
         Firebase firebase = new Firebase(URL_USERS);
-        firebase.addValueEventListener(new ValueEventListener() {
+        firebase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 boolean stop = false;
@@ -83,25 +84,22 @@ public class Usuario implements Parcelable{
         });
     }
     //Comprueba si existe algún usuario con este usuario.
-    public static boolean amIRegistered(final String user){
+    public static void amIRegistered(final String user, final RegistroPresenter presenter){
         Firebase firebase = new Firebase(URL_USERS);
 
-        firebase.addValueEventListener(new ValueEventListener() {
+        firebase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                boolean stop = false;
+                boolean existe = false;
                 Iterator i = dataSnapshot.getChildren().iterator();
                 //Recorre todos los usuarios comprobando si existe un usuario con ese Email
-                while (i.hasNext() && !stop) {
+                while (i.hasNext() && !existe) {
                     Usuario u = ((DataSnapshot) i.next()).getValue(Usuario.class);
                     if (u.getEmail().equals(user))
-                        stop = true;
+                        existe = true;
                 }
-                //Guarrería estática, CAMBIAR Cristina -.-
-                if(stop)
-                    registered = true;
-                else
-                    registered = false;
+
+                presenter.onCheckUserExist(existe);
             }
 
             @Override
@@ -110,7 +108,6 @@ public class Usuario implements Parcelable{
             }
         });
 
-        return registered;
     }
 
     public String getEmail() {

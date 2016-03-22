@@ -45,7 +45,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps{
     }
 
     public static void start(Activity a, Usuario u){
-        a.startActivity(new Intent(a, MainActivity.class).putExtra(ARG_USUARIO, u));
+        Intent intent = new Intent(a, MainActivity.class);
+        //Cierra todas las actividades anteriores.
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra(ARG_USUARIO, u);
+
+        a.startActivity(intent);
     }
 
     @Override

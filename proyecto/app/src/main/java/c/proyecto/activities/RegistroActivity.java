@@ -48,20 +48,10 @@ public class RegistroActivity extends AppCompatActivity implements RegistroActiv
         btnRegistrarse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            if(!areFieldsEmpty()){
-                if (!existUser()) {
-                    if(comprobarPass()){
-                        Usuario u = presentador.register(txtUser.getText().toString(), txtPass.getText().toString(), txtNombre.getText().toString(), txtApellidos.getText().toString());
-                        //Iniciar Sesion con el usuario creado
-                        MainActivity.start(RegistroActivity.this, u);
-                        finish();
+                if(!areFieldsEmpty())
+                    existUser();
+            }
 
-                    }else
-                        txtRepeatPass.setError("Las contraseñas no son iguales");
-                } else
-                    txtUser.setError("Este Usuario ya existe");
-            }
-            }
         });
     }
 
@@ -91,14 +81,24 @@ public class RegistroActivity extends AppCompatActivity implements RegistroActiv
 
         return empty;
     }
-    private boolean existUser(){
-        return presentador.checkUser(txtUser.getText().toString());
+    private void existUser(){
+        presentador.checkUser(txtUser.getText().toString());
     }
     private boolean comprobarPass(){
         //Comprueba que la contraseña y la contraseña repetida sean iguales
         return !txtPass.getText().toString().isEmpty() && txtPass.getText().toString().equals(txtRepeatPass.getText().toString());
     }
 
-
-
+    @Override
+    public void createUser(boolean exist) {
+        if(!exist){
+            if(comprobarPass()){
+                Usuario u = presentador.register(txtUser.getText().toString(), txtPass.getText().toString(), txtNombre.getText().toString(), txtApellidos.getText().toString());
+                //Iniciar Sesion con el usuario creado
+                MainActivity.start(RegistroActivity.this, u);
+            }else
+                txtRepeatPass.setError("Las contraseñas no son iguales");
+        }else
+            txtUser.setError("Este usuario ya existe");
+    }
 }

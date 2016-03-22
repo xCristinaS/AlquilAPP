@@ -32,9 +32,12 @@ public class RegistroPresenter implements RegistroPresenterOps{
     }
 
     @Override
-    public boolean checkUser(String user) {
-        return Usuario.amIRegistered(user);
+    public void checkUser(String user) {
+        Usuario.amIRegistered(user, presentador);
     }
 
-
+    @Override
+    public void onCheckUserExist(boolean exist) {
+        wActivity.get().createUser(exist);
+    }
 }
