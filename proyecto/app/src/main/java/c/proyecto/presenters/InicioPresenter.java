@@ -9,9 +9,7 @@ import c.proyecto.interfaces.InicioPresenterOps;
 import c.proyecto.models.Usuario;
 
 
-/**
- * Created by Cristina on 19/03/2016.
- */
+
 public class InicioPresenter implements InicioPresenterOps {
 
     private static WeakReference<InicioActivity> activity;
@@ -40,7 +38,7 @@ public class InicioPresenter implements InicioPresenterOps {
     }
 
     @Override
-    public void onSingInSuccess(Usuario u) {
+    public void onSingInResponsed(Usuario u) {
         activity.get().enter(u);
     }
 }

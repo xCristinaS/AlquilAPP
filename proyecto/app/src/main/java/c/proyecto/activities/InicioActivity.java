@@ -1,14 +1,17 @@
 package c.proyecto.activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.SwitchCompat;
 import android.view.View;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.florent37.materialtextfield.MaterialTextField;
+
+import c.proyecto.Constantes;
 import c.proyecto.R;
 import c.proyecto.interfaces.InicioActivityOps;
 import c.proyecto.models.Usuario;
@@ -17,49 +20,55 @@ import c.proyecto.presenters.InicioPresenter;
 public class InicioActivity extends AppCompatActivity implements InicioActivityOps {
 
     private InicioPresenter presentador;
+    private TextView txtUser;
+    private TextView txtPass;
+    private SwitchCompat swRememberMe;
+    private SharedPreferences preferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inicio);
         initViews();
+        checkSavedUser();
     }
 
     private void initViews() {
+        preferences = getSharedPreferences(Constantes.NOMBRE_PREFERENCIAS, MODE_PRIVATE);
         presentador = InicioPresenter.getPresentador(this);
+        swRememberMe = (SwitchCompat) findViewById(R.id.swRememberMe);
+        txtUser = (TextView) findViewById(R.id.txtUser);
+        txtPass = (TextView) findViewById(R.id.txtPass);
+        MaterialTextField mTUser = (MaterialTextField) findViewById(R.id.mTUser);
+        MaterialTextField mTPass = (MaterialTextField) findViewById(R.id.mTPass);
+        mTPass.expand();
+        mTUser.expand();
+
+        //Botón Iniciar sesión
         findViewById(R.id.btnIniciar).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presentador.singInRequested("alejandro", "1234");
+                presentador.singInRequested(txtUser.getText().toString(), txtPass.getText().toString());
             }
         });
-
+        //Botón Registrarse
         findViewById(R.id.btnRegistrarse).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(InicioActivity.this, RegistroActivity.class));
-                //Usuario.createNewUser("cristina", "1234", "cristina", "sola");
-                //Usuario.createNewUser("alejandro", "1234", "alejandro", "torres");
             }
         });
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_inicio, menu);
-        return true;
+    private void checkSavedUser() {
+        //Coloca el usuario guardado en el txtUser si el usuario activó el switch de recordar la última vez que inicio sesión.
+        txtUser.setText(preferences.getString(Constantes.KEY_REMEMBER_ME, ""));
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.action_settings)
-            return true;
-        return super.onOptionsItemSelected(item);
-    }
 
     @Override
     public void enter(Usuario u) {
+        SharedPreferences.Editor editor = preferences.edit();
         /*
         for (int i = 0; i < 3; i++)
             Anuncio.createNewAnuncio("12052659", "titulo del anuncio " + i, "direccion de vivienda", "12", "poblacion", "provincia");
@@ -67,7 +76,17 @@ public class InicioActivity extends AppCompatActivity implements InicioActivityO
         /*
         for (int i = 0; i < 8; i++)
             Anuncio.createNewAnuncio("-386798187", "titulo del anuncio " + i, "direccion de vivienda", "12", "poblacion", "provincia");
-*/
-        MainActivity.start(this, u);
+*/      if(u != null){
+            //Guardará en las preferencias el usuario para la próxima ves que entre.
+            if(swRememberMe.isChecked())
+                editor.putString(Constantes.KEY_REMEMBER_ME, txtUser.getText().toString());
+            else
+                editor.putString(Constantes.KEY_REMEMBER_ME, "");
+            editor.apply();
+            MainActivity.start(this, u);
+        }
+        else
+            Toast.makeText(this, "Datos Incorrectos", Toast.LENGTH_SHORT).show();
     }
+
 }

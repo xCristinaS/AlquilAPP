@@ -72,7 +72,7 @@ public class PrincipalFragment extends Fragment {
             f.getmAdapter().setmDatos(anuncios);
     }
 
-    public void advertsPublishedByUserObtained(ArrayList<Anuncio> anuncios) { // devueltas las publicaciones, actualizo el adaptador
+    public void advertsPublishedByUserObtained(ArrayList<Anuncio> anuncios) { // Devueltas las publicaciones, actualizo el adaptador
         MyRecyclerViewFragment f = (MyRecyclerViewFragment) vpAdapter.getItem(2);
         if (f.getmAdapter().getAdapter_type() == MyRecyclerViewAdapter.ADAPTER_TYPE_MY_ADVS)
             f.getmAdapter().replaceAll(anuncios);

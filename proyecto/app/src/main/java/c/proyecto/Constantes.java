@@ -13,5 +13,10 @@ public final class Constantes {
     //Dialogo Prestaciones Detalladas
     public static final float PORCENTAJE_PANTALLA = 0.65f;
 
+    //PREFERENCIAS
+    public static final String NOMBRE_PREFERENCIAS = "Preferencias";
+        //Keys
+        public static final String KEY_REMEMBER_ME = "rememberMe";
+
 }
 

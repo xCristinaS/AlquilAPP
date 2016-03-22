@@ -3,16 +3,14 @@ package c.proyecto.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Iterator;
 
-import c.proyecto.R;
 import c.proyecto.presenters.InicioPresenter;
 
 /**
@@ -62,11 +60,19 @@ public class Usuario implements Parcelable{
         mFirebase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot data : dataSnapshot.getChildren()) {
-                    Usuario u = data.getValue(Usuario.class);
-                    if (u.getContra().equals(contra) && u.getEmail().equals(email))
-                        presentador.onSingInSuccess(u);
+                boolean stop = false;
+                Iterator i = dataSnapshot.getChildren().iterator();
+                //Recorre todos los usuarios comprobando que el pasado por parámetro existe
+                while (i.hasNext() && !stop){
+                    Usuario u = ((DataSnapshot)i.next()).getValue(Usuario.class);
+                    if (u.getContra().equals(contra) && u.getEmail().equals(email)){
+                        stop = true;
+                        presentador.onSingInResponsed(u);
+                    }
                 }
+                //Si no ha encontrado ninguna semejanza con los usuarios de la BDD devolverá null
+                if(!stop)
+                    presentador.onSingInResponsed(null);
             }
 
             @Override
