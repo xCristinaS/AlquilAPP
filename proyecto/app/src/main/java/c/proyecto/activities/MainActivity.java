@@ -13,13 +13,17 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import c.proyecto.R;
+
+import c.proyecto.adapters.MyRecyclerViewAdapter;
 import c.proyecto.fragments.PrincipalFragment;
 import c.proyecto.interfaces.MainActivityOps;
 import c.proyecto.models.Anuncio;
 import c.proyecto.models.Usuario;
 import c.proyecto.presenters.MainPresenter;
 
-public class MainActivity extends AppCompatActivity implements MainActivityOps, NavigationView.OnNavigationItemSelectedListener {
+
+public class MainActivity extends AppCompatActivity implements MainActivityOps, MyRecyclerViewAdapter.OnAdapterItemLongClick, MyRecyclerViewAdapter.OnAdapterItemClick, NavigationView.OnNavigationItemSelectedListener {
+
 
     private static final String ARG_USUARIO = "usuario_extra";
     private MainPresenter mPresenter;
@@ -28,6 +32,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
     private ActionBarDrawerToggle toggle;
     private Toolbar toolbar;
     private NavigationView navigationView;
+    private MyRecyclerViewAdapter adapter;
+
 
 
     @Override
@@ -37,6 +43,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         initViews();
+        setSupportActionBar(toolbar);
         if (getIntent().hasExtra(ARG_USUARIO))
             user = getIntent().getParcelableExtra(ARG_USUARIO);
     }
@@ -65,28 +72,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
         intent.putExtra(ARG_USUARIO, u);
 
         a.startActivity(intent);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
-            case 1:
-                break;
-        }
-        return true;
-    }
-
-    public Usuario getUser() {
-        return user;
-    }
-
-    public MainPresenter getmPresenter(){
-        return mPresenter;
     }
 
     @Override
@@ -143,6 +128,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
         mPresenter.detachListeners();
         super.onDestroy();
     }
+
     //MENU NAV DRAWER
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -161,5 +147,55 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
                 break;
         }
         return true;
+    }
+
+    @Override
+    public void setAdapterAllowMultiDeletion(MyRecyclerViewAdapter adapter) {
+        this.adapter = adapter;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.limpiar:
+                adapter.clearAllSelections();
+                adapter.disableMultiDeletionMode();
+                toolbar.getMenu().findItem(R.id.eliminar).setVisible(false);
+                toolbar.getMenu().findItem(R.id.limpiar).setVisible(false);
+                return true;
+            case R.id.eliminar:
+                adapter.clearAllSelections();
+                toolbar.getMenu().findItem(R.id.eliminar).setVisible(false);
+                toolbar.getMenu().findItem(R.id.limpiar).setVisible(false);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onItemLongClick() {
+        toolbar.getMenu().findItem(R.id.eliminar).setVisible(true);
+        toolbar.getMenu().findItem(R.id.limpiar).setVisible(true);
+    }
+
+    @Override
+    public void desactivarMultiseleccion() {
+        toolbar.getMenu().findItem(R.id.eliminar).setVisible(false);
+        toolbar.getMenu().findItem(R.id.limpiar).setVisible(false);
+    }
+
+    public Usuario getUser() {
+        return user;
+    }
+
+    public MainPresenter getmPresenter(){
+        return mPresenter;
     }
 }

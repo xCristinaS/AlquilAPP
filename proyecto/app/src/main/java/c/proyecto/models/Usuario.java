@@ -17,22 +17,22 @@ import c.proyecto.presenters.RegistroPresenter;
 /**
  * Created by Cristina on 19/03/2016.
  */
-public class Usuario implements Parcelable{
+public class Usuario implements Parcelable {
 
     private static final String URL_USERS = "https://proyectofinaldam.firebaseio.com/usuarios/";
     private static boolean registered;
 
-    private String key, email,contra, nombre, apellidos, nacionalidad, profesion, comentario_desc, foto, fecha_nacimiento;
+    private String key, email, contra, nombre, apellidos, nacionalidad, profesion, comentario_desc, foto, fecha_nacimiento;
     private int ordenado, fiestero, sociable, activo;
     private ArrayList<String> itemsDescriptivos, itemsHabitos;
 
-    public Usuario(){
+    public Usuario() {
         itemsDescriptivos = new ArrayList<>();
         itemsHabitos = new ArrayList<>();
         //paBorrarPruebas();
     }
 
-    private void paBorrarPruebas(){
+    private void paBorrarPruebas() {
         foto = "default_user.png";
         ordenado = 0;
         fiestero = 0;
@@ -50,14 +50,14 @@ public class Usuario implements Parcelable{
     }
 
     public static Usuario createNewUser(String email, String contra, String nombre, String apellidos) {
-        String key = String.valueOf(email.hashCode()+contra.hashCode()+nombre.hashCode()+apellidos.hashCode());
-        Firebase mFirebase = new Firebase(URL_USERS+key+"/");
+        String key = String.valueOf(email.hashCode() + contra.hashCode() + nombre.hashCode() + apellidos.hashCode());
+        Firebase mFirebase = new Firebase(URL_USERS + key + "/");
         Usuario u = new Usuario(email, contra, nombre, apellidos, key);
         mFirebase.setValue(u);
         return u;
     }
 
-    public static void signIn(final String email, final String contra, final InicioPresenter presentador){
+    public static void signIn(final String email, final String contra, final InicioPresenter presentador) {
         Firebase firebase = new Firebase(URL_USERS);
         firebase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -83,8 +83,9 @@ public class Usuario implements Parcelable{
             }
         });
     }
+
     //Comprueba si existe algún usuario con este usuario.
-    public static void amIRegistered(final String user, final RegistroPresenter presenter){
+    public static void amIRegistrered(final String user, final RegistroPresenter presenter){
         Firebase firebase = new Firebase(URL_USERS);
 
         firebase.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -98,7 +99,6 @@ public class Usuario implements Parcelable{
                     if (u.getEmail().equals(user))
                         existe = true;
                 }
-
                 presenter.onCheckUserExist(existe);
             }
 

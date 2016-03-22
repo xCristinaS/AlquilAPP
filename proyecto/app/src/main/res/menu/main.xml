@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:title="@string/menu_item_limpiar_title"
+        android:id="@+id/limpiar"
+        app:showAsAction="ifRoom"
+        android:visible="false"
+        android:icon="@drawable/ic_clear" />
+
+    <item
+        android:title="@string/menu_item_eliminar_title"
+        android:id="@+id/eliminar"
+        app:showAsAction="ifRoom"
+        android:visible="false"
+        android:icon="@drawable/ic_action_trash" />
+</menu>

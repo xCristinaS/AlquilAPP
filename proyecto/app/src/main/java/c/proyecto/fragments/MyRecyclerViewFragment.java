@@ -1,5 +1,6 @@
 package c.proyecto.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -28,7 +29,8 @@ public class MyRecyclerViewFragment extends Fragment {
     private MyRecyclerViewAdapter mAdapter;
     private LinearLayoutManager mLayoutManager;
     //Variables
-    private ArrayList<Anuncio> mAnuncios;
+    private MyRecyclerViewAdapter.OnAdapterItemLongClick listenerLongClick;
+    private MyRecyclerViewAdapter.OnAdapterItemClick listenerItemClick;
     private int adapter_type;
 
     public static MyRecyclerViewFragment newInstance(int adapter_type) {
@@ -64,7 +66,10 @@ public class MyRecyclerViewFragment extends Fragment {
         rvLista.setItemAnimator(new DefaultItemAnimator());
         //rvLista.setHasFixedSize(true);
 
-        if (adapter_type == MyRecyclerViewAdapter.ADAPTER_TYPE_MY_ADVS || adapter_type == MyRecyclerViewAdapter.ADAPTER_TYPE_SUBS) {// Se crea el helper.
+        if (adapter_type == MyRecyclerViewAdapter.ADAPTER_TYPE_MY_ADVS || adapter_type == MyRecyclerViewAdapter.ADAPTER_TYPE_SUBS) {
+            mAdapter.setListenerLongClick(listenerLongClick);
+            mAdapter.setListenerItemClick(listenerItemClick);
+            /*
             ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(ItemTouchHelper.DOWN, ItemTouchHelper.RIGHT) {
                 @Override
                 public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
@@ -82,7 +87,29 @@ public class MyRecyclerViewFragment extends Fragment {
                 }
             });
             itemTouchHelper.attachToRecyclerView(rvLista);
+            */
         }
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        listenerLongClick = (MyRecyclerViewAdapter.OnAdapterItemLongClick) context;
+        listenerItemClick = (MyRecyclerViewAdapter.OnAdapterItemClick) context;
+        listenerLongClick.setAdapterAllowMultiDeletion(mAdapter);
+        super.onAttach(context);
+    }
+
+    @Override
+    public void onDetach() {
+        listenerLongClick = null;
+        listenerItemClick = null;
+        super.onDetach();
+    }
+
+    public void disableMultideletion(){
+        listenerLongClick.desactivarMultiseleccion();
+        mAdapter.clearAllSelections();
+        mAdapter.disableMultiDeletionMode();
     }
 
     public MyRecyclerViewAdapter getmAdapter() {
