@@ -104,8 +104,6 @@ public class PrincipalFragment extends Fragment {
         return user;
     }
 
-    
-
     //Adaptader
     class SectionsPagerAdapter extends CachedFragmentPagerAdapter {
         MyRecyclerViewFragment frgSolicitudes;

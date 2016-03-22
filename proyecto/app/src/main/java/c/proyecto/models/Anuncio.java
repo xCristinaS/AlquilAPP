@@ -79,56 +79,59 @@ public class Anuncio implements Parcelable {
     }
 
     public static void initializeFirebaseListeners(final MainPresenter presentador, final Usuario u) {
-        mFirebase = new Firebase(URL_ANUNCIOS);
-        listener = new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                Anuncio a = dataSnapshot.getValue(Anuncio.class);
-                if (dataSnapshot.getKey().contains(u.getKey()))
-                    presentador.userAdvertHasBeenObtained(a);
-                else if (a.solicitantes.containsKey(u.getKey()))
-                    presentador.subHasBeenObtained(a);
-                else
-                    presentador.advertHasBeenObtained(a);
-            }
+        if (listener == null && mFirebase == null) {
+            mFirebase = new Firebase(URL_ANUNCIOS);
+            listener = new ChildEventListener() {
+                @Override
+                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                    Anuncio a = dataSnapshot.getValue(Anuncio.class);
+                    if (dataSnapshot.getKey().contains(u.getKey()))
+                        presentador.userAdvertHasBeenObtained(a);
+                    else if (a.solicitantes.containsKey(u.getKey()))
+                        presentador.subHasBeenObtained(a);
+                    else
+                        presentador.advertHasBeenObtained(a);
+                }
 
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                Anuncio a = dataSnapshot.getValue(Anuncio.class);
-                if (dataSnapshot.getKey().contains(u.getKey()))
-                    presentador.userAdvertHasBeenModified(a);
-                else if (!userSubRemoved && a.solicitantes.containsKey(u.getKey()))
-                    presentador.subHasBeenModified(a);
-                else if (userSubRemoved)
-                    presentador.advertHasBeenObtained(a);
-                else
-                    presentador.adverHasBeenModified(a);
+                @Override
+                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                    Anuncio a = dataSnapshot.getValue(Anuncio.class);
+                    if (dataSnapshot.getKey().contains(u.getKey()))
+                        presentador.userAdvertHasBeenModified(a);
+                    else if (!userSubRemoved && a.solicitantes.containsKey(u.getKey()))
+                        presentador.subHasBeenModified(a);
+                    else if (userSubRemoved)
+                        presentador.advertHasBeenObtained(a);
+                    else
+                        presentador.adverHasBeenModified(a);
 
-                userSubRemoved = false;
-            }
+                    userSubRemoved = false;
+                }
 
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-                Anuncio a = dataSnapshot.getValue(Anuncio.class);
-                if (a.solicitantes.containsKey(u.getKey()))
-                    presentador.removeSub(a);
-            }
+                @Override
+                public void onChildRemoved(DataSnapshot dataSnapshot) {
+                    Anuncio a = dataSnapshot.getValue(Anuncio.class);
+                    if (a.solicitantes.containsKey(u.getKey()))
+                        presentador.removeSub(a);
+                }
 
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                @Override
+                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
 
-            }
+                }
 
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
+                @Override
+                public void onCancelled(FirebaseError firebaseError) {
 
-            }
-        };
+                }
+            };
+        }
         mFirebase.addChildEventListener(listener);
     }
 
     public static void detachFirebaseListeners() {
         mFirebase.removeEventListener(listener);
+        listener = null;
         mFirebase = null;
     }
 

@@ -128,7 +128,13 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     //Manejo del Adaptador
     public void addItem(Anuncio a){
-        mDatos.add(a);
+        boolean stop = false;
+        for (int i = 0; !stop && i < mDatos.size(); i++)
+            if (a.getKey().equals(mDatos.get(i).getKey()))
+                stop = true;
+
+        if (!stop)
+            mDatos.add(a);
         notifyItemInserted(mDatos.indexOf(a));
     }
 
@@ -146,11 +152,6 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 mDatos.add(i, a);
                 stop = true;
             }
-        notifyDataSetChanged();
-    }
-
-    public void removeAllItems(){
-        mDatos.clear();
         notifyDataSetChanged();
     }
 

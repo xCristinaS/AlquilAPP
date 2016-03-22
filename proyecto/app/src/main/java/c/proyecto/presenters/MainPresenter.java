@@ -83,6 +83,6 @@ public class MainPresenter implements MainPresenterOps {
 
     @Override
     public void detachListeners() {
-        Anuncio.detachFirebaseListeners();
+       Anuncio.detachFirebaseListeners();
     }
 }
