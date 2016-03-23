@@ -58,7 +58,7 @@ public class Message implements Parcelable{
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             Usuario emisor = dataSnapshot.getValue(Usuario.class);
                             mensaje.setFotoEmisor(emisor.getFoto());
-                            mensaje.setNombreEmisor(emisor.getNombre());
+                            mensaje.setNombreEmisor(String.format("%s %s",emisor.getNombre(), emisor.getApellidos()));
 
                             new Firebase(URL_CONVERSACIONES).child(user.getKey()).child(emisor_titleAdvert).limitToLast(1).addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override

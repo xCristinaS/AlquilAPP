@@ -66,7 +66,7 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.Messag
             lblTituloAnuncio.setText(m.getTituloAnuncio());
             lblContenido.setText(m.getContenido());
             lblNombreEmisor.setText(m.getNombreEmisor());
-//            lblFecha.setText(formato.format(m.getFecha()));
+            lblFecha.setText(formato.format(m.getFecha()));
         }
     }
 
