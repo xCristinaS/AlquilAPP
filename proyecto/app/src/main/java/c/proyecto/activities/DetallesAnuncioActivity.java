@@ -33,7 +33,7 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detallos_anuncio);
+        setContentView(R.layout.activity_detalles_anuncio);
         Usuario u = getIntent().getParcelableExtra(EXTRA_USER);
         anuncio = getIntent().getParcelableExtra(EXTRA_ANUNCIO);
         advertType = getIntent().getIntExtra(EXTRA_ADVERT_TYPE, -1);

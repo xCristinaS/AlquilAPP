@@ -16,6 +16,9 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+
+import c.proyecto.Constantes;
 import c.proyecto.R;
 
 import c.proyecto.adapters.MyRecyclerViewAdapter;
@@ -23,6 +26,7 @@ import c.proyecto.fragments.PrincipalFragment;
 import c.proyecto.interfaces.MainActivityOps;
 import c.proyecto.models.Anuncio;
 import c.proyecto.models.Usuario;
+import c.proyecto.pojo.Prestacion;
 import c.proyecto.presenters.MainPresenter;
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -144,6 +148,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
             case R.id.nav_home:
                 break;
             case R.id.nav_new_adv:
+                //Null = nuevo Anuncio.
+                CrearAnuncio1Activity.start(this, null);
                 break;
             case R.id.nav_edit_profile:
                 EditProfileActivity.start(this, user);

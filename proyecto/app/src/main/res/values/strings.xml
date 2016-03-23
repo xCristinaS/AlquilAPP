@@ -19,4 +19,17 @@
     <string name="title_nav_preferences">Preferencias</string>
     <string name="title_nav_sign_of">Cerrar Sesión</string>
 
+    <!-- PRESTACIONES -->
+    <string name="aptoMascotas">Apto para mascotas</string>
+    <string name="aireAcondicionado">Aire acondicionado</string>
+    <string name="ascensor">Ascensor</string>
+    <string name="calefaccion">Calefacción</string>
+    <string name="lavadora">Lavadora</string>
+    <string name="parking">Parking</string>
+    <string name="prohibidoFumar">Prohibido Fumar</string>
+    <string name="secadora">Secadora</string>
+    <string name="trenCercano">Tren/Metro cercano</string>
+    <string name="television">Televisión</string>
+    <string name="internet">Internet</string>
+
 </resources>
