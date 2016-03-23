@@ -156,5 +156,4 @@
         android:layout_marginRight="20dp"
         android:layout_alignBaseline="@id/btnRegistrarse"/>
 
-
 </RelativeLayout>

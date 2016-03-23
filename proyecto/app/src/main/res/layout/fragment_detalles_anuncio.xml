@@ -25,9 +25,8 @@
             android:layout_marginTop="20dp"
             android:layout_marginBottom="20dp"
             android:layout_marginLeft="16dp"
-            android:layout_marginStart="16dp"
-            >
-            <ImageView
+            android:layout_marginStart="16dp">
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/imgAvatar"
                 android:layout_width="70dp"
                 android:layout_height="70dp"
@@ -39,7 +38,6 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/imgAvatar"
                 android:textStyle="bold"
-                android:text="Alejandro"
                 android:layout_centerHorizontal="true"
                 />
 

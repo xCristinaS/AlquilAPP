@@ -12,6 +12,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import c.proyecto.R;
 
@@ -21,6 +24,7 @@ import c.proyecto.interfaces.MainActivityOps;
 import c.proyecto.models.Anuncio;
 import c.proyecto.models.Usuario;
 import c.proyecto.presenters.MainPresenter;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class MainActivity extends AppCompatActivity implements MainActivityOps, MyRecyclerViewAdapter.OnAdapterItemLongClick, MyRecyclerViewAdapter.OnAdapterItemClick, NavigationView.OnNavigationItemSelectedListener {
@@ -35,7 +39,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
     private NavigationView navigationView;
     private MyRecyclerViewAdapter adapter;
 
-
+    public static void start(Activity a, Usuario u){
+        Intent intent = new Intent(a, MainActivity.class);
+        //Cierra todas las actividades anteriores.
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra(ARG_USUARIO, u);
+        a.startActivity(intent);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,17 +53,16 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
         setContentView(R.layout.activity_main);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        initViews();
         setSupportActionBar(toolbar);
         if (getIntent().hasExtra(ARG_USUARIO))
             user = getIntent().getParcelableExtra(ARG_USUARIO);
+        initViews();
     }
 
     private void initViews() {
         mPresenter = MainPresenter.getPresentador(this);
         getSupportFragmentManager().beginTransaction().replace(R.id.frmContenido, new PrincipalFragment()).commit();
         configNavDrawer();
-
     }
 
     private void configNavDrawer() {
@@ -64,15 +73,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
         //Listener del menú del navigationDrawer
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-    }
-
-    public static void start(Activity a, Usuario u){
-        Intent intent = new Intent(a, MainActivity.class);
-        //Cierra todas las actividades anteriores.
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.putExtra(ARG_USUARIO, u);
-
-        a.startActivity(intent);
+        TextView txtUserNavDrawer = (TextView) navigationView.getHeaderView(0).findViewById(R.id.txtUserNavDrawer);
+        txtUserNavDrawer.setText(String.format("%s %s", user.getNombre(), user.getApellidos()));
+        CircleImageView imgNavDrawer = (CircleImageView) navigationView.getHeaderView(0).findViewById(R.id.imgNavDrawer);
+        if (user.getFoto() != null)
+            Picasso.with(this).load(user.getFoto()).error(R.drawable.default_user).into(imgNavDrawer);
+        else
+            Picasso.with(this).load(R.drawable.default_user).into(imgNavDrawer);
     }
 
     @Override
@@ -139,14 +146,18 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
             case R.id.nav_new_adv:
                 break;
             case R.id.nav_edit_profile:
+                EditProfileActivity.start(this, user);
                 break;
             case R.id.nav_messages:
                 break;
             case R.id.nav_preferences:
                 break;
             case R.id.nav_sign_off:
+                InicioActivity.start(this);
+                finish();
                 break;
         }
+        drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
@@ -185,8 +196,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
     }
 
     @Override
-    public void onItemClick(Anuncio anuncio) {
-        DetallesAnuncioActivity.start(this,anuncio);
+    public void onItemClick(Anuncio anuncio, int advertType, Usuario u) {
+        DetallesAnuncioActivity.start(this,anuncio, advertType, u);
     }
 
     @Override

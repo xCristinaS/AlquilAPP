@@ -11,6 +11,7 @@ import com.firebase.client.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import c.proyecto.presenters.AdvertsDetailsPresenter;
 import c.proyecto.presenters.InicioPresenter;
 import c.proyecto.presenters.RegistroPresenter;
 
@@ -107,7 +108,21 @@ public class Usuario implements Parcelable {
 
             }
         });
+    }
 
+    public static void getAdvertPublisher(String anunciante, final AdvertsDetailsPresenter presenter){
+        Firebase mFirebase = new Firebase(URL_USERS).child(anunciante);
+        mFirebase.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                presenter.onAdvertPublisherRequestedResponsed(dataSnapshot.getValue(Usuario.class));
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
     }
 
     public String getEmail() {

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+    android:layout_marginRight="@dimen/activity_horizontal_margin"
+    tools:context="c.proyecto.activities.EditProfileActivity">
+
+
+    <ImageView
+        android:id="@+id/imgFoto"
+        android:layout_width="300dp"
+        android:layout_height="200dp"
+        android:src="@drawable/default_user"/>
+
+    <EditText
+        android:id="@+id/txtNombre"
+        android:hint="Nombre"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/imgFoto"/>
+
+    <EditText
+        android:id="@+id/txtApellidos"
+        android:hint="Apellidos"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txtNombre"/>
+
+    <EditText
+        android:id="@+id/txtFechaNac"
+        android:hint="Fecha de nacimiento"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txtApellidos"/>
+
+
+    <EditText
+        android:id="@+id/txtNacionalidad"
+        android:hint="Nacionalidad"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txtFechaNac"/>
+
+    <EditText
+        android:id="@+id/txtProfesion"
+        android:hint="Nacionalidad"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txtNacionalidad"/>
+
+
+    <EditText
+        android:id="@+id/txtComentDesc"
+        android:hint="Comentario descriptivo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txtProfesion"/>
+
+
+    <Button
+        android:id="@+id/boton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="EA! YA LO QUITARÁS"/>
+</RelativeLayout>

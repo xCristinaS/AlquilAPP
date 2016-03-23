@@ -79,6 +79,33 @@ public class Anuncio implements Parcelable {
     }
 
     public static void initializeFirebaseListeners(final MainPresenter presentador, final Usuario u) {
+        Firebase firebaseSubs = new Firebase(URL_SOLICITUDES).child(u.getKey());
+        final Firebase firebaseAdvertSub = new Firebase(URL_ANUNCIOS);
+        firebaseSubs.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot data : dataSnapshot.getChildren()) {
+                    String subKey = data.getKey();
+                    firebaseAdvertSub.child(subKey).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            presentador.subHasBeenObtained(dataSnapshot.getValue(Anuncio.class));
+                        }
+
+                        @Override
+                        public void onCancelled(FirebaseError firebaseError) {
+
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+
         if (listener == null && mFirebase == null) {
             mFirebase = new Firebase(URL_ANUNCIOS);
             listener = new ChildEventListener() {
@@ -87,10 +114,11 @@ public class Anuncio implements Parcelable {
                     Anuncio a = dataSnapshot.getValue(Anuncio.class);
                     if (dataSnapshot.getKey().contains(u.getKey()))
                         presentador.userAdvertHasBeenObtained(a);
-                    else if (a.solicitantes.containsKey(u.getKey()))
-                        presentador.subHasBeenObtained(a);
-                    else
+                    else if (!a.solicitantes.containsKey(u.getKey()))
                         presentador.advertHasBeenObtained(a);
+                        //presentador.subHasBeenObtained(a);
+                    //else
+                      //  presentador.advertHasBeenObtained(a);
                 }
 
                 @Override

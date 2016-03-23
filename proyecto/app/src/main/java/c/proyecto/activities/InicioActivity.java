@@ -1,5 +1,6 @@
 package c.proyecto.activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -29,6 +30,11 @@ public class InicioActivity extends AppCompatActivity implements InicioActivityO
     private TextView txtPass;
     private SwitchCompat swRememberMe;
     private SharedPreferences preferences;
+
+    public static void start(Activity a){
+        Intent intent = new Intent(a, InicioActivity.class);
+        a.startActivity(intent);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
