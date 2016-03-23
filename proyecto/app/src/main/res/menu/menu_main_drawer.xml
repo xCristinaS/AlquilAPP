@@ -3,7 +3,7 @@
 
     <group
         android:id="@+id/group1"
-        android:checkableBehavior="single">
+        android:checkableBehavior="none">
         <item
             android:checked="true"
             android:id="@+id/nav_home"
