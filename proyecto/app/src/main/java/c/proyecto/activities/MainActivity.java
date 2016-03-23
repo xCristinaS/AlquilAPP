@@ -12,6 +12,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.util.ArrayList;
+
+import c.proyecto.Constantes;
 import c.proyecto.R;
 
 import c.proyecto.adapters.MyRecyclerViewAdapter;
@@ -19,6 +22,7 @@ import c.proyecto.fragments.PrincipalFragment;
 import c.proyecto.interfaces.MainActivityOps;
 import c.proyecto.models.Anuncio;
 import c.proyecto.models.Usuario;
+import c.proyecto.pojo.Prestacion;
 import c.proyecto.presenters.MainPresenter;
 
 
@@ -136,7 +140,14 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
             case R.id.nav_home:
                 break;
             case R.id.nav_new_adv:
-                startActivity(new Intent(this, CrearAnuncio1Activity.class));
+                /*
+                Anuncio anuncio = Anuncio.createNewAnuncio("alejandro", "titulo", "direccion", "44", "Jimena", "provincia");
+                ArrayList<Prestacion> prueba = new ArrayList<>();
+                prueba.add(new Prestacion(R.drawable.ascensor, "Ascensor"));
+                anuncio.setPrestaciones(prueba);*/
+
+                //Null = nuevo Anuncio.
+                CrearAnuncio1Activity.start(this, null);
                 break;
             case R.id.nav_edit_profile:
                 break;

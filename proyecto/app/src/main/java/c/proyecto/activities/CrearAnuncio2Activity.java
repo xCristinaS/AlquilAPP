@@ -1,5 +1,7 @@
 package c.proyecto.activities;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -19,10 +21,13 @@ import java.util.List;
 import c.proyecto.R;
 import c.proyecto.adapters.PrestacionesAdapter;
 import c.proyecto.fragments.SeleccionPrestacionesDialogFragment;
+import c.proyecto.models.Anuncio;
 import c.proyecto.pojo.Prestacion;
 
 public class CrearAnuncio2Activity extends AppCompatActivity implements PrestacionesAdapter.IPrestacionAdapter {
 
+    private static final String INTENT_ANUNCIO = "intentAnuncio2";
+    private static final String TAG_DIALOG_PRESTACIONES = "TAG_PRESTACIONES";
     private TextView txtTituloAnuncio;
     private ImageView imgCasa;
     private ImageView imgHabitacion;
@@ -40,14 +45,19 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
     private RecyclerView rvHuespedes;
 
     private PrestacionesAdapter mPrestacionesAdapter;
-    private List<Prestacion> mPrestacionesSelected;
+    private Anuncio mAnuncio;
 
+    public static void start(Context context, Anuncio anuncio){
+        Intent intent = new Intent(context, CrearAnuncio2Activity.class);
+        intent.putExtra(INTENT_ANUNCIO, anuncio);
+        context.startActivity(intent);
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_crear_anuncio2);
-        //Comprobar si es editando o no
-        mPrestacionesSelected = new ArrayList<>();
+
+        mAnuncio = getIntent().getParcelableExtra(INTENT_ANUNCIO);
         initViews();
     }
 
@@ -73,7 +83,7 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
 
     private void confRecyclerPrestaciones() {
         rvPrestaciones.setHasFixedSize(true);
-        mPrestacionesAdapter = new PrestacionesAdapter(mPrestacionesSelected, this);
+        mPrestacionesAdapter = new PrestacionesAdapter(mAnuncio.getPrestaciones(), this);
         rvPrestaciones.setAdapter(mPrestacionesAdapter);
 
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
@@ -97,6 +107,9 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
 
     private void showPrestacionesDialog(){
         FragmentManager fm = getSupportFragmentManager();
-        SeleccionPrestacionesDialogFragment.newInstance(new ArrayList<Prestacion>()).show(fm, "tag");
+        if(mAnuncio.getPrestaciones() == null)
+            SeleccionPrestacionesDialogFragment.newInstance(new ArrayList<Prestacion>()).show(fm, TAG_DIALOG_PRESTACIONES);
+        else
+            SeleccionPrestacionesDialogFragment.newInstance(mAnuncio.getPrestaciones()).show(fm, TAG_DIALOG_PRESTACIONES);
     }
 }

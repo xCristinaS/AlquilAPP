@@ -358,23 +358,23 @@
             android:layout_marginTop="10dp">
 
             <ImageView
-                android:id="@+id/imgWifi"
+                android:id="@+id/imgInternet"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:src="@drawable/wifi"/>
+                android:src="@drawable/internet"/>
             <TextView
-                android:id="@+id/lblWifi"
+                android:id="@+id/lblInternet"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Internet"
-                android:layout_toRightOf="@id/imgWifi"
-                android:layout_toEndOf="@id/imgWifi"
+                android:layout_toRightOf="@id/imgInternet"
+                android:layout_toEndOf="@id/imgInternet"
                 android:layout_centerVertical="true"
                 android:layout_marginTop="10dp"
                 android:layout_marginLeft="10dp"
                 />
             <CheckBox
-                android:id="@+id/cbWifi"
+                android:id="@+id/cbInternet"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
