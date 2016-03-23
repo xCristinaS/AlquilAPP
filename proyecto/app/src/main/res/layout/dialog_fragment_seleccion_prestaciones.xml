@@ -1,0 +1,388 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp"
+    android:paddingBottom="15dp">
+
+    <RelativeLayout
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp">
+        <!-- APTO MASCOTAS-->
+        <RelativeLayout
+            android:id="@+id/groupAptoMascotas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+
+            <ImageView
+                android:id="@+id/imgAptoMascotas"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/apto_mascotas"/>
+            <TextView
+                android:id="@+id/lblAptoMascotas"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Apto para mascotas"
+                android:layout_toRightOf="@id/imgAptoMascotas"
+                android:layout_toEndOf="@id/imgAptoMascotas"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                />
+            <CheckBox
+                android:id="@+id/cbAptoMascotas"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+
+                />
+        </RelativeLayout>
+
+        <!-- AIRE ACONDICIONADO -->
+        <RelativeLayout
+            android:id="@+id/groupAireAcondicionado"
+            android:layout_below="@id/groupAptoMascotas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+
+            <ImageView
+                android:id="@+id/imgAireAcondicionado"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/aire_acondicionado"/>
+            <TextView
+                android:id="@+id/lblAireAcondicionado"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Aire Acondicionado"
+                android:layout_toRightOf="@id/imgAireAcondicionado"
+                android:layout_toEndOf="@id/imgAireAcondicionado"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                />
+            <CheckBox
+                android:id="@+id/cbAireAcondicionado"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                />
+        </RelativeLayout>
+
+        <!-- ASCENSOR -->
+        <RelativeLayout
+            android:id="@+id/groupAscensor"
+            android:layout_below="@id/groupAireAcondicionado"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+
+            <ImageView
+                android:id="@+id/imgAscensor"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/ascensor"/>
+            <TextView
+                android:id="@+id/lblAscensor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ascensor"
+                android:layout_toRightOf="@id/imgAscensor"
+                android:layout_toEndOf="@id/imgAscensor"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                />
+            <CheckBox
+                android:id="@+id/cbAscensor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                />
+        </RelativeLayout>
+
+        <!-- CALEFACCIÓN -->
+        <RelativeLayout
+            android:id="@+id/groupCalefaccion"
+            android:layout_below="@id/groupAscensor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+
+            <ImageView
+                android:id="@+id/imgCalefaccion"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/calefaccion"/>
+            <TextView
+                android:id="@+id/lblCalefaccion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Calefacción"
+                android:layout_toRightOf="@id/imgCalefaccion"
+                android:layout_toEndOf="@id/imgCalefaccion"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                />
+            <CheckBox
+                android:id="@+id/cbCalefaccion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                />
+        </RelativeLayout>
+
+        <!-- LAVADORA -->
+        <RelativeLayout
+            android:id="@+id/groupLavadora"
+            android:layout_below="@id/groupCalefaccion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+
+            <ImageView
+                android:id="@+id/imgLavadora"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/lavadora"/>
+            <TextView
+                android:id="@+id/lblLavadora"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Lavadora"
+                android:layout_toRightOf="@id/imgLavadora"
+                android:layout_toEndOf="@id/imgLavadora"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                />
+            <CheckBox
+                android:id="@+id/cbLavadora"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                />
+        </RelativeLayout>
+
+        <!-- PARKING -->
+        <RelativeLayout
+            android:id="@+id/groupParking"
+            android:layout_below="@id/groupLavadora"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+
+            <ImageView
+                android:id="@+id/imgParking"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/parking"/>
+            <TextView
+                android:id="@+id/lblParking"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Parking"
+                android:layout_toRightOf="@id/imgParking"
+                android:layout_toEndOf="@id/imgParking"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                />
+            <CheckBox
+                android:id="@+id/cbParking"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                />
+        </RelativeLayout>
+
+
+        <!-- PROHIBIDO FUMAR -->
+        <RelativeLayout
+            android:id="@+id/groupProhibidoFumar"
+            android:layout_below="@id/groupParking"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+
+            <ImageView
+                android:id="@+id/imgProhibidoFumar"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/prohibido_fumar"/>
+            <TextView
+                android:id="@+id/lblProhibidoFumar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Prohibido Fumar"
+                android:layout_toRightOf="@id/imgProhibidoFumar"
+                android:layout_toEndOf="@id/imgProhibidoFumar"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                />
+            <CheckBox
+                android:id="@+id/cbProhibidoFumar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                />
+        </RelativeLayout>
+
+        <!-- SECADORA -->
+        <RelativeLayout
+            android:id="@+id/groupSecadora"
+            android:layout_below="@id/groupProhibidoFumar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+
+            <ImageView
+                android:id="@+id/imgSecadora"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/secadora"/>
+            <TextView
+                android:id="@+id/lblSecadora"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Secadora"
+                android:layout_toRightOf="@id/imgSecadora"
+                android:layout_toEndOf="@id/imgSecadora"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                />
+            <CheckBox
+                android:id="@+id/cbSecadora"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                />
+        </RelativeLayout>
+
+        <!-- TREN -->
+        <RelativeLayout
+            android:id="@+id/groupTren"
+            android:layout_below="@id/groupSecadora"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+
+            <ImageView
+                android:id="@+id/imgTren"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/tren"/>
+            <TextView
+                android:id="@+id/lblTren"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tren/Metro cercano"
+                android:layout_toRightOf="@id/imgTren"
+                android:layout_toEndOf="@id/imgTren"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                />
+            <CheckBox
+                android:id="@+id/cbTren"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                />
+        </RelativeLayout>
+        <!-- TV -->
+        <RelativeLayout
+            android:id="@+id/groupTv"
+            android:layout_below="@id/groupTren"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+
+            <ImageView
+                android:id="@+id/imgTv"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/tv"/>
+            <TextView
+                android:id="@+id/lblTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Televisión"
+                android:layout_toRightOf="@id/imgTv"
+                android:layout_toEndOf="@id/imgTv"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                />
+            <CheckBox
+                android:id="@+id/cbTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                />
+        </RelativeLayout>
+
+        <!-- WIFI -->
+        <RelativeLayout
+            android:id="@+id/groupWifi"
+            android:layout_below="@id/groupTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+
+            <ImageView
+                android:id="@+id/imgWifi"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/wifi"/>
+            <TextView
+                android:id="@+id/lblWifi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Internet"
+                android:layout_toRightOf="@id/imgWifi"
+                android:layout_toEndOf="@id/imgWifi"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                />
+            <CheckBox
+                android:id="@+id/cbWifi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                />
+        </RelativeLayout>
+
+
+    </RelativeLayout>
+</ScrollView>
