@@ -24,6 +24,7 @@ import c.proyecto.fragments.PrincipalFragment;
 import c.proyecto.interfaces.MainActivityOps;
 import c.proyecto.models.Anuncio;
 import c.proyecto.models.Usuario;
+import c.proyecto.pojo.MessagePojo;
 import c.proyecto.presenters.MainPresenter;
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -153,6 +154,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
                 EditProfileActivity.start(this, user);
                 break;
             case R.id.nav_messages:
+                mPresenter.requestUserMessages(user);
                 getSupportFragmentManager().beginTransaction().replace(R.id.frmContenido, new MessagesFragment(), TAG_MESSAGES_FRAGMENT).commit();
                 break;
             case R.id.nav_preferences:
@@ -227,6 +229,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
                 getSupportFragmentManager().beginTransaction().replace(R.id.frmContenido, new PrincipalFragment(), TAG_PRINCIPAL_FRAGMENT).commit();
         } else
             super.onBackPressed();
+    }
+
+    public void userMessageHasBeenObtained(MessagePojo m){
+        if (getSupportFragmentManager().findFragmentById(R.id.frmContenido) instanceof MessagesFragment)
+            ((MessagesFragment) getSupportFragmentManager().findFragmentById(R.id.frmContenido)).getmAdapter().addItem(m);
     }
 
     public Usuario getUser() {

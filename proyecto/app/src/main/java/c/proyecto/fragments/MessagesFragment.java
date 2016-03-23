@@ -57,4 +57,8 @@ public class MessagesFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
     }
+
+    public MessagesAdapter getmAdapter() {
+        return mAdapter;
+    }
 }

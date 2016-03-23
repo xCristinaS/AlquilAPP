@@ -10,6 +10,10 @@ public class MessagePojo {
     private String nombreEmisor, fotoEmisor, tituloAnuncio, contenido;
     private Date fecha;
 
+    public MessagePojo(){
+
+    }
+
     public MessagePojo(String nombreEmisor, String fotoEmisor, String tituloAnuncio, String contenido, Date fehca){
         this.fecha = fehca;
         this.nombreEmisor = nombreEmisor;

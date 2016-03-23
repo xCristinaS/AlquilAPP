@@ -9,7 +9,9 @@ import java.util.List;
 import c.proyecto.activities.MainActivity;
 import c.proyecto.interfaces.MainPresenterOps;
 import c.proyecto.models.Anuncio;
+import c.proyecto.models.Message;
 import c.proyecto.models.Usuario;
+import c.proyecto.pojo.MessagePojo;
 
 /**
  * Created by Cristina on 20/03/2016.
@@ -84,5 +86,13 @@ public class MainPresenter implements MainPresenterOps {
     @Override
     public void detachListeners() {
        Anuncio.detachFirebaseListeners();
+    }
+
+    public void requestUserMessages(Usuario user){
+        Message.getUserMessages(user, this);
+    }
+
+    public void userMessageHasBeenObtained(MessagePojo m){
+        activity.get().userMessageHasBeenObtained(m);
     }
 }
