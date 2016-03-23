@@ -19,6 +19,7 @@ import com.squareup.picasso.Picasso;
 import c.proyecto.R;
 
 import c.proyecto.adapters.MyRecyclerViewAdapter;
+import c.proyecto.fragments.MessagesFragment;
 import c.proyecto.fragments.PrincipalFragment;
 import c.proyecto.interfaces.MainActivityOps;
 import c.proyecto.models.Anuncio;
@@ -31,6 +32,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
 
 
     private static final String ARG_USUARIO = "usuario_extra";
+    private static final String TAG_PRINCIPAL_FRAGMENT = "principal_fragment";
+    private static final String TAG_MESSAGES_FRAGMENT = "messages_fragment";
+
     private MainPresenter mPresenter;
     private Usuario user;
     private DrawerLayout drawer;
@@ -42,7 +46,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
     public static void start(Activity a, Usuario u){
         Intent intent = new Intent(a, MainActivity.class);
         //Cierra todas las actividades anteriores.
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra(ARG_USUARIO, u);
         a.startActivity(intent);
     }
@@ -61,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
 
     private void initViews() {
         mPresenter = MainPresenter.getPresentador(this);
-        getSupportFragmentManager().beginTransaction().replace(R.id.frmContenido, new PrincipalFragment()).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.frmContenido, new PrincipalFragment(), TAG_PRINCIPAL_FRAGMENT).commit();
         configNavDrawer();
     }
 
@@ -149,6 +153,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
                 EditProfileActivity.start(this, user);
                 break;
             case R.id.nav_messages:
+                getSupportFragmentManager().beginTransaction().replace(R.id.frmContenido, new MessagesFragment(), TAG_MESSAGES_FRAGMENT).commit();
                 break;
             case R.id.nav_preferences:
                 break;
@@ -197,7 +202,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
 
     @Override
     public void onItemClick(Anuncio anuncio, int advertType, Usuario u) {
-        DetallesAnuncioActivity.start(this,anuncio, advertType, u);
+        DetallesAnuncioActivity.start(this, anuncio, advertType, u);
     }
 
     @Override
@@ -210,6 +215,18 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
     public void desactivarMultiseleccion() {
         toolbar.getMenu().findItem(R.id.eliminar).setVisible(false);
         toolbar.getMenu().findItem(R.id.limpiar).setVisible(false);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (getSupportFragmentManager().findFragmentById(R.id.frmContenido) instanceof MessagesFragment) {
+            PrincipalFragment f = (PrincipalFragment) getSupportFragmentManager().findFragmentByTag(TAG_PRINCIPAL_FRAGMENT);
+            if (f != null)
+                getSupportFragmentManager().beginTransaction().replace(R.id.frmContenido, f).commit();
+            else
+                getSupportFragmentManager().beginTransaction().replace(R.id.frmContenido, new PrincipalFragment(), TAG_PRINCIPAL_FRAGMENT).commit();
+        } else
+            super.onBackPressed();
     }
 
     public Usuario getUser() {

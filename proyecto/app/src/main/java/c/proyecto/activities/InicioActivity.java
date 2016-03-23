@@ -15,11 +15,8 @@ import com.github.florent37.materialtextfield.MaterialTextField;
 
 import c.proyecto.Constantes;
 
-import com.firebase.client.Firebase;
-
 import c.proyecto.R;
 import c.proyecto.interfaces.InicioActivityOps;
-import c.proyecto.models.Anuncio;
 import c.proyecto.models.Usuario;
 import c.proyecto.presenters.InicioPresenter;
 
