@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="c.proyecto.activities.CrearAnuncio2Activity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:id="@+id/groupLocalizacion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin">
+
+            <EditText
+                android:id="@+id/txtTituloAnuncio"
+                android:layout_width="210dp"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:maxLines="1"
+                android:hint="Título del anuncio" />
+
+            <!-- CASA -->
+            <ImageView
+                android:id="@+id/imgCasa"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_below="@id/txtTituloAnuncio"
+                android:layout_marginLeft="25dp"
+                android:layout_marginTop="20dp"
+                android:src="@drawable/casa" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/imgCasa"
+                android:layout_marginLeft="41dp"
+                android:layout_marginTop="10dp"
+                android:text="Casa"
+                android:textStyle="bold" />
+
+            <!-- HABITACIÓN -->
+            <ImageView
+                android:id="@+id/imgHabitacion"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_below="@id/txtTituloAnuncio"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="20dp"
+                android:src="@drawable/habitacion" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/imgHabitacion"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="41dp"
+                android:layout_marginTop="10dp"
+                android:text="Habitación"
+                android:textStyle="bold" />
+
+            <!-- PISO -->
+            <ImageView
+                android:id="@+id/imgPiso"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/txtTituloAnuncio"
+                android:layout_marginRight="25dp"
+                android:layout_marginTop="20dp"
+                android:src="@drawable/piso" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/imgPiso"
+                android:layout_marginRight="40dp"
+                android:layout_marginTop="10dp"
+                android:text="Piso"
+                android:textStyle="bold" />
+
+            <!-- LOCALIZACIÓN -->
+
+            <EditText
+                android:id="@+id/txtDireccion"
+                android:layout_width="220dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/imgCasa"
+                android:layout_marginTop="50dp"
+                android:hint="Dirección" />
+
+            <EditText
+                android:id="@+id/txtNum"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@id/txtDireccion"
+                android:layout_marginLeft="10dp"
+                android:layout_toEndOf="@id/txtDireccion"
+                android:layout_toRightOf="@id/txtDireccion"
+                android:maxLines="1"
+                android:hint="Número" />
+
+            <EditText
+                android:id="@+id/txtPoblacion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txtDireccion"
+                android:maxLines="1"
+                android:hint="Población" />
+
+            <EditText
+                android:id="@+id/txtProvincia"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txtPoblacion"
+                android:maxLines="1"
+                android:hint="Provincia" />
+        </RelativeLayout>
+
+
+        <!-- PRESTACIONES -->
+
+        <RelativeLayout
+            android:id="@+id/groupPrestaciones"
+            android:layout_width="match_parent"
+            android:layout_height="90dp"
+            android:layout_below="@id/groupLocalizacion"
+            android:layout_marginTop="8dp"
+            android:background="@color/colorShape">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rvPrestaciones"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </RelativeLayout>
+
+        <!-- DESCRIPCIÓN -->
+        <RelativeLayout
+            android:id="@+id/groupDescripcion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/groupPrestaciones"
+            android:layout_marginTop="10dp"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin">
+
+            <EditText
+                android:id="@+id/txtCamas"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:maxLines="1"
+                android:hint="Habitaciones" />
+
+            <EditText
+                android:id="@+id/txtToilets"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/txtCamas"
+                android:layout_toEndOf="@id/txtCamas"
+                android:inputType="number"
+                android:maxLines="1"
+                android:hint="Cuartos de baño" />
+
+            <EditText
+                android:id="@+id/txtTamano"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txtCamas"
+                android:inputType="number"
+                android:maxLines="1"
+                android:hint="Tamaño"/>
+
+            <EditText
+                android:id="@+id/txtDescripcion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txtTamano"
+                android:hint="Descripción"/>
+
+            <EditText
+                android:id="@+id/txtPrecio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txtDescripcion"
+                android:maxLines="1"
+                android:hint="Precio"
+                android:inputType="numberDecimal"/>
+
+        </RelativeLayout>
+
+        <!-- HUESPEDES -->
+
+        <RelativeLayout
+            android:id="@+id/groupHuespedes"
+            android:layout_width="match_parent"
+            android:layout_height="90dp"
+            android:layout_below="@id/groupDescripcion"
+            android:layout_marginTop="8dp"
+            android:background="@color/colorShape">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rvHuespedes"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+
+</ScrollView>

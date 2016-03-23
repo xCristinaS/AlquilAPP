@@ -28,10 +28,13 @@
             android:name=".activities.RegistroActivity"
             android:label="Registro"
             android:theme="@style/AppTheme.NoActionBar" />
-
-        <activity android:name=".activities.DetallesAnuncioActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
-
+        <activity
+            android:name=".activities.DetallesAnuncioActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activities.CrearAnuncio1Activity"
+            android:label="Imagenes" />
+        <activity android:name=".activities.CrearAnuncio2Activity"></activity>
     </application>
 
 </manifest>

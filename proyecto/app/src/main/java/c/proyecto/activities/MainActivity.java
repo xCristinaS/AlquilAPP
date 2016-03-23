@@ -136,6 +136,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
             case R.id.nav_home:
                 break;
             case R.id.nav_new_adv:
+                startActivity(new Intent(this, CrearAnuncio1Activity.class));
                 break;
             case R.id.nav_edit_profile:
                 break;

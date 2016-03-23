@@ -23,7 +23,7 @@ public class DetallesAnuncioActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detallos_anuncio);
+        setContentView(R.layout.activity_detalles_anuncio);
         Anuncio anuncio = getIntent().getParcelableExtra(INTENT_ANUNCIO);
 
         getSupportFragmentManager().beginTransaction().replace(R.id.frmContenido, DetallesAnuncioFragment.newInstance(anuncio)).commit();
