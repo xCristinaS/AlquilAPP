@@ -116,9 +116,6 @@ public class Anuncio implements Parcelable {
                         presentador.userAdvertHasBeenObtained(a);
                     else if (!a.solicitantes.containsKey(u.getKey()))
                         presentador.advertHasBeenObtained(a);
-                        //presentador.subHasBeenObtained(a);
-                    //else
-                      //  presentador.advertHasBeenObtained(a);
                 }
 
                 @Override
@@ -170,6 +167,8 @@ public class Anuncio implements Parcelable {
 
     public static void removeUserSub(Anuncio a, Usuario u) {
         Firebase mFirebase = new Firebase(URL_ANUNCIOS).child(a.getKey()).child("solicitantes").child(u.getKey());
+        mFirebase.setValue(null);
+        mFirebase = new Firebase(URL_SOLICITUDES).child(u.getKey()).child(a.getKey());
         mFirebase.setValue(null);
         userSubRemoved = true;
     }
