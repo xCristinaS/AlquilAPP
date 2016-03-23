@@ -16,9 +16,11 @@ public class PrestacionesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     private final List<Prestacion> mDatos;
     private IPrestacionAdapter mListener;
+    private View emptyView;
 
     public interface IPrestacionAdapter{
         void onPrestacionClicked();
+        void onEmptyViewClicked();
     }
 
     public PrestacionesAdapter(List<Prestacion> prestaciones, IPrestacionAdapter listener){
@@ -58,5 +60,26 @@ public class PrestacionesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 }
             });
         }
+    }
+
+    public void actualizarAdapter(){
+        notifyDataSetChanged();
+        checkIfEmpty();
+    }
+    private void checkIfEmpty() {
+        if(emptyView != null)
+            emptyView.setVisibility(getItemCount() > 0 ? View.GONE : View.VISIBLE);
+    }
+    // Establece la empty view para la lista.
+    public void setEmptyView(View emptyView) {
+        this.emptyView = emptyView;
+        emptyView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListener.onEmptyViewClicked();
+            }
+        });
+        // Muestra la empty view si la lista está vacía.
+        checkIfEmpty();
     }
 }

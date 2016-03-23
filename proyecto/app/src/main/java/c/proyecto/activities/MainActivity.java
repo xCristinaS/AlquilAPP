@@ -140,12 +140,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
             case R.id.nav_home:
                 break;
             case R.id.nav_new_adv:
-                /*
-                Anuncio anuncio = Anuncio.createNewAnuncio("alejandro", "titulo", "direccion", "44", "Jimena", "provincia");
-                ArrayList<Prestacion> prueba = new ArrayList<>();
-                prueba.add(new Prestacion(R.drawable.ascensor, "Ascensor"));
-                anuncio.setPrestaciones(prueba);*/
-
                 //Null = nuevo Anuncio.
                 CrearAnuncio1Activity.start(this, null);
                 break;

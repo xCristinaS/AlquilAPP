@@ -145,6 +145,11 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
         mostrarDialogoPrestaciones();
     }
 
+    @Override
+    public void onEmptyViewClicked() {
+
+    }
+
     private void mostrarDialogoPrestaciones() {
         final AlertDialog dialog = new AlertDialog.Builder(getActivity()).create();
         final View dialogView = View.inflate(getActivity(), R.layout.dialog_prestaciones_detalladas, null);

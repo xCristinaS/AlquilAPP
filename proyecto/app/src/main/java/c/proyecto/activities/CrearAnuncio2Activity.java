@@ -24,7 +24,7 @@ import c.proyecto.fragments.SeleccionPrestacionesDialogFragment;
 import c.proyecto.models.Anuncio;
 import c.proyecto.pojo.Prestacion;
 
-public class CrearAnuncio2Activity extends AppCompatActivity implements PrestacionesAdapter.IPrestacionAdapter {
+public class CrearAnuncio2Activity extends AppCompatActivity implements PrestacionesAdapter.IPrestacionAdapter, SeleccionPrestacionesDialogFragment.ICallBackOnDismiss{
 
     private static final String INTENT_ANUNCIO = "intentAnuncio2";
     private static final String TAG_DIALOG_PRESTACIONES = "TAG_PRESTACIONES";
@@ -56,8 +56,13 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_crear_anuncio2);
-
+        //Si se entra editando
         mAnuncio = getIntent().getParcelableExtra(INTENT_ANUNCIO);
+        //Si se entra creando
+        if (mAnuncio == null){
+            mAnuncio = new Anuncio();
+            mAnuncio.setPrestaciones(new ArrayList<Prestacion>());
+        }
         initViews();
     }
 
@@ -83,7 +88,9 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
 
     private void confRecyclerPrestaciones() {
         rvPrestaciones.setHasFixedSize(true);
+
         mPrestacionesAdapter = new PrestacionesAdapter(mAnuncio.getPrestaciones(), this);
+        mPrestacionesAdapter.setEmptyView(findViewById(R.id.emptyViewPrestaciones));
         rvPrestaciones.setAdapter(mPrestacionesAdapter);
 
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
@@ -92,17 +99,17 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
     }
 
     private void confRecyclerHuespedes() {
-        txtTituloAnuncio.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showPrestacionesDialog();
-            }
-        });
+
     }
 
     @Override
     public void onPrestacionClicked() {
+        showPrestacionesDialog();
+    }
 
+    @Override
+    public void onEmptyViewClicked() {
+        showPrestacionesDialog();
     }
 
     private void showPrestacionesDialog(){
@@ -111,5 +118,11 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
             SeleccionPrestacionesDialogFragment.newInstance(new ArrayList<Prestacion>()).show(fm, TAG_DIALOG_PRESTACIONES);
         else
             SeleccionPrestacionesDialogFragment.newInstance(mAnuncio.getPrestaciones()).show(fm, TAG_DIALOG_PRESTACIONES);
+    }
+
+
+    @Override
+    public void onDismiss() {
+        mPrestacionesAdapter.actualizarAdapter();
     }
 }
