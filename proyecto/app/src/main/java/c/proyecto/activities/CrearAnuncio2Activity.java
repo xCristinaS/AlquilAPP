@@ -49,6 +49,7 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
         intent.putExtra(INTENT_ANUNCIO, anuncio);
         context.startActivity(intent);
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
