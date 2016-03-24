@@ -4,8 +4,12 @@ import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+
+import java.util.Date;
 
 import c.proyecto.R;
 import c.proyecto.fragments.MessagesFragment;
@@ -51,6 +55,16 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
         getSupportFragmentManager().beginTransaction().replace(R.id.frmContenido, MessagesFragment.newInstance(true)).commit();
         imgEnviar = (ImageView) findViewById(R.id.imgEnviar);
         txtMensaje = (EditText) findViewById(R.id.txtMensaje);
+
+        imgEnviar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!TextUtils.isEmpty(txtMensaje.getText())) {
+                    mPresenter.sendMessage(new MessagePojo(user, mensaje.getTituloAnuncio(), txtMensaje.getText().toString(), new Date()), mensaje.getEmisor().getKey());
+                    txtMensaje.setText("");
+                }
+            }
+        });
     }
 
     @Override

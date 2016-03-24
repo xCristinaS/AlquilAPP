@@ -40,4 +40,8 @@ public class ConversationPresenter implements ConversationPresenterOps{
     public void messageHasBeenObtained(MessagePojo m) {
         activity.get().messageHasBeenObtained(m);
     }
+
+    public void sendMessage(MessagePojo mensaje, String keyReceptor){
+        Message.sendMessage(mensaje, keyReceptor);
+    }
 }

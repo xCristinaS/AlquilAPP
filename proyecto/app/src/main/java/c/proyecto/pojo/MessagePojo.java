@@ -12,7 +12,7 @@ import c.proyecto.models.Usuario;
  */
 public class MessagePojo implements Parcelable, Comparable<MessagePojo> {
 
-    private String tituloAnuncio, contenido;
+    private String key, tituloAnuncio, contenido;
     private Usuario emisor;
     private Date fecha;
 
@@ -25,6 +25,19 @@ public class MessagePojo implements Parcelable, Comparable<MessagePojo> {
         this.emisor = emisor;
         this.tituloAnuncio = tituloAnuncio;
         this.contenido = contenido;
+    }
+
+    @Override
+    public int compareTo(MessagePojo another) {
+        return fecha.compareTo(another.fecha);
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
 
     public Usuario getEmisor() {
@@ -55,6 +68,7 @@ public class MessagePojo implements Parcelable, Comparable<MessagePojo> {
         return fecha;
     }
 
+
     public void setFecha(Date fecha) {
         this.fecha = fecha;
     }
@@ -66,6 +80,7 @@ public class MessagePojo implements Parcelable, Comparable<MessagePojo> {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.key);
         dest.writeString(this.tituloAnuncio);
         dest.writeString(this.contenido);
         dest.writeParcelable(this.emisor, 0);
@@ -73,6 +88,7 @@ public class MessagePojo implements Parcelable, Comparable<MessagePojo> {
     }
 
     protected MessagePojo(Parcel in) {
+        this.key = in.readString();
         this.tituloAnuncio = in.readString();
         this.contenido = in.readString();
         this.emisor = in.readParcelable(Usuario.class.getClassLoader());
@@ -89,9 +105,4 @@ public class MessagePojo implements Parcelable, Comparable<MessagePojo> {
             return new MessagePojo[size];
         }
     };
-
-    @Override
-    public int compareTo(MessagePojo another) {
-        return fecha.compareTo(another.fecha);
-    }
 }

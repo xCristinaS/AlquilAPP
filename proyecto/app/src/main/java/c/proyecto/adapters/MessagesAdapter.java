@@ -100,7 +100,14 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.Messag
 
     //Manejo del Adaptador
     public void addItem(MessagePojo m) {
-        mDatos.add(0, m);
+        boolean stop = false;
+        for (int i = 0; !stop && i < mDatos.size(); i++)
+            if (m.getKey().equals(mDatos.get(i).getKey()))
+                stop = true;
+
+        if (!stop)
+            mDatos.add(0,m);
+
         //notifyItemInserted(0);
         Collections.sort(mDatos);
         notifyDataSetChanged();
