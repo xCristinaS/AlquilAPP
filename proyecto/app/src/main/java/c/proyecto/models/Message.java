@@ -63,6 +63,7 @@ public class Message implements Parcelable {
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             Usuario emisor = dataSnapshot.getValue(Usuario.class);
                             mensaje.setEmisor(emisor);
+                            mensaje.setKeyReceptor(user.getKey());
 
                             new Firebase(URL_CONVERSACIONES).child(user.getKey()).child(emisor_titleAdvert).limitToLast(1).addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
@@ -108,6 +109,7 @@ public class Message implements Parcelable {
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 MessagePojo mensaje = new MessagePojo();
                 mensaje.setKey(dataSnapshot.getKey());
+                mensaje.setKeyReceptor(u.getKey());
                 mensaje.setEmisor(m.getEmisor());
                 mensaje.setTituloAnuncio(m.getTituloAnuncio());
                 Message mAux = dataSnapshot.getValue(Message.class);
@@ -122,6 +124,7 @@ public class Message implements Parcelable {
                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                         MessagePojo mensaje = new MessagePojo();
                         mensaje.setKey(dataSnapshot.getKey());
+                        mensaje.setKeyReceptor(m.getEmisor().getKey());
                         mensaje.setEmisor(u);
                         mensaje.setTituloAnuncio(m.getTituloAnuncio());
                         Message mAux = dataSnapshot.getValue(Message.class);
@@ -182,7 +185,9 @@ public class Message implements Parcelable {
     }
 
     public static void removeMessage(MessagePojo m){
-        
+        String nodoAsunto = m.getEmisor().getKey() + "_" + m.getTituloAnuncio().replace(" ", "_");
+        nodoAsunto = nodoAsunto.substring(0, nodoAsunto.length() - 1);
+        new Firebase(URL_CONVERSACIONES).child(m.getKeyReceptor()).child(nodoAsunto).child(m.getKey()).setValue(null);
     }
 
     public static void detachConversationListeners(){

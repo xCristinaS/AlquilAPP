@@ -12,7 +12,7 @@ import c.proyecto.models.Usuario;
  */
 public class MessagePojo implements Parcelable, Comparable<MessagePojo> {
 
-    private String key, tituloAnuncio, contenido;
+    private String key, tituloAnuncio, contenido, keyReceptor;
     private Usuario emisor;
     private Date fecha;
 
@@ -73,6 +73,14 @@ public class MessagePojo implements Parcelable, Comparable<MessagePojo> {
         this.fecha = fecha;
     }
 
+    public String getKeyReceptor() {
+        return keyReceptor;
+    }
+
+    public void setKeyReceptor(String keyReceptor) {
+        this.keyReceptor = keyReceptor;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -83,6 +91,7 @@ public class MessagePojo implements Parcelable, Comparable<MessagePojo> {
         dest.writeString(this.key);
         dest.writeString(this.tituloAnuncio);
         dest.writeString(this.contenido);
+        dest.writeString(this.keyReceptor);
         dest.writeParcelable(this.emisor, 0);
         dest.writeLong(fecha != null ? fecha.getTime() : -1);
     }
@@ -91,6 +100,7 @@ public class MessagePojo implements Parcelable, Comparable<MessagePojo> {
         this.key = in.readString();
         this.tituloAnuncio = in.readString();
         this.contenido = in.readString();
+        this.keyReceptor = in.readString();
         this.emisor = in.readParcelable(Usuario.class.getClassLoader());
         long tmpFecha = in.readLong();
         this.fecha = tmpFecha == -1 ? null : new Date(tmpFecha);
