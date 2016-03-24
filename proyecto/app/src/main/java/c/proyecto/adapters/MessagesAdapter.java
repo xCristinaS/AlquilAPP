@@ -11,10 +11,8 @@ import com.squareup.picasso.Picasso;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.concurrent.TimeUnit;
 
 import c.proyecto.R;
 import c.proyecto.pojo.MessagePojo;
@@ -29,8 +27,13 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.Messag
         void onItemClick(MessagePojo mensaje);
     }
 
+    public interface ConversationManager {
+        void removeMessage(MessagePojo m);
+    }
+
     private List<MessagePojo> mDatos;
-    private OnMessagesAdapterItemClick listener;
+    private OnMessagesAdapterItemClick listenerItemClick;
+    private ConversationManager listenerConverManager;
     private boolean isAConversation;
 
     public MessagesAdapter(boolean isAConversation) {
@@ -53,8 +56,12 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.Messag
         return mDatos.size();
     }
 
-    public void setListener(OnMessagesAdapterItemClick listener) {
-        this.listener = listener;
+    public void setListenerItemClick(OnMessagesAdapterItemClick listenerItemClick) {
+        this.listenerItemClick = listenerItemClick;
+    }
+
+    public void setListenerConverManager(ConversationManager listenerConverManager) {
+        this.listenerConverManager = listenerConverManager;
     }
 
     class MessagesViewHolder extends RecyclerView.ViewHolder {
@@ -92,7 +99,7 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.Messag
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        listener.onItemClick(mDatos.get(mDatos.indexOf(m)));
+                        listenerItemClick.onItemClick(mDatos.get(mDatos.indexOf(m)));
                     }
                 });
         }
@@ -106,8 +113,10 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.Messag
                 stop = true;
 
         if (!stop)
-            mDatos.add(0,m);
+            mDatos.add(m);
 
+        if (isAConversation && mDatos.size() == 20)
+            listenerConverManager.removeMessage(mDatos.remove(0));
         //notifyItemInserted(0);
         Collections.sort(mDatos);
         notifyDataSetChanged();

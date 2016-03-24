@@ -41,7 +41,18 @@ public class ConversationPresenter implements ConversationPresenterOps{
         activity.get().messageHasBeenObtained(m);
     }
 
+    @Override
     public void sendMessage(MessagePojo mensaje, String keyReceptor){
         Message.sendMessage(mensaje, keyReceptor);
+    }
+
+    @Override
+    public void detachFirebaseListeners(){
+        Message.detachConversationListeners();
+    }
+
+    @Override
+    public void removeMessage(MessagePojo m) {
+        Message.removeMessage(m);
     }
 }

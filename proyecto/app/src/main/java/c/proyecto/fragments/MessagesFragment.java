@@ -13,12 +13,7 @@ import android.view.ViewGroup;
 
 import c.proyecto.R;
 import c.proyecto.adapters.MessagesAdapter;
-import c.proyecto.adapters.MyRecyclerViewAdapter;
-import c.proyecto.presenters.MainPresenter;
 
-/**
- * Created by Cristina on 23/03/2016.
- */
 public class MessagesFragment extends Fragment {
 
     private static final String ARG_CONVER = "conver";
@@ -26,7 +21,8 @@ public class MessagesFragment extends Fragment {
     private RecyclerView rvMessages;
     private MessagesAdapter mAdapter;
     private LinearLayoutManager mLayoutManager;
-    private MessagesAdapter.OnMessagesAdapterItemClick listener;
+    private MessagesAdapter.OnMessagesAdapterItemClick listenerItemClick;
+    private MessagesAdapter.ConversationManager listenerConverManager;
     private boolean isAConversation;
 
     public static MessagesFragment newInstance(boolean isAConversation) {
@@ -54,8 +50,10 @@ public class MessagesFragment extends Fragment {
         isAConversation = args.getBoolean(ARG_CONVER, false);
         rvMessages = (RecyclerView) getView().findViewById(R.id.rvMessages);
         mAdapter = new MessagesAdapter(isAConversation);
-        if (listener != null)
-            mAdapter.setListener(listener);
+        if (listenerItemClick != null)
+            mAdapter.setListenerItemClick(listenerItemClick);
+        if (listenerConverManager != null)
+            mAdapter.setListenerConverManager(listenerConverManager);
         mLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
 
         rvMessages.setAdapter(mAdapter);
@@ -67,14 +65,18 @@ public class MessagesFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         if (context instanceof MessagesAdapter.OnMessagesAdapterItemClick)
-            listener = (MessagesAdapter.OnMessagesAdapterItemClick) context;
+            listenerItemClick = (MessagesAdapter.OnMessagesAdapterItemClick) context;
+        if (context instanceof MessagesAdapter.ConversationManager)
+            listenerConverManager = (MessagesAdapter.ConversationManager) context;
         super.onAttach(context);
     }
 
     @Override
     public void onDetach() {
-        if (listener != null)
-            listener = null;
+        if (listenerItemClick != null)
+            listenerItemClick = null;
+        if (listenerConverManager != null)
+            listenerConverManager = null;
         super.onDetach();
     }
 

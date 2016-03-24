@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import java.util.Date;
 
 import c.proyecto.R;
+import c.proyecto.adapters.MessagesAdapter;
 import c.proyecto.fragments.MessagesFragment;
 import c.proyecto.interfaces.ConversationActivityOps;
 import c.proyecto.models.Message;
@@ -19,7 +20,7 @@ import c.proyecto.models.Usuario;
 import c.proyecto.pojo.MessagePojo;
 import c.proyecto.presenters.ConversationPresenter;
 
-public class ConversationActivity extends AppCompatActivity implements ConversationActivityOps {
+public class ConversationActivity extends AppCompatActivity implements ConversationActivityOps, MessagesAdapter.ConversationManager {
 
     private static final String EXTRA_MENSAJE = "mensaje_extra";
     private static final String EXTRA_USER = "user_extra";
@@ -71,5 +72,16 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
     public void messageHasBeenObtained(MessagePojo m) {
         if (getSupportFragmentManager().findFragmentById(R.id.frmContenido) instanceof MessagesFragment)
             ((MessagesFragment) getSupportFragmentManager().findFragmentById(R.id.frmContenido)).getmAdapter().addItem(m);
+    }
+
+    @Override
+    protected void onDestroy() {
+        mPresenter.detachFirebaseListeners();
+        super.onDestroy();
+    }
+
+    @Override
+    public void removeMessage(MessagePojo m) {
+        mPresenter.removeMessage(m);
     }
 }
