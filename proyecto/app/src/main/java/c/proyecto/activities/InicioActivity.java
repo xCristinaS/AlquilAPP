@@ -11,15 +11,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.firebase.client.Firebase;
 import com.github.florent37.materialtextfield.MaterialTextField;
+
+import java.util.Date;
 
 import c.proyecto.Constantes;
 
-import com.firebase.client.Firebase;
-
 import c.proyecto.R;
 import c.proyecto.interfaces.InicioActivityOps;
-import c.proyecto.models.Anuncio;
+import c.proyecto.models.Message;
 import c.proyecto.models.Usuario;
 import c.proyecto.presenters.InicioPresenter;
 
@@ -42,6 +43,8 @@ public class InicioActivity extends AppCompatActivity implements InicioActivityO
         setContentView(R.layout.activity_inicio);
         initViews();
         checkSavedUser();
+        //Firebase f = new Firebase("https://proyectofinaldam.firebaseio.com").child("conversaciones").child("12052659").child("-386798187_Mi_anuncio").push();
+        //f.setValue(new Message(new Date(), "Pos mu bien chico!"));
     }
 
     private void initViews() {

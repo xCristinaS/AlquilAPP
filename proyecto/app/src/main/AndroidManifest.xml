@@ -37,7 +37,7 @@
             android:name=".activities.CrearAnuncio1Activity"
             android:label="Imagenes" />
         <activity android:name=".activities.CrearAnuncio2Activity"/>
-
+        <activity android:name=".activities.ConversationActivity"/>
     </application>
 
 </manifest>

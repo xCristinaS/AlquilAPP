@@ -169,11 +169,7 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     static class AnuncioViewHolder extends RecyclerView.ViewHolder {
 
         private ImageView imgAvatar;
-        private TextView lblPoblacion;
-        private TextView lblProvincia;
-        private TextView lblDireccion;
-        private TextView lblNumero;
-        private TextView lblPrecio;
+        private TextView lblPoblacion, lblProvincia, lblDireccion, lblNumero, lblPrecio;
 
         public AnuncioViewHolder(View itemView) {
             super(itemView);
@@ -200,11 +196,7 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     static class MiAnuncioViewHolder extends RecyclerView.ViewHolder {
 
         private ImageView imgAvatar;
-        private TextView lblPoblacion;
-        private TextView lblProvincia;
-        private TextView lblDireccion;
-        private TextView lblNumero;
-        private TextView lblSubs;
+        private TextView lblPoblacion, lblProvincia, lblDireccion, lblNumero, lblSubs;
 
         public MiAnuncioViewHolder(View itemView) {
             super(itemView);

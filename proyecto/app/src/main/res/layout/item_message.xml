@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="wrap_content">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/imgEmisor"
+        android:layout_width="80dp"
+        android:src="@drawable/default_user"
+        android:layout_height="80dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"/>
+
+    <TextView
+        android:id="@+id/lblNombreEmisor"
+        android:layout_toRightOf="@id/imgEmisor"
+        android:layout_toEndOf="@id/imgEmisor"
+        android:text="Nombre emisor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/lblFecha"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_width="wrap_content"
+        android:text="Fecha"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="16dp"/>
+
+    <TextView
+        android:id="@+id/lblTituloAnuncio"
+        android:layout_toEndOf="@id/imgEmisor"
+        android:layout_toRightOf="@id/imgEmisor"
+        android:layout_below="@id/lblNombreEmisor"
+        android:layout_width="wrap_content"
+        android:text="Titulo anuncio"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"/>
+
+    <TextView
+        android:id="@+id/lblMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Contenido mensaje"
+        android:layout_toRightOf="@id/imgEmisor"
+        android:layout_toEndOf="@id/imgEmisor"
+        android:layout_below="@id/lblTituloAnuncio"
+        android:layout_marginTop="4dp"/>
+</RelativeLayout>
