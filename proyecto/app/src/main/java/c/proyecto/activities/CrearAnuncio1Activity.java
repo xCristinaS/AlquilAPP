@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 
+import java.text.SimpleDateFormat;
+
 import c.proyecto.R;
 import c.proyecto.models.Anuncio;
 import c.proyecto.pojo.Prestacion;

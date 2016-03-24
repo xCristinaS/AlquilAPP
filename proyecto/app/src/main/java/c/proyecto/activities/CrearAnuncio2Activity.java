@@ -10,14 +10,11 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
-import java.util.List;
 
+import c.proyecto.Constantes;
 import c.proyecto.R;
 import c.proyecto.adapters.PrestacionesAdapter;
 import c.proyecto.fragments.SeleccionPrestacionesDialogFragment;
@@ -56,14 +53,15 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_crear_anuncio2);
-        //Si se entra editando
+        initViews();
+
         mAnuncio = getIntent().getParcelableExtra(INTENT_ANUNCIO);
         //Si se entra creando
         if (mAnuncio == null){
             mAnuncio = new Anuncio();
             mAnuncio.setPrestaciones(new ArrayList<Prestacion>());
-        }
-        initViews();
+        }else
+            recuperarAnuncio();
     }
 
     private void initViews() {
@@ -82,8 +80,33 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
         txtDescripcion = (TextView) findViewById(R.id.txtDescripcion);
         txtPrecio = (TextView) findViewById(R.id.txtPrecio);
         rvHuespedes = (RecyclerView) findViewById(R.id.rvHuespedes);
+        confImgTipoVivienda();
         confRecyclerPrestaciones();
         confRecyclerHuespedes();
+    }
+
+    private void confImgTipoVivienda() {
+        imgCasa.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mAnuncio.setTipo_vivienda(Constantes.CASA);
+                tintVivienda(imgCasa);
+            }
+        });
+        imgHabitacion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mAnuncio.setTipo_vivienda(Constantes.HABITACION);
+                tintVivienda(imgHabitacion);
+            }
+        });
+        imgPiso.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mAnuncio.setTipo_vivienda(Constantes.PISO);
+                tintVivienda(imgPiso);
+            }
+        });
     }
 
     private void confRecyclerPrestaciones() {
@@ -100,6 +123,30 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
 
     private void confRecyclerHuespedes() {
 
+    }
+
+    private void recuperarAnuncio() {
+        txtTituloAnuncio.setText(mAnuncio.getTitulo());
+        switch (mAnuncio.getTipo_vivienda()){
+            case Constantes.CASA:
+                tintVivienda(imgCasa);
+                break;
+            case Constantes.HABITACION:
+                tintVivienda(imgHabitacion);
+                break;
+            case Constantes.PISO:
+                tintVivienda(imgPiso);
+                break;
+        }
+        txtDireccion.setText(mAnuncio.getDireccion());
+        txtNum.setText(mAnuncio.getNumero());
+        txtPoblacion.setText(mAnuncio.getPoblacion());
+        txtProvincia.setText(mAnuncio.getProvincia());
+        txtCamas.setText(mAnuncio.getHabitaciones_o_camas());
+        txtToilets.setText(mAnuncio.getNumero_banios());
+        txtTamano.setText(String.format("%d%s", mAnuncio.getTamanio(), Constantes.UNIDAD));
+        txtDescripcion.setText(mAnuncio.getDescripcion());
+        txtPrecio.setText(String.format("%.2f%s", mAnuncio.getPrecio(), Constantes.MONEDA));
     }
 
     @Override
@@ -124,5 +171,13 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
     @Override
     public void onDismiss() {
         mPrestacionesAdapter.actualizarAdapter();
+    }
+
+    private void tintVivienda(ImageView view){
+        imgCasa.clearColorFilter();
+        imgHabitacion.clearColorFilter();
+        imgPiso.clearColorFilter();
+
+        view.setColorFilter(getResources().getColor(R.color.colorAccent));
     }
 }
