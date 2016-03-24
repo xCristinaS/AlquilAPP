@@ -49,19 +49,22 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
         intent.putExtra(INTENT_ANUNCIO, anuncio);
         context.startActivity(intent);
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_crear_anuncio2);
-        initViews();
 
         mAnuncio = getIntent().getParcelableExtra(INTENT_ANUNCIO);
         //Si se entra creando
         if (mAnuncio == null){
             mAnuncio = new Anuncio();
             mAnuncio.setPrestaciones(new ArrayList<Prestacion>());
-        }else
+            initViews();
+        } else {
+            initViews();
             recuperarAnuncio();
+        }
     }
 
     private void initViews() {
