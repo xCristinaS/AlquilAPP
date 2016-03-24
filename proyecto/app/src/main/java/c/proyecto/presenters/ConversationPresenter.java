@@ -38,6 +38,6 @@ public class ConversationPresenter implements ConversationPresenterOps{
 
     @Override
     public void messageHasBeenObtained(MessagePojo m) {
-
+        activity.get().messageHasBeenObtained(m);
     }
 }

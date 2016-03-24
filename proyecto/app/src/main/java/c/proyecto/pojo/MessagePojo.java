@@ -5,40 +5,34 @@ import android.os.Parcelable;
 
 import java.util.Date;
 
+import c.proyecto.models.Usuario;
+
 /**
  * Created by Cristina on 23/03/2016.
  */
-public class MessagePojo implements Parcelable {
+public class MessagePojo implements Parcelable, Comparable<MessagePojo> {
 
-    private String nombreEmisor, fotoEmisor, tituloAnuncio, contenido;
+    private String tituloAnuncio, contenido;
+    private Usuario emisor;
     private Date fecha;
 
     public MessagePojo(){
 
     }
 
-    public MessagePojo(String nombreEmisor, String fotoEmisor, String tituloAnuncio, String contenido, Date fehca){
+    public MessagePojo(Usuario emisor, String tituloAnuncio, String contenido, Date fehca){
         this.fecha = fehca;
-        this.nombreEmisor = nombreEmisor;
-        this.fotoEmisor = fotoEmisor;
+        this.emisor = emisor;
         this.tituloAnuncio = tituloAnuncio;
         this.contenido = contenido;
     }
 
-    public String getNombreEmisor() {
-        return nombreEmisor;
+    public Usuario getEmisor() {
+        return emisor;
     }
 
-    public void setNombreEmisor(String nombreEmisor) {
-        this.nombreEmisor = nombreEmisor;
-    }
-
-    public String getFotoEmisor() {
-        return fotoEmisor;
-    }
-
-    public void setFotoEmisor(String fotoEmisor) {
-        this.fotoEmisor = fotoEmisor;
+    public void setEmisor(Usuario emisor) {
+        this.emisor = emisor;
     }
 
     public String getTituloAnuncio() {
@@ -72,18 +66,16 @@ public class MessagePojo implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.nombreEmisor);
-        dest.writeString(this.fotoEmisor);
         dest.writeString(this.tituloAnuncio);
         dest.writeString(this.contenido);
+        dest.writeParcelable(this.emisor, 0);
         dest.writeLong(fecha != null ? fecha.getTime() : -1);
     }
 
     protected MessagePojo(Parcel in) {
-        this.nombreEmisor = in.readString();
-        this.fotoEmisor = in.readString();
         this.tituloAnuncio = in.readString();
         this.contenido = in.readString();
+        this.emisor = in.readParcelable(Usuario.class.getClassLoader());
         long tmpFecha = in.readLong();
         this.fecha = tmpFecha == -1 ? null : new Date(tmpFecha);
     }
@@ -97,4 +89,9 @@ public class MessagePojo implements Parcelable {
             return new MessagePojo[size];
         }
     };
+
+    @Override
+    public int compareTo(MessagePojo another) {
+        return fecha.compareTo(another.fecha);
+    }
 }

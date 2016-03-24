@@ -9,12 +9,13 @@ import android.widget.ImageView;
 
 import c.proyecto.R;
 import c.proyecto.fragments.MessagesFragment;
+import c.proyecto.interfaces.ConversationActivityOps;
 import c.proyecto.models.Message;
 import c.proyecto.models.Usuario;
 import c.proyecto.pojo.MessagePojo;
 import c.proyecto.presenters.ConversationPresenter;
 
-public class ConversationActivity extends AppCompatActivity {
+public class ConversationActivity extends AppCompatActivity implements ConversationActivityOps {
 
     private static final String EXTRA_MENSAJE = "mensaje_extra";
     private static final String EXTRA_USER = "user_extra";
@@ -50,5 +51,11 @@ public class ConversationActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction().replace(R.id.frmContenido, MessagesFragment.newInstance(true)).commit();
         imgEnviar = (ImageView) findViewById(R.id.imgEnviar);
         txtMensaje = (EditText) findViewById(R.id.txtMensaje);
+    }
+
+    @Override
+    public void messageHasBeenObtained(MessagePojo m) {
+        if (getSupportFragmentManager().findFragmentById(R.id.frmContenido) instanceof MessagesFragment)
+            ((MessagesFragment) getSupportFragmentManager().findFragmentById(R.id.frmContenido)).getmAdapter().addItem(m);
     }
 }

@@ -10,6 +10,7 @@ import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -45,13 +46,6 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.Messag
     @Override
     public void onBindViewHolder(MessagesViewHolder holder, final int position) {
         holder.onBind(mDatos.get(position));
-        if (!isAConversation)
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    listener.onItemClick(mDatos.get(position));
-                }
-            });
     }
 
     @Override
@@ -77,29 +71,39 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.Messag
             lblTituloAnuncio = (TextView) itemView.findViewById(R.id.lblTituloAnuncio);
         }
 
-        public void onBind(MessagePojo m) {
-            SimpleDateFormat fecha = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        public void onBind(final MessagePojo m) {
+            SimpleDateFormat fecha = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault());
             SimpleDateFormat hora = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
             //long dia = TimeUnit.DAYS.toMillis(1);
             //Date hoy = new Date();
-            if (m.getFotoEmisor() != null)
-                Picasso.with(itemView.getContext()).load(m.getFotoEmisor()).into(imgEmisor);
+            if (m.getEmisor().getFoto() != null)
+                Picasso.with(itemView.getContext()).load(m.getEmisor().getFoto()).into(imgEmisor);
             else
                 Picasso.with(itemView.getContext()).load(R.drawable.default_user).into(imgEmisor);
             lblTituloAnuncio.setText(m.getTituloAnuncio());
             lblContenido.setText(m.getContenido());
-            lblNombreEmisor.setText(m.getNombreEmisor());
+            lblNombreEmisor.setText(m.getEmisor().getNombre());
             //if (hoy.getTime() - m.getFecha().getTime() > dia)
             lblFecha.setText(fecha.format(m.getFecha()));
             //else
             //  lblFecha.setText(hora.format(m.getFecha()));
+
+            if (!isAConversation)
+                itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        listener.onItemClick(mDatos.get(mDatos.indexOf(m)));
+                    }
+                });
         }
     }
 
     //Manejo del Adaptador
     public void addItem(MessagePojo m) {
         mDatos.add(0, m);
-        notifyItemInserted(0);
+        //notifyItemInserted(0);
+        Collections.sort(mDatos);
+        notifyDataSetChanged();
     }
 
     public void removeItem(MessagePojo m) {
