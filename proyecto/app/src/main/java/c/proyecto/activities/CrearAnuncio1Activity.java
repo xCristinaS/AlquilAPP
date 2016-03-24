@@ -62,7 +62,7 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
         img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                
+
             }
         });
     }
