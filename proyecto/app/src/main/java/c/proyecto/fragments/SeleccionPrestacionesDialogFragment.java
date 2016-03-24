@@ -164,4 +164,10 @@ public class SeleccionPrestacionesDialogFragment extends AppCompatDialogFragment
         mListener = (ICallBackOnDismiss) context;
         super.onAttach(context);
     }
+
+    @Override
+    public void onDetach() {
+        mListener = null;
+        super.onDetach();
+    }
 }

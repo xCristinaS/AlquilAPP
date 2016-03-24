@@ -122,6 +122,7 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
     }
 
     private void confRecyclerHuespedes() {
+        rvHuespedes.setHasFixedSize(true);
 
     }
 
