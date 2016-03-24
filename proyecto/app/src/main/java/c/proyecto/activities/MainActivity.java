@@ -18,6 +18,7 @@ import com.squareup.picasso.Picasso;
 
 import c.proyecto.R;
 
+import c.proyecto.adapters.MessagesAdapter;
 import c.proyecto.adapters.MyRecyclerViewAdapter;
 import c.proyecto.fragments.MessagesFragment;
 import c.proyecto.fragments.PrincipalFragment;
@@ -29,7 +30,7 @@ import c.proyecto.presenters.MainPresenter;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 
-public class MainActivity extends AppCompatActivity implements MainActivityOps, MyRecyclerViewAdapter.OnAdapterItemLongClick, MyRecyclerViewAdapter.OnAdapterItemClick, NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements MainActivityOps, MyRecyclerViewAdapter.OnAdapterItemLongClick, MyRecyclerViewAdapter.OnAdapterItemClick, NavigationView.OnNavigationItemSelectedListener, MessagesAdapter.OnMessagesAdapterItemClick {
 
 
     private static final String ARG_USUARIO = "usuario_extra";
@@ -155,7 +156,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
                 break;
             case R.id.nav_messages:
                 mPresenter.requestUserMessages(user);
-                getSupportFragmentManager().beginTransaction().replace(R.id.frmContenido, new MessagesFragment(), TAG_MESSAGES_FRAGMENT).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.frmContenido, MessagesFragment.newInstance(false), TAG_MESSAGES_FRAGMENT).commit();
                 break;
             case R.id.nav_preferences:
                 break;
@@ -231,6 +232,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
             super.onBackPressed();
     }
 
+    @Override
     public void userMessageHasBeenObtained(MessagePojo m){
         if (getSupportFragmentManager().findFragmentById(R.id.frmContenido) instanceof MessagesFragment)
             ((MessagesFragment) getSupportFragmentManager().findFragmentById(R.id.frmContenido)).getmAdapter().addItem(m);
@@ -242,5 +244,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
 
     public MainPresenter getmPresenter(){
         return mPresenter;
+    }
+
+    @Override
+    public void onItemClick(MessagePojo mensaje) {
+        ConversationActivity.start(this, mensaje, user);
     }
 }

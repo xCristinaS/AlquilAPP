@@ -88,10 +88,12 @@ public class MainPresenter implements MainPresenterOps {
        Anuncio.detachFirebaseListeners();
     }
 
+    @Override
     public void requestUserMessages(Usuario user){
         Message.getUserMessages(user, this);
     }
 
+    @Override
     public void userMessageHasBeenObtained(MessagePojo m){
         activity.get().userMessageHasBeenObtained(m);
     }

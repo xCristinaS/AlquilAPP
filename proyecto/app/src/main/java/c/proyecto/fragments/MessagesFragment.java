@@ -21,9 +21,21 @@ import c.proyecto.presenters.MainPresenter;
  */
 public class MessagesFragment extends Fragment {
 
+    private static final String ARG_CONVER = "conver";
+
     private RecyclerView rvMessages;
     private MessagesAdapter mAdapter;
     private LinearLayoutManager mLayoutManager;
+    private MessagesAdapter.OnMessagesAdapterItemClick listener;
+    private boolean isAConversation;
+
+    public static MessagesFragment newInstance(boolean isAConversation) {
+        Bundle args = new Bundle();
+        args.putBoolean(ARG_CONVER, isAConversation);
+        MessagesFragment fragment = new MessagesFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Nullable
     @Override
@@ -38,8 +50,12 @@ public class MessagesFragment extends Fragment {
     }
 
     private void initViews() {
+        Bundle args = getArguments();
+        isAConversation = args.getBoolean(ARG_CONVER, false);
         rvMessages = (RecyclerView) getView().findViewById(R.id.rvMessages);
-        mAdapter = new MessagesAdapter();
+        mAdapter = new MessagesAdapter(isAConversation);
+        if (listener != null)
+            mAdapter.setListener(listener);
         mLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
 
         rvMessages.setAdapter(mAdapter);
@@ -50,11 +66,15 @@ public class MessagesFragment extends Fragment {
 
     @Override
     public void onAttach(Context context) {
+        if (context instanceof MessagesAdapter.OnMessagesAdapterItemClick)
+            listener = (MessagesAdapter.OnMessagesAdapterItemClick) context;
         super.onAttach(context);
     }
 
     @Override
     public void onDetach() {
+        if (listener != null)
+            listener = null;
         super.onDetach();
     }
 

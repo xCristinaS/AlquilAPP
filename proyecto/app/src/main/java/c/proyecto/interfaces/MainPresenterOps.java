@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import c.proyecto.models.Anuncio;
+import c.proyecto.models.Message;
 import c.proyecto.models.Usuario;
+import c.proyecto.pojo.MessagePojo;
 
 /**
  * Created by Cristina on 20/03/2016.
@@ -21,4 +23,6 @@ public interface MainPresenterOps {
     void userAdvertHasBeenModified(Anuncio a);
     void removeSub(Anuncio a);
     void detachListeners();
+    void requestUserMessages(Usuario user);
+    void userMessageHasBeenObtained(MessagePojo m);
 }

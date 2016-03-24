@@ -10,10 +10,12 @@ import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 import c.proyecto.R;
-import c.proyecto.models.Anuncio;
 import c.proyecto.pojo.MessagePojo;
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -22,10 +24,17 @@ import de.hdodenhof.circleimageview.CircleImageView;
  */
 public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.MessagesViewHolder> {
 
-    List<MessagePojo> mDatos;
+    public interface OnMessagesAdapterItemClick {
+        void onItemClick(MessagePojo mensaje);
+    }
 
-    public MessagesAdapter() {
+    private List<MessagePojo> mDatos;
+    private OnMessagesAdapterItemClick listener;
+    private boolean isAConversation;
+
+    public MessagesAdapter(boolean isAConversation) {
         mDatos = new ArrayList<>();
+        this.isAConversation = isAConversation;
     }
 
     @Override
@@ -34,13 +43,24 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.Messag
     }
 
     @Override
-    public void onBindViewHolder(MessagesViewHolder holder, int position) {
+    public void onBindViewHolder(MessagesViewHolder holder, final int position) {
         holder.onBind(mDatos.get(position));
+        if (!isAConversation)
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onItemClick(mDatos.get(position));
+                }
+            });
     }
 
     @Override
     public int getItemCount() {
         return mDatos.size();
+    }
+
+    public void setListener(OnMessagesAdapterItemClick listener) {
+        this.listener = listener;
     }
 
     class MessagesViewHolder extends RecyclerView.ViewHolder {
@@ -58,7 +78,10 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.Messag
         }
 
         public void onBind(MessagePojo m) {
-            SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+            SimpleDateFormat fecha = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+            SimpleDateFormat hora = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+            //long dia = TimeUnit.DAYS.toMillis(1);
+            //Date hoy = new Date();
             if (m.getFotoEmisor() != null)
                 Picasso.with(itemView.getContext()).load(m.getFotoEmisor()).into(imgEmisor);
             else
@@ -66,14 +89,17 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.Messag
             lblTituloAnuncio.setText(m.getTituloAnuncio());
             lblContenido.setText(m.getContenido());
             lblNombreEmisor.setText(m.getNombreEmisor());
-            lblFecha.setText(formato.format(m.getFecha()));
+            //if (hoy.getTime() - m.getFecha().getTime() > dia)
+            lblFecha.setText(fecha.format(m.getFecha()));
+            //else
+            //  lblFecha.setText(hora.format(m.getFecha()));
         }
     }
 
     //Manejo del Adaptador
     public void addItem(MessagePojo m) {
-        mDatos.add(m);
-        notifyItemInserted(mDatos.indexOf(m));
+        mDatos.add(0, m);
+        notifyItemInserted(0);
     }
 
     public void removeItem(MessagePojo m) {

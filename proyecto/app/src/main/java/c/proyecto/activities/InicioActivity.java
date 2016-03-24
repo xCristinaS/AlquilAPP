@@ -43,6 +43,8 @@ public class InicioActivity extends AppCompatActivity implements InicioActivityO
         setContentView(R.layout.activity_inicio);
         initViews();
         checkSavedUser();
+        //Firebase f = new Firebase("https://proyectofinaldam.firebaseio.com").child("conversaciones").child("12052659").child("-386798187_Mi_anuncio").push();
+        //f.setValue(new Message(new Date(), "Pos mu bien chico!"));
     }
 
     private void initViews() {

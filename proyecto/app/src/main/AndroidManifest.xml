@@ -31,8 +31,8 @@
         <activity
             android:name=".activities.DetallesAnuncioActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".activities.EditProfileActivity" />
+        <activity android:name=".activities.EditProfileActivity" />
+        <activity android:name=".activities.ConversationActivity"></activity>
     </application>
 
 </manifest>

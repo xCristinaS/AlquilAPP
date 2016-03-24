@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent" android:layout_height="wrap_content">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/imgEmisor"
         android:layout_width="80dp"
         android:src="@drawable/default_user"
-        android:layout_height="80dp" />
+        android:layout_height="80dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"/>
 
     <TextView
         android:id="@+id/lblNombreEmisor"
@@ -45,7 +47,6 @@
         android:text="Contenido mensaje"
         android:layout_toRightOf="@id/imgEmisor"
         android:layout_toEndOf="@id/imgEmisor"
-        android:maxLines="1"
         android:layout_below="@id/lblTituloAnuncio"
         android:layout_marginTop="4dp"/>
 </RelativeLayout>
