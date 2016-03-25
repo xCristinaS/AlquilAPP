@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 
 import c.proyecto.R;
 import c.proyecto.adapters.MessagesAdapter;
+import c.proyecto.pojo.MessagePojo;
 
 public class MessagesFragment extends Fragment {
 
@@ -60,6 +61,11 @@ public class MessagesFragment extends Fragment {
         rvMessages.setLayoutManager(mLayoutManager);
         rvMessages.setItemAnimator(new DefaultItemAnimator());
         //rvMessages.setHasFixedSize(true);
+    }
+
+    public void addItem(MessagePojo m) {
+        mAdapter.addItem(m);
+        rvMessages.scrollToPosition(mAdapter.getItemCount() - 1);
     }
 
     @Override

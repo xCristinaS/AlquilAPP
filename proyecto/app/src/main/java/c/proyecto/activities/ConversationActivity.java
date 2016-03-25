@@ -71,7 +71,7 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
     @Override
     public void messageHasBeenObtained(MessagePojo m) {
         if (getSupportFragmentManager().findFragmentById(R.id.frmContenido) instanceof MessagesFragment)
-            ((MessagesFragment) getSupportFragmentManager().findFragmentById(R.id.frmContenido)).getmAdapter().addItem(m);
+            ((MessagesFragment) getSupportFragmentManager().findFragmentById(R.id.frmContenido)).addItem(m);
     }
 
     @Override
