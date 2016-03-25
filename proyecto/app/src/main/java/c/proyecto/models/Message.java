@@ -191,7 +191,7 @@ public class Message implements Parcelable {
     }
 
     public static void detachConversationListeners(){
-        mFirebaseConversations.addChildEventListener(mListenerConversation);
+        mFirebaseConversations.removeEventListener(mListenerConversation);
     }
 
     public long getFecha() {
