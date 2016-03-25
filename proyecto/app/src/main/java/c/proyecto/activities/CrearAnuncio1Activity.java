@@ -169,8 +169,7 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
             Imagenes.guardarBitmapEnArchivo(bitmap, file);
 
 
-
-            Call<ImgurResponse> llamada = ImgurAPI.getMInstance().getService().uploadImage("Client-ID ac4e3834bdf29cd", encoded);
+            Call<ImgurResponse> llamada = ImgurAPI.getMInstance().getService().uploadImage("Client-ID ac4e3834bdf29cd", "asdgs");
             llamada.enqueue(new Callback<ImgurResponse>() {
                 @Override
                 public void onResponse(Call<ImgurResponse> call, Response<ImgurResponse> response) {

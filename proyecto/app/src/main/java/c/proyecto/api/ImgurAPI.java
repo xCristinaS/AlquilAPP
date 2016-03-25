@@ -31,7 +31,7 @@ public class ImgurAPI {
     public interface RetrofitInterface{
         @POST("3/image")
         Call<ImgurResponse> uploadImage(@Header("Authorization") String auth,
-                                        @Body String file);
+                                        @Body() String base64String);
     }
 
     private ImgurAPI(){
