@@ -112,6 +112,13 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.Messag
             if (m.getKey().equals(mDatos.get(i).getKey()))
                 stop = true;
 
+        if (!stop && !isAConversation)
+            for (int i = 0; i < mDatos.size(); i++)
+                if (m.getEmisor().getKey().equals(mDatos.get(i).getEmisor().getKey())) {
+                    mDatos.remove(mDatos.get(i));
+                    notifyItemRemoved(i);
+                }
+
         if (!stop)
             mDatos.add(m);
 

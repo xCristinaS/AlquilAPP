@@ -82,6 +82,37 @@ public class Message implements Parcelable {
 
                                 }
                             });
+
+                            new Firebase(URL_CONVERSACIONES).child(user.getKey()).child(emisor_titleAdvert).addChildEventListener(new ChildEventListener() {
+                                @Override
+                                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                                    Message m = dataSnapshot.getValue(Message.class);
+                                    mensaje.setContenido(m.getContenido());
+                                    mensaje.setFecha(new Date(m.getFecha()));
+                                    mensaje.setKey(dataSnapshot.getKey());
+                                    presenter.userMessageHasBeenObtained(mensaje);
+                                }
+
+                                @Override
+                                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                                }
+
+                                @Override
+                                public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                                }
+
+                                @Override
+                                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                                }
+
+                                @Override
+                                public void onCancelled(FirebaseError firebaseError) {
+
+                                }
+                            });
                         }
 
                         @Override
@@ -184,13 +215,13 @@ public class Message implements Parcelable {
         new Firebase(URL_CONVERSACIONES).child(keyReceptor).child(nodoAsunto).push().setValue(new Message(m.getFecha(), m.getContenido()));
     }
 
-    public static void removeMessage(MessagePojo m){
+    public static void removeMessage(MessagePojo m) {
         String nodoAsunto = m.getEmisor().getKey() + "_" + m.getTituloAnuncio().replace(" ", "_");
         nodoAsunto = nodoAsunto.substring(0, nodoAsunto.length() - 1);
         new Firebase(URL_CONVERSACIONES).child(m.getKeyReceptor()).child(nodoAsunto).child(m.getKey()).setValue(null);
     }
 
-    public static void detachConversationListeners(){
+    public static void detachConversationListeners() {
         mFirebaseConversations.removeEventListener(mListenerConversation);
     }
 
