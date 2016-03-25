@@ -7,7 +7,8 @@
     android:paddingLeft="20dp"
     android:paddingRight="20dp"
     android:paddingTop="20dp"
-    tools:context=".activities.CrearAnuncio1Activity">
+    tools:context=".activities.CrearAnuncio1Activity"
+    android:background="@color/colorFondoAplicacion">
 
     <ImageView
         android:id="@+id/imgPrincipal"
@@ -15,7 +16,8 @@
         android:layout_height="220dp"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:src="@drawable/choose_image"/>
+        android:src="@drawable/choose_image"
+        android:scaleType="centerCrop"/>
 
     <ImageView
         android:id="@+id/img1"
@@ -24,7 +26,8 @@
         android:layout_toLeftOf="@id/imgPrincipal"
         android:layout_toStartOf="@id/imgPrincipal"
         android:layout_marginRight="16dp"
-        android:src="@drawable/choose_image"/>
+        android:src="@drawable/choose_image"
+        android:scaleType="centerCrop"/>
 
     <ImageView
         android:id="@+id/img2"
@@ -35,6 +38,7 @@
         android:layout_toLeftOf="@id/imgPrincipal"
         android:layout_toStartOf="@id/imgPrincipal"
         android:layout_marginRight="16dp"
+        android:scaleType="centerCrop"
         android:src="@drawable/choose_image"/>
 
     <ImageView
@@ -45,6 +49,7 @@
         android:layout_below="@id/imgPrincipal"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
+        android:scaleType="centerCrop"
         android:src="@drawable/choose_image"/>
 
     <ImageView
@@ -56,6 +61,7 @@
         android:layout_toLeftOf="@id/img5"
         android:layout_toStartOf="@id/img5"
         android:layout_marginRight="18dp"
+        android:scaleType="centerCrop"
         android:src="@drawable/choose_image"/>
 
     <ImageView
@@ -66,6 +72,7 @@
         android:layout_below="@id/imgPrincipal"
         android:layout_toLeftOf="@id/img4"
         android:layout_toStartOf="@id/img4"
+        android:scaleType="centerCrop"
         android:layout_marginRight="18dp"
         android:src="@drawable/choose_image"/>
 

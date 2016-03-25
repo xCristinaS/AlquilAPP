@@ -4,23 +4,42 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.media.Image;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Base64;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.net.URLEncoder;
 
 import c.proyecto.R;
+import c.proyecto.api.ImgurAPI;
+import c.proyecto.api.ImgurResponse;
 import c.proyecto.models.Anuncio;
 import c.proyecto.utils.Imagenes;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class CrearAnuncio1Activity extends AppCompatActivity {
 
     private static final String INTENT_ANUNCIO = "intent anuncio1";
     private static final int RC_ABRIR_GALERIA = 233;
+    private static final int RC_CAPTURAR_FOTO = 455;
     private Anuncio mAnuncio;
     private ImageView imgSiguiente;
     private ImageView imgPrincipal;
@@ -85,7 +104,10 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
                                 break;
                             //Cámara
                             case 1:
-
+                                if(Imagenes.hayCamara(CrearAnuncio1Activity.this))
+                                    takePhoto();
+                                else
+                                    Toast.makeText(CrearAnuncio1Activity.this, "Este dispositivo no dispone de cámara", Toast.LENGTH_SHORT).show();
                                 break;
                         }
                     }
@@ -101,6 +123,14 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
         startActivityForResult(i, RC_ABRIR_GALERIA);
     }
 
+    private void takePhoto() {
+        Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        // Si hay alguna actividad que sepa realizar la acción.
+        if (i.resolveActivity(getPackageManager()) != null)
+            // Se envía el intent esperando respuesta.
+            startActivityForResult(i, RC_CAPTURAR_FOTO);
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -111,6 +141,10 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
                     Uri uriGaleria = data.getData();
                     mPathOriginal = Imagenes.getRealPathFromGallery(this, uriGaleria);
                     new HiloEscalador().execute(imgSeleccionada.getWidth(), imgSeleccionada.getHeight());
+                    break;
+                case RC_CAPTURAR_FOTO:
+                    Bitmap miniatura = (Bitmap) data.getExtras().get("data");
+                    imgSeleccionada.setImageBitmap(miniatura);
                     break;
             }
 
@@ -126,6 +160,29 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Bitmap bitmap) {
             imgSeleccionada.setImageBitmap(bitmap);
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+            byte[] byteArray = byteArrayOutputStream.toByteArray();
+            String encoded = Base64.encodeToString(byteArray, Base64.DEFAULT);
+
+            File file = Imagenes.crearArchivoFoto(CrearAnuncio1Activity.this, "asda", false);
+            Imagenes.guardarBitmapEnArchivo(bitmap, file);
+
+
+
+            Call<ImgurResponse> llamada = ImgurAPI.getMInstance().getService().uploadImage("Client-ID ac4e3834bdf29cd", encoded);
+            llamada.enqueue(new Callback<ImgurResponse>() {
+                @Override
+                public void onResponse(Call<ImgurResponse> call, Response<ImgurResponse> response) {
+                    ImgurResponse respuesta = response.body();
+                }
+
+                @Override
+                public void onFailure(Call<ImgurResponse> call, Throwable t) {
+                    System.out.println();
+                }
+            });
+
         }
     }
 }

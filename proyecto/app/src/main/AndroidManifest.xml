@@ -3,6 +3,7 @@
     package="c.proyecto">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:name=".App"
@@ -36,7 +37,10 @@
         <activity
             android:name=".activities.CrearAnuncio1Activity"
             android:label="Imagenes" />
-        <activity android:name=".activities.CrearAnuncio2Activity"/>
+        <activity android:name=".activities.CrearAnuncio2Activity">
+
+
+        </activity>
         <activity android:name=".activities.ConversationActivity"/>
     </application>
 
