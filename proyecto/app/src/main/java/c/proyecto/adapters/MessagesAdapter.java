@@ -109,12 +109,12 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.Messag
     public void addItem(MessagePojo m) {
         boolean stop = false;
         for (int i = 0; !stop && i < mDatos.size(); i++)
-            if (m.getKey().equals(mDatos.get(i).getKey()))
+            if (mDatos.get(i).getKey().equals(m.getKey()))
                 stop = true;
 
         if (!stop && !isAConversation)
             for (int i = 0; i < mDatos.size(); i++)
-                if (m.getEmisor().getKey().equals(mDatos.get(i).getEmisor().getKey())) {
+                if (mDatos.get(i).getEmisor().getKey().equals(m.getEmisor().getKey())) {
                     mDatos.remove(mDatos.get(i));
                     notifyItemRemoved(i);
                 }

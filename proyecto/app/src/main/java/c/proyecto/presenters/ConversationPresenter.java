@@ -14,20 +14,20 @@ import c.proyecto.pojo.MessagePojo;
 /**
  * Created by Cristina on 24/03/2016.
  */
-public class ConversationPresenter implements ConversationPresenterOps{
+public class ConversationPresenter implements ConversationPresenterOps {
 
     private static WeakReference<ConversationActivity> activity;
     private static ConversationPresenter presentador;
 
-    private ConversationPresenter(Activity activity){
-        this.activity = new WeakReference<>((ConversationActivity)activity);
+    private ConversationPresenter(Activity activity) {
+        this.activity = new WeakReference<>((ConversationActivity) activity);
     }
 
-    public static ConversationPresenter getPresentador(Activity a){
+    public static ConversationPresenter getPresentador(Activity a) {
         if (presentador == null)
             presentador = new ConversationPresenter(a);
         else
-            activity = new WeakReference<>((ConversationActivity)a);
+            activity = new WeakReference<>((ConversationActivity) a);
         return presentador;
     }
 
@@ -38,16 +38,17 @@ public class ConversationPresenter implements ConversationPresenterOps{
 
     @Override
     public void messageHasBeenObtained(MessagePojo m) {
-        activity.get().messageHasBeenObtained(m);
+        if (activity.get() != null)
+            activity.get().messageHasBeenObtained(m);
     }
 
     @Override
-    public void sendMessage(MessagePojo mensaje, String keyReceptor){
+    public void sendMessage(MessagePojo mensaje, String keyReceptor) {
         Message.sendMessage(mensaje, keyReceptor);
     }
 
     @Override
-    public void detachFirebaseListeners(){
+    public void detachFirebaseListeners() {
         Message.detachConversationListeners();
     }
 
