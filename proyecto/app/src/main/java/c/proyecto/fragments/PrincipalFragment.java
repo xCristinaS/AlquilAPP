@@ -54,7 +54,6 @@ public class PrincipalFragment extends Fragment {
         tabLayout = (TabLayout) getActivity().findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
         viewPager.setOffscreenPageLimit(2);
-        mPresenter.initializeFirebaseListeners(user);
         viewPager.setCurrentItem(1); // el fragmento principal será el de anuncios
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -74,6 +73,7 @@ public class PrincipalFragment extends Fragment {
                     f.disableMultideletion();
             }
         });
+        mPresenter.initializeFirebaseListeners(user);
     }
 
     public void addAdvertToAdapter(Anuncio a) {
