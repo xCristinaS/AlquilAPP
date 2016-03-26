@@ -11,17 +11,11 @@ import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Base64;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
 
 import c.proyecto.R;
 import c.proyecto.api.ImgurAPI;
@@ -177,7 +171,6 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
                     System.out.println();
                 }
             });
-
         }
     }
 }

@@ -1,6 +1,5 @@
 package c.proyecto.api;
 
-
 public class ImgurResponse {
 
     private Data data;
