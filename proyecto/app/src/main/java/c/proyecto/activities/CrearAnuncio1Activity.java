@@ -165,7 +165,7 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
 
             RequestBody body = RequestBody.create(MediaType.parse("image/*"), file);
 
-            Call<ImgurResponse> llamada = ImgurAPI.getMInstance().getService().uploadImage("Client-ID a44a206a3f1f4b3", body);
+            Call<ImgurResponse> llamada = ImgurAPI.getMInstance().getService().uploadImage(body);
             llamada.enqueue(new Callback<ImgurResponse>() {
                 @Override
                 public void onResponse(Call<ImgurResponse> call, Response<ImgurResponse> response) {

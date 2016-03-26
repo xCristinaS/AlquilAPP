@@ -7,8 +7,14 @@ import android.util.Base64;
 import java.io.File;
 import java.io.IOException;
 
+import okhttp3.HttpUrl;
+import okhttp3.Interceptor;
 import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import okhttp3.RequestBody;
+import okhttp3.Response;
+import okhttp3.logging.HttpLoggingInterceptor;
 import okio.BufferedSink;
 import retrofit2.Call;
 import retrofit2.Retrofit;
@@ -32,12 +38,33 @@ public class ImgurAPI {
     public interface RetrofitInterface{
 
         @POST("3/upload")
-        Call<ImgurResponse> uploadImage(@Header("Authorization") String auth,
-                                        @Body() RequestBody file);
+        Call<ImgurResponse> uploadImage(@Body() RequestBody file);
     }
 
     private ImgurAPI(){
-        Retrofit retrofit = new Retrofit.Builder().baseUrl(BASE_URL).addConverterFactory(GsonConverterFactory.create()).build();
+        HttpLoggingInterceptor logInterceptor = new HttpLoggingInterceptor(); // Para que se muestre el log de todas las peticiones.
+        logInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+
+        OkHttpClient.Builder b = new OkHttpClient.Builder();
+        b.addInterceptor(new Interceptor() {
+            @Override
+            public Response intercept(Interceptor.Chain chain) throws IOException {
+                Request request = chain.request();
+                Request newRequest;
+                newRequest = request.newBuilder().addHeader("Authorization", "Client-ID a44a206a3f1f4b3").build();
+                return chain.proceed(newRequest);
+            }
+        });
+        b.addInterceptor(logInterceptor);
+        OkHttpClient client = b.build();
+
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(BASE_URL).client(client).addConverterFactory(GsonConverterFactory.create()).build();
+
+
+
+
+
+        //Retrofit retrofit = new Retrofit.Builder().baseUrl(BASE_URL).addConverterFactory(GsonConverterFactory.create()).build();
         service = retrofit.create(RetrofitInterface.class);
     }
 
