@@ -2,6 +2,8 @@ package c.proyecto.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,19 +14,29 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import c.proyecto.Constantes;
 import c.proyecto.R;
 import c.proyecto.adapters.PrestacionesAdapter;
+import c.proyecto.api.ImgurAPI;
+import c.proyecto.api.ImgurResponse;
 import c.proyecto.fragments.SeleccionPrestacionesDialogFragment;
 import c.proyecto.models.Anuncio;
 import c.proyecto.pojo.Prestacion;
+import c.proyecto.utils.Imagenes;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class CrearAnuncio2Activity extends AppCompatActivity implements PrestacionesAdapter.IPrestacionAdapter, SeleccionPrestacionesDialogFragment.ICallBackOnDismiss{
 
     private static final String INTENT_ANUNCIO = "intentAnuncio2";
     private static final String TAG_DIALOG_PRESTACIONES = "TAG_PRESTACIONES";
+    private static final String INTENT_IMAGES = "ImagenesEscogidas";
     private TextView txtTituloAnuncio;
     private ImageView imgCasa;
     private ImageView imgHabitacion;
@@ -43,10 +55,12 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
 
     private PrestacionesAdapter mPrestacionesAdapter;
     private Anuncio mAnuncio;
+    private Bitmap[] imagenesAnuncio;
 
-    public static void start(Context context, Anuncio anuncio){
+    public static void start(Context context, Anuncio anuncio, Bitmap[] images){
         Intent intent = new Intent(context, CrearAnuncio2Activity.class);
         intent.putExtra(INTENT_ANUNCIO, anuncio);
+        intent.putExtra(INTENT_IMAGES, images);
         context.startActivity(intent);
     }
 
@@ -55,6 +69,7 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_crear_anuncio2);
 
+        imagenesAnuncio = (Bitmap[]) getIntent().getParcelableArrayExtra(INTENT_IMAGES);
         mAnuncio = getIntent().getParcelableExtra(INTENT_ANUNCIO);
         //Si se entra creando
         if (mAnuncio == null){
@@ -183,5 +198,51 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
         imgPiso.clearColorFilter();
 
         view.setColorFilter(getResources().getColor(R.color.colorAccent));
+    }
+
+
+    private void confirmarCambios(){
+        //Comprobar que todos los campos están rellenos.
+
+        //Subir las imagenes a la api de imágenes.
+        new Uploader().execute(imagenesAnuncio);
+        //Guardar todos los editText en el objeto anuncio.
+
+        //Subir el objeto a FireBase.
+
+    }
+    //Sube las imagenes a la Api Imgur y guarda las url que den como resultado en el objeto Anuncio.
+    class Uploader extends AsyncTask<Bitmap[], Void, Void>{
+
+        @Override
+        protected Void doInBackground(Bitmap[]... params) {
+            for(int i = 0; i< params[0].length; i++)
+                if(params[0][i] != null)
+                    subirImagen(params[0][i]);
+
+            return null;
+        }
+    }
+
+    private void subirImagen(Bitmap bitmap){
+
+        File file = Imagenes.crearArchivoFoto(CrearAnuncio2Activity.this, "foto_piso.jpeg", false);
+        Imagenes.guardarBitmapEnArchivo(bitmap, file);
+
+        RequestBody body = RequestBody.create(MediaType.parse("image/*"), file);
+
+        Call<ImgurResponse> llamada = ImgurAPI.getMInstance().getService().uploadImage(body);
+        llamada.enqueue(new Callback<ImgurResponse>() {
+            @Override
+            public void onResponse(Call<ImgurResponse> call, Response<ImgurResponse> response) {
+                ImgurResponse respuesta = response.body();
+                //Se añade la urls del bitmap escogido
+                mAnuncio.getImagenes().add(respuesta.getData().getLink());
+            }
+
+            @Override
+            public void onFailure(Call<ImgurResponse> call, Throwable t) {
+            }
+        });
     }
 }

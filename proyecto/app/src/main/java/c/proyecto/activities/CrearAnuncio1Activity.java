@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import java.io.File;
 
+import c.proyecto.Constantes;
 import c.proyecto.R;
 import c.proyecto.api.ImgurAPI;
 import c.proyecto.api.ImgurResponse;
@@ -39,6 +40,7 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
     private ImageView img1, img2, img3, img4, img5;
     private ImageView imgSeleccionada;
     private String mPathOriginal;
+    private Bitmap[] imagenesAnuncio;
 
 
     public static void start(Context context, @Nullable Anuncio anuncio){
@@ -51,6 +53,7 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_crear_anuncio1);
         mAnuncio = getIntent().getParcelableExtra(INTENT_ANUNCIO);
+        imagenesAnuncio = new Bitmap[Constantes.NUMERO_IMAGENES_ANUNCIO];
         initViews();
     }
 
@@ -74,7 +77,7 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
         imgSiguiente.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CrearAnuncio2Activity.start(CrearAnuncio1Activity.this, mAnuncio);
+                CrearAnuncio2Activity.start(CrearAnuncio1Activity.this, mAnuncio, imagenesAnuncio);
             }
         });
     }
@@ -153,24 +156,30 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Bitmap bitmap) {
             imgSeleccionada.setImageBitmap(bitmap);
+            guardarBitmapEnArray(bitmap, imgSeleccionada.getId());
+        }
+    }
 
-            File file = Imagenes.crearArchivoFoto(CrearAnuncio1Activity.this, "foto_piso.jpeg", false);
-            Imagenes.guardarBitmapEnArchivo(bitmap, file);
-
-            RequestBody body = RequestBody.create(MediaType.parse("image/*"), file);
-
-            Call<ImgurResponse> llamada = ImgurAPI.getMInstance().getService().uploadImage(body);
-            llamada.enqueue(new Callback<ImgurResponse>() {
-                @Override
-                public void onResponse(Call<ImgurResponse> call, Response<ImgurResponse> response) {
-                    ImgurResponse respuesta = response.body();
-                }
-
-                @Override
-                public void onFailure(Call<ImgurResponse> call, Throwable t) {
-                    System.out.println();
-                }
-            });
+    private void guardarBitmapEnArray(Bitmap bitmap, int idImageView){
+        switch (idImageView){
+            case R.id.imgPrincipal:
+                imagenesAnuncio[0] = bitmap;
+                break;
+            case R.id.img1:
+                imagenesAnuncio[1] = bitmap;
+                break;
+            case R.id.img2:
+                imagenesAnuncio[2] = bitmap;
+                break;
+            case R.id.img3:
+                imagenesAnuncio[3] = bitmap;
+                break;
+            case R.id.img4:
+                imagenesAnuncio[4] = bitmap;
+                break;
+            case R.id.img5:
+                imagenesAnuncio[5] = bitmap;
+                break;
         }
     }
 }
