@@ -17,6 +17,7 @@ import retrofit2.http.Body;
 import retrofit2.http.Header;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -29,9 +30,10 @@ public class ImgurAPI {
     private final RetrofitInterface service;
 
     public interface RetrofitInterface{
-        @POST("3/image")
+
+        @POST("3/upload")
         Call<ImgurResponse> uploadImage(@Header("Authorization") String auth,
-                                        @Body() String base64String);
+                                        @Body() RequestBody file);
     }
 
     private ImgurAPI(){

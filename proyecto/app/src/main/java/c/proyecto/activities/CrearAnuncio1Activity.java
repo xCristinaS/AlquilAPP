@@ -4,14 +4,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.media.Image;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Base64;
 import android.view.View;
 import android.widget.ImageView;
@@ -19,10 +18,10 @@ import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
-import java.net.URLEncoder;
 
 import c.proyecto.R;
 import c.proyecto.api.ImgurAPI;
@@ -160,16 +159,13 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Bitmap bitmap) {
             imgSeleccionada.setImageBitmap(bitmap);
-            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
-            byte[] byteArray = byteArrayOutputStream.toByteArray();
-            String encoded = Base64.encodeToString(byteArray, Base64.DEFAULT);
 
-            File file = Imagenes.crearArchivoFoto(CrearAnuncio1Activity.this, "asda", false);
+            File file = Imagenes.crearArchivoFoto(CrearAnuncio1Activity.this, "foto_piso.jpeg", false);
             Imagenes.guardarBitmapEnArchivo(bitmap, file);
 
+            RequestBody body = RequestBody.create(MediaType.parse("image/*"), file);
 
-            Call<ImgurResponse> llamada = ImgurAPI.getMInstance().getService().uploadImage("Client-ID ac4e3834bdf29cd", "asdgs");
+            Call<ImgurResponse> llamada = ImgurAPI.getMInstance().getService().uploadImage("Client-ID a44a206a3f1f4b3", body);
             llamada.enqueue(new Callback<ImgurResponse>() {
                 @Override
                 public void onResponse(Call<ImgurResponse> call, Response<ImgurResponse> response) {
