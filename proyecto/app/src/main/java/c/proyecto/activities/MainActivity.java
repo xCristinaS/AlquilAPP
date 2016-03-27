@@ -16,25 +16,21 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
-
-import c.proyecto.Constantes;
 import c.proyecto.R;
 
 import c.proyecto.adapters.MessagesAdapter;
-import c.proyecto.adapters.MyRecyclerViewAdapter;
+import c.proyecto.adapters.AdvertsRecyclerViewAdapter;
 import c.proyecto.fragments.MessagesFragment;
 import c.proyecto.fragments.PrincipalFragment;
 import c.proyecto.interfaces.MainActivityOps;
 import c.proyecto.models.Anuncio;
 import c.proyecto.models.Usuario;
-import c.proyecto.pojo.Prestacion;
 import c.proyecto.pojo.MessagePojo;
 import c.proyecto.presenters.MainPresenter;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 
-public class MainActivity extends AppCompatActivity implements MainActivityOps, MyRecyclerViewAdapter.OnAdapterItemLongClick, MyRecyclerViewAdapter.OnAdapterItemClick, NavigationView.OnNavigationItemSelectedListener, MessagesAdapter.OnMessagesAdapterItemClick {
+public class MainActivity extends AppCompatActivity implements MainActivityOps, AdvertsRecyclerViewAdapter.OnAdapterItemLongClick, AdvertsRecyclerViewAdapter.OnAdapterItemClick, NavigationView.OnNavigationItemSelectedListener, MessagesAdapter.OnMessagesAdapterItemClick {
 
 
     private static final String ARG_USUARIO = "usuario_extra";
@@ -47,7 +43,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
     private ActionBarDrawerToggle toggle;
     private Toolbar toolbar;
     private NavigationView navigationView;
-    private MyRecyclerViewAdapter adapter;
+    private AdvertsRecyclerViewAdapter adapter;
 
     public static void start(Activity a, Usuario u){
         Intent intent = new Intent(a, MainActivity.class);
@@ -176,7 +172,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
     }
 
     @Override
-    public void setAdapterAllowMultiDeletion(MyRecyclerViewAdapter adapter) {
+    public void setAdapterAllowMultiDeletion(AdvertsRecyclerViewAdapter adapter) {
         this.adapter = adapter;
     }
 

@@ -31,6 +31,7 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
     private static final String EXTRA_ANUNCIO = "intent anuncio1";
     private static final String EXTRA_USUARIO = "extra user";
 
+    private static final int RC_CLOSE = 15;
     private static final int RC_ABRIR_GALERIA = 233;
     private static final int RC_CAPTURAR_FOTO = 455;
 
@@ -77,7 +78,7 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (imagenesAnuncio[0] != null)
-                    CrearAnuncio2Activity.start(CrearAnuncio1Activity.this, mAnuncio, user, imagenesAnuncio[0], imagenesAnuncio[1], imagenesAnuncio[2], imagenesAnuncio[3], imagenesAnuncio[4], imagenesAnuncio[5]);
+                    CrearAnuncio2Activity.start(CrearAnuncio1Activity.this, mAnuncio, user, RC_CLOSE, imagenesAnuncio[0], imagenesAnuncio[1], imagenesAnuncio[2], imagenesAnuncio[3], imagenesAnuncio[4], imagenesAnuncio[5]);
                 else
                     Toast.makeText(CrearAnuncio1Activity.this, "Debe cargar una foto para continuar", Toast.LENGTH_SHORT).show();
             }
@@ -152,6 +153,9 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
                     break;
                 case RC_CAPTURAR_FOTO:
                     new HiloEscalador().execute(imgSeleccionada.getWidth(), imgSeleccionada.getHeight());
+                    break;
+                case RC_CLOSE:
+                    finish();
                     break;
             }
 

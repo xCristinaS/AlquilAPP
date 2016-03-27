@@ -32,16 +32,13 @@
         <activity
             android:name=".activities.DetallesAnuncioActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".activities.EditProfileActivity" />
+        <activity android:name=".activities.EditProfileActivity" />
         <activity
             android:name=".activities.CrearAnuncio1Activity"
             android:label="Imagenes" />
-        <activity android:name=".activities.CrearAnuncio2Activity">
-
-
-        </activity>
-        <activity android:name=".activities.ConversationActivity"/>
+        <activity android:name=".activities.CrearAnuncio2Activity"></activity>
+        <activity android:name=".activities.ConversationActivity" />
+        <activity android:name=".activities.CrearAnuncio3Activity"></activity>
     </application>
 
 </manifest>

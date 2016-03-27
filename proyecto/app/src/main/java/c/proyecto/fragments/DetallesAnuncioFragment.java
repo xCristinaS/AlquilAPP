@@ -102,11 +102,14 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
         if (mAnuncio.getImagenes().size() > 0)
             Picasso.with(getActivity()).load(mAnuncio.getImagenes().get(0)).error(R.drawable.default_user).into(imgFoto);
         else
-            Picasso.with(getActivity()).load(R.drawable.default_user).error(R.drawable.default_user).into(imgFoto);
+            Picasso.with(getActivity()).load(R.drawable.default_user).into(imgFoto);
 
-        //Conseguir foto y nombre del anunciante
         lblNombre.setText(user.getNombre());
-        Picasso.with(getActivity()).load(user.getFoto()).error(R.drawable.default_user).into(imgAvatar);
+        if (user.getFoto() != null)
+            Picasso.with(getActivity()).load(user.getFoto()).error(R.drawable.default_user).into(imgAvatar);
+        else
+            Picasso.with(getActivity()).load(R.drawable.default_user).into(imgAvatar);
+
         lblPrecio.setText(String.format("%.2f%s", mAnuncio.getPrecio(), Constantes.MONEDA));
         lblTamano.setText(mAnuncio.getTamanio() + Constantes.UNIDAD);
         switch (mAnuncio.getTipo_vivienda()) {
