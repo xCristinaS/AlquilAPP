@@ -40,7 +40,7 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
     private ImageView img1, img2, img3, img4, img5;
     private ImageView imgSeleccionada;
     private String mPathOriginal;
-    private Bitmap[] imagenesAnuncio;
+    private File[] imagenesAnuncio;
 
 
     public static void start(Context context, @Nullable Anuncio anuncio){
@@ -53,7 +53,7 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_crear_anuncio1);
         mAnuncio = getIntent().getParcelableExtra(INTENT_ANUNCIO);
-        imagenesAnuncio = new Bitmap[Constantes.NUMERO_IMAGENES_ANUNCIO];
+        imagenesAnuncio = new File[Constantes.NUMERO_IMAGENES_ANUNCIO];
         initViews();
     }
 
@@ -77,7 +77,7 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
         imgSiguiente.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CrearAnuncio2Activity.start(CrearAnuncio1Activity.this, mAnuncio, imagenesAnuncio);
+                CrearAnuncio2Activity.start(CrearAnuncio1Activity.this, mAnuncio, imagenesAnuncio[0], imagenesAnuncio[1], imagenesAnuncio[2], imagenesAnuncio[3], imagenesAnuncio[4], imagenesAnuncio[5]);
             }
         });
     }
@@ -163,22 +163,28 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
     private void guardarBitmapEnArray(Bitmap bitmap, int idImageView){
         switch (idImageView){
             case R.id.imgPrincipal:
-                imagenesAnuncio[0] = bitmap;
+                imagenesAnuncio[0] = Imagenes.crearArchivoFoto(this, "foto_piso0.jpeg", false);
+                Imagenes.guardarBitmapEnArchivo(bitmap, imagenesAnuncio[0]);
                 break;
             case R.id.img1:
-                imagenesAnuncio[1] = bitmap;
+                imagenesAnuncio[1] = Imagenes.crearArchivoFoto(this, "foto_piso1.jpeg", false);
+                Imagenes.guardarBitmapEnArchivo(bitmap, imagenesAnuncio[1]);
                 break;
             case R.id.img2:
-                imagenesAnuncio[2] = bitmap;
+                imagenesAnuncio[2] = Imagenes.crearArchivoFoto(this, "foto_piso2.jpeg", false);
+                Imagenes.guardarBitmapEnArchivo(bitmap, imagenesAnuncio[2]);
                 break;
             case R.id.img3:
-                imagenesAnuncio[3] = bitmap;
+                imagenesAnuncio[3] = Imagenes.crearArchivoFoto(this, "foto_piso3.jpeg", false);
+                Imagenes.guardarBitmapEnArchivo(bitmap, imagenesAnuncio[3]);
                 break;
             case R.id.img4:
-                imagenesAnuncio[4] = bitmap;
+                imagenesAnuncio[4] = Imagenes.crearArchivoFoto(this, "foto_piso4.jpeg", false);
+                Imagenes.guardarBitmapEnArchivo(bitmap, imagenesAnuncio[4]);
                 break;
             case R.id.img5:
-                imagenesAnuncio[5] = bitmap;
+                imagenesAnuncio[5] = Imagenes.crearArchivoFoto(this, "foto_piso5.jpeg", false);
+                Imagenes.guardarBitmapEnArchivo(bitmap, imagenesAnuncio[5]);
                 break;
         }
     }
