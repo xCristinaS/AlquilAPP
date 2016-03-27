@@ -6,14 +6,12 @@ import android.content.Intent;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.InputType;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
@@ -35,7 +33,7 @@ public class EditProfileActivity extends AppCompatActivity {
     public static final String EXTRA_USER_RESULT = "extra_result_user";
 
     private EditText txtNombre, txtApellidos, txtFechaNac, txtNacionalidad, txtProfesion, txtComentDesc;
-    private ImageView imgFoto, imgHabitos, imgGenero;
+    private ImageView imgFoto, imgCaracteristicas, imgGenero;
     private Button btnConfirmar;
     private Usuario mUser;
     private EditProfilePresenter mPresenter;
@@ -64,7 +62,7 @@ public class EditProfileActivity extends AppCompatActivity {
         txtNacionalidad = (EditText) findViewById(R.id.txtNacionalidad);
         txtProfesion = (EditText) findViewById(R.id.txtProfesion);
         txtComentDesc = (EditText) findViewById(R.id.txtComentDesc);
-        imgHabitos = (ImageView) findViewById(R.id.imgHabitos);
+        imgCaracteristicas = (ImageView) findViewById(R.id.imgHabitos);
         imgGenero = (ImageView) findViewById(R.id.imgGenero);
         btnConfirmar = (Button) findViewById(R.id.btnConfirmar);
 
@@ -84,10 +82,10 @@ public class EditProfileActivity extends AppCompatActivity {
             }
         });
 
-        imgHabitos.setOnClickListener(new View.OnClickListener() {
+        imgCaracteristicas.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showHabitosDialog();
+                showCaracteristicasDialog();
             }
         });
     }
@@ -97,7 +95,7 @@ public class EditProfileActivity extends AppCompatActivity {
             mUser.setNombre(txtNombre.getText().toString());
         if (!TextUtils.isEmpty(txtApellidos.getText()))
             mUser.setApellidos(txtApellidos.getText().toString());
-        if (!TextUtils.isEmpty(txtFechaNac.getText())){
+        if (!TextUtils.isEmpty(txtFechaNac.getText())) {
             SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
             try {
                 mUser.setFecha_nacimiento(format.parse(txtFechaNac.getText().toString()).getTime());
@@ -105,19 +103,27 @@ public class EditProfileActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
+        if (!TextUtils.isEmpty(txtComentDesc.getText()))
+            mUser.setComentario_desc(txtComentDesc.getText().toString());
+        if (!TextUtils.isEmpty(txtProfesion.getText()))
+            mUser.setProfesion(txtProfesion.getText().toString());
     }
 
     private void recuperarUser() {
         Picasso.with(this).load(mUser.getFoto()).error(R.drawable.default_user).into(imgFoto);
         txtNombre.setText(mUser.getNombre());
         txtApellidos.setText(mUser.getApellidos());
-        txtNacionalidad.setText(mUser.getNacionalidad());
-        txtProfesion.setText(mUser.getProfesion());
-        txtComentDesc.setText(mUser.getComentario_desc());
-        txtFechaNac.setText(new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(new Date(mUser.getFecha_nacimiento())));
+        if (mUser.getNacionalidad() != null)
+            txtNacionalidad.setText(mUser.getNacionalidad());
+        if (mUser.getProfesion() != null)
+            txtProfesion.setText(mUser.getProfesion());
+        if (mUser.getComentario_desc() != null)
+            txtComentDesc.setText(mUser.getComentario_desc());
+        if (mUser.getFecha_nacimiento() > 0)
+            txtFechaNac.setText(new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(new Date(mUser.getFecha_nacimiento())));
     }
 
-    private void showHabitosDialog() {
+    private void showCaracteristicasDialog() {
         FragmentManager fm = getSupportFragmentManager();
         CaracteristicasUsuarioDialogFragment.newInstance(mUser).show(fm, TAG_DIALOG_HABITOS);
     }
