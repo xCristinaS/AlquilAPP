@@ -224,14 +224,20 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
 
     @Override
     public void onBackPressed() {
-        if (getSupportFragmentManager().findFragmentById(R.id.frmContenido) instanceof MessagesFragment) {
-            PrincipalFragment f = (PrincipalFragment) getSupportFragmentManager().findFragmentByTag(TAG_PRINCIPAL_FRAGMENT);
-            if (f != null)
-                getSupportFragmentManager().beginTransaction().replace(R.id.frmContenido, f).commit();
-            else
-                getSupportFragmentManager().beginTransaction().replace(R.id.frmContenido, new PrincipalFragment(), TAG_PRINCIPAL_FRAGMENT).commit();
-        } else
-            super.onBackPressed();
+        //Si el navDrawer está abierto lo cierra
+        if(drawer.isDrawerOpen(GravityCompat.START))
+            drawer.closeDrawers();
+        else{
+            if (getSupportFragmentManager().findFragmentById(R.id.frmContenido) instanceof MessagesFragment) {
+                PrincipalFragment f = (PrincipalFragment) getSupportFragmentManager().findFragmentByTag(TAG_PRINCIPAL_FRAGMENT);
+                if (f != null)
+                    getSupportFragmentManager().beginTransaction().replace(R.id.frmContenido, f).commit();
+                else
+                    getSupportFragmentManager().beginTransaction().replace(R.id.frmContenido, new PrincipalFragment(), TAG_PRINCIPAL_FRAGMENT).commit();
+            } else
+                super.onBackPressed();
+        }
+
     }
 
     @Override
@@ -252,4 +258,5 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
     public void onItemClick(MessagePojo mensaje) {
         ConversationActivity.start(this, mensaje, user);
     }
+
 }

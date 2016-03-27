@@ -18,9 +18,7 @@ import c.proyecto.R;
 import c.proyecto.pojo.MessagePojo;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-/**
- * Created by Cristina on 23/03/2016.
- */
+
 public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.MessagesViewHolder> {
 
     public interface OnMessagesAdapterItemClick {
