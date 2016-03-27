@@ -1,9 +1,12 @@
 package c.proyecto.adapters;
 
+import android.app.ActionBar;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -120,12 +123,17 @@ public class MessagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     class ChatViewHolder extends RecyclerView.ViewHolder {
 
+        private final CardView cvItemMessage;
+        private final RelativeLayout groupItemMessage;
         private TextView lblMessage, lblDate;
+
 
         public ChatViewHolder(View itemView) {
             super(itemView);
             lblMessage = (TextView) itemView.findViewById(R.id.lblMessage);
             lblDate = (TextView) itemView.findViewById(R.id.lblDate);
+            cvItemMessage = (CardView) itemView.findViewById(R.id.cvItemMessage);
+            groupItemMessage = (RelativeLayout) itemView.findViewById(R.id.groupItemMessage);
         }
 
         public void onBind(final MessagePojo m) {
@@ -134,9 +142,15 @@ public class MessagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             //long dia = TimeUnit.DAYS.toMillis(1);
             //Date hoy = new Date();
 
-            if (m.getEmisor().getKey().equals(mKeyCurrentUser))
-                // ES mio
-            //else
+            //Colorea el cardView dependiendo de si es un mensaje mio o no
+            if (m.getEmisor().getKey().equals(mKeyCurrentUser)){
+                cvItemMessage.setCardBackgroundColor(itemView.getResources().getColor(R.color.colorAccent));
+                RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) groupItemMessage.getLayoutParams();
+                params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+                groupItemMessage.setLayoutParams(params);
+            }
+            else
+                cvItemMessage.setCardBackgroundColor(itemView.getResources().getColor(R.color.colorPrimary));
 
 
             lblMessage.setText(m.getContenido());
