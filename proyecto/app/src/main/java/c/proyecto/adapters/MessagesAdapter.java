@@ -19,7 +19,7 @@ import c.proyecto.pojo.MessagePojo;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 
-public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.MessagesViewHolder> {
+public class MessagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     public interface OnMessagesAdapterItemClick {
         void onItemClick(MessagePojo mensaje);
@@ -33,20 +33,35 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.Messag
     private OnMessagesAdapterItemClick listenerItemClick;
     private ConversationManager listenerConverManager;
     private boolean isAConversation;
+    private String mKeyCurrentUser;
 
-    public MessagesAdapter(boolean isAConversation) {
+    public MessagesAdapter(boolean isAConversation, String keyCurrentUser) {
         mDatos = new ArrayList<>();
+        mKeyCurrentUser = keyCurrentUser;
         this.isAConversation = isAConversation;
     }
 
     @Override
-    public MessagesViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new MessagesViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_message, parent, false));
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View anuncioView;
+        RecyclerView.ViewHolder viewHolder;
+
+        if (!isAConversation) {
+            anuncioView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_message, parent, false);
+            viewHolder = new MessagesViewHolder(anuncioView);
+        } else {
+            anuncioView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_sended_message, parent, false);
+            viewHolder = new ChatViewHolder(anuncioView);
+        }
+        return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(MessagesViewHolder holder, final int position) {
-        holder.onBind(mDatos.get(position));
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
+        if (!isAConversation)
+            ((MessagesViewHolder) holder).onBind(mDatos.get(position));
+        else
+            ((ChatViewHolder) holder).onBind(mDatos.get(position));
     }
 
     @Override
@@ -85,6 +100,7 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.Messag
                 Picasso.with(itemView.getContext()).load(m.getEmisor().getFoto()).into(imgEmisor);
             else
                 Picasso.with(itemView.getContext()).load(R.drawable.default_user).into(imgEmisor);
+
             lblTituloAnuncio.setText(m.getTituloAnuncio());
             lblContenido.setText(m.getContenido());
             lblNombreEmisor.setText(m.getEmisor().getNombre());
@@ -93,13 +109,41 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.Messag
             //else
             //  lblFecha.setText(hora.format(m.getFecha()));
 
-            if (!isAConversation)
-                itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        listenerItemClick.onItemClick(mDatos.get(mDatos.indexOf(m)));
-                    }
-                });
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listenerItemClick.onItemClick(mDatos.get(mDatos.indexOf(m)));
+                }
+            });
+        }
+    }
+
+    class ChatViewHolder extends RecyclerView.ViewHolder {
+
+        private TextView lblMessage, lblDate;
+
+        public ChatViewHolder(View itemView) {
+            super(itemView);
+            lblMessage = (TextView) itemView.findViewById(R.id.lblMessage);
+            lblDate = (TextView) itemView.findViewById(R.id.lblDate);
+        }
+
+        public void onBind(final MessagePojo m) {
+            SimpleDateFormat fecha = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault());
+            SimpleDateFormat hora = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+            //long dia = TimeUnit.DAYS.toMillis(1);
+            //Date hoy = new Date();
+
+            if (m.getEmisor().getKey().equals(mKeyCurrentUser))
+                // ES mio
+            //else
+
+
+            lblMessage.setText(m.getContenido());
+            //if (hoy.getTime() - m.getFecha().getTime() > dia)
+            lblDate.setText(fecha.format(m.getFecha()));
+            //else
+            //  lblFecha.setText(hora.format(m.getFecha()));
         }
     }
 

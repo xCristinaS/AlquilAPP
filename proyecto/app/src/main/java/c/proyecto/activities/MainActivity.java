@@ -158,7 +158,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
                 break;
             case R.id.nav_messages:
                 mPresenter.requestUserMessages(user);
-                getSupportFragmentManager().beginTransaction().replace(R.id.frmContenido, MessagesFragment.newInstance(false), TAG_MESSAGES_FRAGMENT).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.frmContenido, MessagesFragment.newInstance(false, null), TAG_MESSAGES_FRAGMENT).commit();
                 break;
             case R.id.nav_preferences:
                 break;

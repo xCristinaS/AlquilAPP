@@ -18,6 +18,7 @@ import c.proyecto.pojo.MessagePojo;
 public class MessagesFragment extends Fragment {
 
     private static final String ARG_CONVER = "conver";
+    private static final String ARG_CURRENT_USER = "user";
 
     private RecyclerView rvMessages;
     private MessagesAdapter mAdapter;
@@ -25,10 +26,12 @@ public class MessagesFragment extends Fragment {
     private MessagesAdapter.OnMessagesAdapterItemClick listenerItemClick;
     private MessagesAdapter.ConversationManager listenerConverManager;
     private boolean isAConversation;
+    private String mKeyCurrentUser;
 
-    public static MessagesFragment newInstance(boolean isAConversation) {
+    public static MessagesFragment newInstance(boolean isAConversation, String keyCurrentUser) {
         Bundle args = new Bundle();
         args.putBoolean(ARG_CONVER, isAConversation);
+        args.putString(ARG_CURRENT_USER, keyCurrentUser);
         MessagesFragment fragment = new MessagesFragment();
         fragment.setArguments(args);
         return fragment;
@@ -49,8 +52,9 @@ public class MessagesFragment extends Fragment {
     private void initViews() {
         Bundle args = getArguments();
         isAConversation = args.getBoolean(ARG_CONVER, false);
+        mKeyCurrentUser = args.getString(ARG_CURRENT_USER);
         rvMessages = (RecyclerView) getView().findViewById(R.id.rvMessages);
-        mAdapter = new MessagesAdapter(isAConversation);
+        mAdapter = new MessagesAdapter(isAConversation, mKeyCurrentUser);
         if (listenerItemClick != null)
             mAdapter.setListenerItemClick(listenerItemClick);
         if (listenerConverManager != null)

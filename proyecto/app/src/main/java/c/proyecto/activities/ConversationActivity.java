@@ -53,7 +53,7 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
     private void initViews() {
         mPresenter = ConversationPresenter.getPresentador(this);
         mPresenter.userConversationRequested(user, mensaje);
-        getSupportFragmentManager().beginTransaction().replace(R.id.frmContenido, MessagesFragment.newInstance(true)).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.frmContenido, MessagesFragment.newInstance(true, mensaje.getKeyReceptor())).commit();
         imgEnviar = (ImageView) findViewById(R.id.imgEnviar);
         txtMensaje = (EditText) findViewById(R.id.txtMensaje);
 
@@ -66,6 +66,10 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
                 }
             }
         });
+
+        mensaje.getEmisor().getFoto(); // FOTO DEL QUE TE HA HABLADO
+        mensaje.getEmisor().getNombre(); // NOMBRE DEL QUE TE HA HABLADO
+        mensaje.getTituloAnuncio(); // TITULO DEL ANUNCIO
     }
 
     @Override
