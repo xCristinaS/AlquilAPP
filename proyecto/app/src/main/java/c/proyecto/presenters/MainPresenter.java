@@ -95,6 +95,7 @@ public class MainPresenter implements MainPresenterOps {
 
     @Override
     public void userMessageHasBeenObtained(MessagePojo m){
-        activity.get().userMessageHasBeenObtained(m);
+        if (activity.get() != null)
+            activity.get().userMessageHasBeenObtained(m);
     }
 }
