@@ -1,46 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:id="@+id/groupItemMessage"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    >
 
-    <RelativeLayout
-        android:id="@+id/groupItemMessage"
+    <android.support.v7.widget.CardView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/cvItemMessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true">
+        app:cardBackgroundColor="@android:color/holo_blue_dark"
+        app:cardCornerRadius="10dp">
 
-        <android.support.v7.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/cvItemMessage"
+        <RelativeLayout
+
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="10dp"
-            app:cardBackgroundColor="@android:color/holo_blue_dark">
+            android:layout_height="wrap_content">
 
-            <RelativeLayout
+            <TextView
+                android:id="@+id/lblMessage"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:maxWidth="260dp"
+                android:text="Mensaje de ejemplo" />
 
-                <TextView
-                    android:id="@+id/lblMessage"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:maxWidth="260dp"
-                    android:text="Mensaje de ejemplo" />
-
-                <TextView
-                    android:id="@+id/lblDate"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_toRightOf="@id/lblMessage"
-                    android:text="23:02" />
-            </RelativeLayout>
-        </android.support.v7.widget.CardView>
-
-    </RelativeLayout>
+            <TextView
+                android:id="@+id/lblDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="10dp"
+                android:layout_marginRight="10dp"
+                android:maxLines="1"
+                android:layout_below="@id/lblMessage"
+                android:text="23:02" />
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
 
 </RelativeLayout>
+

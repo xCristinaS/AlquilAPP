@@ -12,7 +12,9 @@ import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -146,16 +148,23 @@ public class MessagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
 
         public void onBind(final MessagePojo m) {
-            SimpleDateFormat fecha = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault());
-            SimpleDateFormat hora = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
-            //long dia = TimeUnit.DAYS.toMillis(1);
-            //Date hoy = new Date();
-            
+            SimpleDateFormat fecha = new SimpleDateFormat("dd/MM", Locale.getDefault());
+            SimpleDateFormat hora = new SimpleDateFormat("HH:mm", Locale.getDefault());
+
+            // Consigue el long del día de hoy a las 00:00
+            Calendar cal = Calendar.getInstance();
+            cal.set(Calendar.HOUR_OF_DAY, 0);
+            cal.set(Calendar.MINUTE, 0);
+            cal.set(Calendar.SECOND,0);
+            Date hoy = cal.getTime();
+
+            //Si la fecha del mensaje es posterior a las 00:00 de hoy, se mostrará solo la hora del mensaje
+            if(m.getFecha().getTime() >= hoy.getTime())
+                lblDate.setText(hora.format(m.getFecha()));
+            else//sino la fecha
+                lblDate.setText(fecha.format(m.getFecha()));
+
             lblMessage.setText(m.getContenido());
-            //if (hoy.getTime() - m.getFecha().getTime() > dia)
-            lblDate.setText(fecha.format(m.getFecha()));
-            //else
-            //  lblFecha.setText(hora.format(m.getFecha()));
         }
     }
 
@@ -188,4 +197,6 @@ public class MessagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         mDatos.remove(m);
         notifyItemRemoved(position);
     }
+
+
 }
