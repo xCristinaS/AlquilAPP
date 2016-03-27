@@ -13,16 +13,18 @@
         app:cardBackgroundColor="@android:color/holo_purple"
         app:cardCornerRadius="10dp">
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:layout_marginTop="5dp">
+            android:layout_marginBottom="3dp"
+            android:layout_marginTop="3dp"
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/lblMessage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:layout_marginLeft="8dp"
 
                 android:text="Mensaje de ejemplo" />
@@ -35,11 +37,9 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="10dp"
                 android:textSize="12sp"
-                android:layout_toRightOf="@id/lblMessage"
-                android:layout_toEndOf="@id/lblMessage"
 
                 android:text="23:02" />
-        </RelativeLayout>
+        </LinearLayout>
     </android.support.v7.widget.CardView>
 
 </RelativeLayout>
