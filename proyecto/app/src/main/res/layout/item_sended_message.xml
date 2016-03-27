@@ -14,7 +14,8 @@
             android:id="@+id/cvItemMessage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:cardCornerRadius="10dp">
+            app:cardCornerRadius="10dp"
+            app:cardBackgroundColor="@android:color/holo_blue_dark">
 
             <RelativeLayout
                 android:layout_width="wrap_content"
