@@ -12,6 +12,9 @@ import c.proyecto.models.Usuario;
  */
 public class MessagePojo implements Parcelable, Comparable<MessagePojo> {
 
+    public static final int TIPO_ENVIADO = 2;
+    public static final int TIPO_RECIBIDO = 4;
+
     private String key, tituloAnuncio, contenido, keyReceptor;
     private Usuario emisor;
     private Date fecha;
@@ -25,6 +28,13 @@ public class MessagePojo implements Parcelable, Comparable<MessagePojo> {
         this.emisor = emisor;
         this.tituloAnuncio = tituloAnuncio;
         this.contenido = contenido;
+    }
+
+    public int getType(String keyCurrentUser){
+        if (emisor.getKey().equals(keyCurrentUser))
+            return TIPO_ENVIADO;
+        else
+            return TIPO_RECIBIDO;
     }
 
     @Override

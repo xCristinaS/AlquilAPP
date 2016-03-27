@@ -1,6 +1,5 @@
 package c.proyecto.adapters;
 
-import android.app.ActionBar;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -45,6 +44,11 @@ public class MessagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     @Override
+    public int getItemViewType(int position) {
+        return mDatos.get(position).getType(mKeyCurrentUser);
+    }
+
+    @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View anuncioView;
         RecyclerView.ViewHolder viewHolder;
@@ -53,8 +57,13 @@ public class MessagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             anuncioView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_message, parent, false);
             viewHolder = new MessagesViewHolder(anuncioView);
         } else {
-            anuncioView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_sended_message, parent, false);
-            viewHolder = new ChatViewHolder(anuncioView);
+            if (viewType == MessagePojo.TIPO_ENVIADO) {
+                anuncioView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_sended_message, parent, false);
+                viewHolder = new ChatViewHolder(anuncioView);
+            } else {
+                anuncioView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_received_message, parent, false);
+                viewHolder = new ChatViewHolder(anuncioView);
+            }
         }
         return viewHolder;
     }
@@ -141,18 +150,12 @@ public class MessagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             SimpleDateFormat hora = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
             //long dia = TimeUnit.DAYS.toMillis(1);
             //Date hoy = new Date();
-            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) groupItemMessage.getLayoutParams();
-            //Colorea el cardView dependiendo de si es un mensaje mio o no
-            if (m.getEmisor().getKey().equals(mKeyCurrentUser)){
-                cvItemMessage.setCardBackgroundColor(itemView.getResources().getColor(R.color.colorAccent));
-                params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-            }
-            else{
-                cvItemMessage.setCardBackgroundColor(itemView.getResources().getColor(R.color.colorPrimary));
-                params.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-            }
-            groupItemMessage.setLayoutParams(params);
 
+            //Colorea el cardView dependiendo de si es un mensaje mio o no
+            if (m.getEmisor().getKey().equals(mKeyCurrentUser))
+                cvItemMessage.setCardBackgroundColor(itemView.getResources().getColor(R.color.colorAccent));
+            else
+                cvItemMessage.setCardBackgroundColor(itemView.getResources().getColor(R.color.colorPrimary));
 
             lblMessage.setText(m.getContenido());
             //if (hoy.getTime() - m.getFecha().getTime() > dia)

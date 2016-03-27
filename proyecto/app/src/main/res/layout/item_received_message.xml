@@ -1,42 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-
+    android:layout_height="wrap_content"
+    >
     <RelativeLayout
         android:id="@+id/groupItemMessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true">
-
-        <android.support.v7.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        >
+        <android.support.v7.widget.CardView
             android:id="@+id/cvItemMessage"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:cardCornerRadius="10dp">
-
             <RelativeLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
+                android:layout_height="wrap_content"
+                >
                 <TextView
                     android:id="@+id/lblMessage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:maxWidth="260dp"
-                    android:text="Mensaje de ejemplo" />
-
+                    android:text="Mensaje de ejemplo"
+                    android:maxWidth="260dp"/>
                 <TextView
                     android:id="@+id/lblDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
 
                     android:layout_alignParentBottom="true"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginRight="10dp"
                     android:layout_toRightOf="@id/lblMessage"
-                    android:text="23:02" />
+                    android:text="23:02"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginRight="10dp"/>
             </RelativeLayout>
         </android.support.v7.widget.CardView>
 
