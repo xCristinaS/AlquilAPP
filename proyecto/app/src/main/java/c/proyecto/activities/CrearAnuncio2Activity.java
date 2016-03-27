@@ -1,5 +1,6 @@
 package c.proyecto.activities;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -57,8 +58,8 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
     private Anuncio mAnuncio;
     private Usuario user;
 
-    public static void start(Context context, Anuncio anuncio, Usuario user, File img0, File img1, File img2, File img3, File img4, File img5) {
-        Intent intent = new Intent(context, CrearAnuncio2Activity.class);
+    public static void start(Activity a, Anuncio anuncio, Usuario user, int requestCode, File img0, File img1, File img2, File img3, File img4, File img5) {
+        Intent intent = new Intent(a, CrearAnuncio2Activity.class);
         intent.putExtra(EXTRA_ANUNCIO, anuncio);
         intent.putExtra(EXTRA_USUARIO, user);
         intent.putExtra(EXTRA_IMAGE_0, img0);
@@ -67,7 +68,7 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
         intent.putExtra(EXTRA_IMAGE_3, img3);
         intent.putExtra(EXTRA_IMAGE_4, img4);
         intent.putExtra(EXTRA_IMAGE_5, img5);
-        context.startActivity(intent);
+        a.startActivityForResult(intent, requestCode);
     }
 
     @Override
@@ -263,6 +264,7 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
             meterDatosEnAnuncio();
             //Subir el objeto a FireBase.
             mPresenter.publishNewAdvert(mAnuncio);
+            finish();
         }
     }
 
@@ -293,6 +295,12 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
             mAnuncio.setTamanio(Integer.valueOf(txtTamano.getText().toString()));
         if (!TextUtils.isEmpty(txtDescripcion.getText()))
             mAnuncio.setDescripcion(txtDescripcion.getText().toString());
+    }
+
+    @Override
+    public void finish() {
+        setResult(RESULT_OK, new Intent());
+        super.finish();
     }
 
     //Sube las imagenes a la Api Imgur y guarda las url que den como resultado en el objeto Anuncio.
