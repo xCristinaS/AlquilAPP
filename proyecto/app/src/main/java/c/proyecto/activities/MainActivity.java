@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
     private static final String ARG_USUARIO = "usuario_extra";
     private static final String TAG_PRINCIPAL_FRAGMENT = "principal_fragment";
     private static final String TAG_MESSAGES_FRAGMENT = "messages_fragment";
+    private static final int RC_EDIT_PROFILE = 87;
 
     private MainPresenter mPresenter;
     private Usuario user;
@@ -154,7 +155,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
                 CrearAnuncio1Activity.start(this, null, user);
                 break;
             case R.id.nav_edit_profile:
-                EditProfileActivity.start(this, user);
+                EditProfileActivity.start(this, user, RC_EDIT_PROFILE);
                 break;
             case R.id.nav_messages:
                 mPresenter.requestUserMessages(user);
@@ -169,6 +170,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
         }
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && requestCode == RC_EDIT_PROFILE)
+            user = data.getParcelableExtra(EditProfileActivity.EXTRA_USER_RESULT);
     }
 
     @Override

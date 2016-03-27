@@ -21,6 +21,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 import c.proyecto.R;
 import c.proyecto.fragments.CaracteristicasUsuarioDialogFragment;
@@ -31,6 +32,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
     private static final String ARG_USUARIO = "args_user";
     private static final String TAG_DIALOG_HABITOS = "DialogHabitos";
+    public static final String EXTRA_USER_RESULT = "extra_result_user";
 
     private EditText txtNombre, txtApellidos, txtFechaNac, txtNacionalidad, txtProfesion, txtComentDesc;
     private ImageView imgFoto, imgHabitos, imgGenero;
@@ -38,10 +40,10 @@ public class EditProfileActivity extends AppCompatActivity {
     private Usuario mUser;
     private EditProfilePresenter mPresenter;
 
-    public static void start(Activity a, Usuario u) {
+    public static void start(Activity a, Usuario u, int requestCode) {
         Intent intent = new Intent(a, EditProfileActivity.class);
         intent.putExtra(ARG_USUARIO, u);
-        a.startActivity(intent);
+        a.startActivityForResult(intent, requestCode);
     }
 
     @Override
@@ -71,6 +73,7 @@ public class EditProfileActivity extends AppCompatActivity {
             public void onClick(View v) {
                 introducirDatosEnUser();
                 mPresenter.updateUserProfile(mUser);
+                finish();
             }
         });
 
@@ -95,7 +98,7 @@ public class EditProfileActivity extends AppCompatActivity {
         if (!TextUtils.isEmpty(txtApellidos.getText()))
             mUser.setApellidos(txtApellidos.getText().toString());
         if (!TextUtils.isEmpty(txtFechaNac.getText())){
-            SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+            SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
             try {
                 mUser.setFecha_nacimiento(format.parse(txtFechaNac.getText().toString()).getTime());
             } catch (ParseException e) {
@@ -111,6 +114,7 @@ public class EditProfileActivity extends AppCompatActivity {
         txtNacionalidad.setText(mUser.getNacionalidad());
         txtProfesion.setText(mUser.getProfesion());
         txtComentDesc.setText(mUser.getComentario_desc());
+        txtFechaNac.setText(new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(new Date(mUser.getFecha_nacimiento())));
     }
 
     private void showHabitosDialog() {
@@ -142,11 +146,17 @@ public class EditProfileActivity extends AppCompatActivity {
                 cal.setTimeInMillis(0);
                 cal.set(selectedyear, selectedmonth, selectedday);
                 Date date = cal.getTime();
-                SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+                SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
                 txtFechaNac.setText(String.format("%s", format.format(date)));
             }
         }, year, mont, day);
         datePicker.setTitle("Seleccione su fecha");
         datePicker.show();
+    }
+
+    @Override
+    public void finish() {
+        setResult(RESULT_OK, new Intent().putExtra(EXTRA_USER_RESULT, mUser));
+        super.finish();
     }
 }
