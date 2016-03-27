@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin">
+
+    <!-- ORDENADO -->
+    <TextView
+        android:id="@+id/lblOrdenado"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ordenado"
+        android:layout_marginTop="5dp"
+        />
+
+    <android.support.v7.widget.AppCompatSeekBar
+        android:id="@+id/skOrdenado"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/lblOrdenado"
+        android:layout_toEndOf="@id/lblOrdenado"
+        android:layout_marginRight="12dp"
+        />
+
+    <TextView
+        android:id="@+id/lblNumOrdenado"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0"
+        android:layout_alignBaseline="@id/lblOrdenado"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"/>
+
+    <!-- FIESTERO -->
+
+    <TextView
+        android:id="@+id/lblFiestero"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Fiestero"
+        android:layout_below="@id/lblOrdenado"
+        android:layout_marginTop="13dp"/>
+    <android.support.v7.widget.AppCompatSeekBar
+        android:id="@+id/skFiestero"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/lblOrdenado"
+        android:layout_below="@id/skOrdenado"
+        android:layout_marginRight="12dp"/>
+
+    <TextView
+        android:id="@+id/lblNumFiestero"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0"
+        android:layout_alignBaseline="@id/lblFiestero"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        />
+
+    <!-- SOCIABLE -->
+    <TextView
+        android:id="@+id/lblSociable"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sociable"
+        android:layout_below="@id/lblFiestero"
+        android:layout_marginTop="13dp"/>
+
+    <android.support.v7.widget.AppCompatSeekBar
+        android:id="@+id/skSociable"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/lblOrdenado"
+        android:layout_below="@id/skFiestero"
+        android:layout_marginRight="12dp"/>
+    <TextView
+        android:id="@+id/lblNumSociable"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0"
+        android:layout_alignBaseline="@id/lblSociable"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        />
+
+    <!-- ACTIVO -->
+    <TextView
+        android:id="@+id/lblActivo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Activo"
+        android:layout_below="@id/lblSociable"
+        android:layout_marginTop="13dp"/>
+
+    <android.support.v7.widget.AppCompatSeekBar
+        android:id="@+id/skActivo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/lblOrdenado"
+        android:layout_below="@id/skSociable"
+        android:layout_marginRight="12dp"/>
+
+    <TextView
+        android:id="@+id/lblNumActivo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0"
+        android:layout_alignBaseline="@id/lblActivo"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        />
+</RelativeLayout>

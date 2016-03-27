@@ -15,9 +15,7 @@ import c.proyecto.presenters.AdvertsDetailsPresenter;
 import c.proyecto.presenters.InicioPresenter;
 import c.proyecto.presenters.RegistroPresenter;
 
-/**
- * Created by Cristina on 19/03/2016.
- */
+
 public class Usuario implements Parcelable {
 
     private static final String URL_USERS = "https://proyectofinaldam.firebaseio.com/usuarios/";

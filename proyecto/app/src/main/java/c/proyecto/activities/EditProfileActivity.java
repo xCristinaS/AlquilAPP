@@ -13,10 +13,8 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
-
 import c.proyecto.R;
-import c.proyecto.fragments.HabitosDialogFragment;
+import c.proyecto.fragments.CaracteristicasUsuarioDialogFragment;
 import c.proyecto.models.Usuario;
 
 public class EditProfileActivity extends AppCompatActivity {
@@ -89,6 +87,6 @@ public class EditProfileActivity extends AppCompatActivity {
 
     private void showHabitosDialog(){
         FragmentManager fm = getSupportFragmentManager();
-        HabitosDialogFragment.newInstance(mUser.getOrdenado(), mUser.getFiestero(), mUser.getSociable(), mUser.getActivo()).show(fm, TAG_DIALOG_HABITOS);
+        CaracteristicasUsuarioDialogFragment.newInstance(mUser).show(fm, TAG_DIALOG_HABITOS);
     }
 }

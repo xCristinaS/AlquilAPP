@@ -20,5 +20,8 @@ public final class Constantes {
 
     //Número de imagenes que contendrá los anuncios
     public static final int NUMERO_IMAGENES_ANUNCIO = 6;
+
+    //Número por el que se divide/multiplica los SeekBar de las características.
+    public static final int MULTIPLICADOR_SEEK_BAR = 10;
 }
 
