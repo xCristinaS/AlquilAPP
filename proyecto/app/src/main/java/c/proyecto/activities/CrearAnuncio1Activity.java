@@ -19,40 +19,36 @@ import java.io.File;
 
 import c.proyecto.Constantes;
 import c.proyecto.R;
-import c.proyecto.api.ImgurAPI;
-import c.proyecto.api.ImgurResponse;
 import c.proyecto.models.Anuncio;
+import c.proyecto.models.Usuario;
 import c.proyecto.utils.Imagenes;
-import okhttp3.MediaType;
-import okhttp3.RequestBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class CrearAnuncio1Activity extends AppCompatActivity {
 
-    private static final String INTENT_ANUNCIO = "intent anuncio1";
+    private static final String EXTRA_ANUNCIO = "intent anuncio1";
+    private static final String EXTRA_USUARIO = "extra user";
+
     private static final int RC_ABRIR_GALERIA = 233;
     private static final int RC_CAPTURAR_FOTO = 455;
-    private Anuncio mAnuncio;
-    private ImageView imgSiguiente;
-    private ImageView imgPrincipal;
-    private ImageView img1, img2, img3, img4, img5;
-    private ImageView imgSeleccionada;
+
+    private ImageView imgSiguiente, imgPrincipal, img1, img2, img3, img4, img5, imgSeleccionada;
     private String mPathOriginal;
     private File[] imagenesAnuncio;
+    private Anuncio mAnuncio;
+    private Usuario user;
 
-
-    public static void start(Context context, @Nullable Anuncio anuncio){
+    public static void start(Context context, @Nullable Anuncio anuncio, Usuario user){
         Intent intent = new Intent(context, CrearAnuncio1Activity.class);
-        intent.putExtra(INTENT_ANUNCIO, anuncio);
+        intent.putExtra(EXTRA_ANUNCIO, anuncio);
+        intent.putExtra(EXTRA_USUARIO, user);
         context.startActivity(intent);
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_crear_anuncio1);
-        mAnuncio = getIntent().getParcelableExtra(INTENT_ANUNCIO);
+        mAnuncio = getIntent().getParcelableExtra(EXTRA_ANUNCIO);
+        user = getIntent().getParcelableExtra(EXTRA_USUARIO);
         imagenesAnuncio = new File[Constantes.NUMERO_IMAGENES_ANUNCIO];
         initViews();
     }
@@ -77,7 +73,10 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
         imgSiguiente.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CrearAnuncio2Activity.start(CrearAnuncio1Activity.this, mAnuncio, imagenesAnuncio[0], imagenesAnuncio[1], imagenesAnuncio[2], imagenesAnuncio[3], imagenesAnuncio[4], imagenesAnuncio[5]);
+                if (imagenesAnuncio[0] != null)
+                    CrearAnuncio2Activity.start(CrearAnuncio1Activity.this, mAnuncio, user, imagenesAnuncio[0], imagenesAnuncio[1], imagenesAnuncio[2], imagenesAnuncio[3], imagenesAnuncio[4], imagenesAnuncio[5]);
+                else
+                    Toast.makeText(CrearAnuncio1Activity.this, "Debe cargar una foto para continuar", Toast.LENGTH_SHORT).show();
             }
         });
     }

@@ -28,12 +28,11 @@ public class Anuncio implements Parcelable {
     private static final String URL_ANUNCIOS = "https://proyectofinaldam.firebaseio.com/anuncios/";
     private static final String URL_SOLICITUDES = "https://proyectofinaldam.firebaseio.com/solicitudes/";
 
-    private String key, titulo, tipo_vivienda, anunciante, direccion, poblacion, provincia, descripcion;
-    private int habitaciones_o_camas, numero_banios, tamanio, numero;
+    private String key, titulo, tipo_vivienda, anunciante, direccion, poblacion, provincia, descripcion, numero;
+    private int habitaciones_o_camas, numero_banios, tamanio, precio;
     private ArrayList<String> imagenes;
     private ArrayList<Prestacion> prestaciones;
     private HashMap<String, Boolean> solicitantes;
-    private float precio;
     private static boolean userSubRemoved = false;
     private static Firebase mFirebase;
     private static ChildEventListener listener;
@@ -61,7 +60,6 @@ public class Anuncio implements Parcelable {
         habitaciones_o_camas = 3;
         numero_banios = 2;
         tamanio = 100;
-        numero = 102;
         prestaciones.add(new Prestacion(R.drawable.apto_mascotas, "apto mascotas"));
         prestaciones.add(new Prestacion(R.drawable.aire_acondicionado, "aire acondicionado"));
         prestaciones.add(new Prestacion(R.drawable.ascensor, "ascensor"));
@@ -76,6 +74,16 @@ public class Anuncio implements Parcelable {
         Firebase mFirebase = new Firebase(URL_ANUNCIOS + key + "/");
         mFirebase.setValue(a);
         return a;
+    }
+
+    public String generateKey(){
+        String r = this.anunciante + "_" + String.valueOf(this.titulo.hashCode() + this.direccion.hashCode() + this.numero.hashCode() + this.poblacion.hashCode() + this.provincia.hashCode());
+        return r;
+    }
+
+    public static void publishNewAdvert(Anuncio a){
+        Firebase mFirebase = new Firebase(URL_ANUNCIOS + a.key + "/");
+        mFirebase.setValue(a);
     }
 
     public static void initializeFirebaseListeners(final MainPresenter presentador, final Usuario u) {
@@ -253,11 +261,11 @@ public class Anuncio implements Parcelable {
         this.tamanio = tamanio;
     }
 
-    public int getNumero() {
+    public String getNumero() {
         return numero;
     }
 
-    public void setNumero(int numero) {
+    public void setNumero(String numero) {
         this.numero = numero;
     }
 
@@ -289,7 +297,7 @@ public class Anuncio implements Parcelable {
         return precio;
     }
 
-    public void setPrecio(float precio) {
+    public void setPrecio(int precio) {
         this.precio = precio;
     }
 
@@ -299,27 +307,6 @@ public class Anuncio implements Parcelable {
 
     public void setKey(String key) {
         this.key = key;
-    }
-
-    @Override
-    public String toString() {
-        return "Anuncio{" +
-                "titulo='" + titulo + '\'' +
-                ", tipo_vivienda='" + tipo_vivienda + '\'' +
-                ", anunciante='" + anunciante + '\'' +
-                ", direccion='" + direccion + '\'' +
-                ", poblacion='" + poblacion + '\'' +
-                ", provincia='" + provincia + '\'' +
-                ", descripcion='" + descripcion + '\'' +
-                ", habitaciones_o_camas=" + habitaciones_o_camas +
-                ", numero_banios=" + numero_banios +
-                ", tamanio=" + tamanio +
-                ", numero=" + numero +
-                ", imagenes=" + imagenes +
-                ", prestaciones=" + prestaciones +
-                ", solicitantes=" + solicitantes +
-                ", precio=" + precio +
-                '}';
     }
 
     @Override
@@ -337,14 +324,14 @@ public class Anuncio implements Parcelable {
         dest.writeString(this.poblacion);
         dest.writeString(this.provincia);
         dest.writeString(this.descripcion);
+        dest.writeString(this.numero);
         dest.writeInt(this.habitaciones_o_camas);
         dest.writeInt(this.numero_banios);
         dest.writeInt(this.tamanio);
-        dest.writeInt(this.numero);
+        dest.writeInt(this.precio);
         dest.writeStringList(this.imagenes);
         dest.writeTypedList(prestaciones);
         dest.writeSerializable(this.solicitantes);
-        dest.writeFloat(this.precio);
     }
 
     protected Anuncio(Parcel in) {
@@ -356,14 +343,14 @@ public class Anuncio implements Parcelable {
         this.poblacion = in.readString();
         this.provincia = in.readString();
         this.descripcion = in.readString();
+        this.numero = in.readString();
         this.habitaciones_o_camas = in.readInt();
         this.numero_banios = in.readInt();
         this.tamanio = in.readInt();
-        this.numero = in.readInt();
+        this.precio = in.readInt();
         this.imagenes = in.createStringArrayList();
         this.prestaciones = in.createTypedArrayList(Prestacion.CREATOR);
         this.solicitantes = (HashMap<String, Boolean>) in.readSerializable();
-        this.precio = in.readFloat();
     }
 
     public static final Creator<Anuncio> CREATOR = new Creator<Anuncio>() {
