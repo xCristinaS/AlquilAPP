@@ -141,16 +141,17 @@ public class MessagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             SimpleDateFormat hora = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
             //long dia = TimeUnit.DAYS.toMillis(1);
             //Date hoy = new Date();
-
+            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) groupItemMessage.getLayoutParams();
             //Colorea el cardView dependiendo de si es un mensaje mio o no
             if (m.getEmisor().getKey().equals(mKeyCurrentUser)){
                 cvItemMessage.setCardBackgroundColor(itemView.getResources().getColor(R.color.colorAccent));
-                RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) groupItemMessage.getLayoutParams();
                 params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-                groupItemMessage.setLayoutParams(params);
             }
-            else
+            else{
                 cvItemMessage.setCardBackgroundColor(itemView.getResources().getColor(R.color.colorPrimary));
+                params.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+            }
+            groupItemMessage.setLayoutParams(params);
 
 
             lblMessage.setText(m.getContenido());
