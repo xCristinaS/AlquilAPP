@@ -2,6 +2,7 @@ package c.proyecto.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,19 +13,34 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import c.proyecto.Constantes;
 import c.proyecto.R;
 import c.proyecto.adapters.PrestacionesAdapter;
+import c.proyecto.api.ImgurAPI;
+import c.proyecto.api.ImgurResponse;
 import c.proyecto.fragments.SeleccionPrestacionesDialogFragment;
 import c.proyecto.models.Anuncio;
 import c.proyecto.pojo.Prestacion;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class CrearAnuncio2Activity extends AppCompatActivity implements PrestacionesAdapter.IPrestacionAdapter, SeleccionPrestacionesDialogFragment.ICallBackOnDismiss{
 
     private static final String INTENT_ANUNCIO = "intentAnuncio2";
     private static final String TAG_DIALOG_PRESTACIONES = "TAG_PRESTACIONES";
+    private static final String EXTRA_IMAGE_0 = "img0";
+    private static final String EXTRA_IMAGE_1 = "img1";
+    private static final String EXTRA_IMAGE_2 = "img2";
+    private static final String EXTRA_IMAGE_3 = "img3";
+    private static final String EXTRA_IMAGE_4 = "img4";
+    private static final String EXTRA_IMAGE_5 = "img5";
+
     private TextView txtTituloAnuncio;
     private ImageView imgCasa;
     private ImageView imgHabitacion;
@@ -43,10 +59,17 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
 
     private PrestacionesAdapter mPrestacionesAdapter;
     private Anuncio mAnuncio;
+    private ArrayList<File> imagenesAnuncio;
 
-    public static void start(Context context, Anuncio anuncio){
+    public static void start(Context context, Anuncio anuncio, File img0, File img1, File img2, File img3, File img4, File img5){
         Intent intent = new Intent(context, CrearAnuncio2Activity.class);
         intent.putExtra(INTENT_ANUNCIO, anuncio);
+        intent.putExtra(EXTRA_IMAGE_0, img0);
+        intent.putExtra(EXTRA_IMAGE_1, img1);
+        intent.putExtra(EXTRA_IMAGE_2, img2);
+        intent.putExtra(EXTRA_IMAGE_3, img3);
+        intent.putExtra(EXTRA_IMAGE_4, img4);
+        intent.putExtra(EXTRA_IMAGE_5, img5);
         context.startActivity(intent);
     }
 
@@ -54,6 +77,31 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_crear_anuncio2);
+
+        imagenesAnuncio = new ArrayList<>();
+        File img0 = (File) getIntent().getExtras().get(EXTRA_IMAGE_0);
+        if (img0 != null)
+            imagenesAnuncio.add(img0);
+
+        File img1 = (File) getIntent().getExtras().get(EXTRA_IMAGE_1);
+        if (img1 != null)
+            imagenesAnuncio.add(img1);
+
+        File img2 = (File) getIntent().getExtras().get(EXTRA_IMAGE_2);
+        if (img2 != null)
+            imagenesAnuncio.add(img2);
+
+        File img3 = (File) getIntent().getExtras().get(EXTRA_IMAGE_3);
+        if (img3 != null)
+            imagenesAnuncio.add(img3);
+
+        File img4 = (File) getIntent().getExtras().get(EXTRA_IMAGE_4);
+        if (img4 != null)
+            imagenesAnuncio.add(img4);
+
+        File img5 = (File) getIntent().getExtras().get(EXTRA_IMAGE_5);
+        if (img5 != null)
+            imagenesAnuncio.add(img5);
 
         mAnuncio = getIntent().getParcelableExtra(INTENT_ANUNCIO);
         //Si se entra creando
@@ -183,5 +231,49 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
         imgPiso.clearColorFilter();
 
         view.setColorFilter(getResources().getColor(R.color.colorAccent));
+    }
+
+
+    private void confirmarCambios(){
+        //Comprobar que todos los campos están rellenos.
+
+        //Subir las imagenes a la api de imágenes.
+        //new Uploader().execute(imagenesAnuncio);
+        //Guardar todos los editText en el objeto anuncio.
+
+        //Subir el objeto a FireBase.
+
+    }
+    //Sube las imagenes a la Api Imgur y guarda las url que den como resultado en el objeto Anuncio.
+    class Uploader extends AsyncTask<ArrayList<File>, Void, Void>{
+
+        @Override
+        protected Void doInBackground(ArrayList<File>... params) {
+            for(int i = 0; i< params[0].size(); i++)
+                if(params[0].get(i) != null)
+                    subirImagen(params[0].get(i));
+
+            return null;
+        }
+    }
+
+    private void subirImagen(File file){
+        RequestBody body = RequestBody.create(MediaType.parse("image/*"), file);
+
+        Call<ImgurResponse> llamada = ImgurAPI.getMInstance().getService().uploadImage(body);
+        llamada.enqueue(new Callback<ImgurResponse>() {
+            @Override
+            public void onResponse(Call<ImgurResponse> call, Response<ImgurResponse> response) {
+                ImgurResponse respuesta = response.body();
+                //Se añade la urls del bitmap escogido
+                mAnuncio.getImagenes().add(respuesta.getData().getLink());
+                System.out.println();
+            }
+
+            @Override
+            public void onFailure(Call<ImgurResponse> call, Throwable t) {
+                System.out.println();
+            }
+        });
     }
 }

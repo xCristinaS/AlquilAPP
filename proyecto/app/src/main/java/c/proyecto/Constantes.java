@@ -18,5 +18,7 @@ public final class Constantes {
         //Keys
         public static final String KEY_REMEMBER_ME = "rememberMe";
 
+    //Número de imagenes que contendrá los anuncios
+    public static final int NUMERO_IMAGENES_ANUNCIO = 6;
 }
 

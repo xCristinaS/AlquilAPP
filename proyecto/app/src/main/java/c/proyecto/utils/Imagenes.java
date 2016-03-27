@@ -2,6 +2,7 @@ package c.proyecto.utils;
 
 
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -9,11 +10,18 @@ import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 
 
 public final class Imagenes {
+
+
+    //Comprueba si el dispositivo dispone de cámara.
+    public static boolean hayCamara(Context context) {
+        return context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA);
+    }
 
     public static String getRealPathFromGallery(Context context, Uri galleryUri){
         // Se consulta en el content provider de la galería el path real del archivo de la foto.
@@ -58,7 +66,7 @@ public final class Imagenes {
     // no en almacenamiento interno, y lo retorna. Retorna null si fallo.
     // Si publico es true -> en la carpeta pública de imágenes.
     // Si publico es false, en la carpeta propia de imágenes.
-    private File crearArchivoFoto(Context context, String nombre, boolean publico) {
+    public static File crearArchivoFoto(Context context, String nombre, boolean publico) {
         // Se obtiene el directorio en el que almacenarlo.
         File directorio;
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
@@ -85,5 +93,6 @@ public final class Imagenes {
         // Se retorna el archivo creado.
         return archivo;
     }
+
 
 }
