@@ -117,9 +117,10 @@
                 android:id="@+id/imgHabitos"
                 android:layout_width="65dp"
                 android:layout_height="65dp"
-                android:src="@drawable/ic_action_user"
+                android:src="@drawable/ic_nav_preferences"
                 android:layout_marginRight="30dp"/>
             <ImageView
+                android:id="@+id/imgGenero"
                 android:layout_width="65dp"
                 android:layout_height="65dp"
                 android:src="@drawable/ic_action_user"
@@ -133,7 +134,7 @@
 
 
     <Button
-        android:id="@+id/boton"
+        android:id="@+id/btnConfirmar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@id/cvHabitos"
