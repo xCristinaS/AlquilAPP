@@ -21,8 +21,9 @@ public class Usuario implements Parcelable {
     private static final String URL_USERS = "https://proyectofinaldam.firebaseio.com/usuarios/";
     private static boolean registered;
 
-    private String key, email, contra, nombre, apellidos, nacionalidad, profesion, comentario_desc, foto, fecha_nacimiento;
+    private String key, email, contra, nombre, apellidos, nacionalidad, profesion, comentario_desc, foto;
     private int ordenado, fiestero, sociable, activo;
+    private long fecha_nacimiento;
     private ArrayList<String> itemsDescriptivos, itemsHabitos;
 
     public Usuario() {
@@ -123,6 +124,11 @@ public class Usuario implements Parcelable {
         });
     }
 
+    public static void updateUserProfile(Usuario u){
+        Firebase mFirebase = new Firebase(URL_USERS + u.key + "/");
+        mFirebase.setValue(u);
+    }
+
     public String getEmail() {
         return email;
     }
@@ -187,11 +193,11 @@ public class Usuario implements Parcelable {
         this.foto = foto;
     }
 
-    public String getFecha_nacimiento() {
+    public long getFecha_nacimiento() {
         return fecha_nacimiento;
     }
 
-    public void setFecha_nacimiento(String fecha_nacimiento) {
+    public void setFecha_nacimiento(long fecha_nacimiento) {
         this.fecha_nacimiento = fecha_nacimiento;
     }
 
@@ -267,11 +273,11 @@ public class Usuario implements Parcelable {
         dest.writeString(this.profesion);
         dest.writeString(this.comentario_desc);
         dest.writeString(this.foto);
-        dest.writeString(this.fecha_nacimiento);
         dest.writeInt(this.ordenado);
         dest.writeInt(this.fiestero);
         dest.writeInt(this.sociable);
         dest.writeInt(this.activo);
+        dest.writeLong(this.fecha_nacimiento);
         dest.writeStringList(this.itemsDescriptivos);
         dest.writeStringList(this.itemsHabitos);
     }
@@ -286,11 +292,11 @@ public class Usuario implements Parcelable {
         this.profesion = in.readString();
         this.comentario_desc = in.readString();
         this.foto = in.readString();
-        this.fecha_nacimiento = in.readString();
         this.ordenado = in.readInt();
         this.fiestero = in.readInt();
         this.sociable = in.readInt();
         this.activo = in.readInt();
+        this.fecha_nacimiento = in.readLong();
         this.itemsDescriptivos = in.createStringArrayList();
         this.itemsHabitos = in.createStringArrayList();
     }

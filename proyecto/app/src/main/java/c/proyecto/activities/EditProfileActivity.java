@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,6 +17,7 @@ import com.squareup.picasso.Picasso;
 import c.proyecto.R;
 import c.proyecto.fragments.CaracteristicasUsuarioDialogFragment;
 import c.proyecto.models.Usuario;
+import c.proyecto.presenters.EditProfilePresenter;
 
 public class EditProfileActivity extends AppCompatActivity {
 
@@ -23,20 +25,13 @@ public class EditProfileActivity extends AppCompatActivity {
     private static final String TAG_DIALOG_HABITOS = "DialogHabitos";
 
     private EditText lblNombre, lblApellidos;
-    private ImageView imgFoto;
-    private TextView txtNombre;
-    private TextView txtApellidos;
-    private TextView txtFechaNac;
-    private TextView txtNacionalidad;
-    private TextView txtProfesion;
-    private TextView txtComentDesc;
-    private ImageView imgHabitos;
-    private ImageView imgGenero;
+    private TextView txtNombre, txtApellidos, txtFechaNac, txtNacionalidad, txtProfesion, txtComentDesc;
+    private ImageView imgFoto, imgHabitos, imgGenero;
     private Button btnConfirmar;
-
     private Usuario mUser;
+    private EditProfilePresenter mPresenter;
 
-    public static void start(Activity a, Usuario u){
+    public static void start(Activity a, Usuario u) {
         Intent intent = new Intent(a, EditProfileActivity.class);
         intent.putExtra(ARG_USUARIO, u);
         a.startActivity(intent);
@@ -47,7 +42,7 @@ public class EditProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
         initViews();
-
+        mPresenter = EditProfilePresenter.getPresentador(this);
         mUser = getIntent().getParcelableExtra(ARG_USUARIO);
         recuperarUser();
 
@@ -60,10 +55,18 @@ public class EditProfileActivity extends AppCompatActivity {
         txtFechaNac = (TextView) findViewById(R.id.txtFechaNac);
         txtNacionalidad = (TextView) findViewById(R.id.txtNacionalidad);
         txtProfesion = (TextView) findViewById(R.id.txtProfesion);
-        txtComentDesc =(TextView) findViewById(R.id.txtComentDesc);
+        txtComentDesc = (TextView) findViewById(R.id.txtComentDesc);
         imgHabitos = (ImageView) findViewById(R.id.imgHabitos);
         imgGenero = (ImageView) findViewById(R.id.imgGenero);
         btnConfirmar = (Button) findViewById(R.id.btnConfirmar);
+
+        btnConfirmar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                introducirDatosEnUser();
+                mPresenter.updateUserProfile(mUser);
+            }
+        });
 
         imgHabitos.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,6 +74,14 @@ public class EditProfileActivity extends AppCompatActivity {
                 showHabitosDialog();
             }
         });
+    }
+
+    private void introducirDatosEnUser() {
+        if (!TextUtils.isEmpty(txtNombre.getText()))
+            mUser.setNombre(txtNombre.getText().toString());
+        if (!TextUtils.isEmpty(txtApellidos.getText()))
+            mUser.setApellidos(txtApellidos.getText().toString());
+
     }
 
     private void recuperarUser() {
@@ -85,7 +96,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
     }
 
-    private void showHabitosDialog(){
+    private void showHabitosDialog() {
         FragmentManager fm = getSupportFragmentManager();
         CaracteristicasUsuarioDialogFragment.newInstance(mUser).show(fm, TAG_DIALOG_HABITOS);
     }

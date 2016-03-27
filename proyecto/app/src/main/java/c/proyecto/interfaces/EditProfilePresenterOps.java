@@ -1,7 +1,8 @@
 package c.proyecto.interfaces;
 
-/**
- * Created by Cristina on 27/03/2016.
- */
+import c.proyecto.models.Usuario;
+
 public interface EditProfilePresenterOps {
+
+    void updateUserProfile(Usuario usuario);
 }

@@ -5,8 +5,11 @@ import android.app.Activity;
 import java.lang.ref.WeakReference;
 
 import c.proyecto.activities.EditProfileActivity;
+import c.proyecto.interfaces.EditProfilePresenterOps;
+import c.proyecto.models.Usuario;
 
-public class EditProfilePresenter {
+public class EditProfilePresenter implements EditProfilePresenterOps{
+
     private static WeakReference<EditProfileActivity> activity;
     private static EditProfilePresenter presentador;
 
@@ -20,5 +23,10 @@ public class EditProfilePresenter {
         else
             activity = new WeakReference<>((EditProfileActivity)a);
         return presentador;
+    }
+
+    @Override
+    public void updateUserProfile(Usuario u) {
+        Usuario.updateUserProfile(u);
     }
 }
