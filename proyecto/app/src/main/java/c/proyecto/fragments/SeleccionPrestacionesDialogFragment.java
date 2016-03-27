@@ -57,11 +57,7 @@ public class SeleccionPrestacionesDialogFragment extends AppCompatDialogFragment
         return view;
     }
 
-    @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
-
-        return super.onCreateDialog(savedInstanceState);
-    }
+   
     @Override
     public void setupDialog(Dialog dialog, int style) {
         dialog.setTitle("Prestaciones");

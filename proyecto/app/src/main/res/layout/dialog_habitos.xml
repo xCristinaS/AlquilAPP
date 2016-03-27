@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <!-- ORDENADO -->
+    <TextView
+        android:id="@+id/lblOrdenado"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ordenado"/>
+    <SeekBar
+        android:id="@+id/skOrdenado"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/lblOrdenado"/>
+    <!-- FIESTERO -->
+    <TextView
+        android:id="@+id/lblFiestero"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Fiestero"
+        android:layout_below="@id/skOrdenado"/>
+    <SeekBar
+        android:id="@+id/skFiestero"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/lblFiestero"
+        android:layout_below="@id/skOrdenado"/>
+    <!-- SOCIABLE -->
+    <TextView
+        android:id="@+id/lblSociable"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sociable"
+        android:layout_below="@id/lblFiestero"/>
+    <SeekBar
+        android:id="@+id/skSociable"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/lblSociable"
+        android:layout_below="@id/skFiestero"/>
+    <!-- ACTIVO -->
+    <TextView
+        android:id="@+id/lblActivo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Activo"
+        android:layout_below="@id/lblSociable"/>
+    <SeekBar
+        android:id="@+id/skActivo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/lblSociable"
+        android:layout_below="@id/skSociable"/>
+</RelativeLayout>
