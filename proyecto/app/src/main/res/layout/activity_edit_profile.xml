@@ -3,66 +3,146 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginLeft="@dimen/activity_horizontal_margin"
-    android:layout_marginRight="@dimen/activity_horizontal_margin"
-    tools:context="c.proyecto.activities.EditProfileActivity">
+    tools:context="c.proyecto.activities.EditProfileActivity"
+    android:background="@color/colorFondoAplicacion">
 
-
-    <ImageView
-        android:id="@+id/imgFoto"
-        android:layout_width="300dp"
-        android:layout_height="200dp"
-        android:src="@drawable/default_user"/>
-
-    <EditText
-        android:id="@+id/txtNombre"
-        android:hint="Nombre"
+    <android.support.v7.widget.CardView
+        android:id="@+id/cvUser"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/imgFoto"/>
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        >
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <ImageView
+                android:id="@+id/imgFoto"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/default_user"/>
 
-    <EditText
-        android:id="@+id/txtApellidos"
-        android:hint="Apellidos"
+            <EditText
+                android:id="@+id/txtNombre"
+                android:hint="Nombre"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="7dp"
+                android:layout_toRightOf="@id/imgFoto"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:maxLines="1"/>
+
+            <EditText
+                android:id="@+id/txtApellidos"
+                android:hint="Apellidos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/imgFoto"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_below="@id/txtNombre"
+                android:maxLines="1"/>
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/cvDatos"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/txtNombre"/>
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_below="@id/cvUser"
+        >
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:layout_marginBottom="@dimen/activity_vertical_margin">
 
-    <EditText
-        android:id="@+id/txtFechaNac"
-        android:hint="Fecha de nacimiento"
-        android:layout_width="match_parent"
+            <EditText
+                android:id="@+id/txtFechaNac"
+                android:hint="Fecha de nacimiento"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="1" />
+
+
+            <EditText
+                android:id="@+id/txtNacionalidad"
+                android:hint="Nacionalidad"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txtFechaNac"
+                android:maxLines="1"/>
+
+            <EditText
+                android:id="@+id/txtProfesion"
+                android:hint="Profesión"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txtNacionalidad"
+                android:maxLines="1"/>
+
+
+            <EditText
+                android:id="@+id/txtComentDesc"
+                android:hint="Comentario descriptivo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txtProfesion"
+                android:maxLines="1"/>
+
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/cvHabitos"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/txtApellidos"/>
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_below="@id/cvDatos"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        >
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="5dp"
+            >
+            <ImageView
+                android:id="@+id/imgHabitos"
+                android:layout_width="65dp"
+                android:layout_height="65dp"
+                android:src="@drawable/ic_action_user"
+                android:layout_marginRight="30dp"/>
+            <ImageView
+                android:layout_width="65dp"
+                android:layout_height="65dp"
+                android:src="@drawable/ic_action_user"
+                android:layout_toRightOf="@id/imgHabitos"/>
 
 
-    <EditText
-        android:id="@+id/txtNacionalidad"
-        android:hint="Nacionalidad"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/txtFechaNac"/>
-
-    <EditText
-        android:id="@+id/txtProfesion"
-        android:hint="Nacionalidad"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/txtNacionalidad"/>
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
 
 
-    <EditText
-        android:id="@+id/txtComentDesc"
-        android:hint="Comentario descriptivo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/txtProfesion"/>
 
 
     <Button
         android:id="@+id/boton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:text="EA! YA LO QUITARÁS"/>
+        android:layout_alignBottom="@id/cvHabitos"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:text="Confirmar"
+        android:background="@color/colorAccent"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        />
 </RelativeLayout>

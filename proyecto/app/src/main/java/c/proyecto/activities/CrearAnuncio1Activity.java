@@ -16,6 +16,9 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 import c.proyecto.Constantes;
 import c.proyecto.R;
@@ -100,7 +103,7 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
                                 break;
                             //Cámara
                             case 1:
-                                if(Imagenes.hayCamara(CrearAnuncio1Activity.this))
+                                if (Imagenes.hayCamara(CrearAnuncio1Activity.this))
                                     takePhoto();
                                 else
                                     Toast.makeText(CrearAnuncio1Activity.this, "Este dispositivo no dispone de cámara", Toast.LENGTH_SHORT).show();
@@ -121,10 +124,20 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
 
     private void takePhoto() {
         Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        // Si hay alguna actividad que sepa realizar la acción.
-        if (i.resolveActivity(getPackageManager()) != null)
-            // Se envía el intent esperando respuesta.
-            startActivityForResult(i, RC_CAPTURAR_FOTO);
+
+        //Si hay alguna actividad que sepa realizar la acción
+        if( i.resolveActivity(getPackageManager()) != null){
+            String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
+
+            File photoFile = Imagenes.crearArchivoFoto(this, "cameraPhoto.jpeg", false);
+            if(photoFile != null){
+                //Se guarda el path del archivo para cuando se haya hecho la captura y se necesite referencia a ella.
+                mPathOriginal = photoFile.getAbsolutePath();
+                //Se añade como extra del intent la URI donde debe guardarse
+                i.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFile));
+                startActivityForResult(i, RC_CAPTURAR_FOTO);
+            }
+        }
     }
 
     @Override
@@ -133,14 +146,13 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
         if(resultCode == RESULT_OK)
             switch (requestCode){
                 case RC_ABRIR_GALERIA:
-                    // Se obtiene el path real a partir de la uri retornada por la galería.
+                    // Se obtiene el path real a partir de la URI retornada por la galería.
                     Uri uriGaleria = data.getData();
                     mPathOriginal = Imagenes.getRealPathFromGallery(this, uriGaleria);
                     new HiloEscalador().execute(imgSeleccionada.getWidth(), imgSeleccionada.getHeight());
                     break;
                 case RC_CAPTURAR_FOTO:
-                    Bitmap miniatura = (Bitmap) data.getExtras().get("data");
-                    imgSeleccionada.setImageBitmap(miniatura);
+                    new HiloEscalador().execute(imgSeleccionada.getWidth(), imgSeleccionada.getHeight());
                     break;
             }
 
