@@ -9,6 +9,9 @@ import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -23,17 +26,20 @@ import c.proyecto.api.ImgurAPI;
 import c.proyecto.api.ImgurResponse;
 import c.proyecto.fragments.SeleccionPrestacionesDialogFragment;
 import c.proyecto.models.Anuncio;
+import c.proyecto.models.Usuario;
 import c.proyecto.pojo.Prestacion;
+import c.proyecto.presenters.CrearEditarAnuncioPresenter;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class CrearAnuncio2Activity extends AppCompatActivity implements PrestacionesAdapter.IPrestacionAdapter, SeleccionPrestacionesDialogFragment.ICallBackOnDismiss{
+public class CrearAnuncio2Activity extends AppCompatActivity implements PrestacionesAdapter.IPrestacionAdapter, SeleccionPrestacionesDialogFragment.ICallBackOnDismiss {
 
-    private static final String INTENT_ANUNCIO = "intentAnuncio2";
     private static final String TAG_DIALOG_PRESTACIONES = "TAG_PRESTACIONES";
+    private static final String EXTRA_ANUNCIO = "intentAnuncio2";
+    private static final String EXTRA_USUARIO = "extra_user";
     private static final String EXTRA_IMAGE_0 = "img0";
     private static final String EXTRA_IMAGE_1 = "img1";
     private static final String EXTRA_IMAGE_2 = "img2";
@@ -41,29 +47,20 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
     private static final String EXTRA_IMAGE_4 = "img4";
     private static final String EXTRA_IMAGE_5 = "img5";
 
-    private TextView txtTituloAnuncio;
-    private ImageView imgCasa;
-    private ImageView imgHabitacion;
-    private ImageView imgPiso;
-    private TextView txtDireccion;
-    private TextView txtNum;
-    private TextView txtPoblacion;
-    private TextView txtProvincia;
-    private RecyclerView rvPrestaciones;
-    private TextView txtCamas;
-    private TextView txtToilets;
-    private TextView txtTamano;
-    private TextView txtDescripcion;
-    private TextView txtPrecio;
-    private RecyclerView rvHuespedes;
+    private TextView txtTituloAnuncio, txtDireccion, txtNum, txtPoblacion, txtProvincia, txtCamas, txtToilets, txtTamano, txtDescripcion, txtPrecio;
+    private ImageView imgCasa, imgHabitacion, imgPiso;
+    private RecyclerView rvPrestaciones, rvHuespedes;
 
     private PrestacionesAdapter mPrestacionesAdapter;
-    private Anuncio mAnuncio;
+    private CrearEditarAnuncioPresenter mPresenter;
     private ArrayList<File> imagenesAnuncio;
+    private Anuncio mAnuncio;
+    private Usuario user;
 
-    public static void start(Context context, Anuncio anuncio, File img0, File img1, File img2, File img3, File img4, File img5){
+    public static void start(Context context, Anuncio anuncio, Usuario user, File img0, File img1, File img2, File img3, File img4, File img5) {
         Intent intent = new Intent(context, CrearAnuncio2Activity.class);
-        intent.putExtra(INTENT_ANUNCIO, anuncio);
+        intent.putExtra(EXTRA_ANUNCIO, anuncio);
+        intent.putExtra(EXTRA_USUARIO, user);
         intent.putExtra(EXTRA_IMAGE_0, img0);
         intent.putExtra(EXTRA_IMAGE_1, img1);
         intent.putExtra(EXTRA_IMAGE_2, img2);
@@ -103,13 +100,16 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
         if (img5 != null)
             imagenesAnuncio.add(img5);
 
-        mAnuncio = getIntent().getParcelableExtra(INTENT_ANUNCIO);
+        mAnuncio = getIntent().getParcelableExtra(EXTRA_ANUNCIO);
+        user = getIntent().getParcelableExtra(EXTRA_USUARIO);
+        mPresenter = CrearEditarAnuncioPresenter.getPresentador(this);
+
         //Si se entra creando
-        if (mAnuncio == null){
+        if (mAnuncio == null) {
             mAnuncio = new Anuncio();
             mAnuncio.setPrestaciones(new ArrayList<Prestacion>());
             initViews();
-        }else{
+        } else {
             initViews();
             recuperarAnuncio();
         }
@@ -174,12 +174,11 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
 
     private void confRecyclerHuespedes() {
         rvHuespedes.setHasFixedSize(true);
-
     }
 
     private void recuperarAnuncio() {
         txtTituloAnuncio.setText(mAnuncio.getTitulo());
-        switch (mAnuncio.getTipo_vivienda()){
+        switch (mAnuncio.getTipo_vivienda()) {
             case Constantes.CASA:
                 tintVivienda(imgCasa);
                 break;
@@ -211,9 +210,9 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
         showPrestacionesDialog();
     }
 
-    private void showPrestacionesDialog(){
+    private void showPrestacionesDialog() {
         FragmentManager fm = getSupportFragmentManager();
-        if(mAnuncio.getPrestaciones() == null)
+        if (mAnuncio.getPrestaciones() == null)
             SeleccionPrestacionesDialogFragment.newInstance(new ArrayList<Prestacion>()).show(fm, TAG_DIALOG_PRESTACIONES);
         else
             SeleccionPrestacionesDialogFragment.newInstance(mAnuncio.getPrestaciones()).show(fm, TAG_DIALOG_PRESTACIONES);
@@ -225,7 +224,7 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
         mPrestacionesAdapter.actualizarAdapter();
     }
 
-    private void tintVivienda(ImageView view){
+    private void tintVivienda(ImageView view) {
         imgCasa.clearColorFilter();
         imgHabitacion.clearColorFilter();
         imgPiso.clearColorFilter();
@@ -233,31 +232,83 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
         view.setColorFilter(getResources().getColor(R.color.colorAccent));
     }
 
-
-    private void confirmarCambios(){
-        //Comprobar que todos los campos están rellenos.
-
-        //Subir las imagenes a la api de imágenes.
-        //new Uploader().execute(imagenesAnuncio);
-        //Guardar todos los editText en el objeto anuncio.
-
-        //Subir el objeto a FireBase.
-
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_crear_editar_anuncio, menu);
+        return super.onCreateOptionsMenu(menu);
     }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        menu.findItem(R.id.aceptar).setVisible(true);
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.aceptar:
+                confirmarCambios();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void confirmarCambios() {
+        if (requiredFieldsFilled()) {
+            //Subir las imagenes a la api de imágenes.
+            new Uploader().execute(imagenesAnuncio);
+            //Guardar todos los editText en el objeto anuncio.
+            meterDatosEnAnuncio();
+            //Subir el objeto a FireBase.
+            mPresenter.publishNewAdvert(mAnuncio);
+        }
+    }
+
+    private boolean requiredFieldsFilled(){
+        boolean r = true;
+        if (TextUtils.isEmpty(txtTituloAnuncio.getText()) || TextUtils.isEmpty(txtPoblacion.getText()) || TextUtils.isEmpty(txtProvincia.getText()) || TextUtils.isEmpty(txtNum.getText()) ||
+                TextUtils.isEmpty(txtPrecio.getText()) || mAnuncio.getTipo_vivienda() == null)
+            r = false;
+        return r;
+    }
+
+    private void meterDatosEnAnuncio(){
+        mAnuncio.setTitulo(txtTituloAnuncio.getText().toString());
+        mAnuncio.setPoblacion(txtPoblacion.getText().toString());
+        mAnuncio.setProvincia(txtProvincia.getText().toString());
+        mAnuncio.setNumero(txtNum.getText().toString());
+        mAnuncio.setPrecio(Integer.valueOf(txtPrecio.getText().toString()));
+        mAnuncio.setDireccion(txtDireccion.getText().toString());
+        mAnuncio.setAnunciante(user.getKey());
+        mAnuncio.setKey(mAnuncio.generateKey());
+        if (mPrestacionesAdapter.getItemCount() > 0)
+            mAnuncio.setPrestaciones((ArrayList<Prestacion>) mPrestacionesAdapter.getmDatos());
+        if (!TextUtils.isEmpty(txtToilets.getText()))
+            mAnuncio.setNumero_banios(Integer.valueOf(txtToilets.getText().toString()));
+        if (!TextUtils.isEmpty(txtCamas.getText()))
+            mAnuncio.setHabitaciones_o_camas(Integer.valueOf(txtCamas.getText().toString()));
+        if (!TextUtils.isEmpty(txtTamano.getText()))
+            mAnuncio.setTamanio(Integer.valueOf(txtTamano.getText().toString()));
+        if (!TextUtils.isEmpty(txtDescripcion.getText()))
+            mAnuncio.setDescripcion(txtDescripcion.getText().toString());
+    }
+
     //Sube las imagenes a la Api Imgur y guarda las url que den como resultado en el objeto Anuncio.
-    class Uploader extends AsyncTask<ArrayList<File>, Void, Void>{
+    class Uploader extends AsyncTask<ArrayList<File>, Void, Void> {
 
         @Override
         protected Void doInBackground(ArrayList<File>... params) {
-            for(int i = 0; i< params[0].size(); i++)
-                if(params[0].get(i) != null)
+            for (int i = 0; i < params[0].size(); i++)
+                if (params[0].get(i) != null)
                     subirImagen(params[0].get(i));
 
             return null;
         }
     }
 
-    private void subirImagen(File file){
+    private void subirImagen(File file) {
         RequestBody body = RequestBody.create(MediaType.parse("image/*"), file);
 
         Call<ImgurResponse> llamada = ImgurAPI.getMInstance().getService().uploadImage(body);
@@ -267,7 +318,7 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
                 ImgurResponse respuesta = response.body();
                 //Se añade la urls del bitmap escogido
                 mAnuncio.getImagenes().add(respuesta.getData().getLink());
-                System.out.println();
+                mPresenter.publishNewAdvert(mAnuncio);
             }
 
             @Override

@@ -43,6 +43,10 @@ public class PrestacionesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         return mDatos.size();
     }
 
+    public List<Prestacion> getmDatos() {
+        return mDatos;
+    }
+
     class PrestacionViewHolder extends RecyclerView.ViewHolder{
 
         private final ImageView imgPrestacion;
