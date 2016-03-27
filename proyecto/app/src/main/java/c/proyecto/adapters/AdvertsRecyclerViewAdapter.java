@@ -9,6 +9,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -19,10 +21,10 @@ import c.proyecto.models.Usuario;
 import c.proyecto.presenters.MainPresenter;
 
 
-public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     public interface OnAdapterItemLongClick {
-        void setAdapterAllowMultiDeletion(MyRecyclerViewAdapter adaptador);
+        void setAdapterAllowMultiDeletion(AdvertsRecyclerViewAdapter adaptador);
         void onItemLongClick();
         void desactivarMultiseleccion();
     }
@@ -46,7 +48,7 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     private Usuario user;
 
 
-    public MyRecyclerViewAdapter(int adapter_type, MainPresenter presenter, Usuario user) {
+    public AdvertsRecyclerViewAdapter(int adapter_type, MainPresenter presenter, Usuario user) {
         mDatos = new ArrayList<>();
         this.presenter = presenter;
         this.adapter_type = adapter_type;
@@ -142,6 +144,7 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         else
             presenter.removeUserSub(mDatos.get(pos), user);
         removeItem(mDatos.get(pos));
+        notifyItemRemoved(pos);
     }
 
     public void disableMultiDeletionMode() {
@@ -188,7 +191,8 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 lblPoblacion.setText(anuncio.getPoblacion());
                 lblProvincia.setText(anuncio.getProvincia());
                 lblPrecio.setText(String.valueOf(anuncio.getPrecio()));
-                // IMG AVATAR
+                if (anuncio.getImagenes().size() > 0)
+                    Picasso.with(itemView.getContext()).load(anuncio.getImagenes().get(0)).into(imgAvatar);
             }
         }
     }
@@ -215,7 +219,8 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 lblPoblacion.setText(anuncio.getPoblacion());
                 lblProvincia.setText(anuncio.getProvincia());
                 lblSubs.setText(String.valueOf(anuncio.getSolicitantes().size()));
-                // IMG AVATAR
+                if (anuncio.getImagenes().size() > 0)
+                    Picasso.with(itemView.getContext()).load(anuncio.getImagenes().get(0)).into(imgAvatar);
             }
         }
     }

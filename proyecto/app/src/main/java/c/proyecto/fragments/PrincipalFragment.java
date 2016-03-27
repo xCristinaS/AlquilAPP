@@ -1,9 +1,6 @@
 package c.proyecto.fragments;
 
 
-import android.app.Dialog;
-import android.content.res.Configuration;
-
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -14,12 +11,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
-
 import c.proyecto.R;
 import c.proyecto.activities.MainActivity;
 import c.proyecto.adapters.CachedFragmentPagerAdapter;
-import c.proyecto.adapters.MyRecyclerViewAdapter;
+import c.proyecto.adapters.AdvertsRecyclerViewAdapter;
 import c.proyecto.models.Anuncio;
 import c.proyecto.models.Usuario;
 import c.proyecto.presenters.MainPresenter;
@@ -62,13 +57,13 @@ public class PrincipalFragment extends Fragment {
 
             @Override
             public void onPageSelected(int position) {
-                MyRecyclerViewFragment fragmento = (MyRecyclerViewFragment) vpAdapter.getItem(viewPager.getCurrentItem());
-                ((MyRecyclerViewAdapter.OnAdapterItemLongClick) getActivity()).setAdapterAllowMultiDeletion(fragmento.getmAdapter());
+                AdvertsRecyclerViewFragment fragmento = (AdvertsRecyclerViewFragment) vpAdapter.getItem(viewPager.getCurrentItem());
+                ((AdvertsRecyclerViewAdapter.OnAdapterItemLongClick) getActivity()).setAdapterAllowMultiDeletion(fragmento.getmAdapter());
             }
 
             @Override
             public void onPageScrollStateChanged(int state) {
-                MyRecyclerViewFragment f = (MyRecyclerViewFragment) vpAdapter.getItem(viewPager.getCurrentItem());
+                AdvertsRecyclerViewFragment f = (AdvertsRecyclerViewFragment) vpAdapter.getItem(viewPager.getCurrentItem());
                 if (f != null)
                     f.disableMultideletion();
             }
@@ -77,44 +72,44 @@ public class PrincipalFragment extends Fragment {
     }
 
     public void addAdvertToAdapter(Anuncio a) {
-        MyRecyclerViewFragment f = (MyRecyclerViewFragment) vpAdapter.getItem(1);
-        if (f.getmAdapter().getAdapter_type() == MyRecyclerViewAdapter.ADAPTER_TYPE_ADVS)
+        AdvertsRecyclerViewFragment f = (AdvertsRecyclerViewFragment) vpAdapter.getItem(1);
+        if (f.getmAdapter().getAdapter_type() == AdvertsRecyclerViewAdapter.ADAPTER_TYPE_ADVS)
             f.getmAdapter().addItem(a);
     }
 
     public void replaceAdvertFromAdapter(Anuncio a) {
-        MyRecyclerViewFragment f = (MyRecyclerViewFragment) vpAdapter.getItem(1);
-        if (f.getmAdapter().getAdapter_type() == MyRecyclerViewAdapter.ADAPTER_TYPE_ADVS)
+        AdvertsRecyclerViewFragment f = (AdvertsRecyclerViewFragment) vpAdapter.getItem(1);
+        if (f.getmAdapter().getAdapter_type() == AdvertsRecyclerViewAdapter.ADAPTER_TYPE_ADVS)
             f.getmAdapter().replaceItem(a);
     }
 
     public void addSubToAdapter(Anuncio a) {
-        MyRecyclerViewFragment f = (MyRecyclerViewFragment) vpAdapter.getItem(0);
-        if (f.getmAdapter().getAdapter_type() == MyRecyclerViewAdapter.ADAPTER_TYPE_SUBS)
+        AdvertsRecyclerViewFragment f = (AdvertsRecyclerViewFragment) vpAdapter.getItem(0);
+        if (f.getmAdapter().getAdapter_type() == AdvertsRecyclerViewAdapter.ADAPTER_TYPE_SUBS)
             f.getmAdapter().addItem(a);
     }
 
     public void replaceSubFromAdapter(Anuncio a) {
-        MyRecyclerViewFragment f = (MyRecyclerViewFragment) vpAdapter.getItem(0);
-        if (f.getmAdapter().getAdapter_type() == MyRecyclerViewAdapter.ADAPTER_TYPE_SUBS)
+        AdvertsRecyclerViewFragment f = (AdvertsRecyclerViewFragment) vpAdapter.getItem(0);
+        if (f.getmAdapter().getAdapter_type() == AdvertsRecyclerViewAdapter.ADAPTER_TYPE_SUBS)
             f.getmAdapter().replaceItem(a);
     }
 
     public void addUserAdvertToAdapter(Anuncio a) {
-        MyRecyclerViewFragment f = (MyRecyclerViewFragment) vpAdapter.getItem(2);
-        if (f.getmAdapter().getAdapter_type() == MyRecyclerViewAdapter.ADAPTER_TYPE_MY_ADVS)
+        AdvertsRecyclerViewFragment f = (AdvertsRecyclerViewFragment) vpAdapter.getItem(2);
+        if (f.getmAdapter().getAdapter_type() == AdvertsRecyclerViewAdapter.ADAPTER_TYPE_MY_ADVS)
             f.getmAdapter().addItem(a);
     }
 
     public void replaceUserAdvertFromAdapter(Anuncio a) {
-        MyRecyclerViewFragment f = (MyRecyclerViewFragment) vpAdapter.getItem(2);
-        if (f.getmAdapter().getAdapter_type() == MyRecyclerViewAdapter.ADAPTER_TYPE_MY_ADVS)
+        AdvertsRecyclerViewFragment f = (AdvertsRecyclerViewFragment) vpAdapter.getItem(2);
+        if (f.getmAdapter().getAdapter_type() == AdvertsRecyclerViewAdapter.ADAPTER_TYPE_MY_ADVS)
             f.getmAdapter().replaceItem(a);
     }
 
     public void removeSub(Anuncio a) {
-        MyRecyclerViewFragment f = (MyRecyclerViewFragment) vpAdapter.getItem(0);
-        if (f.getmAdapter().getAdapter_type() == MyRecyclerViewAdapter.ADAPTER_TYPE_SUBS)
+        AdvertsRecyclerViewFragment f = (AdvertsRecyclerViewFragment) vpAdapter.getItem(0);
+        if (f.getmAdapter().getAdapter_type() == AdvertsRecyclerViewAdapter.ADAPTER_TYPE_SUBS)
             f.getmAdapter().removeItem(a);
     }
 
@@ -124,9 +119,9 @@ public class PrincipalFragment extends Fragment {
 
     //Adaptader
     class SectionsPagerAdapter extends CachedFragmentPagerAdapter {
-        MyRecyclerViewFragment frgSolicitudes;
-        MyRecyclerViewFragment frgAnuncios;
-        MyRecyclerViewFragment frgMisAnuncios;
+        AdvertsRecyclerViewFragment frgSolicitudes;
+        AdvertsRecyclerViewFragment frgAnuncios;
+        AdvertsRecyclerViewFragment frgMisAnuncios;
 
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -143,15 +138,15 @@ public class PrincipalFragment extends Fragment {
             switch (position) {
                 case 0:
                     if (frgSolicitudes == null)
-                        frgSolicitudes = MyRecyclerViewFragment.newInstance(MyRecyclerViewAdapter.ADAPTER_TYPE_SUBS);
+                        frgSolicitudes = AdvertsRecyclerViewFragment.newInstance(AdvertsRecyclerViewAdapter.ADAPTER_TYPE_SUBS);
                     return frgSolicitudes;
                 case 1:
                     if (frgAnuncios == null)
-                        frgAnuncios = MyRecyclerViewFragment.newInstance(MyRecyclerViewAdapter.ADAPTER_TYPE_ADVS);
+                        frgAnuncios = AdvertsRecyclerViewFragment.newInstance(AdvertsRecyclerViewAdapter.ADAPTER_TYPE_ADVS);
                     return frgAnuncios;
                 case 2:
                     if (frgMisAnuncios == null)
-                        frgMisAnuncios = MyRecyclerViewFragment.newInstance(MyRecyclerViewAdapter.ADAPTER_TYPE_MY_ADVS);
+                        frgMisAnuncios = AdvertsRecyclerViewFragment.newInstance(AdvertsRecyclerViewAdapter.ADAPTER_TYPE_MY_ADVS);
                     return frgMisAnuncios;
             }
             return null;

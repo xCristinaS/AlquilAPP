@@ -7,37 +7,31 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
-
-import java.util.ArrayList;
 
 import c.proyecto.R;
-import c.proyecto.activities.MainActivity;
-import c.proyecto.adapters.MyRecyclerViewAdapter;
-import c.proyecto.models.Anuncio;
+import c.proyecto.adapters.AdvertsRecyclerViewAdapter;
 import c.proyecto.presenters.MainPresenter;
 
 
-public class MyRecyclerViewFragment extends Fragment {
+public class AdvertsRecyclerViewFragment extends Fragment {
 
     private static final String ARG_ADAPTER_TYPE = "type_of_adapter";
     //Views
     private RecyclerView rvLista;
-    private MyRecyclerViewAdapter mAdapter;
+    private AdvertsRecyclerViewAdapter mAdapter;
     private LinearLayoutManager mLayoutManager;
     //Variables
-    private MyRecyclerViewAdapter.OnAdapterItemLongClick listenerLongClick;
-    private MyRecyclerViewAdapter.OnAdapterItemClick listenerItemClick;
+    private AdvertsRecyclerViewAdapter.OnAdapterItemLongClick listenerLongClick;
+    private AdvertsRecyclerViewAdapter.OnAdapterItemClick listenerItemClick;
     private int adapter_type;
 
-    public static MyRecyclerViewFragment newInstance(int adapter_type) {
+    public static AdvertsRecyclerViewFragment newInstance(int adapter_type) {
         Bundle args = new Bundle();
         args.putInt(ARG_ADAPTER_TYPE, adapter_type);
-        MyRecyclerViewFragment fragment = new MyRecyclerViewFragment();
+        AdvertsRecyclerViewFragment fragment = new AdvertsRecyclerViewFragment();
         fragment.setArguments(args);
         return fragment;
     }
@@ -59,7 +53,7 @@ public class MyRecyclerViewFragment extends Fragment {
         adapter_type = args.getInt(ARG_ADAPTER_TYPE);
 
         rvLista = (RecyclerView) getView().findViewById(R.id.rvLista);
-        mAdapter = new MyRecyclerViewAdapter(adapter_type, MainPresenter.getPresentador(getActivity()), ((PrincipalFragment)getParentFragment()).getUser());
+        mAdapter = new AdvertsRecyclerViewAdapter(adapter_type, MainPresenter.getPresentador(getActivity()), ((PrincipalFragment)getParentFragment()).getUser());
         mLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
 
         rvLista.setAdapter(mAdapter);
@@ -67,7 +61,7 @@ public class MyRecyclerViewFragment extends Fragment {
         rvLista.setItemAnimator(new DefaultItemAnimator());
         //rvLista.setHasFixedSize(true);
         mAdapter.setListenerItemClick(listenerItemClick);
-        if (adapter_type == MyRecyclerViewAdapter.ADAPTER_TYPE_MY_ADVS || adapter_type == MyRecyclerViewAdapter.ADAPTER_TYPE_SUBS) {
+        if (adapter_type == AdvertsRecyclerViewAdapter.ADAPTER_TYPE_MY_ADVS || adapter_type == AdvertsRecyclerViewAdapter.ADAPTER_TYPE_SUBS) {
             mAdapter.setListenerLongClick(listenerLongClick);
             mAdapter.setListenerItemClick(listenerItemClick);
         }
@@ -75,8 +69,8 @@ public class MyRecyclerViewFragment extends Fragment {
 
     @Override
     public void onAttach(Context context) {
-        listenerLongClick = (MyRecyclerViewAdapter.OnAdapterItemLongClick) context;
-        listenerItemClick = (MyRecyclerViewAdapter.OnAdapterItemClick) context;
+        listenerLongClick = (AdvertsRecyclerViewAdapter.OnAdapterItemLongClick) context;
+        listenerItemClick = (AdvertsRecyclerViewAdapter.OnAdapterItemClick) context;
         super.onAttach(context);
     }
 
@@ -93,7 +87,7 @@ public class MyRecyclerViewFragment extends Fragment {
         mAdapter.disableMultiDeletionMode();
     }
 
-    public MyRecyclerViewAdapter getmAdapter() {
+    public AdvertsRecyclerViewAdapter getmAdapter() {
         return mAdapter;
     }
 }
