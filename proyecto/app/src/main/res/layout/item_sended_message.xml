@@ -28,16 +28,16 @@
                 android:id="@+id/lblMessage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
                 android:layout_weight="3"
+                android:maxWidth="260dp"
                 android:text="Mensaje ejemplo" />
 
             <TextView
                 android:id="@+id/lblDate"
-                android:layout_width="wrap_content"
+                android:layout_width="29dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
-                android:textSize="12sp"
+                android:textSize="10sp"
                 android:layout_gravity="bottom"
                 android:maxLines="1"
                 android:layout_weight="1"
