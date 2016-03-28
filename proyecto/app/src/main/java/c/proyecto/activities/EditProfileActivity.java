@@ -33,14 +33,16 @@ import java.util.Locale;
 
 import c.proyecto.R;
 import c.proyecto.fragments.CaracteristicasUsuarioDialogFragment;
+import c.proyecto.fragments.DescripcionDialogFragment;
 import c.proyecto.models.Usuario;
 import c.proyecto.presenters.EditProfilePresenter;
 
 public class EditProfileActivity extends AppCompatActivity {
 
+    public static final String EXTRA_USER_RESULT = "extra_result_user";
     private static final String ARG_USUARIO = "args_user";
     private static final String TAG_DIALOG_HABITOS = "DialogHabitos";
-    public static final String EXTRA_USER_RESULT = "extra_result_user";
+    private static final String TAG_DIALOG_DESCRIPCION = "DialogDescripcion";
 
     private EditText txtNombre, txtApellidos, txtFechaNac, txtNacionalidad, txtProfesion, txtComentDesc;
     private ImageView imgFoto, imgCaracteristicas, imgGenero;
@@ -102,6 +104,13 @@ public class EditProfileActivity extends AppCompatActivity {
             }
         });
 
+        imgGenero.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDescripcionDialog();
+            }
+        });
+
         txtNacionalidad.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -148,6 +157,10 @@ public class EditProfileActivity extends AppCompatActivity {
     private void showCaracteristicasDialog() {
         FragmentManager fm = getSupportFragmentManager();
         CaracteristicasUsuarioDialogFragment.newInstance(mUser).show(fm, TAG_DIALOG_HABITOS);
+    }
+    private void showDescripcionDialog(){
+        FragmentManager fm = getSupportFragmentManager();
+        DescripcionDialogFragment.newInstance(mUser).show(fm, TAG_DIALOG_DESCRIPCION);
     }
 
     private void showDatePicker() {

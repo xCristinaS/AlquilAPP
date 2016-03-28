@@ -19,15 +19,14 @@ import c.proyecto.presenters.RegistroPresenter;
 public class Usuario implements Parcelable {
 
     private static final String URL_USERS = "https://proyectofinaldam.firebaseio.com/usuarios/";
-    private static boolean registered;
 
     private String key, email, contra, nombre, apellidos, nacionalidad, profesion, comentario_desc, foto;
     private int ordenado, fiestero, sociable, activo;
     private long fecha_nacimiento;
-    private ArrayList<String> itemsDescriptivos, itemsHabitos;
+    private ArrayList<String> itemsHabitos;
+    private boolean isMale, isStudent, isSmoker;
 
     public Usuario() {
-        itemsDescriptivos = new ArrayList<>();
         itemsHabitos = new ArrayList<>();
         //paBorrarPruebas();
     }
@@ -217,6 +216,30 @@ public class Usuario implements Parcelable {
         this.fiestero = fiestero;
     }
 
+    public boolean isMale() {
+        return isMale;
+    }
+
+    public void setIsMale(boolean isMale) {
+        this.isMale = isMale;
+    }
+
+    public boolean isStudent() {
+        return isStudent;
+    }
+
+    public void setIsStudent(boolean isStudent) {
+        this.isStudent = isStudent;
+    }
+
+    public boolean isSmoker() {
+        return isSmoker;
+    }
+
+    public void setIsSmoker(boolean isSmoker) {
+        this.isSmoker = isSmoker;
+    }
+
     public int getSociable() {
         return sociable;
     }
@@ -233,13 +256,7 @@ public class Usuario implements Parcelable {
         this.activo = activo;
     }
 
-    public ArrayList<String> getItemsDescriptivos() {
-        return itemsDescriptivos;
-    }
 
-    public void setItemsDescriptivos(ArrayList<String> itemsDescriptivos) {
-        this.itemsDescriptivos = itemsDescriptivos;
-    }
 
     public ArrayList<String> getItemsHabitos() {
         return itemsHabitos;
@@ -257,6 +274,7 @@ public class Usuario implements Parcelable {
         this.key = key;
     }
 
+    //      PARCELABLE
     @Override
     public int describeContents() {
         return 0;
@@ -278,8 +296,10 @@ public class Usuario implements Parcelable {
         dest.writeInt(this.sociable);
         dest.writeInt(this.activo);
         dest.writeLong(this.fecha_nacimiento);
-        dest.writeStringList(this.itemsDescriptivos);
         dest.writeStringList(this.itemsHabitos);
+        dest.writeByte(isMale ? (byte) 1 : (byte) 0);
+        dest.writeByte(isStudent ? (byte) 1 : (byte) 0);
+        dest.writeByte(isSmoker ? (byte) 1 : (byte) 0);
     }
 
     protected Usuario(Parcel in) {
@@ -297,15 +317,19 @@ public class Usuario implements Parcelable {
         this.sociable = in.readInt();
         this.activo = in.readInt();
         this.fecha_nacimiento = in.readLong();
-        this.itemsDescriptivos = in.createStringArrayList();
         this.itemsHabitos = in.createStringArrayList();
+        this.isMale = in.readByte() != 0;
+        this.isStudent = in.readByte() != 0;
+        this.isSmoker = in.readByte() != 0;
     }
 
     public static final Creator<Usuario> CREATOR = new Creator<Usuario>() {
+        @Override
         public Usuario createFromParcel(Parcel source) {
             return new Usuario(source);
         }
 
+        @Override
         public Usuario[] newArray(int size) {
             return new Usuario[size];
         }
