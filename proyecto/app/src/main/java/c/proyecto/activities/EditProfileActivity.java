@@ -40,6 +40,7 @@ import java.util.Locale;
 import c.proyecto.R;
 import c.proyecto.api.ImgurUploader;
 import c.proyecto.fragments.CaracteristicasUsuarioDialogFragment;
+import c.proyecto.fragments.DescripcionDialogFragment;
 import c.proyecto.models.Usuario;
 import c.proyecto.presenters.EditProfilePresenter;
 import c.proyecto.utils.Imagenes;
@@ -49,9 +50,10 @@ public class EditProfileActivity extends AppCompatActivity {
 
     private static final int RC_ABRIR_GALERIA = 274;
     private static final int RC_CAPTURAR_FOTO = 433;
-
+    
     private static final String ARG_USUARIO = "args_user";
     private static final String TAG_DIALOG_HABITOS = "DialogHabitos";
+    private static final String TAG_DIALOG_DESCRIPCION = "DialogDescripcion";
 
     private EditText txtNombre, txtApellidos, txtFechaNac, txtNacionalidad, txtProfesion, txtComentDesc;
     private ImageView imgFoto, imgCaracteristicas, imgGenero;
@@ -119,6 +121,13 @@ public class EditProfileActivity extends AppCompatActivity {
             }
         });
 
+        imgGenero.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDescripcionDialog();
+            }
+        });
+
         txtNacionalidad.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -165,6 +174,10 @@ public class EditProfileActivity extends AppCompatActivity {
     private void showCaracteristicasDialog() {
         FragmentManager fm = getSupportFragmentManager();
         CaracteristicasUsuarioDialogFragment.newInstance(mUser).show(fm, TAG_DIALOG_HABITOS);
+    }
+    private void showDescripcionDialog(){
+        FragmentManager fm = getSupportFragmentManager();
+        DescripcionDialogFragment.newInstance(mUser).show(fm, TAG_DIALOG_DESCRIPCION);
     }
 
     private void showDatePicker() {
