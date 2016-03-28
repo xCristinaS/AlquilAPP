@@ -3,10 +3,9 @@ package c.proyecto.presenters;
 import android.app.Activity;
 
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.List;
 
 import c.proyecto.activities.MainActivity;
+import c.proyecto.interfaces.MyPresenter;
 import c.proyecto.interfaces.MainPresenterOps;
 import c.proyecto.models.Anuncio;
 import c.proyecto.models.Message;
@@ -16,7 +15,7 @@ import c.proyecto.pojo.MessagePojo;
 /**
  * Created by Cristina on 20/03/2016.
  */
-public class MainPresenter implements MainPresenterOps {
+public class MainPresenter implements MainPresenterOps, MyPresenter {
 
     private static WeakReference<MainActivity> activity;
     private static MainPresenter presentador;

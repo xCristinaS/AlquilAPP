@@ -5,14 +5,14 @@ import android.app.Activity;
 import java.lang.ref.WeakReference;
 
 import c.proyecto.activities.DetallesAnuncioActivity;
-import c.proyecto.activities.InicioActivity;
 import c.proyecto.interfaces.AdvertsDetailsPresenterOps;
+import c.proyecto.interfaces.MyPresenter;
 import c.proyecto.models.Usuario;
 
 /**
  * Created by Cristina on 23/03/2016.
  */
-public class AdvertsDetailsPresenter implements AdvertsDetailsPresenterOps{
+public class AdvertsDetailsPresenter implements AdvertsDetailsPresenterOps, MyPresenter {
 
     private static WeakReference<DetallesAnuncioActivity> activity;
     private static AdvertsDetailsPresenter presentador;

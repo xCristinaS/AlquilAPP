@@ -2,7 +2,6 @@ package c.proyecto.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.provider.ContactsContract;
 
 import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
@@ -11,8 +10,8 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
 import java.util.Date;
-import java.util.Iterator;
 
+import c.proyecto.interfaces.MyModel;
 import c.proyecto.pojo.MessagePojo;
 import c.proyecto.presenters.ConversationPresenter;
 import c.proyecto.presenters.MainPresenter;
@@ -20,7 +19,7 @@ import c.proyecto.presenters.MainPresenter;
 /**
  * Created by Cristina on 23/03/2016.
  */
-public class Message implements Parcelable {
+public class Message implements Parcelable, MyModel {
 
     private static final String URL_CONVERSACIONES = "https://proyectofinaldam.firebaseio.com/conversaciones/";
     private static final String URL_USERS = "https://proyectofinaldam.firebaseio.com/usuarios/";

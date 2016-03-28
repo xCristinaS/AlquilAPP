@@ -6,9 +6,10 @@ import java.lang.ref.WeakReference;
 
 import c.proyecto.activities.EditProfileActivity;
 import c.proyecto.interfaces.EditProfilePresenterOps;
+import c.proyecto.interfaces.MyPresenter;
 import c.proyecto.models.Usuario;
 
-public class EditProfilePresenter implements EditProfilePresenterOps{
+public class EditProfilePresenter implements EditProfilePresenterOps, MyPresenter {
 
     private static WeakReference<EditProfileActivity> activity;
     private static EditProfilePresenter presentador;

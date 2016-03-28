@@ -108,6 +108,13 @@ public class EditProfileActivity extends AppCompatActivity {
                 showNationalitiesDialog();
             }
         });
+
+        imgFoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 
     private void introducirDatosEnUser() {

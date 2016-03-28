@@ -11,12 +11,13 @@ import com.firebase.client.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import c.proyecto.interfaces.MyModel;
 import c.proyecto.presenters.AdvertsDetailsPresenter;
 import c.proyecto.presenters.InicioPresenter;
 import c.proyecto.presenters.RegistroPresenter;
 
 
-public class Usuario implements Parcelable {
+public class Usuario implements Parcelable, MyModel {
 
     private static final String URL_USERS = "https://proyectofinaldam.firebaseio.com/usuarios/";
     private static boolean registered;
