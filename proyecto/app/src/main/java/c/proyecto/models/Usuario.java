@@ -27,7 +27,6 @@ public class Usuario implements Parcelable, MyModel {
     private String key, email, contra, nombre, apellidos, nacionalidad, profesion, comentario_desc, foto;
     private int ordenado, fiestero, sociable, activo;
     private long fecha_nacimiento;
-    private ArrayList<String> itemsDescriptivos, itemsHabitos;
     private static Firebase mFirebase;
     private static ValueEventListener listener;
     private ArrayList<String> itemsHabitos;
