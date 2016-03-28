@@ -198,7 +198,6 @@ public class EditProfileActivity extends AppCompatActivity {
         }
     }
 
-
     private void showNationalitiesDialog() {
         AlertDialog.Builder b = new AlertDialog.Builder(EditProfileActivity.this);
         b.setTitle("Nacionalidades");
