@@ -103,36 +103,4 @@ public final class Imagenes {
         // Se retorna el archivo creado.
         return archivo;
     }
-/*
-    public static void showImageDialogList(final WeakReference<Activity> a, final ImageView img){
-        img.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialog.Builder dialog = new AlertDialog.Builder(a.get().getApplicationContext());
-                dialog.setTitle("Seleccione una de las opciones");
-                dialog.setItems(R.array.chooseImageListItem, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        //Se guarda cual fue el ultimo ImageView seleccionado
-                        imgSeleccionada = img;
-                        switch (which) {
-                            //Galería
-                            case 0:
-                                openGallery();
-                                break;
-                            //Cámara
-                            case 1:
-                                if (Imagenes.hayCamara(CrearAnuncio1Activity.this))
-                                    takePhoto();
-                                else
-                                    Toast.makeText(CrearAnuncio1Activity.this, "Este dispositivo no dispone de cámara", Toast.LENGTH_SHORT).show();
-                                break;
-                        }
-                    }
-                });
-                dialog.create().show();
-            }
-        });
-    }
-    */
 }

@@ -8,7 +8,9 @@ import java.util.ArrayList;
 import c.proyecto.interfaces.MyModel;
 import c.proyecto.interfaces.MyPresenter;
 import c.proyecto.models.Anuncio;
+import c.proyecto.models.Usuario;
 import c.proyecto.presenters.CrearEditarAnuncioPresenter;
+import c.proyecto.presenters.EditProfilePresenter;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import retrofit2.Call;
@@ -30,6 +32,9 @@ public class ImgurUploader {
                 if (model instanceof Anuncio && presenter instanceof CrearEditarAnuncioPresenter) {
                     ((Anuncio) model).getImagenes().add(respuesta.getData().getLink());
                     ((CrearEditarAnuncioPresenter)presenter).publishNewAdvert((Anuncio) model);
+                } else if (model instanceof Usuario && presenter instanceof EditProfilePresenter){
+                    ((Usuario) model).setFoto(respuesta.getData().getLink());
+                    ((EditProfilePresenter)presenter).updateUserProfile((Usuario) model);
                 }
             }
 

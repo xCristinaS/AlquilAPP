@@ -36,17 +36,18 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
     private static final String ARG_USUARIO = "usuario_extra";
     private static final String TAG_PRINCIPAL_FRAGMENT = "principal_fragment";
     private static final String TAG_MESSAGES_FRAGMENT = "messages_fragment";
-    private static final int RC_EDIT_PROFILE = 87;
 
     private MainPresenter mPresenter;
-    private Usuario user;
+    private Usuario mUser;
     private DrawerLayout drawer;
     private ActionBarDrawerToggle toggle;
     private Toolbar toolbar;
     private NavigationView navigationView;
     private AdvertsRecyclerViewAdapter adapter;
+    private CircleImageView imgNavDrawer;
+    private TextView txtUserNavDrawer;
 
-    public static void start(Activity a, Usuario u){
+    public static void start(Activity a, Usuario u) {
         Intent intent = new Intent(a, MainActivity.class);
         //Cierra todas las actividades anteriores.
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -62,7 +63,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
         setSupportActionBar(toolbar);
         setSupportActionBar(toolbar);
         if (getIntent().hasExtra(ARG_USUARIO))
-            user = getIntent().getParcelableExtra(ARG_USUARIO);
+            mUser = getIntent().getParcelableExtra(ARG_USUARIO);
         initViews();
     }
 
@@ -80,59 +81,67 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
         //Listener del menú del navigationDrawer
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        TextView txtUserNavDrawer = (TextView) navigationView.getHeaderView(0).findViewById(R.id.txtUserNavDrawer);
-        txtUserNavDrawer.setText(String.format("%s %s", user.getNombre(), user.getApellidos()));
-        CircleImageView imgNavDrawer = (CircleImageView) navigationView.getHeaderView(0).findViewById(R.id.imgNavDrawer);
-        if (user.getFoto() != null)
-            Picasso.with(this).load(user.getFoto()).error(R.drawable.default_user).into(imgNavDrawer);
+        txtUserNavDrawer = (TextView) navigationView.getHeaderView(0).findViewById(R.id.txtUserNavDrawer);
+        txtUserNavDrawer.setText(String.format("%s %s", mUser.getNombre(), mUser.getApellidos()));
+        imgNavDrawer = (CircleImageView) navigationView.getHeaderView(0).findViewById(R.id.imgNavDrawer);
+        if (mUser.getFoto() != null)
+            Picasso.with(this).load(mUser.getFoto()).error(R.drawable.default_user).into(imgNavDrawer);
         else
             Picasso.with(this).load(R.drawable.default_user).into(imgNavDrawer);
     }
 
     @Override
-    public void advertHasBeenObtained(Anuncio a){
+    public void userAdvertHasBeenModified(Usuario user) {
+        mUser = user;
+        txtUserNavDrawer.setText(String.format("%s %s", mUser.getNombre(), mUser.getApellidos()));
+        if (mUser.getFoto() != null)
+            Picasso.with(this).load(mUser.getFoto()).error(R.drawable.default_user).into(imgNavDrawer);
+    }
+
+    @Override
+    public void advertHasBeenObtained(Anuncio a) {
         Fragment f = getSupportFragmentManager().findFragmentById(R.id.frmContenido);
         if (f instanceof PrincipalFragment)
             ((PrincipalFragment) f).addAdvertToAdapter(a);
     }
 
     @Override
-    public void adverHasBeenModified(Anuncio a){
+    public void adverHasBeenModified(Anuncio a) {
         Fragment f = getSupportFragmentManager().findFragmentById(R.id.frmContenido);
         if (f instanceof PrincipalFragment)
             ((PrincipalFragment) f).replaceAdvertFromAdapter(a);
     }
 
     @Override
-    public void subHasBeenObtained(Anuncio a){
+    public void subHasBeenObtained(Anuncio a) {
         Fragment f = getSupportFragmentManager().findFragmentById(R.id.frmContenido);
         if (f instanceof PrincipalFragment)
             ((PrincipalFragment) f).addSubToAdapter(a);
     }
 
     @Override
-    public void subHasBeenModified(Anuncio a){
+    public void subHasBeenModified(Anuncio a) {
         Fragment f = getSupportFragmentManager().findFragmentById(R.id.frmContenido);
         if (f instanceof PrincipalFragment)
             ((PrincipalFragment) f).replaceSubFromAdapter(a);
     }
 
     @Override
-    public void userAdvertHasBeenObtained(Anuncio a){
+    public void userAdvertHasBeenObtained(Anuncio a) {
         Fragment f = getSupportFragmentManager().findFragmentById(R.id.frmContenido);
         if (f instanceof PrincipalFragment)
             ((PrincipalFragment) f).addUserAdvertToAdapter(a);
     }
 
     @Override
-    public void userAdvertHasBeenModified(Anuncio a){
+    public void userAdvertHasBeenModified(Anuncio a) {
         Fragment f = getSupportFragmentManager().findFragmentById(R.id.frmContenido);
         if (f instanceof PrincipalFragment)
             ((PrincipalFragment) f).replaceUserAdvertFromAdapter(a);
     }
 
     @Override
-    public void removeSub(Anuncio a){
+    public void removeSub(Anuncio a) {
         Fragment f = getSupportFragmentManager().findFragmentById(R.id.frmContenido);
         if (f instanceof PrincipalFragment)
             ((PrincipalFragment) f).removeSub(a);
@@ -147,18 +156,18 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
     //MENU NAV DRAWER
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.nav_home:
                 break;
             case R.id.nav_new_adv:
                 //Null = nuevo Anuncio.
-                CrearAnuncio1Activity.start(this, null, user);
+                CrearAnuncio1Activity.start(this, null, mUser);
                 break;
             case R.id.nav_edit_profile:
-                EditProfileActivity.start(this, user, RC_EDIT_PROFILE);
+                EditProfileActivity.start(this, mUser);
                 break;
             case R.id.nav_messages:
-                mPresenter.requestUserMessages(user);
+                mPresenter.requestUserMessages(mUser);
                 getSupportFragmentManager().beginTransaction().replace(R.id.frmContenido, MessagesFragment.newInstance(false), TAG_MESSAGES_FRAGMENT).commit();
                 break;
             case R.id.nav_preferences:
@@ -170,13 +179,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
         }
         drawer.closeDrawer(GravityCompat.START);
         return true;
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK && requestCode == RC_EDIT_PROFILE)
-            user = data.getParcelableExtra(EditProfileActivity.EXTRA_USER_RESULT);
     }
 
     @Override
@@ -243,21 +245,21 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
     }
 
     @Override
-    public void userMessageHasBeenObtained(MessagePojo m){
+    public void userMessageHasBeenObtained(MessagePojo m) {
         if (getSupportFragmentManager().findFragmentById(R.id.frmContenido) instanceof MessagesFragment)
             ((MessagesFragment) getSupportFragmentManager().findFragmentById(R.id.frmContenido)).getmAdapter().addItem(m);
     }
 
-    public Usuario getUser() {
-        return user;
+    public Usuario getmUser() {
+        return mUser;
     }
 
-    public MainPresenter getmPresenter(){
+    public MainPresenter getmPresenter() {
         return mPresenter;
     }
 
     @Override
     public void onItemClick(MessagePojo mensaje) {
-        ConversationActivity.start(this, mensaje, user);
+        ConversationActivity.start(this, mensaje, mUser);
     }
 }

@@ -30,4 +30,5 @@ public class EditProfilePresenter implements EditProfilePresenterOps, MyPresente
     public void updateUserProfile(Usuario u) {
         Usuario.updateUserProfile(u);
     }
+
 }

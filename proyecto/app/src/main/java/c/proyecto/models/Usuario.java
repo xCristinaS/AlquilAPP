@@ -3,6 +3,7 @@ package c.proyecto.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
@@ -13,7 +14,9 @@ import java.util.Iterator;
 
 import c.proyecto.interfaces.MyModel;
 import c.proyecto.presenters.AdvertsDetailsPresenter;
+import c.proyecto.presenters.EditProfilePresenter;
 import c.proyecto.presenters.InicioPresenter;
+import c.proyecto.presenters.MainPresenter;
 import c.proyecto.presenters.RegistroPresenter;
 
 
@@ -26,6 +29,8 @@ public class Usuario implements Parcelable, MyModel {
     private int ordenado, fiestero, sociable, activo;
     private long fecha_nacimiento;
     private ArrayList<String> itemsDescriptivos, itemsHabitos;
+    private static Firebase mFirebase;
+    private static ValueEventListener listener;
 
     public Usuario() {
         itemsDescriptivos = new ArrayList<>();
@@ -48,6 +53,25 @@ public class Usuario implements Parcelable, MyModel {
         this.nombre = nombre;
         this.apellidos = apellidos;
         this.key = key;
+    }
+
+
+    public static void initializeOnUserChangedListener(final MainPresenter presenter, Usuario usuario) {
+        if (mFirebase == null)
+            mFirebase = new Firebase(URL_USERS + usuario.getKey());
+        if (listener == null)
+            listener = new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    presenter.userHasBeenModified(dataSnapshot.getValue(Usuario.class));
+                }
+
+                @Override
+                public void onCancelled(FirebaseError firebaseError) {
+
+                }
+            };
+        mFirebase.addValueEventListener(listener);
     }
 
     public static Usuario createNewUser(String email, String contra, String nombre, String apellidos) {
@@ -86,7 +110,7 @@ public class Usuario implements Parcelable, MyModel {
     }
 
     //Comprueba si existe algún usuario con este usuario.
-    public static void amIRegistrered(final String user, final RegistroPresenter presenter){
+    public static void amIRegistrered(final String user, final RegistroPresenter presenter) {
         Firebase firebase = new Firebase(URL_USERS);
 
         firebase.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -110,7 +134,7 @@ public class Usuario implements Parcelable, MyModel {
         });
     }
 
-    public static void getAdvertPublisher(String anunciante, final AdvertsDetailsPresenter presenter){
+    public static void getAdvertPublisher(String anunciante, final AdvertsDetailsPresenter presenter) {
         Firebase mFirebase = new Firebase(URL_USERS).child(anunciante);
         mFirebase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -125,9 +149,16 @@ public class Usuario implements Parcelable, MyModel {
         });
     }
 
-    public static void updateUserProfile(Usuario u){
+    public static void updateUserProfile(Usuario u) {
         Firebase mFirebase = new Firebase(URL_USERS + u.key + "/");
         mFirebase.setValue(u);
+    }
+
+
+    public static void detachFirebaseListeners() {
+        mFirebase.removeEventListener(listener);
+        listener = null;
+        mFirebase = null;
     }
 
     public String getEmail() {

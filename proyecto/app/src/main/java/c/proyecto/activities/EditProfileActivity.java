@@ -4,6 +4,10 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.os.AsyncTask;
+import android.provider.MediaStore;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -14,10 +18,12 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -32,15 +38,20 @@ import java.util.Date;
 import java.util.Locale;
 
 import c.proyecto.R;
+import c.proyecto.api.ImgurUploader;
 import c.proyecto.fragments.CaracteristicasUsuarioDialogFragment;
 import c.proyecto.models.Usuario;
 import c.proyecto.presenters.EditProfilePresenter;
+import c.proyecto.utils.Imagenes;
 
 public class EditProfileActivity extends AppCompatActivity {
 
+
+    private static final int RC_ABRIR_GALERIA = 274;
+    private static final int RC_CAPTURAR_FOTO = 433;
+
     private static final String ARG_USUARIO = "args_user";
     private static final String TAG_DIALOG_HABITOS = "DialogHabitos";
-    public static final String EXTRA_USER_RESULT = "extra_result_user";
 
     private EditText txtNombre, txtApellidos, txtFechaNac, txtNacionalidad, txtProfesion, txtComentDesc;
     private ImageView imgFoto, imgCaracteristicas, imgGenero;
@@ -48,11 +59,13 @@ public class EditProfileActivity extends AppCompatActivity {
     private Usuario mUser;
     private EditProfilePresenter mPresenter;
     private String[] mNationalities;
+    private String mPathOriginal;
+    private File mFileUserPhoto;
 
-    public static void start(Activity a, Usuario u, int requestCode) {
+    public static void start(Activity a, Usuario u) {
         Intent intent = new Intent(a, EditProfileActivity.class);
         intent.putExtra(ARG_USUARIO, u);
-        a.startActivityForResult(intent, requestCode);
+        a.startActivity(intent);
     }
 
     @Override
@@ -79,10 +92,14 @@ public class EditProfileActivity extends AppCompatActivity {
         imgGenero = (ImageView) findViewById(R.id.imgGenero);
         btnConfirmar = (Button) findViewById(R.id.btnConfirmar);
 
+        showImageDialogList(imgFoto);
+
         btnConfirmar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 introducirDatosEnUser();
+                if (mFileUserPhoto != null)
+                    ImgurUploader.subirImagen(mFileUserPhoto, mUser, mPresenter);
                 mPresenter.updateUserProfile(mUser);
                 finish();
             }
@@ -106,13 +123,6 @@ public class EditProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 showNationalitiesDialog();
-            }
-        });
-
-        imgFoto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
             }
         });
     }
@@ -184,11 +194,12 @@ public class EditProfileActivity extends AppCompatActivity {
                 txtFechaNac.setText(String.format("%s", format.format(date)));
             }
         }, year, mont, day);
+
         datePicker.setTitle("Seleccione su fecha");
         datePicker.show();
     }
 
-    private void getNationalitiesFromFile(){
+    private void getNationalitiesFromFile() {
         BufferedReader lector;
         String line, pais;
         int cont = 0;
@@ -218,9 +229,92 @@ public class EditProfileActivity extends AppCompatActivity {
         b.create().show();
     }
 
+    private void showImageDialogList(final ImageView img) {
+        img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder dialog = new AlertDialog.Builder(EditProfileActivity.this);
+                dialog.setTitle("Seleccione una de las opciones");
+                dialog.setItems(R.array.chooseImageListItem, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //Se guarda cual fue el ultimo ImageView seleccionado
+                        switch (which) {
+                            //Galería
+                            case 0:
+                                openGallery();
+                                break;
+                            //Cámara
+                            case 1:
+                                if (Imagenes.hayCamara(EditProfileActivity.this))
+                                    takePhoto();
+                                else
+                                    Toast.makeText(EditProfileActivity.this, "Este dispositivo no dispone de cámara", Toast.LENGTH_SHORT).show();
+                                break;
+                        }
+                    }
+                });
+                dialog.create().show();
+            }
+        });
+    }
+
+    private void takePhoto() {
+        Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+        //Si hay alguna actividad que sepa realizar la acción
+        if (i.resolveActivity(getPackageManager()) != null) {
+            String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
+
+            File photoFile = Imagenes.crearArchivoFoto(this, "cameraPhoto.jpeg", false);
+            if (photoFile != null) {
+                //Se guarda el path del archivo para cuando se haya hecho la captura y se necesite referencia a ella.
+                mPathOriginal = photoFile.getAbsolutePath();
+                //Se añade como extra del intent la URI donde debe guardarse
+                i.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFile));
+                startActivityForResult(i, RC_CAPTURAR_FOTO);
+            }
+        }
+    }
+
+
+    private void openGallery() {
+        Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        i.setType("image/*");
+        startActivityForResult(i, RC_ABRIR_GALERIA);
+    }
+
     @Override
-    public void finish() {
-        setResult(RESULT_OK, new Intent().putExtra(EXTRA_USER_RESULT, mUser));
-        super.finish();
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK)
+            switch (requestCode) {
+                case RC_ABRIR_GALERIA:
+                    // Se obtiene el path real a partir de la URI retornada por la galería.
+                    Uri uriGaleria = data.getData();
+                    mPathOriginal = Imagenes.getRealPathFromGallery(this, uriGaleria);
+                    new HiloEscalador().execute(imgFoto.getWidth(), imgFoto.getHeight());
+                    break;
+                case RC_CAPTURAR_FOTO:
+                    new HiloEscalador().execute(imgFoto.getWidth(), imgFoto.getHeight());
+                    break;
+            }
+    }
+
+    class HiloEscalador extends AsyncTask<Integer, Void, Bitmap> {
+
+        @Override
+        protected Bitmap doInBackground(Integer... params) {
+            return Imagenes.escalar(params[0], params[1], mPathOriginal);
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap bitmap) {
+            imgFoto.setImageBitmap(bitmap);
+            //Guarda la imagen capturada o seleccionada en un array de bitmap para cuando
+            //termine de editar o crear el anuncio las suba a internet y no antes.
+            mFileUserPhoto = Imagenes.crearArchivoFoto(EditProfileActivity.this, "foto_user.jpeg", false);
+            Imagenes.guardarBitmapEnArchivo(bitmap, mFileUserPhoto);
+        }
     }
 }

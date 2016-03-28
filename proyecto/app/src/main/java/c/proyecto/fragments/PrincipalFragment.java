@@ -38,7 +38,7 @@ public class PrincipalFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mPresenter = MainPresenter.getPresentador(getActivity());
-        user = ((MainActivity) getActivity()).getUser();
+        user = ((MainActivity) getActivity()).getmUser();
         confViewPager();
     }
 
