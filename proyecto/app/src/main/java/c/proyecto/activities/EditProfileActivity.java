@@ -2,8 +2,10 @@ package c.proyecto.activities;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -45,7 +47,7 @@ public class EditProfileActivity extends AppCompatActivity {
     private Button btnConfirmar;
     private Usuario mUser;
     private EditProfilePresenter mPresenter;
-    private ArrayList<String> mNationalities;
+    private String[] mNationalities;
 
     public static void start(Activity a, Usuario u, int requestCode) {
         Intent intent = new Intent(a, EditProfileActivity.class);
@@ -57,11 +59,12 @@ public class EditProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
-        initViews();
+        mNationalities = new String[248];
+        getNationalitiesFromFile();
         mPresenter = EditProfilePresenter.getPresentador(this);
         mUser = getIntent().getParcelableExtra(ARG_USUARIO);
+        initViews();
         recuperarUser();
-        mNationalities = getNationalitiesFromFile();
     }
 
     private void initViews() {
@@ -102,7 +105,7 @@ public class EditProfileActivity extends AppCompatActivity {
         txtNacionalidad.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                showNationalitiesDialog();
             }
         });
     }
@@ -124,6 +127,8 @@ public class EditProfileActivity extends AppCompatActivity {
             mUser.setComentario_desc(txtComentDesc.getText().toString());
         if (!TextUtils.isEmpty(txtProfesion.getText()))
             mUser.setProfesion(txtProfesion.getText().toString());
+        if (!TextUtils.isEmpty(txtNacionalidad.getText()))
+            mUser.setNacionalidad(txtNacionalidad.getText().toString());
     }
 
     private void recuperarUser() {
@@ -144,7 +149,6 @@ public class EditProfileActivity extends AppCompatActivity {
         FragmentManager fm = getSupportFragmentManager();
         CaracteristicasUsuarioDialogFragment.newInstance(mUser).show(fm, TAG_DIALOG_HABITOS);
     }
-
 
     private void showDatePicker() {
         Calendar currentDate = Calendar.getInstance();
@@ -177,19 +181,35 @@ public class EditProfileActivity extends AppCompatActivity {
         datePicker.show();
     }
 
-    private ArrayList<String> getNationalitiesFromFile(){
-        ArrayList<String> nationalities = new ArrayList<>();
+    private void getNationalitiesFromFile(){
         BufferedReader lector;
-        String line;
+        String line, pais;
+        int cont = 0;
         try {
             InputStream input = this.getResources().openRawResource(R.raw.countries);
             lector = new BufferedReader(new InputStreamReader(input));
-            while ((line = lector.readLine()) != null)
-                nationalities.add(line.split(":")[1]);
+            while ((line = lector.readLine()) != null) {
+                pais = line.split(":")[1];
+                mNationalities[cont] = pais;
+                cont++;
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return nationalities;
+    }
+
+
+    private void showNationalitiesDialog() {
+        AlertDialog.Builder b = new AlertDialog.Builder(EditProfileActivity.this);
+        b.setTitle("Nacionalidades");
+        b.setItems(mNationalities, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                txtNacionalidad.setText(mNationalities[which]);
+            }
+        });
+        b.setIcon(R.drawable.ic_flag);
+        b.create().show();
     }
 
     @Override
