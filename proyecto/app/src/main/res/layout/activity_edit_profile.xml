@@ -21,7 +21,7 @@
                 android:id="@+id/imgFoto"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:src="@drawable/default_user"/>
+                android:src="@drawable/default_user" />
 
             <EditText
                 android:id="@+id/txtNombre"
@@ -131,8 +131,6 @@
 
         </RelativeLayout>
     </android.support.v7.widget.CardView>
-
-
 
 
     <Button
