@@ -15,8 +15,16 @@ import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URI;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -37,6 +45,7 @@ public class EditProfileActivity extends AppCompatActivity {
     private Button btnConfirmar;
     private Usuario mUser;
     private EditProfilePresenter mPresenter;
+    private ArrayList<String> mNationalities;
 
     public static void start(Activity a, Usuario u, int requestCode) {
         Intent intent = new Intent(a, EditProfileActivity.class);
@@ -52,6 +61,7 @@ public class EditProfileActivity extends AppCompatActivity {
         mPresenter = EditProfilePresenter.getPresentador(this);
         mUser = getIntent().getParcelableExtra(ARG_USUARIO);
         recuperarUser();
+        mNationalities = getNationalitiesFromFile();
     }
 
     private void initViews() {
@@ -86,6 +96,13 @@ public class EditProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 showCaracteristicasDialog();
+            }
+        });
+
+        txtNacionalidad.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
             }
         });
     }
@@ -158,6 +175,21 @@ public class EditProfileActivity extends AppCompatActivity {
         }, year, mont, day);
         datePicker.setTitle("Seleccione su fecha");
         datePicker.show();
+    }
+
+    private ArrayList<String> getNationalitiesFromFile(){
+        ArrayList<String> nationalities = new ArrayList<>();
+        BufferedReader lector;
+        String line;
+        try {
+            InputStream input = this.getResources().openRawResource(R.raw.countries);
+            lector = new BufferedReader(new InputStreamReader(input));
+            while ((line = lector.readLine()) != null)
+                nationalities.add(line.split(":")[1]);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return nationalities;
     }
 
     @Override
