@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import java.util.ArrayList;
+
 import c.proyecto.R;
 import c.proyecto.models.Usuario;
 
@@ -41,8 +43,8 @@ public class DescripcionDialogFragment extends AppCompatDialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view =  inflater.inflate(R.layout.dialog_fragment_descripcion, container, false);
 
-        initViews(view);
         mUser = (Usuario) getArguments().get(ARG_USER);
+        initViews(view);
         recuperarDatos();
 
         return view;
@@ -56,69 +58,31 @@ public class DescripcionDialogFragment extends AppCompatDialogFragment {
         imgFumador = (ImageView) view.findViewById(R.id.imgFumador);
         imgNoFumador = (ImageView) view.findViewById(R.id.imgNoFumador);
 
-        imgMasculino.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                tintImageView(imgMasculino);
-                mUser.setIsMale(true);
-            }
-        });
+        onClickImages(imgMasculino, R.drawable.genero_masculino, R.drawable.genero_femenino);
+        onClickImages(imgFemenino, R.drawable.genero_femenino, R.drawable.genero_masculino);
+        onClickImages(imgEstudiante, R.drawable.estudiante, R.drawable.trabajador);
+        onClickImages(imgTrabajador, R.drawable.trabajador, R.drawable.estudiante);
+        onClickImages(imgFumador, R.drawable.fumador, R.drawable.no_fumador);
+        onClickImages(imgNoFumador, R.drawable.no_fumador, R.drawable.fumador);
 
-        imgFemenino.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                tintImageView(imgFemenino);
-                mUser.setIsMale(false);
-            }
-        });
-
-        imgEstudiante.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                tintImageView(imgEstudiante);
-                mUser.setIsStudent(true);
-            }
-        });
-
-        imgTrabajador.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                tintImageView(imgTrabajador);
-                mUser.setIsStudent(false);
-            }
-        });
-
-        imgFumador.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                tintImageView(imgFumador);
-                mUser.setIsSmoker(true);
-            }
-        });
-
-        imgNoFumador.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                tintImageView(imgNoFumador);
-                mUser.setIsSmoker(false);
-            }
-        });
     }
 
     private void recuperarDatos() {
-        if(mUser.isMale())
+        ArrayList<Integer> ids = mUser.getIdDrawItemsDescriptivos();
+
+        if(ids.contains(R.drawable.genero_masculino))
             tintImageView(imgMasculino);
-        else
+        else if(ids.contains(R.drawable.genero_femenino))
             tintImageView(imgFemenino);
 
-        if(mUser.isStudent())
+        if(ids.contains(R.drawable.estudiante))
             tintImageView(imgEstudiante);
-        else
+        else if(ids.contains(R.drawable.trabajador))
             tintImageView(imgTrabajador);
 
-        if(mUser.isSmoker())
+        if(ids.contains(R.drawable.fumador))
             tintImageView(imgFumador);
-        else
+        else if(ids.contains(R.drawable.no_fumador))
             tintImageView(imgNoFumador);
 
     }
@@ -138,6 +102,22 @@ public class DescripcionDialogFragment extends AppCompatDialogFragment {
         else if(img.equals(imgNoFumador))
             imgFumador.clearColorFilter();
 
+    }
+
+    private void onClickImages(final ImageView imgOnClick, final int drawToTint, final int drawToClearTint){
+        imgOnClick.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tintImageView(imgOnClick);
+                //Si no contiene el drawable a tintar se tinta
+                if(!mUser.getIdDrawItemsDescriptivos().contains(drawToTint)){
+                    mUser.getIdDrawItemsDescriptivos().add(drawToTint);
+                    //Si el drawable contrario está tintado, se borrará del arrayList para que no aparezca tintado.
+                    if(mUser.getIdDrawItemsDescriptivos().contains(drawToClearTint))
+                        mUser.getIdDrawItemsDescriptivos().remove(mUser.getIdDrawItemsDescriptivos().indexOf(drawToClearTint));
+                }
+            }
+        });
     }
 
 

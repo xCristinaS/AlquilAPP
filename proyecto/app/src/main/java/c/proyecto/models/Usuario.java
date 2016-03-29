@@ -30,10 +30,12 @@ public class Usuario implements Parcelable, MyModel {
     private static Firebase mFirebase;
     private static ValueEventListener listener;
     private ArrayList<String> itemsHabitos;
-    private boolean isMale, isStudent, isSmoker;
+    private ArrayList<Integer> idDrawItemsDescriptivos;
+
 
     public Usuario() {
         itemsHabitos = new ArrayList<>();
+        idDrawItemsDescriptivos = new ArrayList<>();
         //paBorrarPruebas();
     }
 
@@ -248,28 +250,12 @@ public class Usuario implements Parcelable, MyModel {
         this.fiestero = fiestero;
     }
 
-    public boolean isMale() {
-        return isMale;
+    public ArrayList<Integer> getIdDrawItemsDescriptivos() {
+        return idDrawItemsDescriptivos;
     }
 
-    public void setIsMale(boolean isMale) {
-        this.isMale = isMale;
-    }
-
-    public boolean isStudent() {
-        return isStudent;
-    }
-
-    public void setIsStudent(boolean isStudent) {
-        this.isStudent = isStudent;
-    }
-
-    public boolean isSmoker() {
-        return isSmoker;
-    }
-
-    public void setIsSmoker(boolean isSmoker) {
-        this.isSmoker = isSmoker;
+    public void setIdDrawItemsDescriptivos(ArrayList<Integer> idDrawItemsDescriptivos) {
+        this.idDrawItemsDescriptivos = idDrawItemsDescriptivos;
     }
 
     public int getSociable() {
@@ -307,6 +293,8 @@ public class Usuario implements Parcelable, MyModel {
     }
 
     //      PARCELABLE
+
+
     @Override
     public int describeContents() {
         return 0;
@@ -329,9 +317,7 @@ public class Usuario implements Parcelable, MyModel {
         dest.writeInt(this.activo);
         dest.writeLong(this.fecha_nacimiento);
         dest.writeStringList(this.itemsHabitos);
-        dest.writeByte(isMale ? (byte) 1 : (byte) 0);
-        dest.writeByte(isStudent ? (byte) 1 : (byte) 0);
-        dest.writeByte(isSmoker ? (byte) 1 : (byte) 0);
+        dest.writeList(this.idDrawItemsDescriptivos);
     }
 
     protected Usuario(Parcel in) {
@@ -350,9 +336,8 @@ public class Usuario implements Parcelable, MyModel {
         this.activo = in.readInt();
         this.fecha_nacimiento = in.readLong();
         this.itemsHabitos = in.createStringArrayList();
-        this.isMale = in.readByte() != 0;
-        this.isStudent = in.readByte() != 0;
-        this.isSmoker = in.readByte() != 0;
+        this.idDrawItemsDescriptivos = new ArrayList<Integer>();
+        in.readList(this.idDrawItemsDescriptivos, Integer.class.getClassLoader());
     }
 
     public static final Creator<Usuario> CREATOR = new Creator<Usuario>() {
