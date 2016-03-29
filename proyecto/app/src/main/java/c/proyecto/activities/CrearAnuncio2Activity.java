@@ -1,9 +1,7 @@
 package c.proyecto.activities;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -23,18 +21,12 @@ import java.util.ArrayList;
 import c.proyecto.Constantes;
 import c.proyecto.R;
 import c.proyecto.adapters.PrestacionesAdapter;
-import c.proyecto.api.ImgurAPI;
-import c.proyecto.api.ImgurResponse;
+import c.proyecto.api.ImgurUploader;
 import c.proyecto.fragments.SeleccionPrestacionesDialogFragment;
 import c.proyecto.models.Anuncio;
 import c.proyecto.models.Usuario;
 import c.proyecto.pojo.Prestacion;
 import c.proyecto.presenters.CrearEditarAnuncioPresenter;
-import okhttp3.MediaType;
-import okhttp3.RequestBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class CrearAnuncio2Activity extends AppCompatActivity implements PrestacionesAdapter.IPrestacionAdapter, SeleccionPrestacionesDialogFragment.ICallBackOnDismiss {
 
@@ -259,7 +251,8 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
     private void confirmarCambios() {
         if (requiredFieldsFilled()) {
             //Subir las imagenes a la api de imágenes.
-            new Uploader().execute(imagenesAnuncio);
+            for (File f: imagenesAnuncio)
+                    ImgurUploader.subirImagen(f, mAnuncio, mPresenter);
             //Guardar todos los editText en el objeto anuncio.
             meterDatosEnAnuncio();
             //Subir el objeto a FireBase.
@@ -301,38 +294,5 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
     public void finish() {
         setResult(RESULT_OK, new Intent());
         super.finish();
-    }
-
-    //Sube las imagenes a la Api Imgur y guarda las url que den como resultado en el objeto Anuncio.
-    class Uploader extends AsyncTask<ArrayList<File>, Void, Void> {
-
-        @Override
-        protected Void doInBackground(ArrayList<File>... params) {
-            for (int i = 0; i < params[0].size(); i++)
-                if (params[0].get(i) != null)
-                    subirImagen(params[0].get(i));
-
-            return null;
-        }
-    }
-
-    private void subirImagen(File file) {
-        RequestBody body = RequestBody.create(MediaType.parse("image/*"), file);
-
-        Call<ImgurResponse> llamada = ImgurAPI.getMInstance().getService().uploadImage(body);
-        llamada.enqueue(new Callback<ImgurResponse>() {
-            @Override
-            public void onResponse(Call<ImgurResponse> call, Response<ImgurResponse> response) {
-                ImgurResponse respuesta = response.body();
-                //Se añade la urls del bitmap escogido
-                mAnuncio.getImagenes().add(respuesta.getData().getLink());
-                mPresenter.publishNewAdvert(mAnuncio);
-            }
-
-            @Override
-            public void onFailure(Call<ImgurResponse> call, Throwable t) {
-                System.out.println();
-            }
-        });
     }
 }

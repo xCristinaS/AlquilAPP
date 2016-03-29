@@ -11,11 +11,9 @@ import com.firebase.client.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Random;
 
 import c.proyecto.R;
+import c.proyecto.interfaces.MyModel;
 import c.proyecto.pojo.Prestacion;
 import c.proyecto.presenters.MainPresenter;
 
@@ -23,7 +21,7 @@ import c.proyecto.presenters.MainPresenter;
 /**
  * Created by Cristina on 20/03/2016.
  */
-public class Anuncio implements Parcelable {
+public class Anuncio implements Parcelable, MyModel {
 
     private static final String URL_ANUNCIOS = "https://proyectofinaldam.firebaseio.com/anuncios/";
     private static final String URL_SOLICITUDES = "https://proyectofinaldam.firebaseio.com/solicitudes/";

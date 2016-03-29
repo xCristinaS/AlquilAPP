@@ -5,12 +5,13 @@ import android.app.Activity;
 import java.lang.ref.WeakReference;
 
 import c.proyecto.activities.InicioActivity;
+import c.proyecto.interfaces.MyPresenter;
 import c.proyecto.interfaces.InicioPresenterOps;
 import c.proyecto.models.Usuario;
 
 
 
-public class InicioPresenter implements InicioPresenterOps {
+public class InicioPresenter implements InicioPresenterOps, MyPresenter {
 
     private static WeakReference<InicioActivity> activity;
     private static InicioPresenter presentador;

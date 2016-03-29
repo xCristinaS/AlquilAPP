@@ -3,6 +3,7 @@ package c.proyecto.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
@@ -11,23 +12,30 @@ import com.firebase.client.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import c.proyecto.interfaces.MyModel;
 import c.proyecto.presenters.AdvertsDetailsPresenter;
+import c.proyecto.presenters.EditProfilePresenter;
 import c.proyecto.presenters.InicioPresenter;
+import c.proyecto.presenters.MainPresenter;
 import c.proyecto.presenters.RegistroPresenter;
 
 
-public class Usuario implements Parcelable {
+public class Usuario implements Parcelable, MyModel {
 
     private static final String URL_USERS = "https://proyectofinaldam.firebaseio.com/usuarios/";
-    private static boolean registered;
 
-    private String key, email, contra, nombre, apellidos, nacionalidad, profesion, comentario_desc, foto, fecha_nacimiento;
+    private String key, email, contra, nombre, apellidos, nacionalidad, profesion, comentario_desc, foto;
     private int ordenado, fiestero, sociable, activo;
-    private ArrayList<String> itemsDescriptivos, itemsHabitos;
+    private long fecha_nacimiento;
+    private static Firebase mFirebase;
+    private static ValueEventListener listener;
+    private ArrayList<String> itemsHabitos;
+    private ArrayList<Integer> idDrawItemsDescriptivos;
+
 
     public Usuario() {
-        itemsDescriptivos = new ArrayList<>();
         itemsHabitos = new ArrayList<>();
+        idDrawItemsDescriptivos = new ArrayList<>();
         //paBorrarPruebas();
     }
 
@@ -46,6 +54,25 @@ public class Usuario implements Parcelable {
         this.nombre = nombre;
         this.apellidos = apellidos;
         this.key = key;
+    }
+
+
+    public static void initializeOnUserChangedListener(final MainPresenter presenter, Usuario usuario) {
+        if (mFirebase == null)
+            mFirebase = new Firebase(URL_USERS + usuario.getKey());
+        if (listener == null)
+            listener = new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    presenter.userHasBeenModified(dataSnapshot.getValue(Usuario.class));
+                }
+
+                @Override
+                public void onCancelled(FirebaseError firebaseError) {
+
+                }
+            };
+        mFirebase.addValueEventListener(listener);
     }
 
     public static Usuario createNewUser(String email, String contra, String nombre, String apellidos) {
@@ -84,7 +111,7 @@ public class Usuario implements Parcelable {
     }
 
     //Comprueba si existe algún usuario con este usuario.
-    public static void amIRegistrered(final String user, final RegistroPresenter presenter){
+    public static void amIRegistrered(final String user, final RegistroPresenter presenter) {
         Firebase firebase = new Firebase(URL_USERS);
 
         firebase.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -108,7 +135,7 @@ public class Usuario implements Parcelable {
         });
     }
 
-    public static void getAdvertPublisher(String anunciante, final AdvertsDetailsPresenter presenter){
+    public static void getAdvertPublisher(String anunciante, final AdvertsDetailsPresenter presenter) {
         Firebase mFirebase = new Firebase(URL_USERS).child(anunciante);
         mFirebase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -121,6 +148,18 @@ public class Usuario implements Parcelable {
 
             }
         });
+    }
+
+    public static void updateUserProfile(Usuario u) {
+        Firebase mFirebase = new Firebase(URL_USERS + u.key + "/");
+        mFirebase.setValue(u);
+    }
+
+
+    public static void detachFirebaseListeners() {
+        mFirebase.removeEventListener(listener);
+        listener = null;
+        mFirebase = null;
     }
 
     public String getEmail() {
@@ -187,11 +226,11 @@ public class Usuario implements Parcelable {
         this.foto = foto;
     }
 
-    public String getFecha_nacimiento() {
+    public long getFecha_nacimiento() {
         return fecha_nacimiento;
     }
 
-    public void setFecha_nacimiento(String fecha_nacimiento) {
+    public void setFecha_nacimiento(long fecha_nacimiento) {
         this.fecha_nacimiento = fecha_nacimiento;
     }
 
@@ -211,6 +250,14 @@ public class Usuario implements Parcelable {
         this.fiestero = fiestero;
     }
 
+    public ArrayList<Integer> getIdDrawItemsDescriptivos() {
+        return idDrawItemsDescriptivos;
+    }
+
+    public void setIdDrawItemsDescriptivos(ArrayList<Integer> idDrawItemsDescriptivos) {
+        this.idDrawItemsDescriptivos = idDrawItemsDescriptivos;
+    }
+
     public int getSociable() {
         return sociable;
     }
@@ -227,13 +274,7 @@ public class Usuario implements Parcelable {
         this.activo = activo;
     }
 
-    public ArrayList<String> getItemsDescriptivos() {
-        return itemsDescriptivos;
-    }
 
-    public void setItemsDescriptivos(ArrayList<String> itemsDescriptivos) {
-        this.itemsDescriptivos = itemsDescriptivos;
-    }
 
     public ArrayList<String> getItemsHabitos() {
         return itemsHabitos;
@@ -251,6 +292,9 @@ public class Usuario implements Parcelable {
         this.key = key;
     }
 
+    //      PARCELABLE
+
+
     @Override
     public int describeContents() {
         return 0;
@@ -267,13 +311,13 @@ public class Usuario implements Parcelable {
         dest.writeString(this.profesion);
         dest.writeString(this.comentario_desc);
         dest.writeString(this.foto);
-        dest.writeString(this.fecha_nacimiento);
         dest.writeInt(this.ordenado);
         dest.writeInt(this.fiestero);
         dest.writeInt(this.sociable);
         dest.writeInt(this.activo);
-        dest.writeStringList(this.itemsDescriptivos);
+        dest.writeLong(this.fecha_nacimiento);
         dest.writeStringList(this.itemsHabitos);
+        dest.writeList(this.idDrawItemsDescriptivos);
     }
 
     protected Usuario(Parcel in) {
@@ -286,20 +330,23 @@ public class Usuario implements Parcelable {
         this.profesion = in.readString();
         this.comentario_desc = in.readString();
         this.foto = in.readString();
-        this.fecha_nacimiento = in.readString();
         this.ordenado = in.readInt();
         this.fiestero = in.readInt();
         this.sociable = in.readInt();
         this.activo = in.readInt();
-        this.itemsDescriptivos = in.createStringArrayList();
+        this.fecha_nacimiento = in.readLong();
         this.itemsHabitos = in.createStringArrayList();
+        this.idDrawItemsDescriptivos = new ArrayList<Integer>();
+        in.readList(this.idDrawItemsDescriptivos, Integer.class.getClassLoader());
     }
 
     public static final Creator<Usuario> CREATOR = new Creator<Usuario>() {
+        @Override
         public Usuario createFromParcel(Parcel source) {
             return new Usuario(source);
         }
 
+        @Override
         public Usuario[] newArray(int size) {
             return new Usuario[size];
         }

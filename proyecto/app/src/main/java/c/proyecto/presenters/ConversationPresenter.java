@@ -5,8 +5,8 @@ import android.app.Activity;
 import java.lang.ref.WeakReference;
 
 import c.proyecto.activities.ConversationActivity;
-import c.proyecto.activities.InicioActivity;
 import c.proyecto.interfaces.ConversationPresenterOps;
+import c.proyecto.interfaces.MyPresenter;
 import c.proyecto.models.Message;
 import c.proyecto.models.Usuario;
 import c.proyecto.pojo.MessagePojo;
@@ -14,7 +14,7 @@ import c.proyecto.pojo.MessagePojo;
 /**
  * Created by Cristina on 24/03/2016.
  */
-public class ConversationPresenter implements ConversationPresenterOps {
+public class ConversationPresenter implements ConversationPresenterOps, MyPresenter {
 
     private static WeakReference<ConversationActivity> activity;
     private static ConversationPresenter presentador;

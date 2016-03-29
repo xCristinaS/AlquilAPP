@@ -1,7 +1,9 @@
 package c.proyecto.utils;
 
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -9,10 +11,18 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v7.app.AlertDialog;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.lang.ref.WeakReference;
+
+import c.proyecto.R;
+import c.proyecto.activities.CrearAnuncio1Activity;
 
 
 public final class Imagenes {
@@ -93,6 +103,4 @@ public final class Imagenes {
         // Se retorna el archivo creado.
         return archivo;
     }
-
-
 }

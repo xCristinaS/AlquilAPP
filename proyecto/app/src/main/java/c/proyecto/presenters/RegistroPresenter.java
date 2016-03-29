@@ -5,11 +5,12 @@ import android.app.Activity;
 import java.lang.ref.WeakReference;
 
 import c.proyecto.activities.RegistroActivity;
+import c.proyecto.interfaces.MyPresenter;
 import c.proyecto.interfaces.RegistroPresenterOps;
 import c.proyecto.models.Usuario;
 
 
-public class RegistroPresenter implements RegistroPresenterOps{
+public class RegistroPresenter implements RegistroPresenterOps, MyPresenter {
     private static WeakReference<RegistroActivity> wActivity;
     private static RegistroPresenter presentador;
 

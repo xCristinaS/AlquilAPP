@@ -3,6 +3,7 @@ package c.proyecto.interfaces;
 import java.util.ArrayList;
 
 import c.proyecto.models.Anuncio;
+import c.proyecto.models.Usuario;
 import c.proyecto.pojo.MessagePojo;
 
 /**
@@ -17,4 +18,5 @@ public interface MainActivityOps {
     void userAdvertHasBeenModified(Anuncio a);
     void removeSub(Anuncio a);
     void userMessageHasBeenObtained(MessagePojo m);
+    void userAdvertHasBeenModified(Usuario user);
 }

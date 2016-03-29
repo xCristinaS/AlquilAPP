@@ -6,9 +6,10 @@ import java.lang.ref.WeakReference;
 
 import c.proyecto.activities.CrearAnuncio2Activity;
 import c.proyecto.interfaces.CrearEditarAnuncioPresenterOps;
+import c.proyecto.interfaces.MyPresenter;
 import c.proyecto.models.Anuncio;
 
-public class CrearEditarAnuncioPresenter implements CrearEditarAnuncioPresenterOps{
+public class CrearEditarAnuncioPresenter implements CrearEditarAnuncioPresenterOps, MyPresenter {
 
     private static WeakReference<CrearAnuncio2Activity> activity;
     private static CrearEditarAnuncioPresenter presentador;
