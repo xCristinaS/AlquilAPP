@@ -62,18 +62,20 @@ public class Usuario implements Parcelable {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 boolean stop = false;
-                Iterator i = dataSnapshot.getChildren().iterator();
-                //Recorre todos los usuarios comprobando que el pasado por parámetro existe
-                while (i.hasNext() && !stop) {
-                    Usuario u = ((DataSnapshot) i.next()).getValue(Usuario.class);
-                    if (u.getContra().equals(contra) && u.getEmail().equals(email)) {
-                        stop = true;
-                        presentador.onSingInResponsed(u);
+                if (!email.equals("") && !contra.equals("")) {
+                    Iterator i = dataSnapshot.getChildren().iterator();
+                    //Recorre todos los usuarios comprobando que el pasado por parámetro existe
+                    while (i.hasNext() && !stop) {
+                        Usuario u  = ((DataSnapshot) i.next()).getValue(Usuario.class);
+                        if (u.getContra().equals(contra) && u.getEmail().equals(email)) {
+                            stop = true;
+                            presentador.onSingInResponsed(u);
+                        }
                     }
+                    //Si no ha encontrado ninguna semejanza con los usuarios de la BDD devolverá null
+                    if (!stop)
+                        presentador.onSingInResponsed(null);
                 }
-                //Si no ha encontrado ninguna semejanza con los usuarios de la BDD devolverá null
-                if (!stop)
-                    presentador.onSingInResponsed(null);
             }
 
             @Override
@@ -84,7 +86,7 @@ public class Usuario implements Parcelable {
     }
 
     //Comprueba si existe algún usuario con este usuario.
-    public static void amIRegistrered(final String user, final RegistroPresenter presenter){
+    public static void amIRegistrered(final String user, final RegistroPresenter presenter) {
         Firebase firebase = new Firebase(URL_USERS);
 
         firebase.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -108,7 +110,7 @@ public class Usuario implements Parcelable {
         });
     }
 
-    public static void getAdvertPublisher(String anunciante, final AdvertsDetailsPresenter presenter){
+    public static void getAdvertPublisher(String anunciante, final AdvertsDetailsPresenter presenter) {
         Firebase mFirebase = new Firebase(URL_USERS).child(anunciante);
         mFirebase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

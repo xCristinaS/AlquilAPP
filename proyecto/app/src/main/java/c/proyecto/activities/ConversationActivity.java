@@ -1,6 +1,6 @@
 package c.proyecto.activities;
 
-import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,7 +15,7 @@ import c.proyecto.R;
 import c.proyecto.adapters.MessagesAdapter;
 import c.proyecto.fragments.MessagesFragment;
 import c.proyecto.interfaces.ConversationActivityOps;
-import c.proyecto.models.Message;
+import c.proyecto.models.Anuncio;
 import c.proyecto.models.Usuario;
 import c.proyecto.pojo.MessagePojo;
 import c.proyecto.presenters.ConversationPresenter;
@@ -24,35 +24,37 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
 
     private static final String EXTRA_MENSAJE = "mensaje_extra";
     private static final String EXTRA_USER = "user_extra";
+    private static final String EXTRA_ANUNCIO = "anuncio";
 
     private MessagePojo mensaje;
     private ImageView imgEnviar;
     private EditText txtMensaje;
     private ConversationPresenter mPresenter;
     private Usuario user;
+    private Anuncio anuncio;
 
-    public static void start(Activity a, MessagePojo mensaje, Usuario user) {
-        Intent intent = new Intent(a, ConversationActivity.class);
+    public static void start(Context c, MessagePojo mensaje, Usuario user, Anuncio anuncio) {
+        Intent intent = new Intent(c, ConversationActivity.class);
         intent.putExtra(EXTRA_MENSAJE, mensaje);
         intent.putExtra(EXTRA_USER, user);
-        a.startActivity(intent);
+        intent.putExtra(EXTRA_ANUNCIO, anuncio);
+        c.startActivity(intent);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_conversation);
-        if (getIntent().hasExtra(EXTRA_MENSAJE) && getIntent().hasExtra(EXTRA_USER)) {
-            mensaje = getIntent().getParcelableExtra(EXTRA_MENSAJE);
-            user = getIntent().getParcelableExtra(EXTRA_USER);
-        }
-
+        mensaje = getIntent().getParcelableExtra(EXTRA_MENSAJE);
+        user = getIntent().getParcelableExtra(EXTRA_USER);
+        anuncio = getIntent().getParcelableExtra(EXTRA_ANUNCIO);
         initViews();
     }
 
     private void initViews() {
         mPresenter = ConversationPresenter.getPresentador(this);
-        mPresenter.userConversationRequested(user, mensaje);
+        if (mensaje != null)
+            mPresenter.userConversationRequested(user, mensaje);
         getSupportFragmentManager().beginTransaction().replace(R.id.frmContenido, MessagesFragment.newInstance(true, mensaje.getKeyReceptor())).commit();
         imgEnviar = (ImageView) findViewById(R.id.imgEnviar);
         txtMensaje = (EditText) findViewById(R.id.txtMensaje);
@@ -61,7 +63,10 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
             @Override
             public void onClick(View v) {
                 if (!TextUtils.isEmpty(txtMensaje.getText())) {
-                    mPresenter.sendMessage(new MessagePojo(user, mensaje.getTituloAnuncio(), txtMensaje.getText().toString(), new Date()), mensaje.getEmisor().getKey());
+                    if (mensaje != null)
+                        mPresenter.sendMessage(new MessagePojo(user, mensaje.getTituloAnuncio(), txtMensaje.getText().toString(), new Date()), mensaje.getEmisor().getKey(), false);
+                    else if (anuncio != null)
+                        mPresenter.sendMessage(new MessagePojo(user, anuncio.getTitulo(), txtMensaje.getText().toString(), new Date()), anuncio.getAnunciante(), true);
                     txtMensaje.setText("");
                 }
             }

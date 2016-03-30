@@ -11,6 +11,7 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 
 import c.proyecto.pojo.MessagePojo;
@@ -23,7 +24,9 @@ import c.proyecto.presenters.MainPresenter;
 public class Message implements Parcelable {
 
     private static final String URL_CONVERSACIONES = "https://proyectofinaldam.firebaseio.com/conversaciones/";
+    private static final String URL_MSG_SIN_RESP = "https://proyectofinaldam.firebaseio.com/mensajesEnviadosSinRespuesta/";
     private static final String URL_USERS = "https://proyectofinaldam.firebaseio.com/usuarios/";
+    private static final int MESSAGES_LIMIT_CONVER = 20;
 
     private long fecha;
     private String contenido;
@@ -150,7 +153,7 @@ public class Message implements Parcelable {
 
                 String nodoAsunto2 = u.getKey() + "_" + m.getTituloAnuncio().replace(" ", "_");
                 nodoAsunto2 = nodoAsunto2.substring(0, nodoAsunto2.length() - 1);
-                new Firebase(URL_CONVERSACIONES).child(m.getEmisor().getKey()).child(nodoAsunto2).limitToLast(10).addChildEventListener(new ChildEventListener() {
+                new Firebase(URL_CONVERSACIONES).child(m.getEmisor().getKey()).child(nodoAsunto2).limitToLast(MESSAGES_LIMIT_CONVER).addChildEventListener(new ChildEventListener() {
                     @Override
                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                         MessagePojo mensaje = new MessagePojo();
@@ -206,13 +209,15 @@ public class Message implements Parcelable {
 
             }
         };
-        mFirebaseConversations.limitToLast(10).addChildEventListener(mListenerConversation);
+        mFirebaseConversations.limitToLast(MESSAGES_LIMIT_CONVER).addChildEventListener(mListenerConversation);
     }
 
-    public static void sendMessage(MessagePojo m, String keyReceptor) {
+    public static void sendMessage(MessagePojo m, String keyReceptor, boolean isFirstMessageSended) {
         String nodoAsunto = m.getEmisor().getKey() + "_" + m.getTituloAnuncio().replace(" ", "_");
         nodoAsunto = nodoAsunto.substring(0, nodoAsunto.length() - 1);
         new Firebase(URL_CONVERSACIONES).child(keyReceptor).child(nodoAsunto).push().setValue(new Message(m.getFecha(), m.getContenido()));
+        if (isFirstMessageSended)
+            new Firebase(URL_MSG_SIN_RESP).child(m.getEmisor().getKey()).setValue(new HashMap<>().put(keyReceptor, "true"));
     }
 
     public static void removeMessage(MessagePojo m) {

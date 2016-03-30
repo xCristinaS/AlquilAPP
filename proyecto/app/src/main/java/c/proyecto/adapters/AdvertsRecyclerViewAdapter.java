@@ -16,6 +16,7 @@ import java.util.Collections;
 import java.util.List;
 
 import c.proyecto.R;
+import c.proyecto.activities.ConversationActivity;
 import c.proyecto.models.Anuncio;
 import c.proyecto.models.Usuario;
 import c.proyecto.presenters.MainPresenter;
@@ -45,7 +46,7 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
     private MainPresenter presenter;
     private SparseBooleanArray mSelectedItems = new SparseBooleanArray();
     private boolean multiDeletionModeActivated = false;
-    private Usuario user;
+    private static Usuario user;
 
 
     public AdvertsRecyclerViewAdapter(int adapter_type, MainPresenter presenter, Usuario user) {
@@ -171,10 +172,10 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
     //VIEWHOLDERS
     static class AnuncioViewHolder extends RecyclerView.ViewHolder {
 
-        private ImageView imgAvatar;
+        private ImageView imgAvatar, imgMessage;
         private TextView lblPoblacion, lblProvincia, lblDireccion, lblNumero, lblPrecio;
 
-        public AnuncioViewHolder(View itemView) {
+        public AnuncioViewHolder(final View itemView) {
             super(itemView);
             lblPoblacion = (TextView) itemView.findViewById(R.id.lblPoblacion);
             lblProvincia = (TextView) itemView.findViewById(R.id.lblProvincia);
@@ -182,9 +183,10 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
             lblNumero = (TextView) itemView.findViewById(R.id.lblNumero);
             lblPrecio = (TextView) itemView.findViewById(R.id.lblPrecio);
             imgAvatar = (ImageView) itemView.findViewById(R.id.imgAvatar);
+            imgMessage = (ImageView) itemView.findViewById(R.id.imgMessage);
         }
 
-        public void onBind(Anuncio anuncio) {
+        public void onBind(final Anuncio anuncio) {
             if (anuncio != null) {
                 lblDireccion.setText(anuncio.getDireccion());
                 lblNumero.setText(String.valueOf(anuncio.getNumero()));
@@ -194,6 +196,14 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
                 if (anuncio.getImagenes().size() > 0)
                     Picasso.with(itemView.getContext()).load(anuncio.getImagenes().get(0)).into(imgAvatar);
             }
+
+
+            imgMessage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ConversationActivity.start(itemView.getContext(), null, user, anuncio.getAnunciante());
+                }
+            });
         }
     }
 

@@ -256,7 +256,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
 
     @Override
     public void onItemClick(MessagePojo mensaje) {
-        ConversationActivity.start(this, mensaje, user);
+        ConversationActivity.start(this, mensaje, user, null);
     }
 
 }
