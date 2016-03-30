@@ -53,9 +53,11 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
 
     private void initViews() {
         mPresenter = ConversationPresenter.getPresentador(this);
-        if (mensaje != null)
+        if (mensaje != null) {
             mPresenter.userConversationRequested(user, mensaje);
-        getSupportFragmentManager().beginTransaction().replace(R.id.frmContenido, MessagesFragment.newInstance(true, mensaje.getKeyReceptor())).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.frmContenido, MessagesFragment.newInstance(true, mensaje.getKeyReceptor())).commit();
+        } else if (anuncio != null)
+            getSupportFragmentManager().beginTransaction().replace(R.id.frmContenido, MessagesFragment.newInstance(true, anuncio.getAnunciante())).commit();
         imgEnviar = (ImageView) findViewById(R.id.imgEnviar);
         txtMensaje = (EditText) findViewById(R.id.txtMensaje);
 
@@ -63,18 +65,22 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
             @Override
             public void onClick(View v) {
                 if (!TextUtils.isEmpty(txtMensaje.getText())) {
-                    if (mensaje != null)
+                    if (anuncio != null) {
+                        // user aqui es el que creo el anuncio, por eso no vale.
+                        MessagePojo m = new MessagePojo(user, anuncio.getTitulo(), txtMensaje.getText().toString(), new Date());
+                        m.setKeyReceptor(anuncio.getAnunciante());
+                        mPresenter.sendMessage(m, user.getKey(), true);
+                    } else {
                         mPresenter.sendMessage(new MessagePojo(user, mensaje.getTituloAnuncio(), txtMensaje.getText().toString(), new Date()), mensaje.getEmisor().getKey(), false);
-                    else if (anuncio != null)
-                        mPresenter.sendMessage(new MessagePojo(user, anuncio.getTitulo(), txtMensaje.getText().toString(), new Date()), anuncio.getAnunciante(), true);
+                    }
                     txtMensaje.setText("");
                 }
             }
         });
 
-        mensaje.getEmisor().getFoto(); // FOTO DEL QUE TE HA HABLADO
-        mensaje.getEmisor().getNombre(); // NOMBRE DEL QUE TE HA HABLADO
-        mensaje.getTituloAnuncio(); // TITULO DEL ANUNCIO
+        //mensaje.getEmisor().getFoto(); // FOTO DEL QUE TE HA HABLADO
+        //mensaje.getEmisor().getNombre(); // NOMBRE DEL QUE TE HA HABLADO
+        //mensaje.getTituloAnuncio(); // TITULO DEL ANUNCIO
     }
 
     @Override

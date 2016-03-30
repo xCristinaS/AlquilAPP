@@ -172,7 +172,7 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
     //VIEWHOLDERS
     static class AnuncioViewHolder extends RecyclerView.ViewHolder {
 
-        private ImageView imgAvatar, imgMessage;
+        private ImageView imgAvatar;
         private TextView lblPoblacion, lblProvincia, lblDireccion, lblNumero, lblPrecio;
 
         public AnuncioViewHolder(final View itemView) {
@@ -183,7 +183,6 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
             lblNumero = (TextView) itemView.findViewById(R.id.lblNumero);
             lblPrecio = (TextView) itemView.findViewById(R.id.lblPrecio);
             imgAvatar = (ImageView) itemView.findViewById(R.id.imgAvatar);
-            imgMessage = (ImageView) itemView.findViewById(R.id.imgMessage);
         }
 
         public void onBind(final Anuncio anuncio) {
@@ -196,14 +195,6 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
                 if (anuncio.getImagenes().size() > 0)
                     Picasso.with(itemView.getContext()).load(anuncio.getImagenes().get(0)).into(imgAvatar);
             }
-
-
-            imgMessage.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    ConversationActivity.start(itemView.getContext(), null, user, anuncio.getAnunciante());
-                }
-            });
         }
     }
 

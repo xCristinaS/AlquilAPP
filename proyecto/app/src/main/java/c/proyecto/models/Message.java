@@ -214,20 +214,21 @@ public class Message implements Parcelable {
 
     public static void sendMessage(MessagePojo m, String keyReceptor, boolean isFirstMessageSended) {
         String nodoAsunto = m.getEmisor().getKey() + "_" + m.getTituloAnuncio().replace(" ", "_");
-        nodoAsunto = nodoAsunto.substring(0, nodoAsunto.length() - 1);
-        new Firebase(URL_CONVERSACIONES).child(keyReceptor).child(nodoAsunto).push().setValue(new Message(m.getFecha(), m.getContenido()));
+        nodoAsunto = nodoAsunto.substring(0, nodoAsunto.length());
+        new Firebase(URL_CONVERSACIONES).child(keyReceptor.equals(m.getKeyReceptor())?m.getEmisor().getKey():keyReceptor).child(nodoAsunto).push().setValue(new Message(m.getFecha(), m.getContenido()));
         if (isFirstMessageSended)
             new Firebase(URL_MSG_SIN_RESP).child(m.getEmisor().getKey()).setValue(new HashMap<>().put(keyReceptor, "true"));
     }
 
     public static void removeMessage(MessagePojo m) {
         String nodoAsunto = m.getEmisor().getKey() + "_" + m.getTituloAnuncio().replace(" ", "_");
-        nodoAsunto = nodoAsunto.substring(0, nodoAsunto.length() - 1);
+        nodoAsunto = nodoAsunto.substring(0, nodoAsunto.length());
         new Firebase(URL_CONVERSACIONES).child(m.getKeyReceptor()).child(nodoAsunto).child(m.getKey()).setValue(null);
     }
 
     public static void detachConversationListeners() {
-        mFirebaseConversations.removeEventListener(mListenerConversation);
+        if (mFirebaseConversations != null)
+            mFirebaseConversations.removeEventListener(mListenerConversation);
     }
 
     public long getFecha() {

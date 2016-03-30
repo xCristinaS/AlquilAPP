@@ -19,6 +19,7 @@ import com.squareup.picasso.Picasso;
 
 import c.proyecto.Constantes;
 import c.proyecto.R;
+import c.proyecto.activities.ConversationActivity;
 import c.proyecto.activities.DetallesAnuncioActivity;
 import c.proyecto.adapters.PrestacionesAdapter;
 import c.proyecto.adapters.PrestacionesDetalladasAdapter;
@@ -33,7 +34,7 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
     private static final String ARG_ADVERT_TYPE = "advert_type";
     private static final String ARG_USER = "user";
 
-    private ImageView imgFoto, imgTipoVivienda, imgCamas;
+    private ImageView imgFoto, imgTipoVivienda, imgCamas, imgMessage;
     private CircleImageView imgAvatar;
     private TextView lblNombre, lblPrecio, lblTamano, lblTipoVivienda, lblCamas, lblNumCamas, lblNumHuespedes, lblDescripcionNoDisponible, lblDescripcion;
     private RecyclerView rvPrestaciones;
@@ -42,7 +43,6 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
     private Anuncio mAnuncio;
     private Usuario user;
     private int adverType;
-
 
     public static DetallesAnuncioFragment newInstance(Anuncio anuncio, int advertType, Usuario user) {
         Bundle args = new Bundle();
@@ -86,6 +86,14 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
         rvPrestaciones = (RecyclerView) getView().findViewById(R.id.rvPrestaciones);
         lblDescripcionNoDisponible = (TextView) getView().findViewById(R.id.lblDescripcionNoDisponible);
         lblDescripcion = (TextView) getView().findViewById(R.id.lblDescripcion);
+        imgMessage = (ImageView) getView().findViewById(R.id.imgMessage);
+
+        imgMessage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ConversationActivity.start(getActivity(), null, user, mAnuncio);
+            }
+        });
     }
 
     private void confRecyclerview() {
