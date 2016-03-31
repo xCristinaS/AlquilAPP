@@ -13,6 +13,7 @@ import com.firebase.client.ValueEventListener;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 import c.proyecto.pojo.MessagePojo;
 import c.proyecto.presenters.ConversationPresenter;
@@ -216,8 +217,11 @@ public class Message implements Parcelable {
         String nodoAsunto = m.getEmisor().getKey() + "_" + m.getTituloAnuncio().replace(" ", "_");
         nodoAsunto = nodoAsunto.substring(0, nodoAsunto.length());
         new Firebase(URL_CONVERSACIONES).child(keyReceptor).child(nodoAsunto).push().setValue(new Message(m.getFecha(), m.getContenido()));
-        if (isFirstMessageSended)
-            new Firebase(URL_MSG_SIN_RESP).child(m.getEmisor().getKey()).setValue(new HashMap<>().put(keyReceptor, "true"));
+        if (isFirstMessageSended) {
+            Map<String, Boolean> map = new HashMap();
+            map.put(nodoAsunto, true);
+            new Firebase(URL_MSG_SIN_RESP).child(m.getEmisor().getKey()).child(keyReceptor).setValue(map);
+        }
     }
 
     public static void removeMessage(MessagePojo m) {
