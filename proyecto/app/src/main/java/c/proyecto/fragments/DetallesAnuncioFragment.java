@@ -20,7 +20,6 @@ import com.squareup.picasso.Picasso;
 import c.proyecto.Constantes;
 import c.proyecto.R;
 import c.proyecto.activities.ConversationActivity;
-import c.proyecto.activities.DetallesAnuncioActivity;
 import c.proyecto.adapters.PrestacionesAdapter;
 import c.proyecto.adapters.PrestacionesDetalladasAdapter;
 import c.proyecto.models.Anuncio;
@@ -32,7 +31,8 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
 
     private static final String ARG_ANUNCIO = "anuncio";
     private static final String ARG_ADVERT_TYPE = "advert_type";
-    private static final String ARG_USER = "user";
+    private static final String ARG_USER_ANUNCIANTE = "userAnunciante";
+    private static final String ARG_CURRENT_USER = "usuarioLogueado";
 
     private ImageView imgFoto, imgTipoVivienda, imgCamas, imgMessage;
     private CircleImageView imgAvatar;
@@ -41,14 +41,15 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
     private PrestacionesAdapter mPrestacionesAdapter;
 
     private Anuncio mAnuncio;
-    private Usuario user;
+    private Usuario userAnunciante, currentUser;
     private int adverType;
 
-    public static DetallesAnuncioFragment newInstance(Anuncio anuncio, int advertType, Usuario user) {
+    public static DetallesAnuncioFragment newInstance(Anuncio anuncio, int advertType, Usuario user, Usuario currentUser) {
         Bundle args = new Bundle();
         args.putParcelable(ARG_ANUNCIO, anuncio);
         args.putInt(ARG_ADVERT_TYPE, advertType);
-        args.putParcelable(ARG_USER, user);
+        args.putParcelable(ARG_USER_ANUNCIANTE, user);
+        args.putParcelable(ARG_CURRENT_USER, currentUser);
         DetallesAnuncioFragment fragment = new DetallesAnuncioFragment();
         fragment.setArguments(args);
         return fragment;
@@ -65,7 +66,8 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
         super.onActivityCreated(savedInstanceState);
         mAnuncio = getArguments().getParcelable(ARG_ANUNCIO);
         adverType = getArguments().getInt(ARG_ADVERT_TYPE);
-        user = getArguments().getParcelable(ARG_USER);
+        userAnunciante = getArguments().getParcelable(ARG_USER_ANUNCIANTE);
+        currentUser = getArguments().getParcelable(ARG_CURRENT_USER);
         initViews();
         confRecyclerview();
         bindData();
@@ -91,7 +93,7 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
         imgMessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ConversationActivity.start(getActivity(), null, user, mAnuncio);
+                ConversationActivity.start(getActivity(), null, currentUser, mAnuncio);
             }
         });
     }
@@ -112,9 +114,9 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
         else
             Picasso.with(getActivity()).load(R.drawable.default_user).into(imgFoto);
 
-        lblNombre.setText(user.getNombre());
-        if (user.getFoto() != null)
-            Picasso.with(getActivity()).load(user.getFoto()).error(R.drawable.default_user).into(imgAvatar);
+        lblNombre.setText(userAnunciante.getNombre());
+        if (userAnunciante.getFoto() != null)
+            Picasso.with(getActivity()).load(userAnunciante.getFoto()).error(R.drawable.default_user).into(imgAvatar);
         else
             Picasso.with(getActivity()).load(R.drawable.default_user).into(imgAvatar);
 

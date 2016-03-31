@@ -215,7 +215,7 @@ public class Message implements Parcelable {
     public static void sendMessage(MessagePojo m, String keyReceptor, boolean isFirstMessageSended) {
         String nodoAsunto = m.getEmisor().getKey() + "_" + m.getTituloAnuncio().replace(" ", "_");
         nodoAsunto = nodoAsunto.substring(0, nodoAsunto.length());
-        new Firebase(URL_CONVERSACIONES).child(keyReceptor.equals(m.getKeyReceptor())?m.getEmisor().getKey():keyReceptor).child(nodoAsunto).push().setValue(new Message(m.getFecha(), m.getContenido()));
+        new Firebase(URL_CONVERSACIONES).child(keyReceptor).child(nodoAsunto).push().setValue(new Message(m.getFecha(), m.getContenido()));
         if (isFirstMessageSended)
             new Firebase(URL_MSG_SIN_RESP).child(m.getEmisor().getKey()).setValue(new HashMap<>().put(keyReceptor, "true"));
     }

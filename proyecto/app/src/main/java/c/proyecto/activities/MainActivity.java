@@ -206,8 +206,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
     }
 
     @Override
-    public void onItemClick(Anuncio anuncio, int advertType, Usuario u) {
-        DetallesAnuncioActivity.start(this, anuncio, advertType, u);
+    public void onItemClick(Anuncio anuncio, int advertType) {
+        DetallesAnuncioActivity.start(this, anuncio, advertType, user);
     }
 
     @Override
@@ -237,7 +237,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
             } else
                 super.onBackPressed();
         }
-
     }
 
     @Override

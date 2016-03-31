@@ -69,7 +69,7 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
                         // user aqui es el que creo el anuncio, por eso no vale.
                         MessagePojo m = new MessagePojo(user, anuncio.getTitulo(), txtMensaje.getText().toString(), new Date());
                         m.setKeyReceptor(anuncio.getAnunciante());
-                        mPresenter.sendMessage(m, user.getKey(), true);
+                        mPresenter.sendMessage(m, anuncio.getAnunciante(), true);
                     } else {
                         mPresenter.sendMessage(new MessagePojo(user, mensaje.getTituloAnuncio(), txtMensaje.getText().toString(), new Date()), mensaje.getEmisor().getKey(), false);
                     }

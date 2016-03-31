@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import c.proyecto.R;
+import c.proyecto.adapters.AdvertsRecyclerViewAdapter;
 import c.proyecto.fragments.DetallesAnuncioFragment;
 import c.proyecto.interfaces.AdvertsDetailsActivityOps;
 import c.proyecto.models.Anuncio;
@@ -21,6 +22,7 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
     private AdvertsDetailsPresenter mPresenter;
     private Anuncio anuncio;
     private int advertType;
+    private Usuario currentUser;
 
     public static void start(Context context, Anuncio anuncio, int advertType, Usuario u){
         Intent intent = new Intent(context, DetallesAnuncioActivity.class);
@@ -34,19 +36,19 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detalles_anuncio);
-        Usuario u = getIntent().getParcelableExtra(EXTRA_USER);
+        currentUser = getIntent().getParcelableExtra(EXTRA_USER);
         anuncio = getIntent().getParcelableExtra(EXTRA_ANUNCIO);
         advertType = getIntent().getIntExtra(EXTRA_ADVERT_TYPE, -1);
         mPresenter = AdvertsDetailsPresenter.getPresentador(this);
-        if (u == null)
+        if (advertType != AdvertsRecyclerViewAdapter.ADAPTER_TYPE_MY_ADVS)
             mPresenter.advertPublisherRequested(anuncio.getAnunciante());
         else
-            getSupportFragmentManager().beginTransaction().replace(R.id.frmContenido, DetallesAnuncioFragment.newInstance(anuncio, advertType, u)).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.frmContenido, DetallesAnuncioFragment.newInstance(anuncio, advertType, currentUser, currentUser)).commit();
     }
 
     @Override
     public void onAdvertPublisherRequestedResponsed(Usuario u) {
-        getSupportFragmentManager().beginTransaction().replace(R.id.frmContenido, DetallesAnuncioFragment.newInstance(anuncio, advertType, u)).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.frmContenido, DetallesAnuncioFragment.newInstance(anuncio, advertType, u, currentUser)).commit();
     }
 
     public AdvertsDetailsPresenter getmPresenter() {

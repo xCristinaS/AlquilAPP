@@ -31,7 +31,7 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
     }
 
     public interface OnAdapterItemClick {
-        void onItemClick(Anuncio anuncio, int advertType, Usuario u);
+        void onItemClick(Anuncio anuncio, int advertType);
     }
 
     public static final int ADAPTER_TYPE_SUBS = 0;
@@ -82,7 +82,7 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
             @Override
             public void onClick(View v) {
                 if (!multiDeletionModeActivated) {
-                    listenerItemClick.onItemClick(mDatos.get(position), adapter_type, adapter_type == ADAPTER_TYPE_MY_ADVS? user:null);
+                    listenerItemClick.onItemClick(mDatos.get(position), adapter_type);
                 } else {
                     if (holder.itemView.isActivated()) {
                         holder.itemView.setActivated(false);
