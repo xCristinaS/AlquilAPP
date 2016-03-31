@@ -220,7 +220,7 @@ public class Message implements Parcelable {
         if (isFirstMessageSended) {
             Map<String, Boolean> map = new HashMap();
             map.put(nodoAsunto, true);
-            new Firebase(URL_MSG_SIN_RESP).child(m.getEmisor().getKey()).child(keyReceptor).setValue(map);
+            new Firebase(URL_MSG_SIN_RESP).child(m.getEmisor().getKey()).child(keyReceptor).child(m.getTituloAnuncio().replace(" ", "_")).setValue(map);
         }
     }
 
