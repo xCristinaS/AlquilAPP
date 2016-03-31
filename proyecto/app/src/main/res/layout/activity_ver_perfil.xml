@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+
+    <ImageView
+        android:id="@+id/imgFoto"
+        android:layout_width="match_parent"
+        android:layout_height="200dp" />
+
+    <!-- Degradado negro + flecha blanca-->
+    <ImageView
+        android:layout_width="match_parent"
+        android:scaleType="centerCrop"
+        android:layout_height="wrap_content"
+        android:src="@drawable/degradado_negro"
+        android:layout_alignBottom="@id/imgFoto"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rvDescripcion"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_below="@id/imgFoto"/>
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"
+        android:layout_below="@id/rvDescripcion"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"/>
+
+    <TextView
+        android:id="@+id/lblNombre"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Alejandro Torres Gómez"
+        android:layout_below="@id/divider"
+        android:layout_marginTop="12dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginLeft="25dp"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/lblNacionalidad"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/lblNombre"
+        android:text="España"
+        android:layout_alignLeft="@id/lblNombre"
+        android:layout_alignStart="@id/lblNombre"
+        android:layout_marginTop="8dp"/>
+
+    <!-- Descripción -->
+    <RelativeLayout
+        android:id="@+id/shapeDescripción"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="@color/colorShape"
+        android:layout_below="@id/lblNacionalidad"
+        android:layout_marginTop="12dp"
+        >
+        <!-- Cuando el anuncio no contiene descripción -->
+        <TextView
+            android:id="@+id/lblDescripcionNoDisponible"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="Descripción no disponible"
+            android:visibility="gone"/>
+        <TextView
+            android:id="@+id/lblDescripcion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="5"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"/>
+    </RelativeLayout>
+
+
+    <FrameLayout
+        android:id="@+id/frmBarritas"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/shapeDescripción"/>
+
+</RelativeLayout>

@@ -36,9 +36,10 @@
         <activity
             android:name=".activities.CrearAnuncio1Activity"
             android:label="Imagenes" />
-        <activity android:name=".activities.CrearAnuncio2Activity"></activity>
+        <activity android:name=".activities.CrearAnuncio2Activity" />
         <activity android:name=".activities.ConversationActivity" />
-        <activity android:name=".activities.CrearAnuncio3Activity"></activity>
+        <activity android:name=".activities.CrearAnuncio3Activity" />
+        <activity android:name=".activities.VerPerfilActivity"></activity>
     </application>
 
 </manifest>
