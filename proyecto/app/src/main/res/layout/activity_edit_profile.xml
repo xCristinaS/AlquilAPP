@@ -70,7 +70,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:editable="false"
-                android:maxLines="1" />
+                android:maxLines="1"
+                android:focusable="false"/>
 
 
             <EditText
@@ -80,7 +81,8 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/txtFechaNac"
                 android:editable="false"
-                android:maxLines="1"/>
+                android:maxLines="1"
+                android:focusable="false"/>
 
             <EditText
                 android:id="@+id/txtProfesion"
