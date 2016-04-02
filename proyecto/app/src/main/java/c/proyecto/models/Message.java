@@ -143,7 +143,7 @@ public class Message implements Parcelable {
     }
 
     private static void checkOnFirstMessageResponse(final String userKey, final String emisorKey, final String emisor_titleAdvert) {
-        final String title = emisor_titleAdvert.substring(emisor_titleAdvert.indexOf("_")+1, emisor_titleAdvert.length());
+        final String title = emisor_titleAdvert.substring(emisor_titleAdvert.indexOf("_") + 1, emisor_titleAdvert.length());
         new Firebase(URL_MSG_SIN_RESP).child(userKey).child(emisorKey).child(title).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -179,6 +179,7 @@ public class Message implements Parcelable {
                                         HashMap map = dataSnapshot.getValue(HashMap.class);
                                         String msgEnviado = (String) map.keySet().iterator().next();
                                         final String tituloAnuncio = dataSnapshot.getKey().trim().replace("_", " ");
+
                                         new Firebase(URL_CONVERSACIONES).child(receptor).child(msgEnviado).limitToLast(1).addListenerForSingleValueEvent(new ValueEventListener() {
                                             @Override
                                             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -188,12 +189,12 @@ public class Message implements Parcelable {
                                                     mensaje.setContenido(m.getContenido());
                                                     mensaje.setFecha(new Date(m.getFecha()));
                                                     mensaje.setKey(dataSnapshot.getKey());
-                                                    mensaje.setKeyReceptor(user.getKey());
+                                                    mensaje.setEmisor(user);
                                                     mensaje.setTituloAnuncio(tituloAnuncio);
                                                     new Firebase(URL_USERS).child(receptor).addListenerForSingleValueEvent(new ValueEventListener() {
                                                         @Override
                                                         public void onDataChange(DataSnapshot dataSnapshot) {
-                                                            mensaje.setEmisor(dataSnapshot.getValue(Usuario.class));
+                                                            mensaje.setKeyReceptor(dataSnapshot.getValue(Usuario.class).getKey());
                                                             presenter.userMessageHasBeenObtained(mensaje);
                                                         }
 
@@ -203,6 +204,51 @@ public class Message implements Parcelable {
                                                         }
                                                     });
                                                 }
+                                            }
+
+                                            @Override
+                                            public void onCancelled(FirebaseError firebaseError) {
+
+                                            }
+                                        });
+
+                                        new Firebase(URL_CONVERSACIONES).child(receptor).child(msgEnviado).addChildEventListener(new ChildEventListener() {
+                                            @Override
+                                            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                                                Message m = dataSnapshot.getValue(Message.class);
+                                                final MessagePojoWithoutAnswer mensaje = new MessagePojoWithoutAnswer();
+                                                mensaje.setContenido(m.getContenido());
+                                                mensaje.setFecha(new Date(m.getFecha()));
+                                                mensaje.setKey(dataSnapshot.getKey());
+                                                mensaje.setEmisor(user);
+                                                mensaje.setTituloAnuncio(tituloAnuncio);
+                                                new Firebase(URL_USERS).child(receptor).addListenerForSingleValueEvent(new ValueEventListener() {
+                                                    @Override
+                                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                                        mensaje.setKeyReceptor(dataSnapshot.getValue(Usuario.class).getKey());
+                                                        presenter.userMessageHasBeenObtained(mensaje);
+                                                    }
+
+                                                    @Override
+                                                    public void onCancelled(FirebaseError firebaseError) {
+
+                                                    }
+                                                });
+                                            }
+
+                                            @Override
+                                            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                                            }
+
+                                            @Override
+                                            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                                            }
+
+                                            @Override
+                                            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
                                             }
 
                                             @Override
@@ -236,16 +282,27 @@ public class Message implements Parcelable {
     }
 
     public static void getUserConversation(final Usuario u, final MessagePojo m, final ConversationPresenter presenter) {
-        String nodoAsunto = m.getEmisor().getKey() + "_" + m.getTituloAnuncio().replace(" ", "_");
-        nodoAsunto = nodoAsunto.substring(0, nodoAsunto.length() - 1);
-        mFirebaseConversations = new Firebase(URL_CONVERSACIONES).child(u.getKey()).child(nodoAsunto);
+        String nodoAsunto = m.getEmisor().getKey() + "_" + m.getTituloAnuncio().trim().replace(" ", "_");
+
+        if (m instanceof MessagePojoWithoutAnswer)
+            mFirebaseConversations = new Firebase(URL_CONVERSACIONES).child(m.getKeyReceptor()).child(nodoAsunto);
+        else
+            mFirebaseConversations = new Firebase(URL_CONVERSACIONES).child(u.getKey()).child(nodoAsunto);
+
         mListenerConversation = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                MessagePojo mensaje = new MessagePojo();
+                MessagePojo mensaje;
+                if (m instanceof MessagePojoWithoutAnswer){
+                    mensaje = new MessagePojoWithoutAnswer();
+                    mensaje.setKeyReceptor(m.getKeyReceptor());
+                    mensaje.setEmisor(u);
+                } else {
+                    mensaje = new MessagePojo();
+                    mensaje.setKeyReceptor(u.getKey());
+                    mensaje.setEmisor(m.getEmisor());
+                }
                 mensaje.setKey(dataSnapshot.getKey());
-                mensaje.setKeyReceptor(u.getKey());
-                mensaje.setEmisor(m.getEmisor());
                 mensaje.setTituloAnuncio(m.getTituloAnuncio());
                 Message mAux = dataSnapshot.getValue(Message.class);
                 mensaje.setFecha(new Date(mAux.getFecha()));

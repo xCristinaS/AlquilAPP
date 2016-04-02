@@ -18,6 +18,7 @@ import c.proyecto.interfaces.ConversationActivityOps;
 import c.proyecto.models.Anuncio;
 import c.proyecto.models.Usuario;
 import c.proyecto.pojo.MessagePojo;
+import c.proyecto.pojo.MessagePojoWithoutAnswer;
 import c.proyecto.presenters.ConversationPresenter;
 
 public class ConversationActivity extends AppCompatActivity implements ConversationActivityOps, MessagesRecyclerViewAdapter.ConversationManager {
@@ -66,12 +67,16 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
             public void onClick(View v) {
                 if (!TextUtils.isEmpty(txtMensaje.getText())) {
                     if (anuncio != null) {
-                        // user aqui es el que creo el anuncio, por eso no vale.
                         MessagePojo m = new MessagePojo(user, anuncio.getTitulo(), txtMensaje.getText().toString(), new Date());
                         m.setKeyReceptor(anuncio.getAnunciante());
                         mPresenter.sendMessage(m, anuncio.getAnunciante(), true);
                     } else {
-                        mPresenter.sendMessage(new MessagePojo(user, mensaje.getTituloAnuncio(), txtMensaje.getText().toString(), new Date()), mensaje.getEmisor().getKey(), false);
+                        if (mensaje instanceof MessagePojoWithoutAnswer) {
+                            MessagePojo m = new MessagePojo(user, mensaje.getTituloAnuncio(), txtMensaje.getText().toString(), new Date());
+                            m.setKeyReceptor(mensaje.getKeyReceptor());
+                            mPresenter.sendMessage(m, mensaje.getKeyReceptor(), true);
+                        } else
+                            mPresenter.sendMessage(new MessagePojo(user, mensaje.getTituloAnuncio(), txtMensaje.getText().toString(), new Date()), mensaje.getEmisor().getKey(), false);
                     }
                     txtMensaje.setText("");
                 }

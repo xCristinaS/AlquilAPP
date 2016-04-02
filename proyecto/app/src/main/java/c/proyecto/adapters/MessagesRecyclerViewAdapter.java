@@ -80,11 +80,11 @@ public class MessagesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
                 viewHolder = new MessagesViewHolder(anuncioView);
             }
         } else {
-            if (viewType == MessagePojo.TIPO_ENVIADO) {
-                anuncioView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_sended_message, parent, false);
+            if (viewType == MessagePojo.TIPO_RECIBIDO) {
+                anuncioView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_received_message, parent, false);
                 viewHolder = new ChatViewHolder(anuncioView);
             } else {
-                anuncioView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_received_message, parent, false);
+                anuncioView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_sended_message, parent, false);
                 viewHolder = new ChatViewHolder(anuncioView);
             }
         }
@@ -241,23 +241,22 @@ public class MessagesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
 
     //Manejo del Adaptador
     public void addItem(MessagePojo m) {
-        boolean stop = false, isMessageWithoutAnswer = true;
+        boolean stop = false, isMessageWithoutAnswer = false;
         for (int i = 0; !stop && i < mDatos.size(); i++)
             if (mDatos.get(i) instanceof MessagePojo)
                 if (((MessagePojo) mDatos.get(i)).getKey().equals(m.getKey()))
                     stop = true;
 
         if (!stop && !isAConversation)
-            if (!(m instanceof MessagePojoWithoutAnswer)) {
-                isMessageWithoutAnswer = false;
-                for (int i = 0; i < mDatos.size(); i++)
-                    if (!(mDatos.get(i) instanceof MessagePojoWithoutAnswer) && !(mDatos.get(i) instanceof MessageAdapterHeader))
-                        if (mDatos.get(i) instanceof MessagePojo)
-                            if (((MessagePojo) mDatos.get(i)).getEmisor().getKey().equals(m.getEmisor().getKey()) && ((MessagePojo) mDatos.get(i)).getTituloAnuncio().equals(m.getTituloAnuncio())) {
-                                mDatos.remove(mDatos.get(i));
-                                notifyItemRemoved(i);
-                            }
-            }
+            for (int i = 0; i < mDatos.size(); i++)
+                if (mDatos.get(i) instanceof MessagePojo)
+                    if (((MessagePojo) mDatos.get(i)).getEmisor().getKey().equals(m.getEmisor().getKey()) && ((MessagePojo) mDatos.get(i)).getTituloAnuncio().equals(m.getTituloAnuncio())) {
+                        mDatos.remove(mDatos.get(i));
+                        notifyItemRemoved(i);
+                    }
+
+        if (m instanceof MessagePojoWithoutAnswer)
+            isMessageWithoutAnswer = true;
 
         if (!stop) {
             if (isMessageWithoutAnswer)

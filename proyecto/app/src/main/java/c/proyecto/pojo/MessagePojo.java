@@ -11,7 +11,7 @@ import c.proyecto.models.Usuario;
 /**
  * Created by Cristina on 23/03/2016.
  */
-public class MessagePojo implements Parcelable, Comparable<MessagePojo> , IMessageAdapter {
+public class MessagePojo implements Parcelable, IMessageAdapter {
 
     public static final int TIPO_ENVIADO = 2;
     public static final int TIPO_RECIBIDO = 4;
@@ -37,11 +37,6 @@ public class MessagePojo implements Parcelable, Comparable<MessagePojo> , IMessa
             return TIPO_ENVIADO;
         else
             return TIPO_RECIBIDO;
-    }
-
-    @Override
-    public int compareTo(MessagePojo another) {
-        return fecha.compareTo(another.fecha);
     }
 
     public String getKey() {
