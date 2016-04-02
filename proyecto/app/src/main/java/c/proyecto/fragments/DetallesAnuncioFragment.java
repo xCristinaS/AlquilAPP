@@ -19,7 +19,7 @@ import com.squareup.picasso.Picasso;
 
 import c.proyecto.Constantes;
 import c.proyecto.R;
-import c.proyecto.activities.DetallesAnuncioActivity;
+import c.proyecto.activities.VerPerfilActivity;
 import c.proyecto.adapters.PrestacionesAdapter;
 import c.proyecto.adapters.PrestacionesDetalladasAdapter;
 import c.proyecto.models.Anuncio;
@@ -31,7 +31,7 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
 
     private static final String ARG_ANUNCIO = "anuncio";
     private static final String ARG_ADVERT_TYPE = "advert_type";
-    private static final String ARG_USER = "user";
+    private static final String ARG_USER = "mUser";
 
     private ImageView imgFoto, imgTipoVivienda, imgCamas;
     private CircleImageView imgAvatar;
@@ -40,7 +40,7 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
     private PrestacionesAdapter mPrestacionesAdapter;
 
     private Anuncio mAnuncio;
-    private Usuario user;
+    private Usuario mUser;
     private int adverType;
 
 
@@ -65,7 +65,7 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
         super.onActivityCreated(savedInstanceState);
         mAnuncio = getArguments().getParcelable(ARG_ANUNCIO);
         adverType = getArguments().getInt(ARG_ADVERT_TYPE);
-        user = getArguments().getParcelable(ARG_USER);
+        mUser = getArguments().getParcelable(ARG_USER);
         initViews();
         confRecyclerview();
         bindData();
@@ -86,6 +86,20 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
         rvPrestaciones = (RecyclerView) getView().findViewById(R.id.rvPrestaciones);
         lblDescripcionNoDisponible = (TextView) getView().findViewById(R.id.lblDescripcionNoDisponible);
         lblDescripcion = (TextView) getView().findViewById(R.id.lblDescripcion);
+
+        //Muestra el usuario propietario del anuncio
+        imgAvatar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                VerPerfilActivity.start(getActivity() ,mUser);
+            }
+        });
+        lblNombre.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                VerPerfilActivity.start(getActivity() ,mUser);
+            }
+        });
     }
 
     private void confRecyclerview() {
@@ -104,9 +118,9 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
         else
             Picasso.with(getActivity()).load(R.drawable.default_user).into(imgFoto);
 
-        lblNombre.setText(user.getNombre());
-        if (user.getFoto() != null)
-            Picasso.with(getActivity()).load(user.getFoto()).error(R.drawable.default_user).into(imgAvatar);
+        lblNombre.setText(mUser.getNombre());
+        if (mUser.getFoto() != null)
+            Picasso.with(getActivity()).load(mUser.getFoto()).error(R.drawable.default_user).into(imgAvatar);
         else
             Picasso.with(getActivity()).load(R.drawable.default_user).into(imgAvatar);
 
