@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -46,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
     private AdvertsRecyclerViewAdapter adapter;
     private CircleImageView imgNavDrawer;
     private TextView txtUserNavDrawer;
+    private CircleImageView navHeader;
 
     public static void start(Activity a, Usuario u) {
         Intent intent = new Intent(a, MainActivity.class);
@@ -88,6 +90,15 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
             Picasso.with(this).load(mUser.getFoto()).error(R.drawable.default_user).into(imgNavDrawer);
         else
             Picasso.with(this).load(R.drawable.default_user).into(imgNavDrawer);
+
+        //Foto del usuario en el nav drawer.
+        navHeader = (CircleImageView) navigationView.getHeaderView(0).findViewById(R.id.imgNavDrawer);
+        navHeader.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                VerPerfilActivity.start(MainActivity.this, mUser);
+            }
+        });
     }
 
     @Override

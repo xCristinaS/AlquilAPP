@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatDialogFragment;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SeekBar;
@@ -19,14 +20,17 @@ import c.proyecto.models.Usuario;
 public class CaracteristicasUsuarioDialogFragment extends AppCompatDialogFragment {
 
     private static final String ARG_USER = "user";
+    private static final String ARG_MOVIBLE = "editable";
     private SeekBar skOrdenado, skFiestero, skSociable, skActivo;
     private TextView lblNumOrdenado, lblNumFiestero, lblNumSociable, lblNumActivo;
     private Usuario mUser;
+    private boolean mMovible;
 
-    public static CaracteristicasUsuarioDialogFragment newInstance(Usuario user) {
+    public static CaracteristicasUsuarioDialogFragment newInstance(Usuario user, boolean editable) {
 
         Bundle args = new Bundle();
         args.putParcelable(ARG_USER, user);
+        args.putBoolean(ARG_MOVIBLE, editable);
 
         CaracteristicasUsuarioDialogFragment fragment = new CaracteristicasUsuarioDialogFragment();
         fragment.setArguments(args);
@@ -75,7 +79,7 @@ public class CaracteristicasUsuarioDialogFragment extends AppCompatDialogFragmen
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                txt.setText(String.valueOf(progress/Constantes.MULTIPLICADOR_SEEK_BAR));
+                txt.setText(String.valueOf(progress / Constantes.MULTIPLICADOR_SEEK_BAR));
             }
 
             @Override
@@ -88,6 +92,15 @@ public class CaracteristicasUsuarioDialogFragment extends AppCompatDialogFragmen
 
             }
         });
+
+        //Permite mover o no la SeekBar dependiendo de como se haya llamado a este fragmento.
+        if(!getArguments().getBoolean(ARG_MOVIBLE))
+            sk.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    return true;
+                }
+            });
     }
 
     private void recuperarDatos() {

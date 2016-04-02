@@ -173,7 +173,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
     private void showCaracteristicasDialog() {
         FragmentManager fm = getSupportFragmentManager();
-        CaracteristicasUsuarioDialogFragment.newInstance(mUser).show(fm, TAG_DIALOG_HABITOS);
+        CaracteristicasUsuarioDialogFragment.newInstance(mUser, true).show(fm, TAG_DIALOG_HABITOS);
     }
     private void showDescripcionDialog(){
         FragmentManager fm = getSupportFragmentManager();
