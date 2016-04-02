@@ -18,7 +18,7 @@ import com.squareup.picasso.Picasso;
 
 import c.proyecto.R;
 
-import c.proyecto.adapters.MessagesAdapter;
+import c.proyecto.adapters.MessagesRecyclerViewAdapter;
 import c.proyecto.adapters.AdvertsRecyclerViewAdapter;
 import c.proyecto.fragments.MessagesFragment;
 import c.proyecto.fragments.PrincipalFragment;
@@ -30,7 +30,7 @@ import c.proyecto.presenters.MainPresenter;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 
-public class MainActivity extends AppCompatActivity implements MainActivityOps, AdvertsRecyclerViewAdapter.OnAdapterItemLongClick, AdvertsRecyclerViewAdapter.OnAdapterItemClick, NavigationView.OnNavigationItemSelectedListener, MessagesAdapter.OnMessagesAdapterItemClick {
+public class MainActivity extends AppCompatActivity implements MainActivityOps, AdvertsRecyclerViewAdapter.OnAdapterItemLongClick, AdvertsRecyclerViewAdapter.OnAdapterItemClick, NavigationView.OnNavigationItemSelectedListener, MessagesRecyclerViewAdapter.OnMessagesAdapterItemClick {
 
 
     private static final String ARG_USUARIO = "usuario_extra";

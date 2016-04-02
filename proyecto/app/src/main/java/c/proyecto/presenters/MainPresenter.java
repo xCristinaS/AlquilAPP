@@ -21,15 +21,15 @@ public class MainPresenter implements MainPresenterOps {
     private static WeakReference<MainActivity> activity;
     private static MainPresenter presentador;
 
-    private MainPresenter(Activity activity){
-        this.activity = new WeakReference<>((MainActivity)activity);
+    private MainPresenter(Activity activity) {
+        this.activity = new WeakReference<>((MainActivity) activity);
     }
 
-    public static MainPresenter getPresentador(Activity a){
+    public static MainPresenter getPresentador(Activity a) {
         if (presentador == null)
             presentador = new MainPresenter(a);
         else
-            activity = new WeakReference<>((MainActivity)a);
+            activity = new WeakReference<>((MainActivity) a);
         return presentador;
     }
 
@@ -44,57 +44,58 @@ public class MainPresenter implements MainPresenterOps {
     }
 
     @Override
-    public void initializeFirebaseListeners(Usuario usuario){
+    public void initializeFirebaseListeners(Usuario usuario) {
         Anuncio.initializeFirebaseListeners(this, usuario);
     }
 
     @Override
-    public void advertHasBeenObtained(Anuncio a){
+    public void advertHasBeenObtained(Anuncio a) {
         activity.get().advertHasBeenObtained(a);
     }
 
     @Override
-    public void adverHasBeenModified(Anuncio a){
+    public void adverHasBeenModified(Anuncio a) {
         activity.get().adverHasBeenModified(a);
     }
 
     @Override
-    public void subHasBeenObtained(Anuncio a){
+    public void subHasBeenObtained(Anuncio a) {
         activity.get().subHasBeenObtained(a);
     }
 
     @Override
-    public void subHasBeenModified(Anuncio a){
+    public void subHasBeenModified(Anuncio a) {
         activity.get().subHasBeenModified(a);
     }
 
     @Override
-    public void userAdvertHasBeenObtained(Anuncio a){
+    public void userAdvertHasBeenObtained(Anuncio a) {
         activity.get().userAdvertHasBeenObtained(a);
     }
 
     @Override
-    public void userAdvertHasBeenModified(Anuncio a){
+    public void userAdvertHasBeenModified(Anuncio a) {
         activity.get().userAdvertHasBeenModified(a);
     }
 
     @Override
-    public void removeSub(Anuncio a){
+    public void removeSub(Anuncio a) {
         activity.get().removeSub(a);
     }
 
     @Override
     public void detachListeners() {
-       Anuncio.detachFirebaseListeners();
+        Anuncio.detachFirebaseListeners();
+        Message.detachMessagesListeners();
     }
 
     @Override
-    public void requestUserMessages(Usuario user){
+    public void requestUserMessages(Usuario user) {
         Message.getUserMessages(user, this);
     }
 
     @Override
-    public void userMessageHasBeenObtained(MessagePojo m){
+    public void userMessageHasBeenObtained(MessagePojo m) {
         if (activity.get() != null)
             activity.get().userMessageHasBeenObtained(m);
     }

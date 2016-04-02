@@ -12,7 +12,7 @@ import android.widget.ImageView;
 import java.util.Date;
 
 import c.proyecto.R;
-import c.proyecto.adapters.MessagesAdapter;
+import c.proyecto.adapters.MessagesRecyclerViewAdapter;
 import c.proyecto.fragments.MessagesFragment;
 import c.proyecto.interfaces.ConversationActivityOps;
 import c.proyecto.models.Anuncio;
@@ -20,7 +20,7 @@ import c.proyecto.models.Usuario;
 import c.proyecto.pojo.MessagePojo;
 import c.proyecto.presenters.ConversationPresenter;
 
-public class ConversationActivity extends AppCompatActivity implements ConversationActivityOps, MessagesAdapter.ConversationManager {
+public class ConversationActivity extends AppCompatActivity implements ConversationActivityOps, MessagesRecyclerViewAdapter.ConversationManager {
 
     private static final String EXTRA_MENSAJE = "mensaje_extra";
     private static final String EXTRA_USER = "user_extra";

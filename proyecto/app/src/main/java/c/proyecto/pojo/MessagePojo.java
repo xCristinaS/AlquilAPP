@@ -5,12 +5,13 @@ import android.os.Parcelable;
 
 import java.util.Date;
 
+import c.proyecto.interfaces.IMessageAdapter;
 import c.proyecto.models.Usuario;
 
 /**
  * Created by Cristina on 23/03/2016.
  */
-public class MessagePojo implements Parcelable, Comparable<MessagePojo> {
+public class MessagePojo implements Parcelable, Comparable<MessagePojo> , IMessageAdapter {
 
     public static final int TIPO_ENVIADO = 2;
     public static final int TIPO_RECIBIDO = 4;
@@ -30,6 +31,7 @@ public class MessagePojo implements Parcelable, Comparable<MessagePojo> {
         this.contenido = contenido;
     }
 
+    @Override
     public int getType(String keyCurrentUser){
         if (emisor.getKey().equals(keyCurrentUser))
             return TIPO_ENVIADO;
