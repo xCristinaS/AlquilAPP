@@ -46,6 +46,8 @@ public class MessagesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
     private boolean isAConversation;
     private String mKeyCurrentUser;
     private MessageAdapterHeader cabeceraMensajesRecibidos, cabeceraMensajesSinRespuesta;
+    private ComparatorMessages messagesComp = new ComparatorMessages();
+    private ComparatorConver converComp = new ComparatorConver();
 
     public MessagesRecyclerViewAdapter(boolean isAConversation, String keyCurrentUser) {
         mDatos = new ArrayList<>();
@@ -258,20 +260,15 @@ public class MessagesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
             }
 
         if (!stop) {
-            //mDatos.add(m);
-            if (isMessageWithoutAnswer) {
+            if (isMessageWithoutAnswer)
                 mDatos.add(mDatos.indexOf(cabeceraMensajesSinRespuesta) + 1, m);
-                //notifyItemInserted(contadorCabeceraMensajesSinRespuesta);
-            } else {
+            else
                 mDatos.add(mDatos.indexOf(cabeceraMensajesRecibidos) + 1, m);
-                //notifyItemInserted(contadorCabeceraMensajesRecibidos);
-            }
-
         }
 
         if (isAConversation && mDatos.size() == LIMIT_MESSAGES)
             listenerConverManager.removeMessage((MessagePojo) mDatos.remove(1));
-        //notifyItemInserted(0);
+
         if (!isAConversation) {
             List<MessagePojo> aux = new ArrayList<>(), aux2 = new ArrayList<>();
             int hasta = mDatos.indexOf(cabeceraMensajesSinRespuesta);
@@ -279,14 +276,14 @@ public class MessagesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
                 if (mDatos.get(i) instanceof MessagePojo)
                     aux.add((MessagePojo) mDatos.get(i));
 
-            Collections.sort(aux, new ComparatorMessages());
+            Collections.sort(aux, messagesComp);
 
             hasta = mDatos.size();
             for (int i = mDatos.indexOf(cabeceraMensajesSinRespuesta) + 1; i < hasta; i++)
                 if (mDatos.get(i) instanceof MessagePojo)
                     aux2.add((MessagePojo) mDatos.get(i));
 
-            Collections.sort(aux2, new ComparatorMessages());
+            Collections.sort(aux2, messagesComp);
 
             mDatos.clear();
             mDatos.add(cabeceraMensajesRecibidos);
@@ -299,7 +296,7 @@ public class MessagesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
                 if (mDatos.get(i) instanceof MessagePojo)
                     aux.add((MessagePojo) mDatos.get(i));
 
-            Collections.sort(aux, new ComparatorConver());
+            Collections.sort(aux, converComp);
             mDatos.clear();
             mDatos.addAll(aux);
         }

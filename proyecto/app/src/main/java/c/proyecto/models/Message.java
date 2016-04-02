@@ -61,10 +61,12 @@ public class Message implements Parcelable {
                         final MessagePojo mensaje = new MessagePojo();
                         final String emisor_titleAdvert = data.getKey();
                         String[] campos = emisor_titleAdvert.split("_");
-                        String emisorKey = campos[0];
+                        final String emisorKey = campos[0];
                         String titulo = "";
                         for (int i = 1; i < campos.length; i++)
                             titulo += campos[i] + " ";
+
+                        checkOnFirstMessageResponse(user.getKey(), emisorKey, emisor_titleAdvert);
 
                         mensaje.setTituloAnuncio(titulo);
                         new Firebase(URL_USERS).child(emisorKey).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -138,6 +140,27 @@ public class Message implements Parcelable {
                 }
             };
         mFirebaseReceivedMessages.addValueEventListener(mListenerReceivedMessages);
+    }
+
+    private static void checkOnFirstMessageResponse(final String userKey, final String emisorKey, final String emisor_titleAdvert) {
+        final String title = emisor_titleAdvert.substring(emisor_titleAdvert.indexOf("_")+1, emisor_titleAdvert.length());
+        new Firebase(URL_MSG_SIN_RESP).child(userKey).child(emisorKey).child(title).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                HashMap map = dataSnapshot.getValue(HashMap.class);
+                if (map != null) {
+                    //String msgPreviamenteEnviado = map.keySet().iterator().hasNext() ? (String) map.keySet().iterator().next() : " ";
+                    String msgPreviamenteEnviado = (String) map.keySet().iterator().next();
+                    if ((userKey + "_" + title).equals(msgPreviamenteEnviado))
+                        new Firebase(URL_MSG_SIN_RESP).child(userKey).child(emisorKey).child(title).setValue(null);
+                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
     }
 
     private static void getUserMessagesSendedWithoutAnswer(final Usuario user, final MainPresenter presenter) {
