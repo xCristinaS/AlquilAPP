@@ -172,7 +172,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
                 break;
             case R.id.nav_new_adv:
                 //Null = nuevo Anuncio.
-                CrearAnuncio1Activity.start(this, null, mUser);
+                CrearAnuncio1Activity.start(this, mUser);
                 break;
             case R.id.nav_edit_profile:
                 EditProfileActivity.start(this, mUser);

@@ -40,7 +40,7 @@ public class ImgurUploader {
 
             @Override
             public void onFailure(Call<ImgurResponse> call, Throwable t) {
-                System.out.println();
+                
             }
         });
     }

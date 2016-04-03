@@ -70,6 +70,11 @@ public class PrestacionesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         notifyDataSetChanged();
         checkIfEmpty();
     }
+    public void replaceAll(List<Prestacion> prestaciones){
+        mDatos.clear();
+        mDatos.addAll(prestaciones);
+        actualizarAdapter();
+    }
     private void checkIfEmpty() {
         if(emptyView != null)
             emptyView.setVisibility(getItemCount() > 0 ? View.GONE : View.VISIBLE);

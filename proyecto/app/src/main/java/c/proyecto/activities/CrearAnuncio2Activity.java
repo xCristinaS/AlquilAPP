@@ -31,6 +31,7 @@ import c.proyecto.presenters.CrearEditarAnuncioPresenter;
 public class CrearAnuncio2Activity extends AppCompatActivity implements PrestacionesAdapter.IPrestacionAdapter, SeleccionPrestacionesDialogFragment.ICallBackOnDismiss {
 
     private static final String TAG_DIALOG_PRESTACIONES = "TAG_PRESTACIONES";
+    public static final String EXTRA_ANUNCIO_RESULT = "resultAnuncio2";
     private static final String EXTRA_ANUNCIO = "intentAnuncio2";
     private static final String EXTRA_USUARIO = "extra_user";
     private static final String EXTRA_IMAGE_0 = "img0";
@@ -50,7 +51,7 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
     private Anuncio mAnuncio;
     private Usuario user;
 
-    public static void start(Activity a, Anuncio anuncio, Usuario user, int requestCode, File img0, File img1, File img2, File img3, File img4, File img5) {
+    public static void startForResult(Activity a, Anuncio anuncio, Usuario user, int requestCode, File img0, File img1, File img2, File img3, File img4, File img5) {
         Intent intent = new Intent(a, CrearAnuncio2Activity.class);
         intent.putExtra(EXTRA_ANUNCIO, anuncio);
         intent.putExtra(EXTRA_USUARIO, user);
@@ -263,6 +264,7 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
             meterDatosEnAnuncio();
             //Subir el objeto a FireBase.
             mPresenter.publishNewAdvert(mAnuncio);
+            setResult(RESULT_OK, new Intent().putExtra(EXTRA_ANUNCIO_RESULT, mAnuncio));
             finish();
         }
     }
@@ -295,9 +297,5 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
             mAnuncio.setDescripcion(txtDescripcion.getText().toString());
     }
 
-    @Override
-    public void finish() {
-        setResult(RESULT_OK, new Intent());
-        super.finish();
-    }
+
 }

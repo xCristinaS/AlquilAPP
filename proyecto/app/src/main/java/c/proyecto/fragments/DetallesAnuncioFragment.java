@@ -1,5 +1,7 @@
 package c.proyecto.fragments;
 
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -34,9 +36,14 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class DetallesAnuncioFragment extends Fragment implements PrestacionesAdapter.IPrestacionAdapter {
 
+    public interface IDetallesAnuncioFragmentListener {
+        void onImgEditClicked(Anuncio advert, Usuario user);
+    }
+
     private static final String ARG_ANUNCIO = "anuncio";
     private static final String ARG_ADVERT_TYPE = "advert_type";
     private static final String ARG_USER = "mUser";
+
 
     private ImageView imgFoto, imgTipoVivienda, imgCamas, imgEdit;
     private CircleImageView imgAvatar;
@@ -47,6 +54,8 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
     private Anuncio mAnuncio;
     private Usuario mUser;
     private int mAdverType;
+
+    private IDetallesAnuncioFragmentListener mListener;
 
 
     public static DetallesAnuncioFragment newInstance(Anuncio anuncio, int advertType, Usuario user) {
@@ -99,7 +108,7 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
         imgEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CrearAnuncio1Activity.start(getActivity(), mAnuncio, mUser);
+                mListener.onImgEditClicked(mAnuncio, mUser);
             }
         });
 
@@ -203,4 +212,23 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
     }
 
 
+
+
+    @Override
+    public void onAttach(Context context) {
+        mListener = (IDetallesAnuncioFragmentListener) context;
+        super.onAttach(context);
+    }
+
+    @Override
+    public void onDetach() {
+        mListener = null;
+        super.onDetach();
+    }
+
+    public void setmAnuncio(Anuncio anuncio) {
+        mAnuncio = anuncio;
+        bindData();
+        mPrestacionesAdapter.replaceAll(anuncio.getPrestaciones());
+    }
 }

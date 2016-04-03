@@ -14,7 +14,7 @@ import c.proyecto.models.Anuncio;
 import c.proyecto.models.Usuario;
 import c.proyecto.presenters.AdvertsDetailsPresenter;
 
-public class DetallesAnuncioActivity extends AppCompatActivity implements AdvertsDetailsActivityOps{
+public class DetallesAnuncioActivity extends AppCompatActivity implements AdvertsDetailsActivityOps, DetallesAnuncioFragment.IDetallesAnuncioFragmentListener{
 
 
     private static final String EXTRA_ANUNCIO = "anuncio";
@@ -57,7 +57,22 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
         return mPresenter;
     }
 
+    @Override
+    public void onImgEditClicked(Anuncio advert, Usuario user) {
+        CrearAnuncio1Activity.startForResult(this, advert, user, CrearAnuncio1Activity.RC_EDITAR_ANUNCIO);
+    }
 
-
-
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == RESULT_OK){
+            switch (requestCode){
+                case CrearAnuncio1Activity.RC_EDITAR_ANUNCIO:
+                    ((DetallesAnuncioFragment) getSupportFragmentManager().findFragmentById(R.id.frmContenido)).setmAnuncio((Anuncio) data.getParcelableExtra(CrearAnuncio1Activity.EXTRA_ANUNCIO_RESULT));
+                    break;
+            }
+        }
+    }
 }
+
+
