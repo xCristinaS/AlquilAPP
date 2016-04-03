@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -48,6 +49,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
     private CircleImageView imgNavDrawer;
     private TextView txtUserNavDrawer;
     private CircleImageView navHeader;
+    private FragmentManager mFragmentManager;
 
     public static void start(Activity a, Usuario u) {
         Intent intent = new Intent(a, MainActivity.class);
@@ -71,7 +73,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
 
     private void initViews() {
         mPresenter = MainPresenter.getPresentador(this);
-        getSupportFragmentManager().beginTransaction().replace(R.id.frmContenido, new PrincipalFragment(), TAG_PRINCIPAL_FRAGMENT).commit();
+        mFragmentManager = getSupportFragmentManager();
+        mFragmentManager.beginTransaction().replace(R.id.frmContenido, new PrincipalFragment(), TAG_PRINCIPAL_FRAGMENT).commit();
         configNavDrawer();
     }
 
@@ -169,6 +172,15 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
     public boolean onNavigationItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.nav_home:
+                //Si el principalFragment no está cargado en el FrameLayout
+                if(!(mFragmentManager.findFragmentById(R.id.frmContenido) instanceof PrincipalFragment)){
+                    //Si ya existe se carga
+                    if(mFragmentManager.findFragmentByTag(TAG_PRINCIPAL_FRAGMENT) != null)
+                        mFragmentManager.beginTransaction().replace(R.id.frmContenido, mFragmentManager.findFragmentByTag(TAG_PRINCIPAL_FRAGMENT)).commit();
+                    else
+                        mFragmentManager.beginTransaction().replace(R.id.frmContenido, new PrincipalFragment()).commit();
+                }
+
                 break;
             case R.id.nav_new_adv:
                 //Null = nuevo Anuncio.
