@@ -9,6 +9,9 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -19,7 +22,9 @@ import com.squareup.picasso.Picasso;
 
 import c.proyecto.Constantes;
 import c.proyecto.R;
+import c.proyecto.activities.CrearAnuncio1Activity;
 import c.proyecto.activities.VerPerfilActivity;
+import c.proyecto.adapters.AdvertsRecyclerViewAdapter;
 import c.proyecto.adapters.PrestacionesAdapter;
 import c.proyecto.adapters.PrestacionesDetalladasAdapter;
 import c.proyecto.models.Anuncio;
@@ -33,7 +38,7 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
     private static final String ARG_ADVERT_TYPE = "advert_type";
     private static final String ARG_USER = "mUser";
 
-    private ImageView imgFoto, imgTipoVivienda, imgCamas;
+    private ImageView imgFoto, imgTipoVivienda, imgCamas, imgEdit;
     private CircleImageView imgAvatar;
     private TextView lblNombre, lblPrecio, lblTamano, lblTipoVivienda, lblCamas, lblNumCamas, lblNumHuespedes, lblDescripcionNoDisponible, lblDescripcion;
     private RecyclerView rvPrestaciones;
@@ -41,7 +46,7 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
 
     private Anuncio mAnuncio;
     private Usuario mUser;
-    private int adverType;
+    private int mAdverType;
 
 
     public static DetallesAnuncioFragment newInstance(Anuncio anuncio, int advertType, Usuario user) {
@@ -64,7 +69,7 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mAnuncio = getArguments().getParcelable(ARG_ANUNCIO);
-        adverType = getArguments().getInt(ARG_ADVERT_TYPE);
+        mAdverType = getArguments().getInt(ARG_ADVERT_TYPE);
         mUser = getArguments().getParcelable(ARG_USER);
         initViews();
         confRecyclerview();
@@ -86,6 +91,17 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
         rvPrestaciones = (RecyclerView) getView().findViewById(R.id.rvPrestaciones);
         lblDescripcionNoDisponible = (TextView) getView().findViewById(R.id.lblDescripcionNoDisponible);
         lblDescripcion = (TextView) getView().findViewById(R.id.lblDescripcion);
+        imgEdit = (ImageView) getView().findViewById(R.id.imgEdit);
+
+        if(mAdverType == AdvertsRecyclerViewAdapter.ADAPTER_TYPE_MY_ADVS)
+            imgEdit.setVisibility(View.VISIBLE);
+
+        imgEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CrearAnuncio1Activity.start(getActivity(), mAnuncio, mUser);
+            }
+        });
 
         //Muestra el usuario propietario del anuncio
         imgAvatar.setOnClickListener(new View.OnClickListener() {
@@ -185,4 +201,6 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
 
         dialog.getWindow().setLayout((int) (boundsScreen.x * Constantes.PORCENTAJE_PANTALLA), WindowManager.LayoutParams.WRAP_CONTENT);
     }
+
+
 }

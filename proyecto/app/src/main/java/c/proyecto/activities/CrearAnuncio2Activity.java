@@ -101,6 +101,7 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
         if (mAnuncio == null) {
             mAnuncio = new Anuncio();
             mAnuncio.setPrestaciones(new ArrayList<Prestacion>());
+            mAnuncio.setKey(mAnuncio.generateKey());
             initViews();
         } else {
             initViews();
@@ -186,11 +187,11 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
         txtNum.setText(mAnuncio.getNumero());
         txtPoblacion.setText(mAnuncio.getPoblacion());
         txtProvincia.setText(mAnuncio.getProvincia());
-        txtCamas.setText(mAnuncio.getHabitaciones_o_camas());
-        txtToilets.setText(mAnuncio.getNumero_banios());
-        txtTamano.setText(String.format("%d%s", mAnuncio.getTamanio(), Constantes.UNIDAD));
+        txtCamas.setText(String.valueOf(mAnuncio.getHabitaciones_o_camas()));
+        txtToilets.setText(String.valueOf(mAnuncio.getNumero_banios()));
+        txtTamano.setText(String.valueOf(mAnuncio.getTamanio()));
         txtDescripcion.setText(mAnuncio.getDescripcion());
-        txtPrecio.setText(String.format("%.2f%s", mAnuncio.getPrecio(), Constantes.MONEDA));
+        txtPrecio.setText(String.valueOf(mAnuncio.getPrecio()));
     }
 
     @Override
@@ -227,7 +228,7 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_crear_editar_anuncio, menu);
+        getMenuInflater().inflate(R.menu.menu_crear_anuncio, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -250,6 +251,11 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
 
     private void confirmarCambios() {
         if (requiredFieldsFilled()) {
+            //Se borra las imágenes existentes en Firebase para que no se añadan las nuevas + las antiguas.
+            mAnuncio.setImagenes(null);
+            mPresenter.publishNewAdvert(mAnuncio);
+            mAnuncio.setImagenes(new ArrayList<String>());
+
             //Subir las imagenes a la api de imágenes.
             for (File f: imagenesAnuncio)
                     ImgurUploader.subirImagen(f, mAnuncio, mPresenter);
@@ -274,10 +280,9 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
         mAnuncio.setPoblacion(txtPoblacion.getText().toString());
         mAnuncio.setProvincia(txtProvincia.getText().toString());
         mAnuncio.setNumero(txtNum.getText().toString());
-        mAnuncio.setPrecio(Integer.valueOf(txtPrecio.getText().toString()));
+        mAnuncio.setPrecio(Float.valueOf(txtPrecio.getText().toString()).intValue());
         mAnuncio.setDireccion(txtDireccion.getText().toString());
         mAnuncio.setAnunciante(user.getKey());
-        mAnuncio.setKey(mAnuncio.generateKey());
         if (mPrestacionesAdapter.getItemCount() > 0)
             mAnuncio.setPrestaciones((ArrayList<Prestacion>) mPrestacionesAdapter.getmDatos());
         if (!TextUtils.isEmpty(txtToilets.getText()))

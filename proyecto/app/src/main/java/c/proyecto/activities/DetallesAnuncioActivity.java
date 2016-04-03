@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 
 import c.proyecto.R;
 import c.proyecto.fragments.DetallesAnuncioFragment;
@@ -34,6 +36,8 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detalles_anuncio);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         Usuario u = getIntent().getParcelableExtra(EXTRA_USER);
         anuncio = getIntent().getParcelableExtra(EXTRA_ANUNCIO);
         advertType = getIntent().getIntExtra(EXTRA_ADVERT_TYPE, -1);
@@ -52,4 +56,8 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
     public AdvertsDetailsPresenter getmPresenter() {
         return mPresenter;
     }
+
+
+
+
 }
