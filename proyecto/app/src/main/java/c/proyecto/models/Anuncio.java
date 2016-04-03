@@ -41,7 +41,6 @@ public class Anuncio implements Parcelable {
         imagenes = new ArrayList<>();
         prestaciones = new ArrayList<>();
         solicitantes = new HashMap<>();
-        //paNuevoAnuncioPruebas();
     }
 
     public Anuncio(String key) {

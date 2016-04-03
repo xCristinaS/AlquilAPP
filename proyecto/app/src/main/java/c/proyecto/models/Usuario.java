@@ -28,7 +28,6 @@ public class Usuario implements Parcelable {
     public Usuario() {
         itemsDescriptivos = new ArrayList<>();
         itemsHabitos = new ArrayList<>();
-        //paBorrarPruebas();
     }
 
     private void paBorrarPruebas() {
