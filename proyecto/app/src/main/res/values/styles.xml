@@ -24,4 +24,19 @@
         <item name="android:background">@android:color/black</item>
 
     </style>
+
+
+    <style name="LabelTitle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/colorGrayDarkText</item>
+        <item name="android:textSize">@dimen/font_medium</item>
+    </style>
+
+    <style name="LabelContent">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/colorGrayLightText</item>
+        <item name="android:textSize">@dimen/font_small</item>
+    </style>
 </resources>

@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +23,7 @@ public class AdvertsRecyclerViewFragment extends Fragment {
     //Views
     private RecyclerView rvLista;
     private AdvertsRecyclerViewAdapter mAdapter;
-    private LinearLayoutManager mLayoutManager;
+    private StaggeredGridLayoutManager mLayoutManager;
     //Variables
     private AdvertsRecyclerViewAdapter.OnAdapterItemLongClick listenerLongClick;
     private AdvertsRecyclerViewAdapter.OnAdapterItemClick listenerItemClick;
@@ -54,7 +55,8 @@ public class AdvertsRecyclerViewFragment extends Fragment {
 
         rvLista = (RecyclerView) getView().findViewById(R.id.rvLista);
         mAdapter = new AdvertsRecyclerViewAdapter(adapter_type, MainPresenter.getPresentador(getActivity()), ((PrincipalFragment)getParentFragment()).getUser());
-        mLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        mLayoutManager = new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL);
+
 
         rvLista.setAdapter(mAdapter);
         rvLista.setLayoutManager(mLayoutManager);

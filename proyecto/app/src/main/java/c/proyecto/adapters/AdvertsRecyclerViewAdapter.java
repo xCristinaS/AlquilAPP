@@ -16,7 +16,6 @@ import java.util.Collections;
 import java.util.List;
 
 import c.proyecto.R;
-import c.proyecto.activities.ConversationActivity;
 import c.proyecto.models.Anuncio;
 import c.proyecto.models.Usuario;
 import c.proyecto.presenters.MainPresenter;
@@ -173,25 +172,17 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
     static class AnuncioViewHolder extends RecyclerView.ViewHolder {
 
         private ImageView imgAvatar;
-        private TextView lblPoblacion, lblProvincia, lblDireccion, lblNumero, lblPrecio;
+        private TextView lblTituloAnuncio;
 
         public AnuncioViewHolder(final View itemView) {
             super(itemView);
-            lblPoblacion = (TextView) itemView.findViewById(R.id.lblPoblacion);
-            lblProvincia = (TextView) itemView.findViewById(R.id.lblProvincia);
-            lblDireccion = (TextView) itemView.findViewById(R.id.lblDireccion);
-            lblNumero = (TextView) itemView.findViewById(R.id.lblNumero);
-            lblPrecio = (TextView) itemView.findViewById(R.id.lblPrecio);
+            lblTituloAnuncio = (TextView) itemView.findViewById(R.id.lblTituloAnuncio);
             imgAvatar = (ImageView) itemView.findViewById(R.id.imgAvatar);
         }
 
         public void onBind(final Anuncio anuncio) {
             if (anuncio != null) {
-                lblDireccion.setText(anuncio.getDireccion());
-                lblNumero.setText(String.valueOf(anuncio.getNumero()));
-                lblPoblacion.setText(anuncio.getPoblacion());
-                lblProvincia.setText(anuncio.getProvincia());
-                lblPrecio.setText(String.valueOf(anuncio.getPrecio()));
+                lblTituloAnuncio.setText(anuncio.getTitulo());
                 if (anuncio.getImagenes().size() > 0)
                     Picasso.with(itemView.getContext()).load(anuncio.getImagenes().get(0)).into(imgAvatar);
             }
