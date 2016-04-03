@@ -18,15 +18,15 @@ public class AdvertsDetailsPresenter implements AdvertsDetailsPresenterOps, MyPr
     private static WeakReference<DetallesAnuncioActivity> activity;
     private static AdvertsDetailsPresenter presentador;
 
-    private AdvertsDetailsPresenter(Activity activity){
-        this.activity = new WeakReference<>((DetallesAnuncioActivity)activity);
+    private AdvertsDetailsPresenter(Activity activity) {
+        this.activity = new WeakReference<>((DetallesAnuncioActivity) activity);
     }
 
-    public static AdvertsDetailsPresenter getPresentador(Activity a){
+    public static AdvertsDetailsPresenter getPresentador(Activity a) {
         if (presentador == null)
             presentador = new AdvertsDetailsPresenter(a);
         else
-            activity = new WeakReference<>((DetallesAnuncioActivity)a);
+            activity = new WeakReference<>((DetallesAnuncioActivity) a);
         return presentador;
     }
 
@@ -37,11 +37,13 @@ public class AdvertsDetailsPresenter implements AdvertsDetailsPresenterOps, MyPr
 
     @Override
     public void onAdvertPublisherRequestedResponsed(Usuario u) {
-        activity.get().onAdvertPublisherRequestedResponsed(u);
+        if (activity.get() != null)
+            activity.get().onAdvertPublisherRequestedResponsed(u);
     }
 
     @Override
     public void updateAdvert(Anuncio anuncio) {
-        activity.get().updateAdvert(anuncio);
+        if (activity.get() != null)
+            activity.get().updateAdvert(anuncio);
     }
 }
