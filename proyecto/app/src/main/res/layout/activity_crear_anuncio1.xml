@@ -16,8 +16,9 @@
         android:layout_height="220dp"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:src="@drawable/choose_image"
-        android:scaleType="centerCrop"/>
+        android:src="@drawable/sin_imagen"
+        android:scaleType="centerCrop"
+        />
 
     <ImageView
         android:id="@+id/img1"
@@ -26,7 +27,7 @@
         android:layout_toLeftOf="@id/imgPrincipal"
         android:layout_toStartOf="@id/imgPrincipal"
         android:layout_marginRight="16dp"
-        android:src="@drawable/choose_image"
+        android:src="@drawable/sin_imagen"
         android:scaleType="centerCrop"/>
 
     <ImageView
@@ -39,7 +40,7 @@
         android:layout_toStartOf="@id/imgPrincipal"
         android:layout_marginRight="16dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/choose_image"/>
+        android:src="@drawable/sin_imagen"/>
 
     <ImageView
         android:id="@+id/img5"
@@ -50,7 +51,7 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:scaleType="centerCrop"
-        android:src="@drawable/choose_image"/>
+        android:src="@drawable/sin_imagen"/>
 
     <ImageView
         android:id="@+id/img4"
@@ -62,7 +63,7 @@
         android:layout_toStartOf="@id/img5"
         android:layout_marginRight="18dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/choose_image"/>
+        android:src="@drawable/sin_imagen"/>
 
     <ImageView
         android:id="@+id/img3"
@@ -74,7 +75,7 @@
         android:layout_toStartOf="@id/img4"
         android:scaleType="centerCrop"
         android:layout_marginRight="18dp"
-        android:src="@drawable/choose_image"/>
+        android:src="@drawable/sin_imagen"/>
 
     <ImageView
         android:id="@+id/imgSiguiente"
