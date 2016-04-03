@@ -23,9 +23,11 @@ import c.proyecto.R;
 import c.proyecto.adapters.PrestacionesAdapter;
 import c.proyecto.api.ImgurUploader;
 import c.proyecto.fragments.SeleccionPrestacionesDialogFragment;
+import c.proyecto.interfaces.MyPresenter;
 import c.proyecto.models.Anuncio;
 import c.proyecto.models.Usuario;
 import c.proyecto.pojo.Prestacion;
+import c.proyecto.presenters.AdvertsDetailsPresenter;
 import c.proyecto.presenters.CrearEditarAnuncioPresenter;
 
 public class CrearAnuncio2Activity extends AppCompatActivity implements PrestacionesAdapter.IPrestacionAdapter, SeleccionPrestacionesDialogFragment.ICallBackOnDismiss {
@@ -258,8 +260,11 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
             mAnuncio.setImagenes(new ArrayList<String>());
 
             //Subir las imagenes a la api de imágenes.
+            ArrayList<MyPresenter> presenters = new ArrayList<>();
+            presenters.add(mPresenter);
+            presenters.add(DetallesAnuncioActivity.getmPresenter());
             for (File f: imagenesAnuncio)
-                    ImgurUploader.subirImagen(f, mAnuncio, mPresenter);
+                    ImgurUploader.subirImagen(f, mAnuncio, presenters);
             //Guardar todos los editText en el objeto anuncio.
             meterDatosEnAnuncio();
             //Subir el objeto a FireBase.

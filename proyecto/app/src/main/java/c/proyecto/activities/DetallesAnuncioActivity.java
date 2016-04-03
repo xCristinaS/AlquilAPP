@@ -20,7 +20,7 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
     private static final String EXTRA_ANUNCIO = "anuncio";
     private static final String EXTRA_ADVERT_TYPE = "advert_type";
     private static final String EXTRA_USER = "user";
-    private AdvertsDetailsPresenter mPresenter;
+    private static AdvertsDetailsPresenter mPresenter;
     private Anuncio anuncio;
     private int advertType;
 
@@ -53,13 +53,18 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
         getSupportFragmentManager().beginTransaction().replace(R.id.frmContenido, DetallesAnuncioFragment.newInstance(anuncio, advertType, u)).commit();
     }
 
-    public AdvertsDetailsPresenter getmPresenter() {
+    public static AdvertsDetailsPresenter getmPresenter() {
         return mPresenter;
     }
 
     @Override
     public void onImgEditClicked(Anuncio advert, Usuario user) {
         CrearAnuncio1Activity.startForResult(this, advert, user, CrearAnuncio1Activity.RC_EDITAR_ANUNCIO);
+    }
+
+    @Override
+    public void updateAdvert(Anuncio anuncio) {
+        ((DetallesAnuncioFragment) getSupportFragmentManager().findFragmentById(R.id.frmContenido)).setmAnuncio(anuncio);
     }
 
     @Override

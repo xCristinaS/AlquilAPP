@@ -1,5 +1,6 @@
 package c.proyecto.interfaces;
 
+import c.proyecto.models.Anuncio;
 import c.proyecto.models.Usuario;
 
 /**
@@ -7,4 +8,5 @@ import c.proyecto.models.Usuario;
  */
 public interface AdvertsDetailsActivityOps {
     void onAdvertPublisherRequestedResponsed(Usuario u);
+    void updateAdvert(Anuncio anuncio);
 }

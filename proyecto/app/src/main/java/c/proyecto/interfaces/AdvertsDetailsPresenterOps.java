@@ -1,5 +1,6 @@
 package c.proyecto.interfaces;
 
+import c.proyecto.models.Anuncio;
 import c.proyecto.models.Usuario;
 
 /**
@@ -9,5 +10,5 @@ public interface AdvertsDetailsPresenterOps {
 
     void advertPublisherRequested(String anunciante);
     void onAdvertPublisherRequestedResponsed(Usuario u);
-
+    void updateAdvert(Anuncio anuncio);
 }
