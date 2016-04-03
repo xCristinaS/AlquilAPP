@@ -1,19 +1,23 @@
 package c.proyecto.activities;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -30,31 +34,40 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
 
     private static final String EXTRA_ANUNCIO = "intent anuncio1";
     private static final String EXTRA_USUARIO = "extra user";
+    public static final String EXTRA_ANUNCIO_RESULT = "anuncio1Result";
 
     private static final int RC_CLOSE = 15;
     private static final int RC_ABRIR_GALERIA = 233;
     private static final int RC_CAPTURAR_FOTO = 455;
+    public static final int RC_EDITAR_ANUNCIO = 231;
 
     private ImageView imgSiguiente, imgPrincipal, img1, img2, img3, img4, img5, imgSeleccionada;
     private String mPathOriginal;
-    private File[] imagenesAnuncio;
+    private File[] mImagenesAnuncio;
     private Anuncio mAnuncio;
     private Usuario user;
 
-    public static void start(Context context, @Nullable Anuncio anuncio, Usuario user){
+    public static void start(Context context, Usuario user){
         Intent intent = new Intent(context, CrearAnuncio1Activity.class);
-        intent.putExtra(EXTRA_ANUNCIO, anuncio);
         intent.putExtra(EXTRA_USUARIO, user);
         context.startActivity(intent);
     }
+    public static void startForResult(Activity activity, Anuncio anuncio, Usuario user, int requestCode){
+        Intent intent = new Intent(activity, CrearAnuncio1Activity.class);
+        intent.putExtra(EXTRA_USUARIO, user);
+        intent.putExtra(EXTRA_ANUNCIO, anuncio);
+        activity.startActivityForResult(intent, requestCode);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_crear_anuncio1);
         mAnuncio = getIntent().getParcelableExtra(EXTRA_ANUNCIO);
         user = getIntent().getParcelableExtra(EXTRA_USUARIO);
-        imagenesAnuncio = new File[Constantes.NUMERO_IMAGENES_ANUNCIO];
+        mImagenesAnuncio = new File[Constantes.NUMERO_IMAGENES_ANUNCIO];
         initViews();
+        recuperarImagenes();
     }
 
     private void initViews() {
@@ -77,12 +90,44 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
         imgSiguiente.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (imagenesAnuncio[0] != null)
-                    CrearAnuncio2Activity.start(CrearAnuncio1Activity.this, mAnuncio, user, RC_CLOSE, imagenesAnuncio[0], imagenesAnuncio[1], imagenesAnuncio[2], imagenesAnuncio[3], imagenesAnuncio[4], imagenesAnuncio[5]);
+                if (mImagenesAnuncio[0] != null || mAnuncio.getImagenes().size() > 0 )
+                    CrearAnuncio2Activity.startForResult(CrearAnuncio1Activity.this, mAnuncio, user, RC_CLOSE, mImagenesAnuncio[0], mImagenesAnuncio[1], mImagenesAnuncio[2], mImagenesAnuncio[3], mImagenesAnuncio[4], mImagenesAnuncio[5]);
                 else
                     Toast.makeText(CrearAnuncio1Activity.this, "Debe cargar una foto para continuar", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void recuperarImagenes() {
+        if(mAnuncio != null){
+            final ImageView[] imgViews = {imgPrincipal, img1, img2, img3, img4, img5};
+            //Recupera las imágenes que poseía el anuncio que se está editando.
+            for(int i = 0 ; i<mAnuncio.getImagenes().size(); i++){
+                final ImageView img = imgViews[i];
+                final int iFinal = i;
+
+                Picasso.with(this).load(mAnuncio.getImagenes().get(i)).into(new Target() {
+                    @Override
+                    public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                        img.setImageBitmap(bitmap);
+                        File file = Imagenes.crearArchivoFoto(CrearAnuncio1Activity.this, "foto_recuperada.jpg", false);
+                        Imagenes.guardarBitmapEnArchivo(bitmap, file);
+                        mImagenesAnuncio[iFinal] = file;
+                    }
+
+                    @Override
+                    public void onBitmapFailed(Drawable errorDrawable) {
+
+                    }
+
+                    @Override
+                    public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+                    }
+                });
+            }
+
+        }
     }
 
     private void showImageDialogList(final ImageView img){
@@ -155,6 +200,7 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
                     new HiloEscalador().execute(imgSeleccionada.getWidth(), imgSeleccionada.getHeight());
                     break;
                 case RC_CLOSE:
+                    setResult(RESULT_OK, new Intent().putExtra(EXTRA_ANUNCIO_RESULT, data.getParcelableExtra(CrearAnuncio2Activity.EXTRA_ANUNCIO_RESULT)));
                     finish();
                     break;
             }
@@ -180,28 +226,28 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
     private void guardarBitmapEnArray(Bitmap bitmap, int idImageView){
         switch (idImageView){
             case R.id.imgPrincipal:
-                imagenesAnuncio[0] = Imagenes.crearArchivoFoto(this, "foto_piso0.jpeg", false);
-                Imagenes.guardarBitmapEnArchivo(bitmap, imagenesAnuncio[0]);
+                mImagenesAnuncio[0] = Imagenes.crearArchivoFoto(this, "foto_piso0.jpeg", false);
+                Imagenes.guardarBitmapEnArchivo(bitmap, mImagenesAnuncio[0]);
                 break;
             case R.id.img1:
-                imagenesAnuncio[1] = Imagenes.crearArchivoFoto(this, "foto_piso1.jpeg", false);
-                Imagenes.guardarBitmapEnArchivo(bitmap, imagenesAnuncio[1]);
+                mImagenesAnuncio[1] = Imagenes.crearArchivoFoto(this, "foto_piso1.jpeg", false);
+                Imagenes.guardarBitmapEnArchivo(bitmap, mImagenesAnuncio[1]);
                 break;
             case R.id.img2:
-                imagenesAnuncio[2] = Imagenes.crearArchivoFoto(this, "foto_piso2.jpeg", false);
-                Imagenes.guardarBitmapEnArchivo(bitmap, imagenesAnuncio[2]);
+                mImagenesAnuncio[2] = Imagenes.crearArchivoFoto(this, "foto_piso2.jpeg", false);
+                Imagenes.guardarBitmapEnArchivo(bitmap, mImagenesAnuncio[2]);
                 break;
             case R.id.img3:
-                imagenesAnuncio[3] = Imagenes.crearArchivoFoto(this, "foto_piso3.jpeg", false);
-                Imagenes.guardarBitmapEnArchivo(bitmap, imagenesAnuncio[3]);
+                mImagenesAnuncio[3] = Imagenes.crearArchivoFoto(this, "foto_piso3.jpeg", false);
+                Imagenes.guardarBitmapEnArchivo(bitmap, mImagenesAnuncio[3]);
                 break;
             case R.id.img4:
-                imagenesAnuncio[4] = Imagenes.crearArchivoFoto(this, "foto_piso4.jpeg", false);
-                Imagenes.guardarBitmapEnArchivo(bitmap, imagenesAnuncio[4]);
+                mImagenesAnuncio[4] = Imagenes.crearArchivoFoto(this, "foto_piso4.jpeg", false);
+                Imagenes.guardarBitmapEnArchivo(bitmap, mImagenesAnuncio[4]);
                 break;
             case R.id.img5:
-                imagenesAnuncio[5] = Imagenes.crearArchivoFoto(this, "foto_piso5.jpeg", false);
-                Imagenes.guardarBitmapEnArchivo(bitmap, imagenesAnuncio[5]);
+                mImagenesAnuncio[5] = Imagenes.crearArchivoFoto(this, "foto_piso5.jpeg", false);
+                Imagenes.guardarBitmapEnArchivo(bitmap, mImagenesAnuncio[5]);
                 break;
         }
     }

@@ -41,6 +41,7 @@ import c.proyecto.R;
 import c.proyecto.api.ImgurUploader;
 import c.proyecto.fragments.CaracteristicasUsuarioDialogFragment;
 import c.proyecto.fragments.DescripcionDialogFragment;
+import c.proyecto.interfaces.MyPresenter;
 import c.proyecto.models.Usuario;
 import c.proyecto.presenters.EditProfilePresenter;
 import c.proyecto.utils.Imagenes;
@@ -99,9 +100,11 @@ public class EditProfileActivity extends AppCompatActivity {
         btnConfirmar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ArrayList<MyPresenter> presenters = new ArrayList<>();
+                presenters.add(mPresenter);
                 introducirDatosEnUser();
                 if (mFileUserPhoto != null)
-                    ImgurUploader.subirImagen(mFileUserPhoto, mUser, mPresenter);
+                    ImgurUploader.subirImagen(mFileUserPhoto, mUser, presenters);
                 mPresenter.updateUserProfile(mUser);
                 finish();
             }

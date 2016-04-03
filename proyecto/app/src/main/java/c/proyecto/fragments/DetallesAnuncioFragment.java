@@ -1,5 +1,7 @@
 package c.proyecto.fragments;
 
+
+import android.content.Context;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -20,29 +22,41 @@ import com.squareup.picasso.Picasso;
 import c.proyecto.Constantes;
 import c.proyecto.R;
 import c.proyecto.activities.ConversationActivity;
+import c.proyecto.activities.VerPerfilActivity;
+import c.proyecto.adapters.AdvertsRecyclerViewAdapter;
 import c.proyecto.adapters.PrestacionesAdapter;
 import c.proyecto.adapters.PrestacionesDetalladasAdapter;
 import c.proyecto.models.Anuncio;
 import c.proyecto.models.Usuario;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-
 public class DetallesAnuncioFragment extends Fragment implements PrestacionesAdapter.IPrestacionAdapter {
+
+    public interface IDetallesAnuncioFragmentListener {
+        void onImgEditClicked(Anuncio advert, Usuario user);
+    }
 
     private static final String ARG_ANUNCIO = "anuncio";
     private static final String ARG_ADVERT_TYPE = "advert_type";
+
     private static final String ARG_USER_ANUNCIANTE = "userAnunciante";
     private static final String ARG_CURRENT_USER = "usuarioLogueado";
 
-    private ImageView imgFoto, imgTipoVivienda, imgCamas, imgMessage;
+    private ImageView imgFoto, imgTipoVivienda, imgCamas, imgMessage, imgEdit;
+
     private CircleImageView imgAvatar;
     private TextView lblNombre, lblPrecio, lblTamano, lblTipoVivienda, lblCamas, lblNumCamas, lblNumHuespedes, lblDescripcionNoDisponible, lblDescripcion;
     private RecyclerView rvPrestaciones;
     private PrestacionesAdapter mPrestacionesAdapter;
 
     private Anuncio mAnuncio;
+
     private Usuario userAnunciante, currentUser;
     private int adverType;
+
+
+    private IDetallesAnuncioFragmentListener mListener;
+
 
     public static DetallesAnuncioFragment newInstance(Anuncio anuncio, int advertType, Usuario user, Usuario currentUser) {
         Bundle args = new Bundle();
@@ -88,12 +102,38 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
         rvPrestaciones = (RecyclerView) getView().findViewById(R.id.rvPrestaciones);
         lblDescripcionNoDisponible = (TextView) getView().findViewById(R.id.lblDescripcionNoDisponible);
         lblDescripcion = (TextView) getView().findViewById(R.id.lblDescripcion);
+
         imgMessage = (ImageView) getView().findViewById(R.id.imgMessage);
 
         imgMessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ConversationActivity.start(getActivity(), null, currentUser, mAnuncio);
+            }
+        });
+        imgEdit = (ImageView) getView().findViewById(R.id.imgEdit);
+
+        if(adverType == AdvertsRecyclerViewAdapter.ADAPTER_TYPE_MY_ADVS)
+            imgEdit.setVisibility(View.VISIBLE);
+
+        imgEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListener.onImgEditClicked(mAnuncio, currentUser);
+            }
+        });
+
+        //Muestra el usuario propietario del anuncio
+        imgAvatar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                VerPerfilActivity.start(getActivity(), currentUser);
+            }
+        });
+        lblNombre.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                VerPerfilActivity.start(getActivity() ,currentUser);
             }
         });
     }
@@ -113,6 +153,7 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
             Picasso.with(getActivity()).load(mAnuncio.getImagenes().get(0)).error(R.drawable.default_user).into(imgFoto);
         else
             Picasso.with(getActivity()).load(R.drawable.default_user).into(imgFoto);
+
 
         lblNombre.setText(userAnunciante.getNombre());
         if (userAnunciante.getFoto() != null)
@@ -180,5 +221,26 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
         getActivity().getWindowManager().getDefaultDisplay().getSize(boundsScreen);
 
         dialog.getWindow().setLayout((int) (boundsScreen.x * Constantes.PORCENTAJE_PANTALLA), WindowManager.LayoutParams.WRAP_CONTENT);
+    }
+
+
+
+
+    @Override
+    public void onAttach(Context context) {
+        mListener = (IDetallesAnuncioFragmentListener) context;
+        super.onAttach(context);
+    }
+
+    @Override
+    public void onDetach() {
+        mListener = null;
+        super.onDetach();
+    }
+
+    public void setmAnuncio(Anuncio anuncio) {
+        mAnuncio = anuncio;
+        bindData();
+        mPrestacionesAdapter.replaceAll(anuncio.getPrestaciones());
     }
 }

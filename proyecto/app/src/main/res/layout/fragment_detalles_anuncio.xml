@@ -7,15 +7,29 @@
         <ImageView
             android:id="@+id/imgFoto"
             android:layout_width="match_parent"
-            android:layout_height="200dp"/>
+            android:layout_height="200dp"
+            android:scaleType="centerCrop"/>
 
         <!-- Degradado negro + flecha blanca-->
         <ImageView
+            android:id="@+id/degraded"
             android:layout_width="match_parent"
             android:scaleType="centerCrop"
             android:layout_height="wrap_content"
             android:src="@drawable/degradado_negro"
             android:layout_alignBottom="@id/imgFoto"/>
+
+        <!-- Btn EDITAR-->
+        <ImageView
+            android:id="@+id/imgEdit"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_action_edit"
+            android:layout_above="@id/degraded"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            android:visibility="gone"
+            />
 
         <RelativeLayout
             android:id="@+id/groupAvatar"

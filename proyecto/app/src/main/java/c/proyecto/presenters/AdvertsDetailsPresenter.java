@@ -7,6 +7,7 @@ import java.lang.ref.WeakReference;
 import c.proyecto.activities.DetallesAnuncioActivity;
 import c.proyecto.interfaces.AdvertsDetailsPresenterOps;
 import c.proyecto.interfaces.MyPresenter;
+import c.proyecto.models.Anuncio;
 import c.proyecto.models.Usuario;
 
 /**
@@ -37,5 +38,10 @@ public class AdvertsDetailsPresenter implements AdvertsDetailsPresenterOps, MyPr
     @Override
     public void onAdvertPublisherRequestedResponsed(Usuario u) {
         activity.get().onAdvertPublisherRequestedResponsed(u);
+    }
+
+    @Override
+    public void updateAdvert(Anuncio anuncio) {
+        activity.get().updateAdvert(anuncio);
     }
 }

@@ -23,6 +23,7 @@ import c.proyecto.R;
 import c.proyecto.adapters.PrestacionesAdapter;
 import c.proyecto.api.ImgurUploader;
 import c.proyecto.fragments.SeleccionPrestacionesDialogFragment;
+import c.proyecto.interfaces.MyPresenter;
 import c.proyecto.models.Anuncio;
 import c.proyecto.models.Usuario;
 import c.proyecto.pojo.Prestacion;
@@ -31,6 +32,7 @@ import c.proyecto.presenters.CrearEditarAnuncioPresenter;
 public class CrearAnuncio2Activity extends AppCompatActivity implements PrestacionesAdapter.IPrestacionAdapter, SeleccionPrestacionesDialogFragment.ICallBackOnDismiss {
 
     private static final String TAG_DIALOG_PRESTACIONES = "TAG_PRESTACIONES";
+    public static final String EXTRA_ANUNCIO_RESULT = "resultAnuncio2";
     private static final String EXTRA_ANUNCIO = "intentAnuncio2";
     private static final String EXTRA_USUARIO = "extra_user";
     private static final String EXTRA_IMAGE_0 = "img0";
@@ -50,7 +52,7 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
     private Anuncio mAnuncio;
     private Usuario user;
 
-    public static void start(Activity a, Anuncio anuncio, Usuario user, int requestCode, File img0, File img1, File img2, File img3, File img4, File img5) {
+    public static void startForResult(Activity a, Anuncio anuncio, Usuario user, int requestCode, File img0, File img1, File img2, File img3, File img4, File img5) {
         Intent intent = new Intent(a, CrearAnuncio2Activity.class);
         intent.putExtra(EXTRA_ANUNCIO, anuncio);
         intent.putExtra(EXTRA_USUARIO, user);
@@ -186,11 +188,11 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
         txtNum.setText(mAnuncio.getNumero());
         txtPoblacion.setText(mAnuncio.getPoblacion());
         txtProvincia.setText(mAnuncio.getProvincia());
-        txtCamas.setText(mAnuncio.getHabitaciones_o_camas());
-        txtToilets.setText(mAnuncio.getNumero_banios());
-        txtTamano.setText(String.format("%d%s", mAnuncio.getTamanio(), Constantes.UNIDAD));
+        txtCamas.setText(String.valueOf(mAnuncio.getHabitaciones_o_camas()));
+        txtToilets.setText(String.valueOf(mAnuncio.getNumero_banios()));
+        txtTamano.setText(String.valueOf(mAnuncio.getTamanio()));
         txtDescripcion.setText(mAnuncio.getDescripcion());
-        txtPrecio.setText(String.format("%.2f%s", mAnuncio.getPrecio(), Constantes.MONEDA));
+        txtPrecio.setText(String.valueOf(mAnuncio.getPrecio()));
     }
 
     @Override
@@ -227,7 +229,7 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_crear_editar_anuncio, menu);
+        getMenuInflater().inflate(R.menu.menu_crear_anuncio, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -250,13 +252,24 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
 
     private void confirmarCambios() {
         if (requiredFieldsFilled()) {
+            if(mAnuncio.getKey() != null){
+                //Se borra las imágenes existentes en Firebase para que no se añadan las nuevas + las antiguas si se está editando.
+                mAnuncio.setImagenes(null);
+                mPresenter.publishNewAdvert(mAnuncio);
+                mAnuncio.setImagenes(new ArrayList<String>());
+            }
+
             //Subir las imagenes a la api de imágenes.
+            ArrayList<MyPresenter> presenters = new ArrayList<>();
+            presenters.add(mPresenter);
+            presenters.add(DetallesAnuncioActivity.getmPresenter());
             for (File f: imagenesAnuncio)
-                    ImgurUploader.subirImagen(f, mAnuncio, mPresenter);
+                    ImgurUploader.subirImagen(f, mAnuncio, presenters);
             //Guardar todos los editText en el objeto anuncio.
             meterDatosEnAnuncio();
             //Subir el objeto a FireBase.
             mPresenter.publishNewAdvert(mAnuncio);
+            setResult(RESULT_OK, new Intent().putExtra(EXTRA_ANUNCIO_RESULT, mAnuncio));
             finish();
         }
     }
@@ -274,7 +287,7 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
         mAnuncio.setPoblacion(txtPoblacion.getText().toString());
         mAnuncio.setProvincia(txtProvincia.getText().toString());
         mAnuncio.setNumero(txtNum.getText().toString());
-        mAnuncio.setPrecio(Integer.valueOf(txtPrecio.getText().toString()));
+        mAnuncio.setPrecio(Float.valueOf(txtPrecio.getText().toString()).intValue());
         mAnuncio.setDireccion(txtDireccion.getText().toString());
         mAnuncio.setAnunciante(user.getKey());
         mAnuncio.setKey(mAnuncio.generateKey());
@@ -290,9 +303,5 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
             mAnuncio.setDescripcion(txtDescripcion.getText().toString());
     }
 
-    @Override
-    public void finish() {
-        setResult(RESULT_OK, new Intent());
-        super.finish();
-    }
+
 }

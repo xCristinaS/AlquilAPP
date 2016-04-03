@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 
 import c.proyecto.R;
 import c.proyecto.adapters.AdvertsRecyclerViewAdapter;
@@ -13,13 +15,13 @@ import c.proyecto.models.Anuncio;
 import c.proyecto.models.Usuario;
 import c.proyecto.presenters.AdvertsDetailsPresenter;
 
-public class DetallesAnuncioActivity extends AppCompatActivity implements AdvertsDetailsActivityOps{
+public class DetallesAnuncioActivity extends AppCompatActivity implements AdvertsDetailsActivityOps, DetallesAnuncioFragment.IDetallesAnuncioFragmentListener{
 
 
     private static final String EXTRA_ANUNCIO = "anuncio";
     private static final String EXTRA_ADVERT_TYPE = "advert_type";
     private static final String EXTRA_USER = "user";
-    private AdvertsDetailsPresenter mPresenter;
+    private static AdvertsDetailsPresenter mPresenter;
     private Anuncio anuncio;
     private int advertType;
     private Usuario currentUser;
@@ -37,6 +39,9 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detalles_anuncio);
         currentUser = getIntent().getParcelableExtra(EXTRA_USER);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
         anuncio = getIntent().getParcelableExtra(EXTRA_ANUNCIO);
         advertType = getIntent().getIntExtra(EXTRA_ADVERT_TYPE, -1);
         mPresenter = AdvertsDetailsPresenter.getPresentador(this);
@@ -51,7 +56,31 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
         getSupportFragmentManager().beginTransaction().replace(R.id.frmContenido, DetallesAnuncioFragment.newInstance(anuncio, advertType, u, currentUser)).commit();
     }
 
-    public AdvertsDetailsPresenter getmPresenter() {
+    public static AdvertsDetailsPresenter getmPresenter() {
         return mPresenter;
     }
+
+    @Override
+    public void onImgEditClicked(Anuncio advert, Usuario user) {
+        CrearAnuncio1Activity.startForResult(this, advert, user, CrearAnuncio1Activity.RC_EDITAR_ANUNCIO);
+    }
+
+    @Override
+    public void updateAdvert(Anuncio anuncio) {
+        ((DetallesAnuncioFragment) getSupportFragmentManager().findFragmentById(R.id.frmContenido)).setmAnuncio(anuncio);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == RESULT_OK){
+            switch (requestCode){
+                case CrearAnuncio1Activity.RC_EDITAR_ANUNCIO:
+                    ((DetallesAnuncioFragment) getSupportFragmentManager().findFragmentById(R.id.frmContenido)).setmAnuncio((Anuncio) data.getParcelableExtra(CrearAnuncio1Activity.EXTRA_ANUNCIO_RESULT));
+                    break;
+            }
+        }
+    }
 }
+
+

@@ -41,41 +41,11 @@ public class Anuncio implements Parcelable, MyModel {
         solicitantes = new HashMap<>();
     }
 
-    public Anuncio(String key) {
-        this();
-        this.key = key;
-    }
-
-    private void paNuevoAnuncioPruebas() {
-        titulo = "tituloAnuncio";
-        tipo_vivienda = "casa";
-        anunciante = "u-101010";
-        direccion = "direccion vivienda";
-        poblacion = "poblacion vivienda";
-        provincia = "provincia";
-        descripcion = "muy confortable";
-        habitaciones_o_camas = 3;
-        numero_banios = 2;
-        tamanio = 100;
-        prestaciones.add(new Prestacion(R.drawable.apto_mascotas, "apto mascotas"));
-        prestaciones.add(new Prestacion(R.drawable.aire_acondicionado, "aire acondicionado"));
-        prestaciones.add(new Prestacion(R.drawable.ascensor, "ascensor"));
-        prestaciones.add(new Prestacion(R.drawable.calefaccion, "calefacción"));
-        solicitantes.put("12052659", true);
-        precio = 315;
-    }
-
-    public static Anuncio createNewAnuncio(String anunciante, String titulo, String direccion, String numero, String poblacion, String provincia) {
-        String key = anunciante + "_" + String.valueOf(titulo.hashCode() + direccion.hashCode() + numero.hashCode() + poblacion.hashCode() + provincia.hashCode());
-        Anuncio a = new Anuncio(key);
-        Firebase mFirebase = new Firebase(URL_ANUNCIOS + key + "/");
-        mFirebase.setValue(a);
-        return a;
-    }
-
     public String generateKey(){
-        String r = this.anunciante + "_" + String.valueOf(this.titulo.hashCode() + this.direccion.hashCode() + this.numero.hashCode() + this.poblacion.hashCode() + this.provincia.hashCode());
-        return r;
+        if(key == null)
+            return anunciante + "_" + String.valueOf(titulo.trim().hashCode() + direccion.trim().hashCode() + numero.hashCode() + poblacion.trim().hashCode() + provincia.trim().hashCode());
+        else
+            return key;
     }
 
     public static void publishNewAdvert(Anuncio a){

@@ -50,7 +50,8 @@ public class MainPresenter implements MainPresenterOps, MyPresenter {
 
     @Override
     public void advertHasBeenObtained(Anuncio a) {
-        activity.get().advertHasBeenObtained(a);
+        if(activity.get() != null)
+            activity.get().advertHasBeenObtained(a);
     }
 
     @Override
