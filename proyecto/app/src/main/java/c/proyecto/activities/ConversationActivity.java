@@ -58,6 +58,7 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
             mPresenter.userConversationRequested(user, mensaje);
             getSupportFragmentManager().beginTransaction().replace(R.id.frmContenido, MessagesFragment.newInstance(true, mensaje.getKeyReceptor())).commit();
         } else if (anuncio != null) {
+            MainActivity.getmPresenter().requestUserMessages(user);
             MessagePojoWithoutAnswer m = new MessagePojoWithoutAnswer(user, anuncio.getTitulo(), null, new Date());
             m.setKeyReceptor(anuncio.getAnunciante());
             mPresenter.userConversationRequested(user, m);

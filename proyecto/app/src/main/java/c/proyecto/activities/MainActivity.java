@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
     private static final String TAG_PRINCIPAL_FRAGMENT = "principal_fragment";
     private static final String TAG_MESSAGES_FRAGMENT = "messages_fragment";
 
-    private MainPresenter mPresenter;
+    private static MainPresenter mPresenter;
     private Usuario mUser;
     private DrawerLayout drawer;
     private ActionBarDrawerToggle toggle;
@@ -283,7 +283,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
         return mUser;
     }
 
-    public MainPresenter getmPresenter() {
+    public static MainPresenter getmPresenter() {
         return mPresenter;
     }
 

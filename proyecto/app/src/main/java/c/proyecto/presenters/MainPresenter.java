@@ -50,38 +50,44 @@ public class MainPresenter implements MainPresenterOps, MyPresenter {
 
     @Override
     public void advertHasBeenObtained(Anuncio a) {
-        if(activity.get() != null)
+        if (activity.get() != null)
             activity.get().advertHasBeenObtained(a);
     }
 
     @Override
     public void adverHasBeenModified(Anuncio a) {
-        activity.get().adverHasBeenModified(a);
+        if (activity.get() != null)
+            activity.get().adverHasBeenModified(a);
     }
 
     @Override
     public void subHasBeenObtained(Anuncio a) {
-        activity.get().subHasBeenObtained(a);
+        if (activity.get() != null)
+            activity.get().subHasBeenObtained(a);
     }
 
     @Override
     public void subHasBeenModified(Anuncio a) {
-        activity.get().subHasBeenModified(a);
+        if (activity.get() != null)
+            activity.get().subHasBeenModified(a);
     }
 
     @Override
     public void userAdvertHasBeenObtained(Anuncio a) {
-        activity.get().userAdvertHasBeenObtained(a);
+        if (activity.get() != null)
+            activity.get().userAdvertHasBeenObtained(a);
     }
 
     @Override
     public void userAdvertHasBeenModified(Anuncio a) {
-        activity.get().userAdvertHasBeenModified(a);
+        if (activity.get() != null)
+            activity.get().userAdvertHasBeenModified(a);
     }
 
     @Override
     public void removeSub(Anuncio a) {
-        activity.get().removeSub(a);
+        if (activity.get() != null)
+            activity.get().removeSub(a);
     }
 
     @Override
@@ -105,6 +111,7 @@ public class MainPresenter implements MainPresenterOps, MyPresenter {
 
     @Override
     public void userHasBeenModified(Usuario user) {
-        activity.get().userAdvertHasBeenModified(user);
+        if (activity.get() != null)
+            activity.get().userAdvertHasBeenModified(user);
     }
 }

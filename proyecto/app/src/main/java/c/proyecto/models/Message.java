@@ -7,7 +7,6 @@ import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
-import com.firebase.client.Query;
 import com.firebase.client.ValueEventListener;
 
 import java.util.Date;
@@ -294,7 +293,7 @@ public class Message implements Parcelable, MyModel {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 MessagePojo mensaje;
-                if (m instanceof MessagePojoWithoutAnswer) {
+                if (m instanceof MessagePojoWithoutAnswer){
                     mensaje = new MessagePojoWithoutAnswer();
                     mensaje.setKeyReceptor(m.getKeyReceptor());
                     mensaje.setEmisor(u);
@@ -312,12 +311,7 @@ public class Message implements Parcelable, MyModel {
 
                 String nodoAsunto2 = u.getKey() + "_" + m.getTituloAnuncio().trim().replace(" ", "_");
                 nodoAsunto2 = nodoAsunto2.substring(0, nodoAsunto2.length());
-                Query f;
-                if (m instanceof MessagePojoWithoutAnswer)
-                    f = new Firebase(URL_CONVERSACIONES).child(u.getKey()).child(nodoAsunto2).limitToLast(MESSAGES_LIMIT_CONVER);
-                else
-                    f = new Firebase(URL_CONVERSACIONES).child(m.getEmisor().getKey()).child(nodoAsunto2).limitToLast(MESSAGES_LIMIT_CONVER);
-                f.addChildEventListener(new ChildEventListener() {
+                new Firebase(URL_CONVERSACIONES).child(m.getEmisor().getKey()).child(nodoAsunto2).limitToLast(MESSAGES_LIMIT_CONVER).addChildEventListener(new ChildEventListener() {
                     @Override
                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                         MessagePojo mensaje = new MessagePojo();
