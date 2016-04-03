@@ -310,8 +310,8 @@ public class Message implements Parcelable, MyModel {
                 mensaje.setContenido(mAux.getContenido());
                 presenter.messageHasBeenObtained(mensaje);
 
-                String nodoAsunto2 = u.getKey() + "_" + m.getTituloAnuncio().replace(" ", "_");
-                nodoAsunto2 = nodoAsunto2.substring(0, nodoAsunto2.length() - 1);
+                String nodoAsunto2 = u.getKey() + "_" + m.getTituloAnuncio().trim().replace(" ", "_");
+                nodoAsunto2 = nodoAsunto2.substring(0, nodoAsunto2.length());
                 Query f;
                 if (m instanceof MessagePojoWithoutAnswer)
                     f = new Firebase(URL_CONVERSACIONES).child(u.getKey()).child(nodoAsunto2).limitToLast(MESSAGES_LIMIT_CONVER);
