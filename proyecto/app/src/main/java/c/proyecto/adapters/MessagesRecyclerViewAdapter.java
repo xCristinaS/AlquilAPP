@@ -241,25 +241,28 @@ public class MessagesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
 
     //Manejo del Adaptador
     public void addItem(MessagePojo m) {
-        boolean stop = false, isMessageWithoutAnswer = false;
+        boolean stop = false, isMessageWithoutAnswer = false, opHecha = false;
         for (int i = 0; !stop && i < mDatos.size(); i++)
             if (mDatos.get(i) instanceof MessagePojo)
                 if (((MessagePojo) mDatos.get(i)).getKey().equals(m.getKey()))
                     stop = true;
 
         if (!stop && !isAConversation) {
-            for (int i = 0; i < mDatos.size(); i++)
+            for (int i = 0; !opHecha && i < mDatos.size(); i++)
                 if (mDatos.get(i) instanceof MessagePojo)
                     if (((MessagePojo) mDatos.get(i)).getEmisor().getKey().equals(m.getEmisor().getKey()) && ((MessagePojo) mDatos.get(i)).getTituloAnuncio().equals(m.getTituloAnuncio())) {
                         mDatos.remove(mDatos.get(i));
                         notifyItemRemoved(i);
+                        opHecha = true;
                     }
 
-            for (int i = mDatos.size()-1; i >= 0; i--)
+            opHecha = false;
+            for (int i = mDatos.size()-1; !opHecha && i >= 0; i--)
                 if (mDatos.get(i) instanceof MessagePojoWithoutAnswer) {
                     if (((MessagePojoWithoutAnswer) mDatos.get(i)).getEmisor().getKey().equals(m.getKeyReceptor()) && ((MessagePojoWithoutAnswer) mDatos.get(i)).getTituloAnuncio().trim().equals(m.getTituloAnuncio().trim())) {
                         mDatos.remove(mDatos.get(i));
                         notifyItemRemoved(i);
+                        opHecha = true;
                     }
                 }
         }
