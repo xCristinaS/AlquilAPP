@@ -87,6 +87,7 @@ public class MainPresenter implements MainPresenterOps, MyPresenter {
     public void detachListeners() {
         Anuncio.detachFirebaseListeners();
         Usuario.detachFirebaseListeners();
+        Message.detachMessagesListeners();
     }
 
     @Override
@@ -95,7 +96,7 @@ public class MainPresenter implements MainPresenterOps, MyPresenter {
     }
 
     @Override
-    public void userMessageHasBeenObtained(MessagePojo m){
+    public void userMessageHasBeenObtained(MessagePojo m) {
         if (activity.get() != null)
             activity.get().userMessageHasBeenObtained(m);
 

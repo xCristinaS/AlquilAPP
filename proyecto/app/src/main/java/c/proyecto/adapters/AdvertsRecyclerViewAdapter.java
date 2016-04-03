@@ -16,6 +16,7 @@ import java.util.Collections;
 import java.util.List;
 
 import c.proyecto.R;
+import c.proyecto.activities.ConversationActivity;
 import c.proyecto.models.Anuncio;
 import c.proyecto.models.Usuario;
 import c.proyecto.presenters.MainPresenter;
@@ -30,7 +31,7 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
     }
 
     public interface OnAdapterItemClick {
-        void onItemClick(Anuncio anuncio, int advertType, Usuario u);
+        void onItemClick(Anuncio anuncio, int advertType);
     }
 
     public static final int ADAPTER_TYPE_SUBS = 0;
@@ -45,7 +46,7 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
     private MainPresenter presenter;
     private SparseBooleanArray mSelectedItems = new SparseBooleanArray();
     private boolean multiDeletionModeActivated = false;
-    private Usuario user;
+    private static Usuario user;
 
 
     public AdvertsRecyclerViewAdapter(int adapter_type, MainPresenter presenter, Usuario user) {
@@ -81,7 +82,7 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
             @Override
             public void onClick(View v) {
                 if (!multiDeletionModeActivated) {
-                    listenerItemClick.onItemClick(mDatos.get(position), adapter_type, adapter_type == ADAPTER_TYPE_MY_ADVS? user:null);
+                    listenerItemClick.onItemClick(mDatos.get(position), adapter_type);
                 } else {
                     if (holder.itemView.isActivated()) {
                         holder.itemView.setActivated(false);
@@ -174,7 +175,7 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
         private ImageView imgAvatar;
         private TextView lblPoblacion, lblProvincia, lblDireccion, lblNumero, lblPrecio;
 
-        public AnuncioViewHolder(View itemView) {
+        public AnuncioViewHolder(final View itemView) {
             super(itemView);
             lblPoblacion = (TextView) itemView.findViewById(R.id.lblPoblacion);
             lblProvincia = (TextView) itemView.findViewById(R.id.lblProvincia);
@@ -184,7 +185,7 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
             imgAvatar = (ImageView) itemView.findViewById(R.id.imgAvatar);
         }
 
-        public void onBind(Anuncio anuncio) {
+        public void onBind(final Anuncio anuncio) {
             if (anuncio != null) {
                 lblDireccion.setText(anuncio.getDireccion());
                 lblNumero.setText(String.valueOf(anuncio.getNumero()));

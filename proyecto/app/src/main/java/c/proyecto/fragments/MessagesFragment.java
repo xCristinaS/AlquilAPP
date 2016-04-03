@@ -12,7 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import c.proyecto.R;
-import c.proyecto.adapters.MessagesAdapter;
+import c.proyecto.adapters.MessagesRecyclerViewAdapter;
 import c.proyecto.pojo.MessagePojo;
 
 public class MessagesFragment extends Fragment {
@@ -21,10 +21,10 @@ public class MessagesFragment extends Fragment {
     private static final String ARG_CURRENT_USER = "user";
 
     private RecyclerView rvMessages;
-    private MessagesAdapter mAdapter;
+    private MessagesRecyclerViewAdapter mAdapter;
     private LinearLayoutManager mLayoutManager;
-    private MessagesAdapter.OnMessagesAdapterItemClick listenerItemClick;
-    private MessagesAdapter.ConversationManager listenerConverManager;
+    private MessagesRecyclerViewAdapter.OnMessagesAdapterItemClick listenerItemClick;
+    private MessagesRecyclerViewAdapter.ConversationManager listenerConverManager;
     private boolean isAConversation;
     private String mKeyCurrentUser;
 
@@ -54,7 +54,7 @@ public class MessagesFragment extends Fragment {
         isAConversation = args.getBoolean(ARG_CONVER, false);
         mKeyCurrentUser = args.getString(ARG_CURRENT_USER);
         rvMessages = (RecyclerView) getView().findViewById(R.id.rvMessages);
-        mAdapter = new MessagesAdapter(isAConversation, mKeyCurrentUser);
+        mAdapter = new MessagesRecyclerViewAdapter(isAConversation, mKeyCurrentUser);
         if (listenerItemClick != null)
             mAdapter.setListenerItemClick(listenerItemClick);
         if (listenerConverManager != null)
@@ -74,10 +74,10 @@ public class MessagesFragment extends Fragment {
 
     @Override
     public void onAttach(Context context) {
-        if (context instanceof MessagesAdapter.OnMessagesAdapterItemClick)
-            listenerItemClick = (MessagesAdapter.OnMessagesAdapterItemClick) context;
-        if (context instanceof MessagesAdapter.ConversationManager)
-            listenerConverManager = (MessagesAdapter.ConversationManager) context;
+        if (context instanceof MessagesRecyclerViewAdapter.OnMessagesAdapterItemClick)
+            listenerItemClick = (MessagesRecyclerViewAdapter.OnMessagesAdapterItemClick) context;
+        if (context instanceof MessagesRecyclerViewAdapter.ConversationManager)
+            listenerConverManager = (MessagesRecyclerViewAdapter.ConversationManager) context;
         super.onAttach(context);
     }
 
@@ -90,7 +90,7 @@ public class MessagesFragment extends Fragment {
         super.onDetach();
     }
 
-    public MessagesAdapter getmAdapter() {
+    public MessagesRecyclerViewAdapter getmAdapter() {
         return mAdapter;
     }
 }

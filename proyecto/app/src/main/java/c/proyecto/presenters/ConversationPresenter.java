@@ -43,8 +43,8 @@ public class ConversationPresenter implements ConversationPresenterOps, MyPresen
     }
 
     @Override
-    public void sendMessage(MessagePojo mensaje, String keyReceptor) {
-        Message.sendMessage(mensaje, keyReceptor);
+    public void sendMessage(MessagePojo mensaje, String keyReceptor, boolean isFirstMessageSended) {
+        Message.sendMessage(mensaje, keyReceptor, isFirstMessageSended);
     }
 
     @Override

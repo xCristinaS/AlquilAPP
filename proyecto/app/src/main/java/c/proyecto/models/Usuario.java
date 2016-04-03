@@ -36,7 +36,6 @@ public class Usuario implements Parcelable, MyModel {
     public Usuario() {
         itemsHabitos = new ArrayList<>();
         idDrawItemsDescriptivos = new ArrayList<>();
-        //paBorrarPruebas();
     }
 
     private void paBorrarPruebas() {
@@ -89,18 +88,20 @@ public class Usuario implements Parcelable, MyModel {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 boolean stop = false;
-                Iterator i = dataSnapshot.getChildren().iterator();
-                //Recorre todos los usuarios comprobando que el pasado por parámetro existe
-                while (i.hasNext() && !stop) {
-                    Usuario u = ((DataSnapshot) i.next()).getValue(Usuario.class);
-                    if (u.getContra().equals(contra) && u.getEmail().equals(email)) {
-                        stop = true;
-                        presentador.onSingInResponsed(u);
+                if (!email.equals("") && !contra.equals("")) {
+                    Iterator i = dataSnapshot.getChildren().iterator();
+                    //Recorre todos los usuarios comprobando que el pasado por parámetro existe
+                    while (i.hasNext() && !stop) {
+                        Usuario u  = ((DataSnapshot) i.next()).getValue(Usuario.class);
+                        if (u.getContra().equals(contra) && u.getEmail().equals(email)) {
+                            stop = true;
+                            presentador.onSingInResponsed(u);
+                        }
                     }
+                    //Si no ha encontrado ninguna semejanza con los usuarios de la BDD devolverá null
+                    if (!stop)
+                        presentador.onSingInResponsed(null);
                 }
-                //Si no ha encontrado ninguna semejanza con los usuarios de la BDD devolverá null
-                if (!stop)
-                    presentador.onSingInResponsed(null);
             }
 
             @Override

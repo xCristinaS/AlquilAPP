@@ -1,6 +1,6 @@
 package c.proyecto.activities;
 
-import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,48 +12,57 @@ import android.widget.ImageView;
 import java.util.Date;
 
 import c.proyecto.R;
-import c.proyecto.adapters.MessagesAdapter;
+import c.proyecto.adapters.MessagesRecyclerViewAdapter;
 import c.proyecto.fragments.MessagesFragment;
 import c.proyecto.interfaces.ConversationActivityOps;
-import c.proyecto.models.Message;
+import c.proyecto.models.Anuncio;
 import c.proyecto.models.Usuario;
 import c.proyecto.pojo.MessagePojo;
+import c.proyecto.pojo.MessagePojoWithoutAnswer;
 import c.proyecto.presenters.ConversationPresenter;
 
-public class ConversationActivity extends AppCompatActivity implements ConversationActivityOps, MessagesAdapter.ConversationManager {
+public class ConversationActivity extends AppCompatActivity implements ConversationActivityOps, MessagesRecyclerViewAdapter.ConversationManager {
 
     private static final String EXTRA_MENSAJE = "mensaje_extra";
     private static final String EXTRA_USER = "user_extra";
+    private static final String EXTRA_ANUNCIO = "anuncio";
 
     private MessagePojo mensaje;
     private ImageView imgEnviar;
     private EditText txtMensaje;
     private ConversationPresenter mPresenter;
     private Usuario user;
+    private Anuncio anuncio;
 
-    public static void start(Activity a, MessagePojo mensaje, Usuario user) {
-        Intent intent = new Intent(a, ConversationActivity.class);
+    public static void start(Context c, MessagePojo mensaje, Usuario user, Anuncio anuncio) {
+        Intent intent = new Intent(c, ConversationActivity.class);
         intent.putExtra(EXTRA_MENSAJE, mensaje);
         intent.putExtra(EXTRA_USER, user);
-        a.startActivity(intent);
+        intent.putExtra(EXTRA_ANUNCIO, anuncio);
+        c.startActivity(intent);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_conversation);
-        if (getIntent().hasExtra(EXTRA_MENSAJE) && getIntent().hasExtra(EXTRA_USER)) {
-            mensaje = getIntent().getParcelableExtra(EXTRA_MENSAJE);
-            user = getIntent().getParcelableExtra(EXTRA_USER);
-        }
-
+        mensaje = getIntent().getParcelableExtra(EXTRA_MENSAJE);
+        user = getIntent().getParcelableExtra(EXTRA_USER);
+        anuncio = getIntent().getParcelableExtra(EXTRA_ANUNCIO);
         initViews();
     }
 
     private void initViews() {
         mPresenter = ConversationPresenter.getPresentador(this);
-        mPresenter.userConversationRequested(user, mensaje);
-        getSupportFragmentManager().beginTransaction().replace(R.id.frmContenido, MessagesFragment.newInstance(true, mensaje.getKeyReceptor())).commit();
+        if (mensaje != null) {
+            mPresenter.userConversationRequested(user, mensaje);
+            getSupportFragmentManager().beginTransaction().replace(R.id.frmContenido, MessagesFragment.newInstance(true, mensaje.getKeyReceptor())).commit();
+        } else if (anuncio != null) {
+            MessagePojoWithoutAnswer m = new MessagePojoWithoutAnswer(user, anuncio.getTitulo(), null, new Date());
+            m.setKeyReceptor(anuncio.getAnunciante());
+            mPresenter.userConversationRequested(user, m);
+            getSupportFragmentManager().beginTransaction().replace(R.id.frmContenido, MessagesFragment.newInstance(true, anuncio.getAnunciante())).commit();
+        }
         imgEnviar = (ImageView) findViewById(R.id.imgEnviar);
         txtMensaje = (EditText) findViewById(R.id.txtMensaje);
 
@@ -61,15 +70,26 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
             @Override
             public void onClick(View v) {
                 if (!TextUtils.isEmpty(txtMensaje.getText())) {
-                    mPresenter.sendMessage(new MessagePojo(user, mensaje.getTituloAnuncio(), txtMensaje.getText().toString(), new Date()), mensaje.getEmisor().getKey());
+                    if (anuncio != null) {
+                        MessagePojoWithoutAnswer m = new MessagePojoWithoutAnswer(user, anuncio.getTitulo(), txtMensaje.getText().toString(), new Date());
+                        m.setKeyReceptor(anuncio.getAnunciante());
+                        mPresenter.sendMessage(m, anuncio.getAnunciante(), true);
+                    } else {
+                        if (mensaje instanceof MessagePojoWithoutAnswer) {
+                            MessagePojo m = new MessagePojo(user, mensaje.getTituloAnuncio(), txtMensaje.getText().toString(), new Date());
+                            m.setKeyReceptor(mensaje.getKeyReceptor());
+                            mPresenter.sendMessage(m, mensaje.getKeyReceptor(), true);
+                        } else
+                            mPresenter.sendMessage(new MessagePojo(user, mensaje.getTituloAnuncio(), txtMensaje.getText().toString(), new Date()), mensaje.getEmisor().getKey(), false);
+                    }
                     txtMensaje.setText("");
                 }
             }
         });
 
-        mensaje.getEmisor().getFoto(); // FOTO DEL QUE TE HA HABLADO
-        mensaje.getEmisor().getNombre(); // NOMBRE DEL QUE TE HA HABLADO
-        mensaje.getTituloAnuncio(); // TITULO DEL ANUNCIO
+        //mensaje.getEmisor().getFoto(); // FOTO DEL QUE TE HA HABLADO
+        //mensaje.getEmisor().getNombre(); // NOMBRE DEL QUE TE HA HABLADO
+        //mensaje.getTituloAnuncio(); // TITULO DEL ANUNCIO
     }
 
     @Override

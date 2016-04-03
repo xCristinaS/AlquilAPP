@@ -19,7 +19,7 @@ import com.squareup.picasso.Picasso;
 
 import c.proyecto.R;
 
-import c.proyecto.adapters.MessagesAdapter;
+import c.proyecto.adapters.MessagesRecyclerViewAdapter;
 import c.proyecto.adapters.AdvertsRecyclerViewAdapter;
 import c.proyecto.fragments.MessagesFragment;
 import c.proyecto.fragments.PrincipalFragment;
@@ -31,7 +31,7 @@ import c.proyecto.presenters.MainPresenter;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 
-public class MainActivity extends AppCompatActivity implements MainActivityOps, AdvertsRecyclerViewAdapter.OnAdapterItemLongClick, AdvertsRecyclerViewAdapter.OnAdapterItemClick, NavigationView.OnNavigationItemSelectedListener, MessagesAdapter.OnMessagesAdapterItemClick {
+public class MainActivity extends AppCompatActivity implements MainActivityOps, AdvertsRecyclerViewAdapter.OnAdapterItemLongClick, AdvertsRecyclerViewAdapter.OnAdapterItemClick, NavigationView.OnNavigationItemSelectedListener, MessagesRecyclerViewAdapter.OnMessagesAdapterItemClick {
 
 
     private static final String ARG_USUARIO = "usuario_extra";
@@ -228,8 +228,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
     }
 
     @Override
-    public void onItemClick(Anuncio anuncio, int advertType, Usuario u) {
-        DetallesAnuncioActivity.start(this, anuncio, advertType, u);
+    public void onItemClick(Anuncio anuncio, int advertType) {
+        DetallesAnuncioActivity.start(this, anuncio, advertType, mUser);
     }
 
     @Override
@@ -259,7 +259,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
             } else
                 super.onBackPressed();
         }
-
     }
 
     @Override
@@ -278,7 +277,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
 
     @Override
     public void onItemClick(MessagePojo mensaje) {
-        ConversationActivity.start(this, mensaje, mUser);
+        ConversationActivity.start(this, mensaje, mUser, null);
     }
 
 }
