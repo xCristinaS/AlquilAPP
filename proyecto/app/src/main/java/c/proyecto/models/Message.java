@@ -149,7 +149,6 @@ public class Message implements Parcelable {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 HashMap map = dataSnapshot.getValue(HashMap.class);
                 if (map != null) {
-                    //String msgPreviamenteEnviado = map.keySet().iterator().hasNext() ? (String) map.keySet().iterator().next() : " ";
                     String msgPreviamenteEnviado = (String) map.keySet().iterator().next();
                     if ((userKey + "_" + title).equals(msgPreviamenteEnviado))
                         new Firebase(URL_MSG_SIN_RESP).child(userKey).child(emisorKey).child(title).setValue(null);
