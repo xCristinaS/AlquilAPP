@@ -16,6 +16,10 @@ public class MessagePojoWithoutAnswer extends MessagePojo {
 
     public MessagePojoWithoutAnswer(){}
 
+    public MessagePojoWithoutAnswer(Usuario emisor, String tituloAnuncio, String contenido, Date fehca){
+        super(emisor, tituloAnuncio, contenido, fehca);
+    }
+
     @Override
     public int getType(String keyCurrentUser) {
         return WITHOUT_ANSWER;

@@ -57,8 +57,12 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
         if (mensaje != null) {
             mPresenter.userConversationRequested(user, mensaje);
             getSupportFragmentManager().beginTransaction().replace(R.id.frmContenido, MessagesFragment.newInstance(true, mensaje.getKeyReceptor())).commit();
-        } else if (anuncio != null)
+        } else if (anuncio != null) {
+            MessagePojoWithoutAnswer m = new MessagePojoWithoutAnswer(user, anuncio.getTitulo(), null, new Date());
+            m.setKeyReceptor(anuncio.getAnunciante());
+            mPresenter.userConversationRequested(user, m);
             getSupportFragmentManager().beginTransaction().replace(R.id.frmContenido, MessagesFragment.newInstance(true, anuncio.getAnunciante())).commit();
+        }
         imgEnviar = (ImageView) findViewById(R.id.imgEnviar);
         txtMensaje = (EditText) findViewById(R.id.txtMensaje);
 
@@ -67,7 +71,7 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
             public void onClick(View v) {
                 if (!TextUtils.isEmpty(txtMensaje.getText())) {
                     if (anuncio != null) {
-                        MessagePojo m = new MessagePojo(user, anuncio.getTitulo(), txtMensaje.getText().toString(), new Date());
+                        MessagePojoWithoutAnswer m = new MessagePojoWithoutAnswer(user, anuncio.getTitulo(), txtMensaje.getText().toString(), new Date());
                         m.setKeyReceptor(anuncio.getAnunciante());
                         mPresenter.sendMessage(m, anuncio.getAnunciante(), true);
                     } else {
