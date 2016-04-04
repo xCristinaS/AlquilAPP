@@ -24,7 +24,7 @@ public class RegistroPresenter implements RegistroPresenterOps, MyPresenter {
     }
 
     private RegistroPresenter(Activity activity) {
-        wActivity = new WeakReference<>((RegistroActivity)activity);
+        wActivity = new WeakReference<>((RegistroActivity) activity);
     }
 
     @Override
@@ -39,6 +39,7 @@ public class RegistroPresenter implements RegistroPresenterOps, MyPresenter {
 
     @Override
     public void onCheckUserExist(boolean exist) {
-        wActivity.get().createUser(exist);
+        if (wActivity.get() != null)
+            wActivity.get().createUser(exist);
     }
 }

@@ -59,7 +59,10 @@ public class MessagesFragment extends Fragment {
             mAdapter.setListenerItemClick(listenerItemClick);
         if (listenerConverManager != null)
             mAdapter.setListenerConverManager(listenerConverManager);
-        mLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        if (isAConversation)
+            mLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, true);
+        else
+            mLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
 
         rvMessages.setAdapter(mAdapter);
         rvMessages.setLayoutManager(mLayoutManager);
@@ -69,7 +72,10 @@ public class MessagesFragment extends Fragment {
 
     public void addItem(MessagePojo m) {
         mAdapter.addItem(m);
-        rvMessages.scrollToPosition(mAdapter.getItemCount() - 1);
+        if (!isAConversation)
+            rvMessages.scrollToPosition(mAdapter.getmDatos().indexOf(m)); // si no estoy en el chat, que se posicione en el último mensaje agregado
+        else
+            rvMessages.scrollToPosition(0); // si estoy en el chat, que se posicione abajo, en el último mensaje recibido
     }
 
     @Override

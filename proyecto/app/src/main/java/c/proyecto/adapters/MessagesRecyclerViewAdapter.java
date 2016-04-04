@@ -115,6 +115,10 @@ public class MessagesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
         this.listenerConverManager = listenerConverManager;
     }
 
+    public List<IMessageAdapter> getmDatos() {
+        return mDatos;
+    }
+
     class MessagesViewHolder extends RecyclerView.ViewHolder {
 
         private CircleImageView imgEmisor;
@@ -307,7 +311,7 @@ public class MessagesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
                 if (mDatos.get(i) instanceof MessagePojo)
                     aux.add((MessagePojo) mDatos.get(i));
 
-            Collections.sort(aux, converComp);
+            //Collections.sort(aux, converComp);
             mDatos.clear();
             mDatos.addAll(aux);
         }
@@ -320,6 +324,4 @@ public class MessagesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
         mDatos.remove(m);
         notifyItemRemoved(position);
     }
-
-
 }

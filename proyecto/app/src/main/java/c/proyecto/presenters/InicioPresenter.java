@@ -10,21 +10,20 @@ import c.proyecto.interfaces.InicioPresenterOps;
 import c.proyecto.models.Usuario;
 
 
-
 public class InicioPresenter implements InicioPresenterOps, MyPresenter {
 
     private static WeakReference<InicioActivity> activity;
     private static InicioPresenter presentador;
 
-    private InicioPresenter(Activity activity){
-        this.activity = new WeakReference<>((InicioActivity)activity);
+    private InicioPresenter(Activity activity) {
+        this.activity = new WeakReference<>((InicioActivity) activity);
     }
 
-    public static InicioPresenter getPresentador(Activity a){
+    public static InicioPresenter getPresentador(Activity a) {
         if (presentador == null)
             presentador = new InicioPresenter(a);
         else
-            activity = new WeakReference<>((InicioActivity)a);
+            activity = new WeakReference<>((InicioActivity) a);
         return presentador;
     }
 
@@ -40,6 +39,7 @@ public class InicioPresenter implements InicioPresenterOps, MyPresenter {
 
     @Override
     public void onSingInResponsed(Usuario u) {
-        activity.get().enter(u);
+        if (activity.get() != null)
+            activity.get().enter(u);
     }
 }
