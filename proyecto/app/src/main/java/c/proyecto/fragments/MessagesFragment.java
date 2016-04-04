@@ -59,7 +59,10 @@ public class MessagesFragment extends Fragment {
             mAdapter.setListenerItemClick(listenerItemClick);
         if (listenerConverManager != null)
             mAdapter.setListenerConverManager(listenerConverManager);
-        mLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        if (isAConversation)
+            mLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, true);
+        else
+            mLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
 
         rvMessages.setAdapter(mAdapter);
         rvMessages.setLayoutManager(mLayoutManager);
@@ -69,7 +72,7 @@ public class MessagesFragment extends Fragment {
 
     public void addItem(MessagePojo m) {
         mAdapter.addItem(m);
-        rvMessages.scrollToPosition(mAdapter.getItemCount() - 1);
+        rvMessages.scrollToPosition(0);
     }
 
     @Override

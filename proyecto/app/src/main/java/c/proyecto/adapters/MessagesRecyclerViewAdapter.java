@@ -307,7 +307,7 @@ public class MessagesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
                 if (mDatos.get(i) instanceof MessagePojo)
                     aux.add((MessagePojo) mDatos.get(i));
 
-            Collections.sort(aux, converComp);
+            //Collections.sort(aux, converComp);
             mDatos.clear();
             mDatos.addAll(aux);
         }
