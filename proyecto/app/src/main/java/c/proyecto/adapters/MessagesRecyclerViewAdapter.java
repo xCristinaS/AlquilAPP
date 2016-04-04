@@ -23,7 +23,6 @@ import c.proyecto.interfaces.IMessageAdapter;
 import c.proyecto.pojo.MessageAdapterHeader;
 import c.proyecto.pojo.MessagePojo;
 import c.proyecto.pojo.MessagePojoWithoutAnswer;
-import c.proyecto.utils.ComparatorConver;
 import c.proyecto.utils.ComparatorMessages;
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -47,7 +46,6 @@ public class MessagesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
     private String mKeyCurrentUser;
     private MessageAdapterHeader cabeceraMensajesRecibidos, cabeceraMensajesSinRespuesta;
     private ComparatorMessages messagesComp = new ComparatorMessages();
-    private ComparatorConver converComp = new ComparatorConver();
 
     public MessagesRecyclerViewAdapter(boolean isAConversation, String keyCurrentUser) {
         mDatos = new ArrayList<>();
@@ -311,7 +309,7 @@ public class MessagesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
                 if (mDatos.get(i) instanceof MessagePojo)
                     aux.add((MessagePojo) mDatos.get(i));
 
-            //Collections.sort(aux, converComp);
+            Collections.sort(aux, messagesComp);
             mDatos.clear();
             mDatos.addAll(aux);
         }
