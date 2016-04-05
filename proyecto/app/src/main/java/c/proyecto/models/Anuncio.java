@@ -126,6 +126,7 @@ public class Anuncio implements Parcelable, MyModel {
                 }
             };
         }
+        mFirebase.removeEventListener(listener);
         mFirebase.addChildEventListener(listener);
     }
 

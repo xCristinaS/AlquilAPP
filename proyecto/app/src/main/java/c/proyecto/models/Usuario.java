@@ -71,6 +71,7 @@ public class Usuario implements Parcelable, MyModel {
 
                 }
             };
+        mFirebase.removeEventListener(listener);
         mFirebase.addValueEventListener(listener);
     }
 

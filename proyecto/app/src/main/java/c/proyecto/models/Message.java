@@ -46,12 +46,7 @@ public class Message implements Parcelable, MyModel {
         this.contenido = contenido;
     }
 
-    public static void getUserMessages(Usuario user, MainPresenter presenter) {
-        getUserMessagesReceived(user, presenter);
-        getUserMessagesSendedWithoutAnswer(user, presenter);
-    }
-
-    private static void getUserMessagesReceived(final Usuario user, final MainPresenter presenter) {
+    public static void initializeMessagesListeners(final Usuario user, final MainPresenter presenter) {
         if (mFirebaseReceivedMessages == null)
             mFirebaseReceivedMessages = new Firebase(URL_CONVERSACIONES).child(user.getKey());
         if (mListenerReceivedMessages == null)
@@ -161,6 +156,16 @@ public class Message implements Parcelable, MyModel {
 
             }
         });
+    }
+
+    public static void getUserMessages(Usuario user, MainPresenter presenter) {
+        getUserMessagesReceived(user, presenter);
+        getUserMessagesSendedWithoutAnswer(user, presenter);
+    }
+
+    private static void getUserMessagesReceived(final Usuario user, final MainPresenter presenter) {
+        mFirebaseReceivedMessages.removeEventListener(mListenerReceivedMessages);
+        mFirebaseReceivedMessages.addValueEventListener(mListenerReceivedMessages);
     }
 
     private static void getUserMessagesSendedWithoutAnswer(final Usuario user, final MainPresenter presenter) {
@@ -293,7 +298,7 @@ public class Message implements Parcelable, MyModel {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 MessagePojo mensaje;
-                if (m instanceof MessagePojoWithoutAnswer){
+                if (m instanceof MessagePojoWithoutAnswer) {
                     mensaje = new MessagePojoWithoutAnswer();
                     mensaje.setKeyReceptor(m.getKeyReceptor());
                     mensaje.setEmisor(u);
@@ -367,6 +372,7 @@ public class Message implements Parcelable, MyModel {
 
             }
         };
+        mFirebaseConversations.limitToLast(MESSAGES_LIMIT_CONVER).removeEventListener(mListenerConversation);
         mFirebaseConversations.limitToLast(MESSAGES_LIMIT_CONVER).addChildEventListener(mListenerConversation);
     }
 
