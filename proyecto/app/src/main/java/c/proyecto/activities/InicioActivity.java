@@ -86,17 +86,7 @@ public class InicioActivity extends AppCompatActivity implements InicioActivityO
     @Override
     public void enter(Usuario u) {
         SharedPreferences.Editor editor = preferences.edit();
-        /*
-        for (int i = 0; i < 3; i++)
-/*
-        for (int i = 0; i < 20; i++)
-            Anuncio.createNewAnuncio("12052659", "titulo del anuncio " + i, "direccion de vivienda", "12", "poblacion", "provincia");
 
-*/
-/*
-        for (int i = 0; i < 8; i++)
-            Anuncio.createNewAnuncio("-386798187", "titulo del anuncio " + i, "direccion de vivienda", "12", "poblacion", "provincia");
-*/
 
         if(u != null){
             //Guardará en las preferencias el usuario para la próxima ves que entre.
