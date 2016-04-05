@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -33,15 +34,16 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class DetallesAnuncioFragment extends Fragment implements PrestacionesAdapter.IPrestacionAdapter {
 
     public interface IDetallesAnuncioFragmentListener {
+
         void onImgEditClicked(Anuncio advert, Usuario user);
     }
-
     private static final String ARG_ANUNCIO = "anuncio";
+
     private static final String ARG_ADVERT_TYPE = "advert_type";
-
     private static final String ARG_USER_ANUNCIANTE = "userAnunciante";
-    private static final String ARG_CURRENT_USER = "usuarioLogueado";
 
+    private static final String ARG_CURRENT_USER = "usuarioLogueado";
+    private RelativeLayout shapeComentario;
     private ImageView imgFoto, imgTipoVivienda, imgCamas, imgMessage, imgEdit;
 
     private CircleImageView imgAvatar;
@@ -102,6 +104,8 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
         rvPrestaciones = (RecyclerView) getView().findViewById(R.id.rvPrestaciones);
         lblDescripcionNoDisponible = (TextView) getView().findViewById(R.id.lblDescripcionNoDisponible);
         lblDescripcion = (TextView) getView().findViewById(R.id.lblDescripcion);
+        shapeComentario = (RelativeLayout) getView().findViewById(R.id.shapeComentario);
+
 
         imgMessage = (ImageView) getView().findViewById(R.id.imgMessage);
 
@@ -154,6 +158,9 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
         else
             Picasso.with(getActivity()).load(R.drawable.default_user).into(imgFoto);
 
+        //Si no hay ninguna prestación se le cambiará el color al shape del comentario al color del fondo
+        if(mAnuncio.getPrestaciones().size() == 0)
+            shapeComentario.setBackgroundColor(getResources().getColor(android.R.color.white));
 
         lblNombre.setText(userAnunciante.getNombre());
         if (userAnunciante.getFoto() != null)
@@ -188,6 +195,7 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
             lblDescripcionNoDisponible.setVisibility(View.VISIBLE);
         else
             lblDescripcion.setText(mAnuncio.getDescripcion());
+
 
     }
 

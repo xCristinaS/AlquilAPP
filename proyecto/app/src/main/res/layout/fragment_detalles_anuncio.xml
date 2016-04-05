@@ -244,7 +244,7 @@
             android:id="@+id/rvPrestaciones"
             android:layout_width="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_height="100dp"
+            android:layout_height="wrap_content"
             android:layout_below="@id/shapeRectangulo"
             />
 
@@ -271,7 +271,7 @@
                 android:maxLines="5"
                 android:layout_marginTop="10dp"
                 android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"/>
+                android:layout_marginRight="16dp" />
         </RelativeLayout>
 
         <!-- Mapa Google -->
