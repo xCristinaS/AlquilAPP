@@ -24,12 +24,9 @@ import com.squareup.picasso.Picasso;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.URI;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -251,7 +248,7 @@ public class EditProfileActivity extends AppCompatActivity {
             public void onClick(View v) {
                 AlertDialog.Builder dialog = new AlertDialog.Builder(EditProfileActivity.this);
                 dialog.setTitle("Seleccione una de las opciones");
-                dialog.setItems(R.array.chooseImageListItem, new DialogInterface.OnClickListener() {
+                dialog.setItems(R.array.chooseImageWithRemoveListItem, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         //Se guarda cual fue el ultimo ImageView seleccionado

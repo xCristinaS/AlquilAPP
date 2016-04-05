@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string-array name="chooseImageListItem">
+    <string-array name="chooseImageWithRemoveListItem">
+        <item>Galería</item>
+        <item>Cámara</item>
+        <item>Eliminar</item>
+    </string-array>
+
+    <string-array name="chooseImageWithoutRemoveListItem">
         <item>Galería</item>
         <item>Cámara</item>
     </string-array>

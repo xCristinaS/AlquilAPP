@@ -99,8 +99,8 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
     }
 
     private void recuperarImagenes() {
+        ImageView[] imgViews = {imgPrincipal, img1, img2, img3, img4, img5};
         if(mAnuncio != null){
-            final ImageView[] imgViews = {imgPrincipal, img1, img2, img3, img4, img5};
             //Recupera las imágenes que poseía el anuncio que se está editando.
             for(int i = 0 ; i<mAnuncio.getImagenes().size(); i++){
                 final ImageView img = imgViews[i];
@@ -110,7 +110,7 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
                     @Override
                     public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
                         img.setImageBitmap(bitmap);
-                        File file = Imagenes.crearArchivoFoto(CrearAnuncio1Activity.this, "foto_recuperada.jpg", false);
+                        File file = Imagenes.crearArchivoFoto(CrearAnuncio1Activity.this, "foto_piso"+iFinal+".jpg", false);
                         Imagenes.guardarBitmapEnArchivo(bitmap, file);
                         mImagenesAnuncio[iFinal] = file;
                     }
@@ -134,12 +134,23 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
         img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                int idArrayOpciones = R.array.chooseImageWithoutRemoveListItem;
+                final ImageView[] imgViews = {imgPrincipal, img1, img2, img3, img4, img5};
+
+                //Comprobar si existe contiene alguna imagen el imageView para mostrar o no la opción de eliminar.
+                for(int i = 0; i < imgViews.length; i++)
+                    if(imgViews[i].getId() == img.getId())
+                        //Si existe alguna imagen en ese ImageView
+                        if(mImagenesAnuncio[i] != null)
+                            idArrayOpciones = R.array.chooseImageWithRemoveListItem;
+                
+
                 AlertDialog.Builder dialog = new AlertDialog.Builder(CrearAnuncio1Activity.this);
                 dialog.setTitle("Seleccione una de las opciones");
-                dialog.setItems(R.array.chooseImageListItem, new DialogInterface.OnClickListener() {
+                dialog.setItems(idArrayOpciones, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        //Se guarda cual fue el ultimo ImageView seleccionado
+                        //Se guarda cual fue el último ImageView seleccionado
                         imgSeleccionada = img;
                         switch (which) {
                             //Galería
@@ -152,6 +163,18 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
                                     takePhoto();
                                 else
                                     Toast.makeText(CrearAnuncio1Activity.this, "Este dispositivo no dispone de cámara", Toast.LENGTH_SHORT).show();
+                                break;
+                            //Eliminar imagen
+                            case 2:
+
+
+                                for (int i = 0; i < imgViews.length; i++)
+                                    if (imgViews[i].getId() == imgSeleccionada.getId()) {
+                                        //Eliminar imagen del array
+                                        mImagenesAnuncio[i] = null;
+                                        //Poner imagen por defecto
+                                        imgSeleccionada.setImageDrawable(getResources().getDrawable(R.drawable.sin_imagen));
+                                    }
                                 break;
                         }
                     }
