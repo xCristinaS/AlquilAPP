@@ -1,8 +1,9 @@
 package c.proyecto.pojo;
 
-import android.graphics.Bitmap;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+
+import java.io.File;
 
 /**
  * Created by OmniumMac04 on 6/4/16.
@@ -12,7 +13,7 @@ public class ImagePojo {
     private ProgressBar prb;
     private String nameFile;
     private String url;
-    private Bitmap bitmap;
+    private File file;
     private int numImageView;
 
     public ImagePojo(ImageView imgView, ProgressBar prb, String nameFile, String url, int numImageView) {
@@ -55,12 +56,12 @@ public class ImagePojo {
         this.url = url;
     }
 
-    public Bitmap getBitmap() {
-        return bitmap;
+    public File getFile() {
+        return file;
     }
 
-    public void setBitmap(Bitmap bitmap) {
-        this.bitmap = bitmap;
+    public void setFile(File file) {
+        this.file = file;
     }
 
     public int getNumImageView() {

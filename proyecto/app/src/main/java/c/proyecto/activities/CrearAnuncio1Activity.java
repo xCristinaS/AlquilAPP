@@ -5,11 +5,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -18,7 +18,6 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 
 import java.io.File;
 import java.io.IOException;
@@ -51,12 +50,13 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
     private Anuncio mAnuncio;
     private Usuario user;
 
-    public static void start(Context context, Usuario user){
+    public static void start(Context context, Usuario user) {
         Intent intent = new Intent(context, CrearAnuncio1Activity.class);
         intent.putExtra(EXTRA_USUARIO, user);
         context.startActivity(intent);
     }
-    public static void startForResult(Activity activity, Anuncio anuncio, Usuario user, int requestCode){
+
+    public static void startForResult(Activity activity, Anuncio anuncio, Usuario user, int requestCode) {
         Intent intent = new Intent(activity, CrearAnuncio1Activity.class);
         intent.putExtra(EXTRA_USUARIO, user);
         intent.putExtra(EXTRA_ANUNCIO, anuncio);
@@ -100,7 +100,7 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
         imgSiguiente.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mImagenesAnuncio[0] != null )
+                if (mImagenesAnuncio[0] != null)
                     CrearAnuncio2Activity.startForResult(CrearAnuncio1Activity.this, mAnuncio, user, RC_CLOSE, mImagenesAnuncio[0], mImagenesAnuncio[1], mImagenesAnuncio[2], mImagenesAnuncio[3], mImagenesAnuncio[4], mImagenesAnuncio[5]);
                 else
                     Toast.makeText(CrearAnuncio1Activity.this, "Debe cargar una foto para continuar", Toast.LENGTH_SHORT).show();
@@ -112,12 +112,12 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
         ImageView[] imgViews = {imgPrincipal, img1, img2, img3, img4, img5};
         ProgressBar[] prbs = {prbPrincipal, prb1, prb2, prb3, prb4, prb5};
 
-        if(mAnuncio != null){
+        if (mAnuncio != null) {
             //Recupera las imágenes que poseía el anuncio que se está editando.
-            for(int i = 0 ; i<mAnuncio.getImagenes().size(); i++){
+            for (int i = 0; i < mAnuncio.getImagenes().size(); i++) {
                 final ProgressBar prbSeleccionado = prbs[i];
                 //Se activa la progresBar para indicar que se está cargando la foto
-                ImagePojo imgPojo = new ImagePojo(imgViews[i], prbSeleccionado, "foto_piso"+i+".jpg", mAnuncio.getImagenes().get(i), i);
+                ImagePojo imgPojo = new ImagePojo(imgViews[i], prbSeleccionado, "foto_piso" + i + ".jpg", mAnuncio.getImagenes().get(i), i);
                 new ImageDownloader().execute(imgPojo);
                 prbSeleccionado.setVisibility(View.VISIBLE);
 
@@ -125,17 +125,25 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
 
         }
     }
+
     //Se encarga de subir las imagenes a la API
-    class ImageDownloader extends AsyncTask<ImagePojo, Void, ImagePojo>{
+    class ImageDownloader extends AsyncTask<ImagePojo, Void, ImagePojo> {
 
         @Override
         protected ImagePojo doInBackground(ImagePojo... params) {
             try {
+                //Se obtiene el bitmap de la URL
                 Bitmap bm = Picasso.with(CrearAnuncio1Activity.this).load(params[0].getUrl()).get();
-                //Guarda el bitmap en el objeto que viene por parámetro para usarlo en el postExecute
-                params[0].setBitmap(bm);
-                File file = Imagenes.crearArchivoFoto(CrearAnuncio1Activity.this, params[0].getNameFile(), false);
-                Imagenes.guardarBitmapEnArchivo(bm, file);
+                //Se crea la imagen y se obtiene el descriptor
+                File file = guardarBitmapEnArray(bm, getImageViewId(params[0].getImgView()));
+                //Se escala la imagen creada.
+                bm = Imagenes.escalar(getImageViewWidth(params[0].getImgView()), getImageViewHeight(params[0].getImgView()), file.getAbsolutePath());
+                //Se guarda la imagen escalada en su antiguo descriptor sobrescribiendolo.
+                file = guardarBitmapEnArray(bm, getImageViewId(params[0].getImgView()));
+                //Guarda el descriptor en el objeto que se pasará al postExecute.
+                params[0].setFile(file);
+
+                //Se guarda en el array que se pasará a la siguiente actividad.
                 mImagenesAnuncio[params[0].getNumImageView()] = file;
 
 
@@ -149,13 +157,26 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
         @Override
         protected void onPostExecute(ImagePojo imagePojo) {
             super.onPostExecute(imagePojo);
-            imagePojo.getImgView().setImageBitmap(imagePojo.getBitmap());
+            Picasso.with(CrearAnuncio1Activity.this).load(imagePojo.getFile()).into(imagePojo.getImgView());
+
             imagePojo.getPrb().setVisibility(View.GONE);
         }
     }
 
+    private int getImageViewId(ImageView img) {
+        return img.getId();
+    }
 
-    private void showImageDialogList(final ImageView img){
+    private int getImageViewHeight(ImageView img) {
+        return img.getLayoutParams().height;
+    }
+
+    private int getImageViewWidth(ImageView img) {
+        return img.getLayoutParams().width;
+    }
+
+
+    private void showImageDialogList(final ImageView img) {
         img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -163,12 +184,12 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
                 final ImageView[] imgViews = {imgPrincipal, img1, img2, img3, img4, img5};
 
                 //Comprobar si existe contiene alguna imagen el imageView para mostrar o no la opción de eliminar.
-                for(int i = 0; i < imgViews.length; i++)
-                    if(imgViews[i].getId() == img.getId())
+                for (int i = 0; i < imgViews.length; i++)
+                    if (imgViews[i].getId() == img.getId())
                         //Si existe alguna imagen en ese ImageView
-                        if(mImagenesAnuncio[i] != null)
+                        if (mImagenesAnuncio[i] != null)
                             idArrayOpciones = R.array.chooseImageWithRemoveListItem;
-                
+
 
                 AlertDialog.Builder dialog = new AlertDialog.Builder(CrearAnuncio1Activity.this);
                 dialog.setTitle("Seleccione una de las opciones");
@@ -219,11 +240,11 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
         Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
         //Si hay alguna actividad que sepa realizar la acción
-        if( i.resolveActivity(getPackageManager()) != null){
+        if (i.resolveActivity(getPackageManager()) != null) {
             String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
 
             File photoFile = Imagenes.crearArchivoFoto(this, "cameraPhoto.jpeg", false);
-            if(photoFile != null){
+            if (photoFile != null) {
                 //Se guarda el path del archivo para cuando se haya hecho la captura y se necesite referencia a ella.
                 mPathOriginal = photoFile.getAbsolutePath();
                 //Se añade como extra del intent la URI donde debe guardarse
@@ -236,8 +257,8 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode == RESULT_OK)
-            switch (requestCode){
+        if (resultCode == RESULT_OK)
+            switch (requestCode) {
                 case RC_ABRIR_GALERIA:
                     // Se obtiene el path real a partir de la URI retornada por la galería.
                     Uri uriGaleria = data.getData();
@@ -255,7 +276,7 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
 
     }
 
-    class HiloEscalador extends AsyncTask<Integer, Void, Bitmap>{
+    class HiloEscalador extends AsyncTask<Integer, Void, Bitmap> {
 
         @Override
         protected Bitmap doInBackground(Integer... params) {
@@ -270,33 +291,34 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
             guardarBitmapEnArray(bitmap, imgSeleccionada.getId());
         }
     }
-
-    private void guardarBitmapEnArray(Bitmap bitmap, int idImageView){
-        switch (idImageView){
+    @Nullable
+    private File guardarBitmapEnArray(Bitmap bitmap, int idImageView) {
+        switch (idImageView) {
             case R.id.imgPrincipal:
                 mImagenesAnuncio[0] = Imagenes.crearArchivoFoto(this, "foto_piso0.jpeg", false);
                 Imagenes.guardarBitmapEnArchivo(bitmap, mImagenesAnuncio[0]);
-                break;
+                return mImagenesAnuncio[0];
             case R.id.img1:
                 mImagenesAnuncio[1] = Imagenes.crearArchivoFoto(this, "foto_piso1.jpeg", false);
                 Imagenes.guardarBitmapEnArchivo(bitmap, mImagenesAnuncio[1]);
-                break;
+                return mImagenesAnuncio[1];
             case R.id.img2:
                 mImagenesAnuncio[2] = Imagenes.crearArchivoFoto(this, "foto_piso2.jpeg", false);
                 Imagenes.guardarBitmapEnArchivo(bitmap, mImagenesAnuncio[2]);
-                break;
+                return mImagenesAnuncio[2];
             case R.id.img3:
                 mImagenesAnuncio[3] = Imagenes.crearArchivoFoto(this, "foto_piso3.jpeg", false);
                 Imagenes.guardarBitmapEnArchivo(bitmap, mImagenesAnuncio[3]);
-                break;
+                return mImagenesAnuncio[3];
             case R.id.img4:
                 mImagenesAnuncio[4] = Imagenes.crearArchivoFoto(this, "foto_piso4.jpeg", false);
                 Imagenes.guardarBitmapEnArchivo(bitmap, mImagenesAnuncio[4]);
-                break;
+                return mImagenesAnuncio[4];
             case R.id.img5:
                 mImagenesAnuncio[5] = Imagenes.crearArchivoFoto(this, "foto_piso5.jpeg", false);
                 Imagenes.guardarBitmapEnArchivo(bitmap, mImagenesAnuncio[5]);
-                break;
+                return mImagenesAnuncio[5];
         }
+        return null;
     }
 }
