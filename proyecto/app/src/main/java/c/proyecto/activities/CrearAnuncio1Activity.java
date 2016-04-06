@@ -117,9 +117,7 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
             for(int i = 0 ; i<mAnuncio.getImagenes().size(); i++){
                 final ProgressBar prbSeleccionado = prbs[i];
                 //Se activa la progresBar para indicar que se está cargando la foto
-                final ImageView img = imgViews[i];
-                final int iFinal = i;
-                ImagePojo imgPojo = new ImagePojo(img, prbSeleccionado, "foto_piso"+i+".jpg", mAnuncio.getImagenes().get(i), i);
+                ImagePojo imgPojo = new ImagePojo(imgViews[i], prbSeleccionado, "foto_piso"+i+".jpg", mAnuncio.getImagenes().get(i), i);
                 new ImageDownloader().execute(imgPojo);
                 prbSeleccionado.setVisibility(View.VISIBLE);
 
@@ -127,10 +125,8 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
 
         }
     }
-
+    //Se encarga de subir las imagenes a la API
     class ImageDownloader extends AsyncTask<ImagePojo, Void, ImagePojo>{
-
-
 
         @Override
         protected ImagePojo doInBackground(ImagePojo... params) {
