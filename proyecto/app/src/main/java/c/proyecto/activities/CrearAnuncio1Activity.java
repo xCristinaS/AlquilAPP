@@ -14,12 +14,14 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -28,6 +30,7 @@ import c.proyecto.Constantes;
 import c.proyecto.R;
 import c.proyecto.models.Anuncio;
 import c.proyecto.models.Usuario;
+import c.proyecto.pojo.ImagePojo;
 import c.proyecto.utils.Imagenes;
 
 public class CrearAnuncio1Activity extends AppCompatActivity {
@@ -42,6 +45,7 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
     public static final int RC_EDITAR_ANUNCIO = 231;
 
     private ImageView imgSiguiente, imgPrincipal, img1, img2, img3, img4, img5, imgSeleccionada;
+    private ProgressBar prbPrincipal, prb1, prb2, prb3, prb4, prb5;
     private String mPathOriginal;
     private File[] mImagenesAnuncio;
     private Anuncio mAnuncio;
@@ -77,6 +81,12 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
         img3 = (ImageView) findViewById(R.id.img3);
         img4 = (ImageView) findViewById(R.id.img4);
         img5 = (ImageView) findViewById(R.id.img5);
+        prbPrincipal = (ProgressBar) findViewById(R.id.prbPrincipal);
+        prb1 = (ProgressBar) findViewById(R.id.prb1);
+        prb2 = (ProgressBar) findViewById(R.id.prb2);
+        prb3 = (ProgressBar) findViewById(R.id.prb3);
+        prb4 = (ProgressBar) findViewById(R.id.prb4);
+        prb5 = (ProgressBar) findViewById(R.id.prb5);
 
         showImageDialogList(imgPrincipal);
         showImageDialogList(img1);
@@ -100,35 +110,54 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
 
     private void recuperarImagenes() {
         ImageView[] imgViews = {imgPrincipal, img1, img2, img3, img4, img5};
+        ProgressBar[] prbs = {prbPrincipal, prb1, prb2, prb3, prb4, prb5};
+
         if(mAnuncio != null){
             //Recupera las imágenes que poseía el anuncio que se está editando.
             for(int i = 0 ; i<mAnuncio.getImagenes().size(); i++){
+                final ProgressBar prbSeleccionado = prbs[i];
+                //Se activa la progresBar para indicar que se está cargando la foto
                 final ImageView img = imgViews[i];
                 final int iFinal = i;
+                ImagePojo imgPojo = new ImagePojo(img, prbSeleccionado, "foto_piso"+i+".jpg", mAnuncio.getImagenes().get(i), i);
+                new ImageDownloader().execute(imgPojo);
+                prbSeleccionado.setVisibility(View.VISIBLE);
 
-                Picasso.with(this).load(mAnuncio.getImagenes().get(i)).into(new Target() {
-                    @Override
-                    public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                        img.setImageBitmap(bitmap);
-                        File file = Imagenes.crearArchivoFoto(CrearAnuncio1Activity.this, "foto_piso"+iFinal+".jpg", false);
-                        Imagenes.guardarBitmapEnArchivo(bitmap, file);
-                        mImagenesAnuncio[iFinal] = file;
-                    }
-
-                    @Override
-                    public void onBitmapFailed(Drawable errorDrawable) {
-
-                    }
-
-                    @Override
-                    public void onPrepareLoad(Drawable placeHolderDrawable) {
-
-                    }
-                });
             }
 
         }
     }
+
+    class ImageDownloader extends AsyncTask<ImagePojo, Void, ImagePojo>{
+
+
+
+        @Override
+        protected ImagePojo doInBackground(ImagePojo... params) {
+            try {
+                Bitmap bm = Picasso.with(CrearAnuncio1Activity.this).load(params[0].getUrl()).get();
+                //Guarda el bitmap en el objeto que viene por parámetro para usarlo en el postExecute
+                params[0].setBitmap(bm);
+                File file = Imagenes.crearArchivoFoto(CrearAnuncio1Activity.this, params[0].getNameFile(), false);
+                Imagenes.guardarBitmapEnArchivo(bm, file);
+                mImagenesAnuncio[params[0].getNumImageView()] = file;
+
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return params[0];
+        }
+
+        @Override
+        protected void onPostExecute(ImagePojo imagePojo) {
+            super.onPostExecute(imagePojo);
+            imagePojo.getImgView().setImageBitmap(imagePojo.getBitmap());
+            imagePojo.getPrb().setVisibility(View.GONE);
+        }
+    }
+
 
     private void showImageDialogList(final ImageView img){
         img.setOnClickListener(new View.OnClickListener() {

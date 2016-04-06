@@ -54,7 +54,7 @@
         android:layout_height="wrap_content"
         android:indeterminate="true"
         android:max="10"
-        android:visibility="visible"
+        android:visibility="gone"
         android:layout_alignLeft="@id/img1"
         android:layout_alignStart="@id/img1"
         android:layout_alignRight="@id/img1"
