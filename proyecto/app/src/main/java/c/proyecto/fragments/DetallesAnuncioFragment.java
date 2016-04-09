@@ -33,6 +33,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class DetallesAnuncioFragment extends Fragment implements PrestacionesAdapter.IPrestacionAdapter {
 
+
     public interface IDetallesAnuncioFragmentListener {
 
         void onImgEditClicked(Anuncio advert, Usuario user);
@@ -44,7 +45,7 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
 
     private static final String ARG_CURRENT_USER = "usuarioLogueado";
     private RelativeLayout shapeComentario;
-    private ImageView imgFoto, imgTipoVivienda, imgCamas, imgMessage, imgEdit;
+    private ImageView imgFoto, imgTipoVivienda, imgCamas, imgMessage, imgEdit, imgSubscribe;
 
     private CircleImageView imgAvatar;
     private TextView lblNombre, lblPrecio, lblTamano, lblTipoVivienda, lblCamas, lblNumCamas, lblNumHuespedes, lblDescripcionNoDisponible, lblDescripcion;
@@ -116,18 +117,28 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
             }
         });
         imgEdit = (ImageView) getView().findViewById(R.id.imgEdit);
+        imgSubscribe = (ImageView) getView().findViewById(R.id.imgSubscribe);
 
         if(adverType == AdvertsRecyclerViewAdapter.ADAPTER_TYPE_MY_ADVS){
             imgEdit.setVisibility(View.VISIBLE);
+            imgSubscribe.setVisibility(View.VISIBLE);
             imgMessage.setVisibility(View.GONE);
         }
-
+        //Permite editar el anuncio
         imgEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mListener.onImgEditClicked(mAnuncio, currentUser);
             }
         });
+        //Subscribe al usuario al anuncio
+        imgEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //`---------------------------------------------------------------------  SUBSCRIBIRSE POR HACER
+            }
+        });
+
 
         //Muestra el usuario propietario del anuncio
         imgAvatar.setOnClickListener(new View.OnClickListener() {

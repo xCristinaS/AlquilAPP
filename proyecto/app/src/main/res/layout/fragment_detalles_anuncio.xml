@@ -31,6 +31,20 @@
             android:visibility="gone"
             />
 
+        <!-- Btn Subscribirse -->
+        <ImageView
+            android:id="@+id/imgSubscribe"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_above="@id/degraded"
+            android:src="@drawable/subscribirse"
+            android:visibility="gone"
+            />
+
         <RelativeLayout
             android:id="@+id/groupAvatar"
             android:layout_width="wrap_content"
