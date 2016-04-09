@@ -117,8 +117,10 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
         });
         imgEdit = (ImageView) getView().findViewById(R.id.imgEdit);
 
-        if(adverType == AdvertsRecyclerViewAdapter.ADAPTER_TYPE_MY_ADVS)
+        if(adverType == AdvertsRecyclerViewAdapter.ADAPTER_TYPE_MY_ADVS){
             imgEdit.setVisibility(View.VISIBLE);
+            imgMessage.setVisibility(View.GONE);
+        }
 
         imgEdit.setOnClickListener(new View.OnClickListener() {
             @Override
