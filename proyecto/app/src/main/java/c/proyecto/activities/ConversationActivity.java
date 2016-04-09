@@ -105,6 +105,7 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
     @Override
     protected void onDestroy() {
         mPresenter.detachFirebaseListeners();
+        MainActivity.getmPresenter().requestUserMessages(user);
         super.onDestroy();
     }
 
