@@ -158,7 +158,7 @@ public class EditProfileActivity extends AppCompatActivity {
     }
 
     private void recuperarUser() {
-        Picasso.with(this).load(mUser.getFoto()).error(R.drawable.default_user).into(imgFoto);
+        Picasso.with(this).load(mUser.getFoto()).fit().centerCrop().error(R.drawable.default_user).into(imgFoto);
         txtNombre.setText(mUser.getNombre());
         txtApellidos.setText(mUser.getApellidos());
         if (mUser.getNacionalidad() != null)

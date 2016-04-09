@@ -90,9 +90,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
         txtUserNavDrawer.setText(String.format("%s %s", mUser.getNombre(), mUser.getApellidos()));
         imgNavDrawer = (CircleImageView) navigationView.getHeaderView(0).findViewById(R.id.imgNavDrawer);
         if (mUser.getFoto() != null)
-            Picasso.with(this).load(mUser.getFoto()).error(R.drawable.default_user).into(imgNavDrawer);
+            Picasso.with(this).load(mUser.getFoto()).fit().centerCrop().error(R.drawable.default_user).into(imgNavDrawer);
         else
-            Picasso.with(this).load(R.drawable.default_user).into(imgNavDrawer);
+            Picasso.with(this).load(R.drawable.default_user).fit().centerCrop().into(imgNavDrawer);
 
         //Foto del usuario en el nav drawer.
         navHeader = (CircleImageView) navigationView.getHeaderView(0).findViewById(R.id.imgNavDrawer);
@@ -109,7 +109,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
         mUser = user;
         txtUserNavDrawer.setText(String.format("%s %s", mUser.getNombre(), mUser.getApellidos()));
         if (mUser.getFoto() != null)
-            Picasso.with(this).load(mUser.getFoto()).error(R.drawable.default_user).into(imgNavDrawer);
+            Picasso.with(this).load(mUser.getFoto()).fit().centerCrop().error(R.drawable.default_user).into(imgNavDrawer);
     }
 
     @Override

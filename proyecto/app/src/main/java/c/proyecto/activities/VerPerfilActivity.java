@@ -67,7 +67,7 @@ public class VerPerfilActivity extends AppCompatActivity {
     }
 
     private void recuperarDatos() {
-        Picasso.with(this).load(mUser.getFoto()).error(R.drawable.default_user).into(imgFoto);
+        Picasso.with(this).load(mUser.getFoto()).fit().centerCrop().error(R.drawable.default_user).into(imgFoto);
         cargarBarritas();
         cargarItemsDescriptivos();
         lblNombre.setText(mUser.getNombre());

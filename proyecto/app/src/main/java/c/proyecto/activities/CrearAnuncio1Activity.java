@@ -165,7 +165,7 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
         @Override
         protected void onPostExecute(ImagePojo imagePojo) {
             super.onPostExecute(imagePojo);
-            Picasso.with(CrearAnuncio1Activity.this).load(imagePojo.getFile()).into(imagePojo.getImgView());
+            Picasso.with(CrearAnuncio1Activity.this).load(imagePojo.getFile()).fit().centerCrop().into(imagePojo.getImgView());
 
             imagePojo.getPrb().setVisibility(View.GONE);
         }

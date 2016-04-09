@@ -171,9 +171,9 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
         if (mAnuncio.getImagenes().size() > 0) {
             for (String img : mAnuncio.getImagenes().keySet())
                 if (img.equals(Constantes.FOTO_PRINCIPAL)) // si la key es de la imagen principal, cargo la foto
-                    Picasso.with(getActivity()).load(mAnuncio.getImagenes().get(img)).into(imgFoto);
+                    Picasso.with(getActivity()).load(mAnuncio.getImagenes().get(img)).fit().centerCrop().into(imgFoto);
         } else
-            Picasso.with(getActivity()).load(R.drawable.default_user).into(imgFoto);
+            Picasso.with(getActivity()).load(R.drawable.default_user).fit().centerCrop().into(imgFoto);
 
         //Si no hay ninguna prestación se le cambiará el color al shape del comentario al color del fondo
         if (mAnuncio.getPrestaciones().size() == 0)
@@ -181,9 +181,9 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
 
         lblNombre.setText(userAnunciante.getNombre());
         if (userAnunciante.getFoto() != null)
-            Picasso.with(getActivity()).load(userAnunciante.getFoto()).error(R.drawable.default_user).into(imgAvatar);
+            Picasso.with(getActivity()).load(userAnunciante.getFoto()).fit().centerCrop().error(R.drawable.default_user).into(imgAvatar);
         else
-            Picasso.with(getActivity()).load(R.drawable.default_user).into(imgAvatar);
+            Picasso.with(getActivity()).load(R.drawable.default_user).fit().centerCrop().into(imgAvatar);
 
         lblPrecio.setText(String.format("%.2f%s", mAnuncio.getPrecio(), Constantes.MONEDA));
         lblTamano.setText(mAnuncio.getTamanio() + Constantes.UNIDAD);
