@@ -53,9 +53,9 @@ public class MessagesFirebaseManager {
                         for (int i = 1; i < campos.length; i++) // recorro los campos, exluyendo el 0 que es el id del emisor, y lo concateno con espacios para obtener el titulo original del anuncio
                             titulo += campos[i] + " ";
 
-                        mensaje.setTituloAnuncio(titulo);
                         checkOnFirstMessageResponse(currentUser.getKey(), emisorKey, emisor_titleAdvert); // compruebo si el mensaje que estoy leyendo es un mensaje recibido en respuesta a una conversación iniciada por el usuario
 
+                        mensaje.setTituloAnuncio(titulo);
                         new Firebase(URL_USERS).child(emisorKey).addListenerForSingleValueEvent(new ValueEventListener() { // Con este listener obtengo el usuario que me mando el mensaje
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
