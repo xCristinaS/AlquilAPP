@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import c.proyecto.Constantes;
 import c.proyecto.R;
 import c.proyecto.models.Anuncio;
 import c.proyecto.models.Usuario;
@@ -27,7 +28,9 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
 
     public interface OnAdapterItemLongClick {
         void setAdapterAllowMultiDeletion(AdvertsRecyclerViewAdapter adaptador);
+
         void onItemLongClick();
+
         void desactivarMultiseleccion();
     }
 
@@ -50,11 +53,11 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
     private static Usuario user;
 
 
-    public AdvertsRecyclerViewAdapter(int adapter_type, MainPresenter presenter, Usuario user) {
+    public AdvertsRecyclerViewAdapter(int adapter_type, MainPresenter presenter, Usuario u) {
         mDatos = new ArrayList<>();
         this.presenter = presenter;
         this.adapter_type = adapter_type;
-        this.user = user;
+        user = u;
     }
 
     @Override
@@ -188,7 +191,9 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
                 lblTituloAnuncio.setText(anuncio.getTitulo());
                 lblLocalizacion.setText(anuncio.getPoblacion());
                 if (anuncio.getImagenes().size() > 0)
-                    Picasso.with(itemView.getContext()).load(anuncio.getImagenes().get(0)).into(imgAvatar);
+                    for (String img : anuncio.getImagenes().keySet())
+                        if (img.equals(Constantes.FOTO_PRINCIPAL)) // si la key es de la imagen principal, cargo la foto
+                            Picasso.with(itemView.getContext()).load(anuncio.getImagenes().get(img)).into(imgAvatar);
             }
         }
     }
@@ -212,13 +217,15 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
                 lblLocalizacion.setText(anuncio.getPoblacion());
                 lblSubs.setText(String.valueOf(anuncio.getSolicitantes().size()));
                 if (anuncio.getImagenes().size() > 0)
-                    Picasso.with(itemView.getContext()).load(anuncio.getImagenes().get(0)).into(imgAvatar);
+                    for (String img : anuncio.getImagenes().keySet())
+                        if (img.equals(Constantes.FOTO_PRINCIPAL)) // si la key es de la imagen principal, cargo la foto
+                            Picasso.with(itemView.getContext()).load(anuncio.getImagenes().get(img)).into(imgAvatar);
             }
         }
     }
 
     //Manejo del Adaptador
-    public void addItem(Anuncio a){
+    public void addItem(Anuncio a) {
         boolean stop = false;
         for (int i = 0; !stop && i < mDatos.size(); i++)
             if (a.getKey().equals(mDatos.get(i).getKey()))
@@ -229,13 +236,13 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
         notifyItemInserted(mDatos.indexOf(a));
     }
 
-    public void removeItem(Anuncio a){
+    public void removeItem(Anuncio a) {
         int position = mDatos.indexOf(a);
         mDatos.remove(a);
         notifyItemRemoved(position);
     }
 
-    public void replaceItem(Anuncio a){
+    public void replaceItem(Anuncio a) {
         boolean stop = false;
         for (int i = 0; !stop && i < mDatos.size(); i++)
             if (a.getKey().equals(mDatos.get(i).getKey())) {
@@ -246,7 +253,7 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
         notifyDataSetChanged();
     }
 
-    public Anuncio getAdvert(int position){
+    public Anuncio getAdvert(int position) {
         return mDatos.get(position);
     }
 }

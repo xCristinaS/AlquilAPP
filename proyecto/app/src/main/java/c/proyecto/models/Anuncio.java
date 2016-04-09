@@ -28,7 +28,7 @@ public class Anuncio implements Parcelable, MyModel {
 
     private String key, titulo, tipo_vivienda, anunciante, direccion, poblacion, provincia, descripcion, numero;
     private int habitaciones_o_camas, numero_banios, tamanio, precio;
-    private ArrayList<String> imagenes;
+    private HashMap<String, String> imagenes;
     private ArrayList<Prestacion> prestaciones;
     private HashMap<String, Boolean> solicitantes;
     private static boolean userSubRemoved = false;
@@ -36,7 +36,7 @@ public class Anuncio implements Parcelable, MyModel {
     private static ChildEventListener listener;
 
     public Anuncio() {
-        imagenes = new ArrayList<>();
+        imagenes = new HashMap<>();
         prestaciones = new ArrayList<>();
         solicitantes = new HashMap<>();
     }
@@ -236,11 +236,11 @@ public class Anuncio implements Parcelable, MyModel {
         this.numero = numero;
     }
 
-    public ArrayList<String> getImagenes() {
+    public HashMap<String, String> getImagenes() {
         return imagenes;
     }
 
-    public void setImagenes(ArrayList<String> imagenes) {
+    public void setImagenes(HashMap<String, String> imagenes) {
         this.imagenes = imagenes;
     }
 
@@ -296,7 +296,7 @@ public class Anuncio implements Parcelable, MyModel {
         dest.writeInt(this.numero_banios);
         dest.writeInt(this.tamanio);
         dest.writeInt(this.precio);
-        dest.writeStringList(this.imagenes);
+        dest.writeSerializable(this.imagenes);
         dest.writeTypedList(prestaciones);
         dest.writeSerializable(this.solicitantes);
     }
@@ -315,7 +315,7 @@ public class Anuncio implements Parcelable, MyModel {
         this.numero_banios = in.readInt();
         this.tamanio = in.readInt();
         this.precio = in.readInt();
-        this.imagenes = in.createStringArrayList();
+        this.imagenes = (HashMap<String, String>) in.readSerializable();
         this.prestaciones = in.createTypedArrayList(Prestacion.CREATOR);
         this.solicitantes = (HashMap<String, Boolean>) in.readSerializable();
     }

@@ -23,6 +23,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.Locale;
 
 import c.proyecto.Constantes;
@@ -109,21 +110,28 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
     }
 
     private void recuperarImagenes() {
+        int contador = 1;
         ImageView[] imgViews = {imgPrincipal, img1, img2, img3, img4, img5};
         ProgressBar[] prbs = {prbPrincipal, prb1, prb2, prb3, prb4, prb5};
 
-        if (mAnuncio != null) {
-            //Recupera las imágenes que poseía el anuncio que se está editando.
-            for (int i = 0; i < mAnuncio.getImagenes().size(); i++) {
-                final ProgressBar prbSeleccionado = prbs[i];
-                //Se activa la progresBar para indicar que se está cargando la foto
-                ImagePojo imgPojo = new ImagePojo(imgViews[i], prbSeleccionado, "foto_piso" + i + ".jpg", mAnuncio.getImagenes().get(i), i);
-                new ImageDownloader().execute(imgPojo);
-                prbSeleccionado.setVisibility(View.VISIBLE);
-
+        if (mAnuncio != null)
+            if (mAnuncio.getImagenes().size() > 0) {
+                for (String keyImg : mAnuncio.getImagenes().keySet()) {
+                    ProgressBar prbSeleccionado;
+                    ImagePojo imgPojo;
+                    if (keyImg.equals(Constantes.FOTO_PRINCIPAL)) {
+                        prbSeleccionado = prbs[0];
+                        imgPojo = new ImagePojo(imgViews[0], prbSeleccionado, "foto_piso" + 0 + ".jpg", mAnuncio.getImagenes().get(keyImg), 0);
+                    } else {
+                        prbSeleccionado = prbs[contador];
+                        imgPojo = new ImagePojo(imgViews[contador], prbSeleccionado, "foto_piso" + contador + ".jpg", mAnuncio.getImagenes().get(keyImg), contador);
+                        contador++;
+                    }
+                    new ImageDownloader().execute(imgPojo);
+                    //Se activa la progresBar para indicar que se está cargando la foto
+                    prbSeleccionado.setVisibility(View.VISIBLE);
+                }
             }
-
-        }
     }
 
     //Se encarga de subir las imagenes a la API
@@ -291,6 +299,7 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
             guardarBitmapEnArray(bitmap, imgSeleccionada.getId());
         }
     }
+
     @Nullable
     private File guardarBitmapEnArray(Bitmap bitmap, int idImageView) {
         switch (idImageView) {

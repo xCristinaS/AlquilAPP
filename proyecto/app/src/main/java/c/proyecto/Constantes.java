@@ -4,6 +4,7 @@ package c.proyecto;
 public final class Constantes {
     public static final String MONEDA = "€";
     public static final String UNIDAD = "m²";
+    public static final String FOTO_PRINCIPAL = "principal";
 
     //TIPO VIVIENDA
     public static final String CASA = "Casa";

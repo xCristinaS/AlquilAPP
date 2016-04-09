@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import c.proyecto.Constantes;
 import c.proyecto.R;
@@ -256,7 +257,7 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
                 //Se borra las imágenes existentes en Firebase para que no se añadan las nuevas + las antiguas si se está editando.
                 mAnuncio.setImagenes(null);
                 mPresenter.publishNewAdvert(mAnuncio);
-                mAnuncio.setImagenes(new ArrayList<String>());
+                mAnuncio.setImagenes(new HashMap<String, String>());
             }
 
             //Subir las imagenes a la api de imágenes.
@@ -264,7 +265,7 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
             presenters.add(mPresenter);
             presenters.add(DetallesAnuncioActivity.getmPresenter());
             for (File f: imagenesAnuncio)
-                    ImgurUploader.subirImagen(f, mAnuncio, presenters);
+                    ImgurUploader.subirImagen(f, mAnuncio, presenters, imagenesAnuncio.indexOf(f) == 0);
             //Guardar todos los editText en el objeto anuncio.
             meterDatosEnAnuncio();
             //Subir el objeto a FireBase.
@@ -302,6 +303,4 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
         if (!TextUtils.isEmpty(txtDescripcion.getText()))
             mAnuncio.setDescripcion(txtDescripcion.getText().toString());
     }
-
-
 }

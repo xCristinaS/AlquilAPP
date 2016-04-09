@@ -37,6 +37,7 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
 
         void onImgEditClicked(Anuncio advert, Usuario user);
     }
+
     private static final String ARG_ANUNCIO = "anuncio";
 
     private static final String ARG_ADVERT_TYPE = "advert_type";
@@ -117,7 +118,7 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
         });
         imgEdit = (ImageView) getView().findViewById(R.id.imgEdit);
 
-        if(adverType == AdvertsRecyclerViewAdapter.ADAPTER_TYPE_MY_ADVS)
+        if (adverType == AdvertsRecyclerViewAdapter.ADAPTER_TYPE_MY_ADVS)
             imgEdit.setVisibility(View.VISIBLE);
 
         imgEdit.setOnClickListener(new View.OnClickListener() {
@@ -137,7 +138,7 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
         lblNombre.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                VerPerfilActivity.start(getActivity() ,currentUser);
+                VerPerfilActivity.start(getActivity(), currentUser);
             }
         });
     }
@@ -153,13 +154,15 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
     }
 
     private void bindData() {
-        if (mAnuncio.getImagenes().size() > 0)
-            Picasso.with(getActivity()).load(mAnuncio.getImagenes().get(0)).error(R.drawable.default_user).into(imgFoto);
-        else
+        if (mAnuncio.getImagenes().size() > 0) {
+            for (String img : mAnuncio.getImagenes().keySet())
+                if (img.equals(Constantes.FOTO_PRINCIPAL)) // si la key es de la imagen principal, cargo la foto
+                    Picasso.with(getActivity()).load(mAnuncio.getImagenes().get(img)).into(imgFoto);
+        } else
             Picasso.with(getActivity()).load(R.drawable.default_user).into(imgFoto);
 
         //Si no hay ninguna prestación se le cambiará el color al shape del comentario al color del fondo
-        if(mAnuncio.getPrestaciones().size() == 0)
+        if (mAnuncio.getPrestaciones().size() == 0)
             shapeComentario.setBackgroundColor(getResources().getColor(android.R.color.white));
 
         lblNombre.setText(userAnunciante.getNombre());
@@ -230,8 +233,6 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
 
         dialog.getWindow().setLayout((int) (boundsScreen.x * Constantes.PORCENTAJE_PANTALLA), WindowManager.LayoutParams.WRAP_CONTENT);
     }
-
-
 
 
     @Override
