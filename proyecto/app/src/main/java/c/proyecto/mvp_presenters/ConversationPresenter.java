@@ -31,7 +31,7 @@ public class ConversationPresenter implements ConversationPresenterOps, MyPresen
     }
 
     @Override
-    public void userConversationRequested(Usuario u, MessagePojo mensaje) {
+    public void userConversationRequested(MessagePojo mensaje) {
         messagesManager.getUserConversation(mensaje);
     }
 

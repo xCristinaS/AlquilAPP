@@ -27,7 +27,7 @@ public class AdvertsFirebaseManager {
         this.currentUser = currentUser;
     }
 
-    public void publishNewAdvert(Anuncio a) {
+    public void publishNewAdvert(Anuncio a) { // crea un nuevo anuncio en la rama /anuncios/keyAnuncio/valorAnuncio --> keyAnuncio = numeroIdentificadoUsuarioQuePublica_numeroIdentificadorAnuncio
         Firebase mFirebase = new Firebase(URL_ANUNCIOS + a.getKey() + "/");
         mFirebase.setValue(a);
     }
@@ -60,10 +60,12 @@ public class AdvertsFirebaseManager {
             }
         });
 
-        if (listener != null)
-            mFirebase.removeEventListener(listener);
         if (mFirebase == null)
             mFirebase = new Firebase(URL_ANUNCIOS);
+
+        if (listener != null)
+            mFirebase.removeEventListener(listener);
+
         if (listener == null) {
             listener = new ChildEventListener() {
                 @Override

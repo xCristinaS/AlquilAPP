@@ -38,7 +38,7 @@ public class MainPresenter implements MainPresenterOps, MyPresenter {
     }
 
     @Override
-    public void removeUserSub(Anuncio a, Usuario u) {
+    public void removeUserSub(Anuncio a) {
         advertsManager.removeUserSub(a);
     }
 

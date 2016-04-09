@@ -9,7 +9,7 @@ import c.proyecto.pojo.MessagePojo;
  */
 public interface MainPresenterOps {
     void removeUserAdvert(Anuncio a);
-    void removeUserSub(Anuncio a, Usuario u);
+    void removeUserSub(Anuncio a);
     void initializeFirebaseListeners(Usuario usuario);
     void advertHasBeenObtained(Anuncio a);
     void adverHasBeenModified(Anuncio a);

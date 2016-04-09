@@ -142,7 +142,7 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
         if (adapter_type == ADAPTER_TYPE_MY_ADVS)
             presenter.removeUserAdvert(mDatos.get(pos));
         else
-            presenter.removeUserSub(mDatos.get(pos), user);
+            presenter.removeUserSub(mDatos.get(pos));
         removeItem(mDatos.get(pos));
         notifyItemRemoved(pos);
     }

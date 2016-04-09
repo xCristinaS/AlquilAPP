@@ -58,13 +58,13 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
         mPresenter.setMessagesManager(new MessagesFirebaseManager(mPresenter, user));
 
         if (mensaje != null) {
-            mPresenter.userConversationRequested(user, mensaje);
+            mPresenter.userConversationRequested(mensaje);
             getSupportFragmentManager().beginTransaction().replace(R.id.frmContenido, MessagesFragment.newInstance(true, mensaje.getKeyReceptor())).commit();
         } else if (anuncio != null) {
             MainActivity.getmPresenter().requestUserMessages(user);
             MessagePojoWithoutAnswer m = new MessagePojoWithoutAnswer(user, anuncio.getTitulo(), null, new Date());
             m.setKeyReceptor(anuncio.getAnunciante());
-            mPresenter.userConversationRequested(user, m);
+            mPresenter.userConversationRequested(m);
             getSupportFragmentManager().beginTransaction().replace(R.id.frmContenido, MessagesFragment.newInstance(true, anuncio.getAnunciante())).commit();
         }
         imgEnviar = (ImageView) findViewById(R.id.imgEnviar);
