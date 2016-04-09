@@ -1,14 +1,14 @@
-package c.proyecto.presenters;
+package c.proyecto.mvp_presenters;
 
 import android.app.Activity;
 
 import java.lang.ref.WeakReference;
 
 import c.proyecto.activities.DetallesAnuncioActivity;
-import c.proyecto.interfaces.AdvertsDetailsPresenterOps;
+import c.proyecto.mvp_presenters_interfaces.AdvertsDetailsPresenterOps;
 import c.proyecto.interfaces.MyPresenter;
-import c.proyecto.models.Anuncio;
-import c.proyecto.models.Usuario;
+import c.proyecto.pojo.Anuncio;
+import c.proyecto.mvp_models.Usuario;
 
 /**
  * Created by Cristina on 23/03/2016.

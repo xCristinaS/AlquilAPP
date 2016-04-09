@@ -1,13 +1,13 @@
-package c.proyecto.presenters;
+package c.proyecto.mvp_presenters;
 
 import android.app.Activity;
 
 import java.lang.ref.WeakReference;
 
 import c.proyecto.activities.EditProfileActivity;
-import c.proyecto.interfaces.EditProfilePresenterOps;
+import c.proyecto.mvp_presenters_interfaces.EditProfilePresenterOps;
 import c.proyecto.interfaces.MyPresenter;
-import c.proyecto.models.Usuario;
+import c.proyecto.mvp_models.Usuario;
 
 public class EditProfilePresenter implements EditProfilePresenterOps, MyPresenter {
 

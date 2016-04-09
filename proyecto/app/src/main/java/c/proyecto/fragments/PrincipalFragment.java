@@ -15,9 +15,9 @@ import c.proyecto.R;
 import c.proyecto.activities.MainActivity;
 import c.proyecto.adapters.CachedFragmentPagerAdapter;
 import c.proyecto.adapters.AdvertsRecyclerViewAdapter;
-import c.proyecto.models.Anuncio;
-import c.proyecto.models.Usuario;
-import c.proyecto.presenters.MainPresenter;
+import c.proyecto.pojo.Anuncio;
+import c.proyecto.mvp_models.Usuario;
+import c.proyecto.mvp_presenters.MainPresenter;
 
 
 public class PrincipalFragment extends Fragment {

@@ -1,9 +1,8 @@
-package c.proyecto.models;
+package c.proyecto.mvp_models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
@@ -13,11 +12,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import c.proyecto.interfaces.MyModel;
-import c.proyecto.presenters.AdvertsDetailsPresenter;
-import c.proyecto.presenters.EditProfilePresenter;
-import c.proyecto.presenters.InicioPresenter;
-import c.proyecto.presenters.MainPresenter;
-import c.proyecto.presenters.RegistroPresenter;
+import c.proyecto.mvp_presenters.AdvertsDetailsPresenter;
+import c.proyecto.mvp_presenters.InicioPresenter;
+import c.proyecto.mvp_presenters.MainPresenter;
+import c.proyecto.mvp_presenters.RegistroPresenter;
 
 
 public class Usuario implements Parcelable, MyModel {
@@ -38,14 +36,6 @@ public class Usuario implements Parcelable, MyModel {
         idDrawItemsDescriptivos = new ArrayList<>();
     }
 
-    private void paBorrarPruebas() {
-        foto = "default_user.png";
-        ordenado = 0;
-        fiestero = 0;
-        sociable = 0;
-        activo = 0;
-    }
-
     public Usuario(String email, String contra, String nombre, String apellidos, String key) {
         this();
         this.email = email;
@@ -57,6 +47,8 @@ public class Usuario implements Parcelable, MyModel {
 
 
     public static void initializeOnUserChangedListener(final MainPresenter presenter, Usuario usuario) {
+        if (listener != null)
+            mFirebase.removeEventListener(listener);
         if (mFirebase == null)
             mFirebase = new Firebase(URL_USERS + usuario.getKey());
         if (listener == null)
@@ -71,7 +63,6 @@ public class Usuario implements Parcelable, MyModel {
 
                 }
             };
-        mFirebase.removeEventListener(listener);
         mFirebase.addValueEventListener(listener);
     }
 

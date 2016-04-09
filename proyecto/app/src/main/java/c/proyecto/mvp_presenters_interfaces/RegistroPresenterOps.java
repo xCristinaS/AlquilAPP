@@ -1,6 +1,6 @@
-package c.proyecto.interfaces;
+package c.proyecto.mvp_presenters_interfaces;
 
-import c.proyecto.models.Usuario;
+import c.proyecto.mvp_models.Usuario;
 
 public interface RegistroPresenterOps {
     Usuario register(String user, String pass, String nombre, String apellidos);

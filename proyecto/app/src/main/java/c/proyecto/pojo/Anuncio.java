@@ -1,39 +1,21 @@
-package c.proyecto.models;
+package c.proyecto.pojo;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.firebase.client.ChildEventListener;
-import com.firebase.client.DataSnapshot;
-import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-import com.firebase.client.ValueEventListener;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import c.proyecto.R;
 import c.proyecto.interfaces.MyModel;
-import c.proyecto.pojo.Prestacion;
-import c.proyecto.presenters.MainPresenter;
 
-
-/**
- * Created by Cristina on 20/03/2016.
- */
 public class Anuncio implements Parcelable, MyModel {
-
-    private static final String URL_ANUNCIOS = "https://proyectofinaldam.firebaseio.com/anuncios/";
-    private static final String URL_SOLICITUDES = "https://proyectofinaldam.firebaseio.com/solicitudes/";
 
     private String key, titulo, tipo_vivienda, anunciante, direccion, poblacion, provincia, descripcion, numero;
     private int habitaciones_o_camas, numero_banios, tamanio, precio;
     private ArrayList<String> imagenes;
     private ArrayList<Prestacion> prestaciones;
     private HashMap<String, Boolean> solicitantes;
-    private static boolean userSubRemoved = false;
-    private static Firebase mFirebase;
-    private static ChildEventListener listener;
+
 
     public Anuncio() {
         imagenes = new ArrayList<>();
@@ -41,112 +23,11 @@ public class Anuncio implements Parcelable, MyModel {
         solicitantes = new HashMap<>();
     }
 
-    public String generateKey(){
-        if(key == null)
+    public String generateKey() {
+        if (key == null)
             return anunciante + "_" + String.valueOf(titulo.trim().hashCode() + direccion.trim().hashCode() + numero.hashCode() + poblacion.trim().hashCode() + provincia.trim().hashCode());
         else
             return key;
-    }
-
-    public static void publishNewAdvert(Anuncio a){
-        Firebase mFirebase = new Firebase(URL_ANUNCIOS + a.key + "/");
-        mFirebase.setValue(a);
-    }
-
-    public static void initializeFirebaseListeners(final MainPresenter presentador, final Usuario u) {
-        Firebase firebaseSubs = new Firebase(URL_SOLICITUDES).child(u.getKey());
-        final Firebase firebaseAdvertSub = new Firebase(URL_ANUNCIOS);
-        firebaseSubs.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot data : dataSnapshot.getChildren()) {
-                    String subKey = data.getKey();
-                    firebaseAdvertSub.child(subKey).addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            presentador.subHasBeenObtained(dataSnapshot.getValue(Anuncio.class));
-                        }
-
-                        @Override
-                        public void onCancelled(FirebaseError firebaseError) {
-
-                        }
-                    });
-                }
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-
-            }
-        });
-
-        if (listener == null && mFirebase == null) {
-            mFirebase = new Firebase(URL_ANUNCIOS);
-            listener = new ChildEventListener() {
-                @Override
-                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                    Anuncio a = dataSnapshot.getValue(Anuncio.class);
-                    if (dataSnapshot.getKey().contains(u.getKey()))
-                        presentador.userAdvertHasBeenObtained(a);
-                    else if (!a.solicitantes.containsKey(u.getKey()))
-                        presentador.advertHasBeenObtained(a);
-                }
-
-                @Override
-                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                    Anuncio a = dataSnapshot.getValue(Anuncio.class);
-                    if (dataSnapshot.getKey().contains(u.getKey()))
-                        presentador.userAdvertHasBeenModified(a);
-                    else if (!userSubRemoved && a.solicitantes.containsKey(u.getKey()))
-                        presentador.subHasBeenModified(a);
-                    else if (userSubRemoved)
-                        presentador.advertHasBeenObtained(a);
-                    else
-                        presentador.adverHasBeenModified(a);
-
-                    userSubRemoved = false;
-                }
-
-                @Override
-                public void onChildRemoved(DataSnapshot dataSnapshot) {
-                    Anuncio a = dataSnapshot.getValue(Anuncio.class);
-                    if (a.solicitantes.containsKey(u.getKey()))
-                        presentador.removeSub(a);
-                }
-
-                @Override
-                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-                }
-
-                @Override
-                public void onCancelled(FirebaseError firebaseError) {
-
-                }
-            };
-        }
-        mFirebase.removeEventListener(listener);
-        mFirebase.addChildEventListener(listener);
-    }
-
-    public static void detachFirebaseListeners() {
-        mFirebase.removeEventListener(listener);
-        listener = null;
-        mFirebase = null;
-    }
-
-    public static void removeUserAdvert(Anuncio a) {
-        Firebase mFirebase = new Firebase(URL_ANUNCIOS + a.getKey() + "/");
-        mFirebase.setValue(null);
-    }
-
-    public static void removeUserSub(Anuncio a, Usuario u) {
-        Firebase mFirebase = new Firebase(URL_ANUNCIOS).child(a.getKey()).child("solicitantes").child(u.getKey());
-        mFirebase.setValue(null);
-        mFirebase = new Firebase(URL_SOLICITUDES).child(u.getKey()).child(a.getKey());
-        mFirebase.setValue(null);
-        userSubRemoved = true;
     }
 
     public String getTitulo() {

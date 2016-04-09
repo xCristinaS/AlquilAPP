@@ -1,11 +1,7 @@
-package c.proyecto.interfaces;
+package c.proyecto.mvp_presenters_interfaces;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import c.proyecto.models.Anuncio;
-import c.proyecto.models.Message;
-import c.proyecto.models.Usuario;
+import c.proyecto.pojo.Anuncio;
+import c.proyecto.mvp_models.Usuario;
 import c.proyecto.pojo.MessagePojo;
 
 /**

@@ -1,4 +1,4 @@
-package c.proyecto.presenters;
+package c.proyecto.mvp_presenters;
 
 import android.app.Activity;
 
@@ -6,22 +6,22 @@ import java.lang.ref.WeakReference;
 
 import c.proyecto.activities.MainActivity;
 import c.proyecto.interfaces.MyPresenter;
-import c.proyecto.interfaces.MainPresenterOps;
-import c.proyecto.models.Anuncio;
-import c.proyecto.models.Message;
-import c.proyecto.models.Usuario;
+import c.proyecto.mvp_models.AdvertsFirebaseManager;
+import c.proyecto.mvp_models.MessagesFirebaseManager;
+import c.proyecto.mvp_presenters_interfaces.MainPresenterOps;
+import c.proyecto.pojo.Anuncio;
+import c.proyecto.mvp_models.Usuario;
 import c.proyecto.pojo.MessagePojo;
 
-/**
- * Created by Cristina on 20/03/2016.
- */
 public class MainPresenter implements MainPresenterOps, MyPresenter {
 
     private static WeakReference<MainActivity> activity;
     private static MainPresenter presentador;
+    private AdvertsFirebaseManager advertsManager;
+    private MessagesFirebaseManager messagesManager;
 
-    private MainPresenter(Activity activity) {
-        this.activity = new WeakReference<>((MainActivity) activity);
+    private MainPresenter(Activity a) {
+        activity = new WeakReference<>((MainActivity) a);
     }
 
     public static MainPresenter getPresentador(Activity a) {
@@ -34,18 +34,19 @@ public class MainPresenter implements MainPresenterOps, MyPresenter {
 
     @Override
     public void removeUserAdvert(Anuncio a) {
-        Anuncio.removeUserAdvert(a);
+        advertsManager.removeUserAdvert(a);
     }
 
     @Override
     public void removeUserSub(Anuncio a, Usuario u) {
-        Anuncio.removeUserSub(a, u);
+        advertsManager.removeUserSub(a);
     }
 
     @Override
     public void initializeFirebaseListeners(Usuario usuario) {
-        Anuncio.initializeFirebaseListeners(this, usuario);
+        advertsManager.initializeFirebaseListeners();
         Usuario.initializeOnUserChangedListener(this, usuario);
+        messagesManager.initializeMessagesListeners();
     }
 
     @Override
@@ -92,14 +93,14 @@ public class MainPresenter implements MainPresenterOps, MyPresenter {
 
     @Override
     public void detachListeners() {
-        Anuncio.detachFirebaseListeners();
+        advertsManager.detachFirebaseListeners();
         Usuario.detachFirebaseListeners();
-        Message.detachMessagesListeners();
+        messagesManager.detachMessagesListeners();
     }
 
     @Override
     public void requestUserMessages(Usuario user) {
-        Message.getUserMessages(user, this);
+        messagesManager.getUserMessages();
     }
 
     @Override
@@ -113,5 +114,13 @@ public class MainPresenter implements MainPresenterOps, MyPresenter {
     public void userHasBeenModified(Usuario user) {
         if (activity.get() != null)
             activity.get().userAdvertHasBeenModified(user);
+    }
+
+    public void setAdvertsManager(AdvertsFirebaseManager advertsManager) {
+        this.advertsManager = advertsManager;
+    }
+
+    public void setMessagesManager(MessagesFirebaseManager messagesManager) {
+        this.messagesManager = messagesManager;
     }
 }

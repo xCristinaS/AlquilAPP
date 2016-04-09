@@ -36,11 +36,11 @@ import java.util.Locale;
 
 import c.proyecto.R;
 import c.proyecto.api.ImgurUploader;
-import c.proyecto.fragments.CaracteristicasUsuarioDialogFragment;
-import c.proyecto.fragments.DescripcionDialogFragment;
+import c.proyecto.dialog_fragments.CaracteristicasUsuarioDialogFragment;
+import c.proyecto.dialog_fragments.DescripcionDialogFragment;
 import c.proyecto.interfaces.MyPresenter;
-import c.proyecto.models.Usuario;
-import c.proyecto.presenters.EditProfilePresenter;
+import c.proyecto.mvp_models.Usuario;
+import c.proyecto.mvp_presenters.EditProfilePresenter;
 import c.proyecto.utils.Imagenes;
 
 public class EditProfileActivity extends AppCompatActivity {

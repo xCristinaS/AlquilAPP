@@ -1,4 +1,4 @@
-package c.proyecto.fragments;
+package c.proyecto.dialog_fragments;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import c.proyecto.Constantes;
 import c.proyecto.R;
-import c.proyecto.models.Usuario;
+import c.proyecto.mvp_models.Usuario;
 
 
 public class CaracteristicasUsuarioDialogFragment extends AppCompatDialogFragment {
