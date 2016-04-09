@@ -1,69 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView
-xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:card_view="http://schemas.android.com/apk/res-auto"
-android:layout_width="wrap_content"
-android:layout_height="wrap_content"
-android:layout_margin="@dimen/margin_small"
-card_view:cardCornerRadius="@dimen/card_corner_radius"
-card_view:cardElevation="@dimen/card_elevation">
-
-<LinearLayout android:id="@+id/container_holder"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
-    <ImageView
-        android:id="@+id/imgAvatar"
-        android:layout_width="wrap_content"
-        android:layout_height="150dp"
-        android:scaleType="centerCrop"
-        android:transitionName="transition_image_anime"/>
+    android:layout_margin="@dimen/margin_small"
+    card_view:cardCornerRadius="@dimen/card_corner_radius"
+    card_view:cardElevation="@dimen/card_elevation">
 
-    <RelativeLayout
+    <LinearLayout
+        android:id="@+id/container_holder"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/backgroundController">
-
-        <LinearLayout
-            android:id="@+id/groupTitulo"
-            android:layout_width="290dp"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/margin_medium"
-            android:orientation="vertical"
-            android:layout_centerVertical="true">
-
-            <TextView
-                android:id="@+id/lblTituloAnuncio"
-                style="@style/LabelTitle"
-                android:text="Title"/>
-
-            <TextView
-                android:id="@+id/lblLocalizacion"
-                style="@style/LabelContent"
-                android:text="Subtitle"/>
-
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/lblSubs"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_alignParentBottom="true"
-            android:text="222" />
+        android:orientation="vertical">
 
         <ImageView
+            android:id="@+id/imgAvatar"
+            android:layout_width="wrap_content"
+            android:layout_height="150dp"
+            android:scaleType="centerCrop"
+            android:transitionName="transition_image_anime" />
 
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="22dp"
-            android:layout_toLeftOf="@id/lblSubs"
-            android:layout_toStartOf="@id/lblSubs"
-            android:layout_alignParentBottom="true"
-            android:src="@drawable/ic_action_user" />
-    </RelativeLayout>
-</LinearLayout>
+            android:background="@color/backgroundController">
+
+            <LinearLayout
+                android:id="@+id/groupTitulo"
+                android:layout_width="290dp"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:background="@drawable/item_background_selector"
+                android:orientation="vertical"
+                android:padding="@dimen/margin_medium">
+
+                <TextView
+                    android:id="@+id/lblTituloAnuncio"
+                    style="@style/LabelTitle"
+                    android:text="Title" />
+
+                <TextView
+                    android:id="@+id/lblLocalizacion"
+                    style="@style/LabelContent"
+                    android:text="Subtitle" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/lblSubs"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:text="222" />
+
+            <ImageView
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginTop="22dp"
+                android:layout_toLeftOf="@id/lblSubs"
+                android:layout_toStartOf="@id/lblSubs"
+                android:src="@drawable/ic_action_user" />
+        </RelativeLayout>
+    </LinearLayout>
 </android.support.v7.widget.CardView>
