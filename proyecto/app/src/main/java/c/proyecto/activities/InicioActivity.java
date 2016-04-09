@@ -83,7 +83,6 @@ public class InicioActivity extends AppCompatActivity implements InicioActivityO
     public void enter(Usuario u) {
         SharedPreferences.Editor editor = preferences.edit();
 
-
         if(u != null){
             //Guardará en las preferencias el usuario para la próxima ves que entre.
             if(swRememberMe.isChecked())

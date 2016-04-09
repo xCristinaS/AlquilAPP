@@ -37,41 +37,43 @@ public class MessagesFirebaseManager {
     }
 
     public void initializeMessagesListeners() {
+        // El listener se inicializa al entrar en la actividad de mensajes. El listener permanecerá a la escucha hasta que se cierre sesión. Entonces:
         if (mFirebaseReceivedMessages == null)
-            mFirebaseReceivedMessages = new Firebase(URL_CONVERSACIONES).child(currentUser.getKey());
+            mFirebaseReceivedMessages = new Firebase(URL_CONVERSACIONES).child(currentUser.getKey()); // conversaciones/keyUser --> para leer todos los mensajer que ha recibido el usuario
         if (mListenerReceivedMessages == null)
             mListenerReceivedMessages = new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    for (DataSnapshot data : dataSnapshot.getChildren()) {
-                        final MessagePojo mensaje = new MessagePojo();
-                        final String emisor_titleAdvert = data.getKey();
-                        String[] campos = emisor_titleAdvert.split("_");
-                        final String emisorKey = campos[0];
+                    for (DataSnapshot data : dataSnapshot.getChildren()) { // Aqui leo todos los mensajes
+                        final MessagePojo mensaje = new MessagePojo(); // creo el mensajePojo que será agregado al adaptador del recyclerView de mensajes
+                        final String emisor_titleAdvert = data.getKey(); // obtengo la key del nodo, que contiene el id de quien mandó el mensaje y el titulo del anuncio sobre el que habló
+                        String[] campos = emisor_titleAdvert.split("_"); // separo la cadena en campos
+                        final String emisorKey = campos[0]; // la key del emisor es el campo 0
                         String titulo = "";
-                        for (int i = 1; i < campos.length; i++)
+                        for (int i = 1; i < campos.length; i++) // recorro los campos, exluyendo el 0 que es el id del emisor, y lo concateno con espacios para obtener el titulo original del anuncio
                             titulo += campos[i] + " ";
 
-                        checkOnFirstMessageResponse(currentUser.getKey(), emisorKey, emisor_titleAdvert);
-
                         mensaje.setTituloAnuncio(titulo);
-                        new Firebase(URL_USERS).child(emisorKey).addListenerForSingleValueEvent(new ValueEventListener() {
+                        checkOnFirstMessageResponse(currentUser.getKey(), emisorKey, emisor_titleAdvert); // compruebo si el mensaje que estoy leyendo es un mensaje recibido en respuesta a una conversación iniciada por el usuario
+
+                        new Firebase(URL_USERS).child(emisorKey).addListenerForSingleValueEvent(new ValueEventListener() { // Con este listener obtengo el usuario que me mando el mensaje
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 Usuario emisor = dataSnapshot.getValue(Usuario.class);
-                                mensaje.setEmisor(emisor);
-                                mensaje.setKeyReceptor(currentUser.getKey());
+                                mensaje.setEmisor(emisor); // asigno el emisor obtenido al mensaje que será devuelto al adaptador
+                                mensaje.setKeyReceptor(currentUser.getKey()); // asigno al receptor
 
+                                // obtengo el último mensaje de la conversación, para mostrar el último en la actividad de mensajes
                                 new Firebase(URL_CONVERSACIONES).child(currentUser.getKey()).child(emisor_titleAdvert).limitToLast(1).addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(DataSnapshot dataSnapshot) {
                                         for (DataSnapshot data : dataSnapshot.getChildren()) {
                                             Message m = data.getValue(Message.class);
-                                            mensaje.setContenido(m.getContenido());
-                                            mensaje.setFecha(new Date(m.getFecha()));
-                                            mensaje.setKey(dataSnapshot.getKey());
+                                            mensaje.setContenido(m.getContenido()); // meto el contenido en el mensaje que será devuelto
+                                            mensaje.setFecha(new Date(m.getFecha())); // meto la fecha en `` ´´
+                                            mensaje.setKey(dataSnapshot.getKey()); // meto la key en `` ´´
                                         }
-                                        ((MainPresenter) presenter).userMessageHasBeenObtained(mensaje);
+                                        ((MainPresenter) presenter).userMessageHasBeenObtained(mensaje); // le devuelvo el mensaje al presentador, para que se lo pase a la vista
                                     }
 
                                     @Override
@@ -80,6 +82,10 @@ public class MessagesFirebaseManager {
                                     }
                                 });
 
+                                // este listener es el que estará a la escucha por si se recibe un nuevo mensaje en una conversación ya existente. El primer listener estará a la escucha y obtendrá los
+                                // nuevos mensajes recibidos, éste en cambio obtendra los mensajes recibidos sobre una conversación existente, para mantener el adaptador en la vista de mensajes actualizado
+
+                                // ESTE HAY QUE OPTIMIZARLO PARA QUE NO SE QUEDEN LOS LISTENERS INTERNOS VIVOS
                                 new Firebase(URL_CONVERSACIONES).child(currentUser.getKey()).child(emisor_titleAdvert).addChildEventListener(new ChildEventListener() {
                                     @Override
                                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -128,6 +134,7 @@ public class MessagesFirebaseManager {
         mFirebaseReceivedMessages.addValueEventListener(mListenerReceivedMessages);
     }
 
+    // compruebo si el mensaje que he recibido es un mensaje en respuesta a una conversación iniciada por el usuario. Si es así, elimino el mensaje de la lista de mensajes enviados sin respuesta.
     private void checkOnFirstMessageResponse(final String userKey, final String emisorKey, final String emisor_titleAdvert) {
         final String title = emisor_titleAdvert.substring(emisor_titleAdvert.indexOf("_") + 1, emisor_titleAdvert.length());
         new Firebase(URL_MSG_SIN_RESP).child(userKey).child(emisorKey).child(title).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -159,22 +166,24 @@ public class MessagesFirebaseManager {
     }
 
     private void getUserMessagesSendedWithoutAnswer() {
+        // Obtengo los mensajes que el usuario ha enviado y que aún no tienen respuesta
         new Firebase(URL_MSG_SIN_RESP).child(currentUser.getKey()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot data : dataSnapshot.getChildren()) {
-                    final String receptor = data.getKey();
-                    new Firebase(URL_MSG_SIN_RESP).child(currentUser.getKey()).child(receptor).addListenerForSingleValueEvent(new ValueEventListener() {
+                    final String receptor = data.getKey(); // obtengo el receptor
+                    new Firebase(URL_MSG_SIN_RESP).child(currentUser.getKey()).child(receptor).addListenerForSingleValueEvent(new ValueEventListener() { // voy a la rama de mensajes que le he enviado a ese receptor
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             for (DataSnapshot data2 : dataSnapshot.getChildren())
-                                new Firebase(URL_MSG_SIN_RESP).child(currentUser.getKey()).child(receptor).child(data2.getKey()).addListenerForSingleValueEvent(new ValueEventListener() {
+                                new Firebase(URL_MSG_SIN_RESP).child(currentUser.getKey()).child(receptor).child(data2.getKey()).addListenerForSingleValueEvent(new ValueEventListener() { // leo los anuncios sobre los que le he enviado el mensaje a ese receptor
                                     @Override
                                     public void onDataChange(DataSnapshot dataSnapshot) {
                                         HashMap map = dataSnapshot.getValue(HashMap.class);
-                                        String msgEnviado = (String) map.keySet().iterator().next();
+                                        String msgEnviado = (String) map.keySet().iterator().next(); // obtengo la referencia del mensaje que tiene que tener el receptor. Es decir, la referencia del mensaje que le envió en usuario
                                         final String tituloAnuncio = dataSnapshot.getKey().trim().replace("_", " ");
 
+                                        // me voy a la rama de mensajes del receptor y obtengo el último mensaje que le envío el usuario
                                         new Firebase(URL_CONVERSACIONES).child(receptor).child(msgEnviado).limitToLast(1).addListenerForSingleValueEvent(new ValueEventListener() {
                                             @Override
                                             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -186,6 +195,7 @@ public class MessagesFirebaseManager {
                                                     mensaje.setKey(dataSnapshot.getKey());
                                                     mensaje.setEmisor(currentUser);
                                                     mensaje.setTituloAnuncio(tituloAnuncio);
+                                                    // CREO QUE ESTE LISTENER ME SOBRA, LUEGO LO COMPRUEBO
                                                     new Firebase(URL_USERS).child(receptor).addListenerForSingleValueEvent(new ValueEventListener() {
                                                         @Override
                                                         public void onDataChange(DataSnapshot dataSnapshot) {
@@ -207,6 +217,8 @@ public class MessagesFirebaseManager {
                                             }
                                         });
 
+                                        // este listener sirve para mantener actualizado el adaptador. Es decir, si el usuario envía un nuevo mensaje y el receptor sigue sin responder que aparezca ese último
+                                        // mensaje enviado
                                         new Firebase(URL_CONVERSACIONES).child(receptor).child(msgEnviado).addChildEventListener(new ChildEventListener() {
                                             @Override
                                             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -276,6 +288,7 @@ public class MessagesFirebaseManager {
         });
     }
 
+    // obtengo la conversación entera sobre un anuncio concreto
     public void getUserConversation(final MessagePojo m) {
         String nodoAsunto;
         if (mFirebaseConversations != null)
@@ -306,6 +319,7 @@ public class MessagesFirebaseManager {
                 mensaje.setContenido(mAux.getContenido());
                 ((ConversationPresenter) presenter).messageHasBeenObtained(mensaje);
 
+                // SI ES UN MENSAJE SIN RESPUESTA EL BLOQUE SIGUIENTE NO SE DEBERÍA DE HACER, O ESO CREO. LUEGO LO PRUEBO
                 String nodoAsunto2 = currentUser.getKey() + "_" + m.getTituloAnuncio().trim().replace(" ", "_");
                 nodoAsunto2 = nodoAsunto2.substring(0, nodoAsunto2.length());
                 new Firebase(URL_CONVERSACIONES).child(m.getEmisor().getKey()).child(nodoAsunto2).limitToLast(MESSAGES_LIMIT_CONVER).addChildEventListener(new ChildEventListener() {
