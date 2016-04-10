@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -162,7 +163,7 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
         @Override
         protected void onPostExecute(ImagePojo imagePojo) {
             super.onPostExecute(imagePojo);
-            Picasso.with(CrearAnuncio1Activity.this).load(imagePojo.getFile()).fit().centerCrop().into(imagePojo.getImgView());
+            Picasso.with(CrearAnuncio1Activity.this).load(imagePojo.getFile()).memoryPolicy(MemoryPolicy.NO_CACHE).fit().centerCrop().into(imagePojo.getImgView());
             imagePojo.getPrb().setVisibility(View.GONE);
         }
     }
@@ -298,7 +299,7 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
 
     @Nullable
     private File guardarBitmapEnArray(Bitmap bitmap, int idImageView) {
-        File f = Imagenes.crearArchivoFoto(this, "foto_piso" + idImageView+ ".jpeg", false);
+        File f = Imagenes.crearArchivoFoto(this, "foto_piso" + idImageView + ".jpeg", false);
         switch (idImageView) {
             case R.id.imgPrincipal:
                 mImagenesAnuncio[0] = f;
