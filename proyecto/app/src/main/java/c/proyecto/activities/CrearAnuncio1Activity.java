@@ -151,11 +151,6 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
                 file = guardarBitmapEnArray(bm, getImageViewId(params[0].getImgView()));
                 //Guarda el descriptor en el objeto que se pasará al postExecute.
                 params[0].setFile(file);
-
-                //Se guarda en el array que se pasará a la siguiente actividad.
-                mImagenesAnuncio[params[0].getNumImageView()] = file;
-
-
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -167,7 +162,6 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
         protected void onPostExecute(ImagePojo imagePojo) {
             super.onPostExecute(imagePojo);
             Picasso.with(CrearAnuncio1Activity.this).load(imagePojo.getFile()).fit().centerCrop().into(imagePojo.getImgView());
-
             imagePojo.getPrb().setVisibility(View.GONE);
         }
     }
