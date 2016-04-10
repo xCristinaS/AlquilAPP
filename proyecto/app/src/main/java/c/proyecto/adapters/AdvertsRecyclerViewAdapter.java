@@ -191,10 +191,12 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
             if (anuncio != null) {
                 lblTituloAnuncio.setText(anuncio.getTitulo());
                 lblLocalizacion.setText(anuncio.getPoblacion());
-                if (anuncio.getImagenes().size() > 0)
+                if (anuncio.getImagenes().size() > 0){
                     for (String img : anuncio.getImagenes().keySet())
                         if (img.equals(Constantes.FOTO_PRINCIPAL)) // Si la key es de la imagen principal, cargo la foto
                             Picasso.with(itemView.getContext()).load(anuncio.getImagenes().get(img)).resize(anchoAproxImgAvatar, imgAvatar.getLayoutParams().height).centerCrop().into(imgAvatar);
+                } else
+                    Picasso.with(itemView.getContext()).load(R.drawable.default_user).resize(anchoAproxImgAvatar, imgAvatar.getLayoutParams().height).centerCrop().into(imgAvatar);
             }
         }
     }
@@ -219,11 +221,12 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
                 lblTituloAnuncio.setText(anuncio.getTitulo());
                 lblLocalizacion.setText(anuncio.getPoblacion());
                 lblSubs.setText(String.valueOf(anuncio.getSolicitantes().size()));
-                if (anuncio.getImagenes().size() > 0)
+                if (anuncio.getImagenes().size() > 0) {
                     for (String img : anuncio.getImagenes().keySet())
                         if (img.equals(Constantes.FOTO_PRINCIPAL)) // Si la key es de la imagen principal, cargo la foto
                             Picasso.with(itemView.getContext()).load(anuncio.getImagenes().get(img)).resize(anchoAproxImgAvatar, imgAvatar.getLayoutParams().height).centerCrop().into(imgAvatar);
-
+                } else
+                    Picasso.with(itemView.getContext()).load(R.drawable.default_user).resize(anchoAproxImgAvatar, imgAvatar.getLayoutParams().height).centerCrop().into(imgAvatar);
             }
         }
     }
