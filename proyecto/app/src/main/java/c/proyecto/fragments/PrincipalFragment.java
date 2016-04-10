@@ -113,6 +113,12 @@ public class PrincipalFragment extends Fragment {
             f.getmAdapter().removeItem(a);
     }
 
+    public void removeAdvert(Anuncio a) {
+        AdvertsRecyclerViewFragment f = (AdvertsRecyclerViewFragment) vpAdapter.getItem(1);
+        if (f.getmAdapter().getAdapter_type() == AdvertsRecyclerViewAdapter.ADAPTER_TYPE_ADVS)
+            f.getmAdapter().removeItem(a);
+    }
+
     public Usuario getUser() {
         return user;
     }

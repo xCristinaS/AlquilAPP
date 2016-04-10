@@ -248,9 +248,20 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
     }
 
     public void removeItem(Anuncio a) {
-        int position = mDatos.indexOf(a);
-        mDatos.remove(a);
-        notifyItemRemoved(position);
+        boolean stop = false;
+        int pos = mDatos.indexOf(a);
+        if (pos >= 0)
+            mDatos.remove(a);
+         else {
+            for (int i = 0; !stop && i < mDatos.size(); i++)
+                if (mDatos.get(i).getKey().equals(a.getKey())) {
+                    mDatos.remove(i);
+                    stop = true;
+                    pos = i;
+                }
+        }
+        notifyItemRemoved(pos);
+        notifyDataSetChanged();
     }
 
     public void replaceItem(Anuncio a) {
@@ -261,6 +272,8 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
                 mDatos.add(i, a);
                 stop = true;
             }
+        if (!stop)
+            mDatos.add(a);
         notifyDataSetChanged();
     }
 

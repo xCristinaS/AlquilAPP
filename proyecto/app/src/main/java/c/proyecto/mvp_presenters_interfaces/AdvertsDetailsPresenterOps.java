@@ -11,4 +11,5 @@ public interface AdvertsDetailsPresenterOps {
     void advertPublisherRequested(String anunciante);
     void onAdvertPublisherRequestedResponsed(Usuario u);
     void updateAdvert(Anuncio anuncio);
+    void userNewSubRequested(Anuncio anuncio);
 }

@@ -33,18 +33,19 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class DetallesAnuncioFragment extends Fragment implements PrestacionesAdapter.IPrestacionAdapter {
 
-
     public interface IDetallesAnuncioFragmentListener {
-
         void onImgEditClicked(Anuncio advert, Usuario user);
     }
 
-    private static final String ARG_ANUNCIO = "anuncio";
+    public interface OnImgSubrClick{
+        void onImgSubClicked(Anuncio a);
+    }
 
+    private static final String ARG_ANUNCIO = "anuncio";
     private static final String ARG_ADVERT_TYPE = "advert_type";
     private static final String ARG_USER_ANUNCIANTE = "mUserAnunciante";
-
     private static final String ARG_CURRENT_USER = "usuarioLogueado";
+
     private RelativeLayout shapeComentario;
     private ImageView imgFoto, imgTipoVivienda, imgCamas, imgMessage, imgEdit, imgSubscribe;
 
@@ -54,13 +55,11 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
     private PrestacionesAdapter mPrestacionesAdapter;
 
     private Anuncio mAnuncio;
-
     private Usuario mUserAnunciante, mCurrentUser;
     private int adverType;
 
-
     private IDetallesAnuncioFragmentListener mListener;
-
+    private OnImgSubrClick mListenerClick;
 
     public static DetallesAnuncioFragment newInstance(Anuncio anuncio, int advertType, Usuario user, Usuario currentUser) {
         Bundle args = new Bundle();
@@ -119,9 +118,8 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
         });
         imgEdit = (ImageView) getView().findViewById(R.id.imgEdit);
         imgSubscribe = (ImageView) getView().findViewById(R.id.imgSubscribe);
+
         //Se cambia el icono a subscribirse o desusbribirse dependiendo si está subscrito o no  ------------------------------------
-
-
         switch (adverType){
             case AdvertsRecyclerViewAdapter.ADAPTER_TYPE_MY_ADVS:
                 imgEdit.setVisibility(View.VISIBLE);
@@ -147,10 +145,9 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
         imgSubscribe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //`---------------------------------------------------------------------  SUBSCRIBIRSE POR HACER
+                mListenerClick.onImgSubClicked(mAnuncio);
             }
         });
-
 
         //Muestra el usuario propietario del anuncio
         imgAvatar.setOnClickListener(new View.OnClickListener() {
@@ -192,12 +189,12 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
         lblNombre.setText(mUserAnunciante.getNombre());
         if (mUserAnunciante.getFoto() != null)
             Picasso.with(getActivity()).load(mUserAnunciante.getFoto()).fit().centerCrop().error(R.drawable.default_user).into(imgAvatar);
-
         else
             Picasso.with(getActivity()).load(R.drawable.default_user).fit().centerCrop().into(imgAvatar);
 
         lblPrecio.setText(String.format("%.2f%s", mAnuncio.getPrecio(), Constantes.MONEDA));
         lblTamano.setText(mAnuncio.getTamanio() + Constantes.UNIDAD);
+
         switch (mAnuncio.getTipo_vivienda()) {
             case Constantes.HABITACION:
                 imgTipoVivienda.setImageResource(R.drawable.habitacion);
@@ -223,8 +220,6 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
             lblDescripcionNoDisponible.setVisibility(View.VISIBLE);
         else
             lblDescripcion.setText(mAnuncio.getDescripcion());
-
-
     }
 
     @Override
@@ -243,10 +238,7 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
         dialog.setView(dialogView);
         dialog.setCanceledOnTouchOutside(true);
 
-
         rvPrestaciones = (RecyclerView) dialogView.findViewById(R.id.rvPrestaciones);
-
-
         rvPrestaciones.setAdapter(new PrestacionesDetalladasAdapter(mAnuncio.getPrestaciones()));
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         rvPrestaciones.setLayoutManager(mLayoutManager);
@@ -263,12 +255,14 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
     @Override
     public void onAttach(Context context) {
         mListener = (IDetallesAnuncioFragmentListener) context;
+        mListenerClick = (OnImgSubrClick) context;
         super.onAttach(context);
     }
 
     @Override
     public void onDetach() {
         mListener = null;
+        mListenerClick = null;
         super.onDetach();
     }
 

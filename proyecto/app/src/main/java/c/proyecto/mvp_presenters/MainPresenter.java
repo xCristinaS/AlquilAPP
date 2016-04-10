@@ -92,6 +92,12 @@ public class MainPresenter implements MainPresenterOps, MyPresenter {
     }
 
     @Override
+    public void removeAdvert(Anuncio a){
+        if (activity.get() != null)
+            activity.get().removeAdvert(a);
+    }
+
+    @Override
     public void detachListeners() {
         advertsManager.detachFirebaseListeners();
         Usuario.detachFirebaseListeners();

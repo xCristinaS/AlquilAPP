@@ -168,6 +168,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
     }
 
     @Override
+    public void removeAdvert(Anuncio a){
+        Fragment f = getSupportFragmentManager().findFragmentById(R.id.frmContenido);
+        if (f instanceof PrincipalFragment)
+            ((PrincipalFragment) f).removeAdvert(a);
+    }
+
+    @Override
     protected void onDestroy() {
         mPresenter.detachListeners();
         super.onDestroy();

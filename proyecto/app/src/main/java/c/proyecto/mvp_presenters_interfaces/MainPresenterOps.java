@@ -21,5 +21,6 @@ public interface MainPresenterOps {
     void detachListeners();
     void requestUserMessages(Usuario user);
     void userMessageHasBeenObtained(MessagePojo m);
-    public void userHasBeenModified(Usuario user);
+    void userHasBeenModified(Usuario user);
+    void removeAdvert(Anuncio a);
 }

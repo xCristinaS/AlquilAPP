@@ -15,7 +15,6 @@ public class ConversationPresenter implements ConversationPresenterOps, MyPresen
 
     private static WeakReference<ConversationActivity> activity;
     private static ConversationPresenter presentador;
-
     private MessagesFirebaseManager messagesManager;
 
     private ConversationPresenter(Activity activity) {

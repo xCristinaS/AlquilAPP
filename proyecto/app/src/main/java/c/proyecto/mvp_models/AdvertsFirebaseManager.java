@@ -6,6 +6,8 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
+import java.util.HashMap;
+
 import c.proyecto.interfaces.MyPresenter;
 import c.proyecto.mvp_presenters.MainPresenter;
 import c.proyecto.pojo.Anuncio;
@@ -39,7 +41,7 @@ public class AdvertsFirebaseManager {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot data : dataSnapshot.getChildren()) {
-                    String subKey = data.getKey();
+                    String subKey = (String)data.getValue(HashMap.class).keySet().iterator().next();
                     firebaseAdvertSub.child(subKey).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
@@ -82,9 +84,10 @@ public class AdvertsFirebaseManager {
                     Anuncio a = dataSnapshot.getValue(Anuncio.class);
                     if (dataSnapshot.getKey().contains(currentUser.getKey()))
                         ((MainPresenter)presenter).userAdvertHasBeenModified(a);
-                    else if (!userSubRemoved && a.getSolicitantes().containsKey(currentUser.getKey()))
-                        ((MainPresenter)presenter).subHasBeenModified(a);
-                    else if (userSubRemoved)
+                    else if (!userSubRemoved && a.getSolicitantes().containsKey(currentUser.getKey())) {
+                        ((MainPresenter) presenter).subHasBeenModified(a);
+                        ((MainPresenter) presenter).removeAdvert(a);
+                    } else if (userSubRemoved)
                         ((MainPresenter)presenter).advertHasBeenObtained(a);
                     else
                         ((MainPresenter)presenter).adverHasBeenModified(a);
@@ -124,6 +127,16 @@ public class AdvertsFirebaseManager {
         mFirebase = new Firebase(URL_SOLICITUDES).child(currentUser.getKey()).child(a.getKey());
         mFirebase.setValue(null);
         userSubRemoved = true;
+    }
+
+    public void createNewUserSub(Anuncio a){
+        a.getSolicitantes().put(currentUser.getKey(), true);
+        Firebase mFirebase = new Firebase(URL_ANUNCIOS).child(a.getKey());
+        mFirebase.setValue(a);
+        mFirebase = new Firebase(URL_SOLICITUDES).child(currentUser.getKey());
+        HashMap<String, Boolean> map = new HashMap();
+        map.put(a.getKey(), true);
+        mFirebase.push().setValue(map);
     }
 
     public void detachFirebaseListeners() {

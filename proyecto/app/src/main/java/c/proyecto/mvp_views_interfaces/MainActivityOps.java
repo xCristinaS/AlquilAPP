@@ -17,4 +17,5 @@ public interface MainActivityOps {
     void removeSub(Anuncio a);
     void userMessageHasBeenObtained(MessagePojo m);
     void userAdvertHasBeenModified(Usuario user);
+    void removeAdvert(Anuncio a);
 }

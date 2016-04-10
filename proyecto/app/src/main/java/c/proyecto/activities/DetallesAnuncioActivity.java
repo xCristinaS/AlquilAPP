@@ -9,12 +9,13 @@ import android.support.v7.widget.Toolbar;
 import c.proyecto.R;
 import c.proyecto.adapters.AdvertsRecyclerViewAdapter;
 import c.proyecto.fragments.DetallesAnuncioFragment;
+import c.proyecto.mvp_models.AdvertsFirebaseManager;
 import c.proyecto.mvp_views_interfaces.AdvertsDetailsActivityOps;
 import c.proyecto.pojo.Anuncio;
 import c.proyecto.mvp_models.Usuario;
 import c.proyecto.mvp_presenters.AdvertsDetailsPresenter;
 
-public class DetallesAnuncioActivity extends AppCompatActivity implements AdvertsDetailsActivityOps, DetallesAnuncioFragment.IDetallesAnuncioFragmentListener {
+public class DetallesAnuncioActivity extends AppCompatActivity implements AdvertsDetailsActivityOps, DetallesAnuncioFragment.IDetallesAnuncioFragmentListener, DetallesAnuncioFragment.OnImgSubrClick {
 
 
     private static final String EXTRA_ANUNCIO = "anuncio";
@@ -44,6 +45,7 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
         anuncio = getIntent().getParcelableExtra(EXTRA_ANUNCIO);
         advertType = getIntent().getIntExtra(EXTRA_ADVERT_TYPE, -1);
         mPresenter = AdvertsDetailsPresenter.getPresentador(this);
+        mPresenter.setAdvertsManager(new AdvertsFirebaseManager(mPresenter, currentUser));
         if (advertType != AdvertsRecyclerViewAdapter.ADAPTER_TYPE_MY_ADVS)
             mPresenter.advertPublisherRequested(anuncio.getAnunciante());
         else
@@ -69,6 +71,11 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
         DetallesAnuncioFragment f = (DetallesAnuncioFragment) getSupportFragmentManager().findFragmentById(R.id.frmContenido);
         if (f != null)
             f.setmAnuncio(anuncio);
+    }
+
+    @Override
+    public void onImgSubClicked(Anuncio a) {
+        mPresenter.userNewSubRequested(a);
     }
 
     @Override
