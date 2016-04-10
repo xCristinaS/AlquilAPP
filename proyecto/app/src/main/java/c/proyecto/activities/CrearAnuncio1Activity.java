@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -297,7 +298,7 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
 
     @Nullable
     private File guardarBitmapEnArray(Bitmap bitmap, int idImageView) {
-        File f = Imagenes.crearArchivoFoto(this, "foto_piso" + bitmap.hashCode() + ".jpeg", false);
+        File f = Imagenes.crearArchivoFoto(this, "foto_piso" + idImageView+ ".jpeg", false);
         switch (idImageView) {
             case R.id.imgPrincipal:
                 mImagenesAnuncio[0] = f;
@@ -325,11 +326,5 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
                 return mImagenesAnuncio[5];
         }
         return null;
-    }
-
-    @Override
-    protected void onDestroy() {
-
-        super.onDestroy();
     }
 }

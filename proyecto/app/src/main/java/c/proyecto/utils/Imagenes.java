@@ -61,7 +61,7 @@ public final class Imagenes {
 
     public static boolean guardarBitmapEnArchivo(Bitmap bitmapFoto, File archivo) {
         try {
-            FileOutputStream flujoSalida = new FileOutputStream(archivo);
+            FileOutputStream flujoSalida = new FileOutputStream(archivo, false);
             bitmapFoto.compress(Bitmap.CompressFormat.JPEG, 100, flujoSalida);
             flujoSalida.flush();
             flujoSalida.close();
