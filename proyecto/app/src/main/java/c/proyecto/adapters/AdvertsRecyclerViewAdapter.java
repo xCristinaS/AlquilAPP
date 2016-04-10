@@ -2,6 +2,7 @@ package c.proyecto.adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Point;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.util.SparseBooleanArray;
@@ -166,9 +167,10 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
     }
 
     private static int getAnchoPantalla(Context context){
-        DisplayMetrics displaymetrics = new DisplayMetrics();
-        ((Activity)context).getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-        return displaymetrics.widthPixels;
+        Point point = new Point();
+        ((Activity)context).getWindowManager().getDefaultDisplay().getSize(point);
+
+        return point.x;
     }
 
     @Override
@@ -202,7 +204,7 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
                 if (anuncio.getImagenes().size() > 0)
                     for (String img : anuncio.getImagenes().keySet())
                         if (img.equals(Constantes.FOTO_PRINCIPAL)) // si la key es de la imagen principal, cargo la foto
-                            Picasso.with(itemView.getContext()).load(anuncio.getImagenes().get(img)).resize(anchoAproxImgAvatar, 150).centerCrop().into(imgAvatar);
+                            Picasso.with(itemView.getContext()).load(anuncio.getImagenes().get(img)).resize(anchoAproxImgAvatar, imgAvatar.getLayoutParams().height).centerCrop().into(imgAvatar);
             }
         }
     }
@@ -230,7 +232,8 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
                 if (anuncio.getImagenes().size() > 0)
                     for (String img : anuncio.getImagenes().keySet())
                         if (img.equals(Constantes.FOTO_PRINCIPAL)) // si la key es de la imagen principal, cargo la foto
-                            Picasso.with(itemView.getContext()).load(anuncio.getImagenes().get(img)).resize(anchoAproxImgAvatar, 150).centerCrop().into(imgAvatar);
+                            Picasso.with(itemView.getContext()).load(anuncio.getImagenes().get(img)).resize(anchoAproxImgAvatar, imgAvatar.getLayoutParams().height).centerCrop().into(imgAvatar);
+
             }
         }
     }
