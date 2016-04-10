@@ -27,6 +27,7 @@ public class MessagesFirebaseManager {
     private static Firebase mFirebaseReceivedMessages, mFirebaseConversations, mFirebaseMessagesWithoutAnswer;
     private static ValueEventListener  mListenerMessagesWithoutAnswer;
     private static ChildEventListener mListenerConversation, mListenerReceivedMessages;
+    private HashMap<Firebase, ChildEventListener> listenerInternosMessages;
 
     private MyPresenter presenter;
     private Usuario currentUser;
@@ -34,6 +35,7 @@ public class MessagesFirebaseManager {
     public MessagesFirebaseManager(MyPresenter presenter, Usuario currentUser) {
         this.presenter = presenter;
         this.currentUser = currentUser;
+        listenerInternosMessages = new HashMap<>();
     }
 
     public void initializeMessagesListeners() {
@@ -83,9 +85,8 @@ public class MessagesFirebaseManager {
 
                             // este listener es el que estará a la escucha por si se recibe un nuevo mensaje en una conversación ya existente. El primer listener estará a la escucha y obtendrá los
                             // nuevos mensajes recibidos, éste en cambio obtendra los mensajes recibidos sobre una conversación existente, para mantener el adaptador en la vista de mensajes actualizado
-
-                            // ESTE HAY QUE OPTIMIZARLO PARA QUE NO SE QUEDEN LOS LISTENERS INTERNOS VIVOS
-                            new Firebase(URL_CONVERSACIONES).child(currentUser.getKey()).child(emisor_titleAdvert).addChildEventListener(new ChildEventListener() {
+                            Firebase fInterno = new Firebase(URL_CONVERSACIONES).child(currentUser.getKey()).child(emisor_titleAdvert);
+                            ChildEventListener listenerInterno = new ChildEventListener() {
                                 @Override
                                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                                     Message m = dataSnapshot.getValue(Message.class);
@@ -114,7 +115,9 @@ public class MessagesFirebaseManager {
                                 public void onCancelled(FirebaseError firebaseError) {
 
                                 }
-                            });
+                            };
+                            fInterno.addChildEventListener(listenerInterno);
+                            listenerInternosMessages.put(fInterno, listenerInterno);
                         }
 
                         @Override
@@ -431,6 +434,12 @@ public class MessagesFirebaseManager {
             mListenerMessagesWithoutAnswer = null;
             mFirebaseMessagesWithoutAnswer = null;
         }
+
+        for (Firebase f : listenerInternosMessages.keySet())
+            f.removeEventListener(listenerInternosMessages.get(f));
+
+        listenerInternosMessages.clear();
+        listenerInternosMessages = null;
     }
 
 }
