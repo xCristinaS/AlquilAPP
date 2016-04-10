@@ -242,15 +242,16 @@
             android:visibility="gone"
             />
 
-        <!-- Btn Subscribirse -->
+        <!-- Btn Editar -->
         <ImageView
             android:id="@+id/imgEdit"
             android:layout_width="35dp"
             android:layout_height="35dp"
-            android:layout_alignRight="@id/imgMessage"
-            android:layout_alignEnd="@id/imgMessage"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
             android:layout_below="@id/imgFoto"
             android:layout_marginTop="25dp"
+            android:layout_marginRight="25dp"
             android:src="@drawable/ic_action_edit"
             android:visibility="gone"
             />

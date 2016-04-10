@@ -119,13 +119,23 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
         });
         imgEdit = (ImageView) getView().findViewById(R.id.imgEdit);
         imgSubscribe = (ImageView) getView().findViewById(R.id.imgSubscribe);
-        
+        //Se cambia el icono a subscribirse o desusbribirse dependiendo si está subscrito o no  ------------------------------------
 
-        if(adverType == AdvertsRecyclerViewAdapter.ADAPTER_TYPE_MY_ADVS){
-            imgEdit.setVisibility(View.VISIBLE);
-            imgMessage.setVisibility(View.GONE);
-        }else if( adverType == AdvertsRecyclerViewAdapter.ADAPTER_TYPE_ADVS)
-            imgSubscribe.setVisibility(View.VISIBLE);
+
+        switch (adverType){
+            case AdvertsRecyclerViewAdapter.ADAPTER_TYPE_MY_ADVS:
+                imgEdit.setVisibility(View.VISIBLE);
+                imgMessage.setVisibility(View.GONE);
+                break;
+            case AdvertsRecyclerViewAdapter.ADAPTER_TYPE_ADVS:
+                imgSubscribe.setVisibility(View.VISIBLE);
+                break;
+            case AdvertsRecyclerViewAdapter.ADAPTER_TYPE_SUBS:
+                imgSubscribe.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_unsubscribe));
+                imgSubscribe.setVisibility(View.VISIBLE);
+                break;
+        }
+
         //Permite editar el anuncio
         imgEdit.setOnClickListener(new View.OnClickListener() {
             @Override
