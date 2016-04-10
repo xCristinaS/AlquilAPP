@@ -119,8 +119,6 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
         });
         imgEdit = (ImageView) getView().findViewById(R.id.imgEdit);
         imgSubscribe = (ImageView) getView().findViewById(R.id.imgSubscribe);
-        //Se cambia el icono a subscribirse o desusbribirse dependiendo si está subscrito o no  ------------------------------------
-
 
         switch (adverType){
             case AdvertsRecyclerViewAdapter.ADAPTER_TYPE_MY_ADVS:
