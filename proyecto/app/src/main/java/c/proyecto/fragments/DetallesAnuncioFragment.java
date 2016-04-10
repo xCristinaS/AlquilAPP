@@ -184,7 +184,7 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
 
         //Si no hay ninguna prestación se le cambiará el color al shape del comentario al color del fondo
         if (mAnuncio.getPrestaciones().size() == 0)
-            shapeComentario.setBackgroundColor(getResources().getColor(android.R.color.white));
+        //    shapeComentario.setBackgroundColor(getResources().getColor(android.R.color.white));
 
         lblNombre.setText(mUserAnunciante.getNombre());
         if (mUserAnunciante.getFoto() != null)
