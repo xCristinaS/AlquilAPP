@@ -19,31 +19,7 @@
             android:src="@drawable/degradado_negro"
             android:layout_alignBottom="@id/imgFoto"/>
 
-        <!-- Btn EDITAR-->
-        <ImageView
-            android:id="@+id/imgEdit"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:src="@drawable/ic_action_edit"
-            android:layout_above="@id/degraded"
-            android:layout_marginLeft="10dp"
-            android:layout_marginStart="10dp"
-            android:visibility="gone"
-            />
 
-        <!-- Btn Subscribirse -->
-        <ImageView
-            android:id="@+id/imgSubscribe"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="20dp"
-            android:layout_marginEnd="20dp"
-            android:layout_above="@id/degraded"
-            android:src="@drawable/subscribirse"
-            android:visibility="gone"
-            />
 
         <RelativeLayout
             android:id="@+id/groupAvatar"
@@ -242,15 +218,42 @@
         <!-- Icono de Mensaje -->
         <ImageView
             android:id="@+id/imgMessage"
-            android:layout_width="28dp"
-            android:layout_height="28dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_below="@id/imgFoto"
-            android:layout_marginTop="77dp"
+            android:layout_marginTop="72dp"
             android:layout_marginRight="25dp"
             android:src="@drawable/ic_nav_messages"
 
+            />
+
+        <!-- Btn Subscribirse -->
+        <ImageView
+            android:id="@+id/imgSubscribe"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_alignRight="@id/imgMessage"
+            android:layout_alignEnd="@id/imgMessage"
+            android:layout_below="@id/imgFoto"
+            android:layout_marginTop="25dp"
+            android:src="@drawable/ic_subscribe"
+            android:visibility="gone"
+            />
+
+        <!-- Btn Editar -->
+        <ImageView
+            android:id="@+id/imgEdit"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/imgFoto"
+            android:layout_marginTop="25dp"
+            android:layout_marginRight="25dp"
+            android:src="@drawable/ic_action_edit"
+            android:visibility="gone"
             />
 
         <!-- Prestaciones -->
