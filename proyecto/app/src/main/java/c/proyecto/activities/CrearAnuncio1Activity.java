@@ -297,7 +297,7 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
 
     @Nullable
     private File guardarBitmapEnArray(Bitmap bitmap, int idImageView) {
-        File f = mImagenesAnuncio[0] = Imagenes.crearArchivoFoto(this, "foto_piso" + bitmap.hashCode() + ".jpeg", false);
+        File f = Imagenes.crearArchivoFoto(this, "foto_piso" + bitmap.hashCode() + ".jpeg", false);
         switch (idImageView) {
             case R.id.imgPrincipal:
                 mImagenesAnuncio[0] = f;
@@ -325,5 +325,11 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
                 return mImagenesAnuncio[5];
         }
         return null;
+    }
+
+    @Override
+    protected void onDestroy() {
+
+        super.onDestroy();
     }
 }
