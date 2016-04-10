@@ -123,9 +123,9 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
 
         if(adverType == AdvertsRecyclerViewAdapter.ADAPTER_TYPE_MY_ADVS){
             imgEdit.setVisibility(View.VISIBLE);
-            imgSubscribe.setVisibility(View.VISIBLE);
             imgMessage.setVisibility(View.GONE);
-        }
+        }else if( adverType == AdvertsRecyclerViewAdapter.ADAPTER_TYPE_ADVS)
+            imgSubscribe.setVisibility(View.VISIBLE);
         //Permite editar el anuncio
         imgEdit.setOnClickListener(new View.OnClickListener() {
             @Override
