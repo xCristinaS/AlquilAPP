@@ -132,10 +132,22 @@ public class MessagesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
         }
 
         public void onBind(final MessagePojo m) {
-            SimpleDateFormat fecha = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault());
-            SimpleDateFormat hora = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
-            //long dia = TimeUnit.DAYS.toMillis(1);
-            //Date hoy = new Date();
+            SimpleDateFormat fecha = new SimpleDateFormat("dd/MM", Locale.getDefault());
+            SimpleDateFormat hora = new SimpleDateFormat("HH:mm", Locale.getDefault());
+
+            // Consigue el long del día de hoy a las 00:00
+            Calendar cal = Calendar.getInstance();
+            cal.set(Calendar.HOUR_OF_DAY, 0);
+            cal.set(Calendar.MINUTE, 0);
+            cal.set(Calendar.SECOND, 0);
+            Date hoy = cal.getTime();
+
+            //Si la fecha del mensaje es posterior a las 00:00 de hoy, se mostrará solo la hora del mensaje
+            if (m.getFecha().getTime() >= hoy.getTime())
+                lblFecha.setText(hora.format(m.getFecha()));
+            else//sino la fecha
+                lblFecha.setText(fecha.format(m.getFecha()));
+
             if (m.getEmisor().getFoto() != null)
                 Picasso.with(itemView.getContext()).load(m.getEmisor().getFoto()).into(imgEmisor);
             else
@@ -144,10 +156,7 @@ public class MessagesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
             lblTituloAnuncio.setText(m.getTituloAnuncio());
             lblContenido.setText(m.getContenido());
             lblNombreEmisor.setText(m.getEmisor().getNombre());
-            //if (hoy.getTime() - m.getFecha().getTime() > dia)
-            lblFecha.setText(fecha.format(m.getFecha()));
-            //else
-            //  lblFecha.setText(hora.format(m.getFecha()));
+
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -160,8 +169,6 @@ public class MessagesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
 
     class ChatViewHolder extends RecyclerView.ViewHolder {
 
-        private final CardView cvItemMessage;
-        private final RelativeLayout groupItemMessage;
         private TextView lblMessage, lblDate;
 
 
@@ -169,8 +176,6 @@ public class MessagesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
             super(itemView);
             lblMessage = (TextView) itemView.findViewById(R.id.lblMessage);
             lblDate = (TextView) itemView.findViewById(R.id.lblDate);
-            cvItemMessage = (CardView) itemView.findViewById(R.id.cvItemMessage);
-            groupItemMessage = (RelativeLayout) itemView.findViewById(R.id.groupItemMessage);
         }
 
         public void onBind(final MessagePojo m) {
@@ -214,6 +219,8 @@ public class MessagesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
             });
         }
     }
+
+
 
     private void toggleMessages(MessageAdapterHeader tipo) {
         int posicion = mDatos.indexOf(tipo);
