@@ -4,8 +4,7 @@ import android.os.Parcel;
 
 import java.util.Date;
 
-import c.proyecto.interfaces.IMessageAdapter;
-import c.proyecto.models.Usuario;
+import c.proyecto.mvp_models.Usuario;
 
 /**
  * Created by Cristina on 01/04/2016.

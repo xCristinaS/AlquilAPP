@@ -1,4 +1,4 @@
-package c.proyecto.fragments;
+package c.proyecto.dialog_fragments;
 
 import android.app.Dialog;
 import android.content.Context;

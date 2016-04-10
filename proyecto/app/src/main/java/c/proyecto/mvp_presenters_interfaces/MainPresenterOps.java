@@ -1,15 +1,16 @@
-package c.proyecto.interfaces;
+package c.proyecto.mvp_presenters_interfaces;
 
-import java.util.ArrayList;
-
-import c.proyecto.models.Anuncio;
-import c.proyecto.models.Usuario;
+import c.proyecto.pojo.Anuncio;
+import c.proyecto.mvp_models.Usuario;
 import c.proyecto.pojo.MessagePojo;
 
 /**
  * Created by Cristina on 20/03/2016.
  */
-public interface MainActivityOps {
+public interface MainPresenterOps {
+    void removeUserAdvert(Anuncio a);
+    void removeUserSub(Anuncio a);
+    void initializeFirebaseListeners(Usuario usuario);
     void advertHasBeenObtained(Anuncio a);
     void adverHasBeenModified(Anuncio a);
     void subHasBeenObtained(Anuncio a);
@@ -17,6 +18,8 @@ public interface MainActivityOps {
     void userAdvertHasBeenObtained(Anuncio a);
     void userAdvertHasBeenModified(Anuncio a);
     void removeSub(Anuncio a);
+    void detachListeners();
+    void requestUserMessages(Usuario user);
     void userMessageHasBeenObtained(MessagePojo m);
-    void userAdvertHasBeenModified(Usuario user);
+    public void userHasBeenModified(Usuario user);
 }

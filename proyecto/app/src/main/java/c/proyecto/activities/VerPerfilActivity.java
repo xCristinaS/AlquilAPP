@@ -1,33 +1,22 @@
 package c.proyecto.activities;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.media.Image;
-import android.os.AsyncTask;
-import android.os.Parcelable;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-import org.w3c.dom.Text;
-
-import java.io.File;
 import java.util.ArrayList;
 
 import c.proyecto.R;
-import c.proyecto.fragments.CaracteristicasUsuarioDialogFragment;
-import c.proyecto.models.Anuncio;
-import c.proyecto.models.Usuario;
-import c.proyecto.utils.Imagenes;
+import c.proyecto.dialog_fragments.CaracteristicasUsuarioDialogFragment;
+import c.proyecto.mvp_models.Usuario;
 
 public class VerPerfilActivity extends AppCompatActivity {
 

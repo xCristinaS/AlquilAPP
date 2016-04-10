@@ -14,17 +14,15 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import c.proyecto.Constantes;
 import c.proyecto.R;
-import c.proyecto.models.Anuncio;
-import c.proyecto.models.Usuario;
-import c.proyecto.presenters.MainPresenter;
+import c.proyecto.pojo.Anuncio;
+import c.proyecto.mvp_models.Usuario;
+import c.proyecto.mvp_presenters.MainPresenter;
 
 
 public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -150,7 +148,7 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
         if (adapter_type == ADAPTER_TYPE_MY_ADVS)
             presenter.removeUserAdvert(mDatos.get(pos));
         else
-            presenter.removeUserSub(mDatos.get(pos), user);
+            presenter.removeUserSub(mDatos.get(pos));
         removeItem(mDatos.get(pos));
         notifyItemRemoved(pos);
     }

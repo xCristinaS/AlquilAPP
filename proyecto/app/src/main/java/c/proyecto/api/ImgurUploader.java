@@ -1,19 +1,16 @@
 package c.proyecto.api;
 
-import android.os.AsyncTask;
-
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 import c.proyecto.Constantes;
 import c.proyecto.interfaces.MyModel;
 import c.proyecto.interfaces.MyPresenter;
-import c.proyecto.models.Anuncio;
-import c.proyecto.models.Usuario;
-import c.proyecto.presenters.AdvertsDetailsPresenter;
-import c.proyecto.presenters.CrearEditarAnuncioPresenter;
-import c.proyecto.presenters.EditProfilePresenter;
+import c.proyecto.pojo.Anuncio;
+import c.proyecto.mvp_models.Usuario;
+import c.proyecto.mvp_presenters.AdvertsDetailsPresenter;
+import c.proyecto.mvp_presenters.CrearEditarAnuncioPresenter;
+import c.proyecto.mvp_presenters.EditProfilePresenter;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import retrofit2.Call;

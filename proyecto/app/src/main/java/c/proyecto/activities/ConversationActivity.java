@@ -14,12 +14,13 @@ import java.util.Date;
 import c.proyecto.R;
 import c.proyecto.adapters.MessagesRecyclerViewAdapter;
 import c.proyecto.fragments.MessagesFragment;
-import c.proyecto.interfaces.ConversationActivityOps;
-import c.proyecto.models.Anuncio;
-import c.proyecto.models.Usuario;
+import c.proyecto.mvp_models.MessagesFirebaseManager;
+import c.proyecto.mvp_views_interfaces.ConversationActivityOps;
+import c.proyecto.pojo.Anuncio;
+import c.proyecto.mvp_models.Usuario;
 import c.proyecto.pojo.MessagePojo;
 import c.proyecto.pojo.MessagePojoWithoutAnswer;
-import c.proyecto.presenters.ConversationPresenter;
+import c.proyecto.mvp_presenters.ConversationPresenter;
 
 public class ConversationActivity extends AppCompatActivity implements ConversationActivityOps, MessagesRecyclerViewAdapter.ConversationManager {
 
@@ -54,14 +55,16 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
 
     private void initViews() {
         mPresenter = ConversationPresenter.getPresentador(this);
+        mPresenter.setMessagesManager(new MessagesFirebaseManager(mPresenter, user));
+
         if (mensaje != null) {
-            mPresenter.userConversationRequested(user, mensaje);
+            mPresenter.userConversationRequested(mensaje);
             getSupportFragmentManager().beginTransaction().replace(R.id.frmContenido, MessagesFragment.newInstance(true, mensaje.getKeyReceptor())).commit();
         } else if (anuncio != null) {
             MainActivity.getmPresenter().requestUserMessages(user);
             MessagePojoWithoutAnswer m = new MessagePojoWithoutAnswer(user, anuncio.getTitulo(), null, new Date());
             m.setKeyReceptor(anuncio.getAnunciante());
-            mPresenter.userConversationRequested(user, m);
+            mPresenter.userConversationRequested(m);
             getSupportFragmentManager().beginTransaction().replace(R.id.frmContenido, MessagesFragment.newInstance(true, anuncio.getAnunciante())).commit();
         }
         imgEnviar = (ImageView) findViewById(R.id.imgEnviar);
@@ -102,6 +105,7 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
     @Override
     protected void onDestroy() {
         mPresenter.detachFirebaseListeners();
+        MainActivity.getmPresenter().requestUserMessages(user);
         super.onDestroy();
     }
 

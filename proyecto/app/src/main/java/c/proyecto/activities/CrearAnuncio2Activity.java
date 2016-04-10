@@ -23,12 +23,13 @@ import c.proyecto.Constantes;
 import c.proyecto.R;
 import c.proyecto.adapters.PrestacionesAdapter;
 import c.proyecto.api.ImgurUploader;
-import c.proyecto.fragments.SeleccionPrestacionesDialogFragment;
+import c.proyecto.dialog_fragments.SeleccionPrestacionesDialogFragment;
 import c.proyecto.interfaces.MyPresenter;
-import c.proyecto.models.Anuncio;
-import c.proyecto.models.Usuario;
+import c.proyecto.mvp_models.AdvertsFirebaseManager;
+import c.proyecto.pojo.Anuncio;
+import c.proyecto.mvp_models.Usuario;
 import c.proyecto.pojo.Prestacion;
-import c.proyecto.presenters.CrearEditarAnuncioPresenter;
+import c.proyecto.mvp_presenters.CrearEditarAnuncioPresenter;
 
 public class CrearAnuncio2Activity extends AppCompatActivity implements PrestacionesAdapter.IPrestacionAdapter, SeleccionPrestacionesDialogFragment.ICallBackOnDismiss {
 
@@ -99,6 +100,7 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
         mAnuncio = getIntent().getParcelableExtra(EXTRA_ANUNCIO);
         user = getIntent().getParcelableExtra(EXTRA_USUARIO);
         mPresenter = CrearEditarAnuncioPresenter.getPresentador(this);
+        mPresenter.setAdvertsManager(new AdvertsFirebaseManager(mPresenter, user));
 
         //Si se entra creando
         if (mAnuncio == null) {

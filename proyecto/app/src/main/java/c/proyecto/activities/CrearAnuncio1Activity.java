@@ -28,9 +28,10 @@ import java.util.Locale;
 
 import c.proyecto.Constantes;
 import c.proyecto.R;
-import c.proyecto.models.Anuncio;
-import c.proyecto.models.Usuario;
 import c.proyecto.pojo.ImagePojo;
+import c.proyecto.pojo.Anuncio;
+import c.proyecto.mvp_models.Usuario;
+
 import c.proyecto.utils.Imagenes;
 
 public class CrearAnuncio1Activity extends AppCompatActivity {

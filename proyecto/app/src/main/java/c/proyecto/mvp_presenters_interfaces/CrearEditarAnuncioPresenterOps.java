@@ -1,6 +1,6 @@
-package c.proyecto.interfaces;
+package c.proyecto.mvp_presenters_interfaces;
 
-import c.proyecto.models.Anuncio;
+import c.proyecto.pojo.Anuncio;
 
 /**
  * Created by Cristina on 27/03/2016.

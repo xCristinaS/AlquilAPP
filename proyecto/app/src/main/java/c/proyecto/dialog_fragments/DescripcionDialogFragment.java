@@ -1,7 +1,6 @@
-package c.proyecto.fragments;
+package c.proyecto.dialog_fragments;
 
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatDialogFragment;
@@ -13,7 +12,7 @@ import android.widget.ImageView;
 import java.util.ArrayList;
 
 import c.proyecto.R;
-import c.proyecto.models.Usuario;
+import c.proyecto.mvp_models.Usuario;
 
 
 public class DescripcionDialogFragment extends AppCompatDialogFragment {

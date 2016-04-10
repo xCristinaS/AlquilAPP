@@ -1,4 +1,4 @@
-package c.proyecto.presenters;
+package c.proyecto.mvp_presenters;
 
 import android.app.Activity;
 
@@ -6,8 +6,8 @@ import java.lang.ref.WeakReference;
 
 import c.proyecto.activities.RegistroActivity;
 import c.proyecto.interfaces.MyPresenter;
-import c.proyecto.interfaces.RegistroPresenterOps;
-import c.proyecto.models.Usuario;
+import c.proyecto.mvp_presenters_interfaces.RegistroPresenterOps;
+import c.proyecto.mvp_models.Usuario;
 
 
 public class RegistroPresenter implements RegistroPresenterOps, MyPresenter {

@@ -7,9 +7,9 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import c.proyecto.R;
-import c.proyecto.interfaces.RegistroActivityOps;
-import c.proyecto.models.Usuario;
-import c.proyecto.presenters.RegistroPresenter;
+import c.proyecto.mvp_views_interfaces.RegistroActivityOps;
+import c.proyecto.mvp_models.Usuario;
+import c.proyecto.mvp_presenters.RegistroPresenter;
 
 public class RegistroActivity extends AppCompatActivity implements RegistroActivityOps {
 

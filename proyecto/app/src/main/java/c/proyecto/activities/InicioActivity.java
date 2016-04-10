@@ -11,18 +11,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
-import com.firebase.client.Firebase;
 import com.github.florent37.materialtextfield.MaterialTextField;
-
-import java.util.Date;
 
 import c.proyecto.Constantes;
 
 import c.proyecto.R;
-import c.proyecto.interfaces.InicioActivityOps;
-import c.proyecto.models.Message;
-import c.proyecto.models.Usuario;
-import c.proyecto.presenters.InicioPresenter;
+import c.proyecto.mvp_views_interfaces.InicioActivityOps;
+import c.proyecto.mvp_models.Usuario;
+import c.proyecto.mvp_presenters.InicioPresenter;
 
 public class InicioActivity extends AppCompatActivity implements InicioActivityOps {
 
@@ -86,7 +82,6 @@ public class InicioActivity extends AppCompatActivity implements InicioActivityO
     @Override
     public void enter(Usuario u) {
         SharedPreferences.Editor editor = preferences.edit();
-
 
         if(u != null){
             //Guardará en las preferencias el usuario para la próxima ves que entre.

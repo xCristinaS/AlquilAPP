@@ -1,23 +1,22 @@
-package c.proyecto.presenters;
+package c.proyecto.mvp_presenters;
 
 import android.app.Activity;
 
 import java.lang.ref.WeakReference;
 
 import c.proyecto.activities.ConversationActivity;
-import c.proyecto.interfaces.ConversationPresenterOps;
+import c.proyecto.mvp_models.MessagesFirebaseManager;
+import c.proyecto.mvp_presenters_interfaces.ConversationPresenterOps;
 import c.proyecto.interfaces.MyPresenter;
-import c.proyecto.models.Message;
-import c.proyecto.models.Usuario;
+import c.proyecto.mvp_models.Usuario;
 import c.proyecto.pojo.MessagePojo;
 
-/**
- * Created by Cristina on 24/03/2016.
- */
 public class ConversationPresenter implements ConversationPresenterOps, MyPresenter {
 
     private static WeakReference<ConversationActivity> activity;
     private static ConversationPresenter presentador;
+
+    private MessagesFirebaseManager messagesManager;
 
     private ConversationPresenter(Activity activity) {
         this.activity = new WeakReference<>((ConversationActivity) activity);
@@ -32,8 +31,8 @@ public class ConversationPresenter implements ConversationPresenterOps, MyPresen
     }
 
     @Override
-    public void userConversationRequested(Usuario u, MessagePojo mensaje) {
-        Message.getUserConversation(u, mensaje, this);
+    public void userConversationRequested(MessagePojo mensaje) {
+        messagesManager.getUserConversation(mensaje);
     }
 
     @Override
@@ -44,16 +43,20 @@ public class ConversationPresenter implements ConversationPresenterOps, MyPresen
 
     @Override
     public void sendMessage(MessagePojo mensaje, String keyReceptor, boolean isFirstMessageSended) {
-        Message.sendMessage(mensaje, keyReceptor, isFirstMessageSended);
+        messagesManager.sendMessage(mensaje, keyReceptor, isFirstMessageSended);
     }
 
     @Override
     public void detachFirebaseListeners() {
-        Message.detachConversationListeners();
+        messagesManager.detachConversationListeners();
     }
 
     @Override
     public void removeMessage(MessagePojo m) {
-        Message.removeMessage(m);
+        messagesManager.removeMessage(m);
+    }
+
+    public void setMessagesManager(MessagesFirebaseManager messagesManager) {
+        this.messagesManager = messagesManager;
     }
 }

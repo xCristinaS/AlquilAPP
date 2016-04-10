@@ -5,15 +5,14 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 
 import c.proyecto.R;
 import c.proyecto.adapters.AdvertsRecyclerViewAdapter;
 import c.proyecto.fragments.DetallesAnuncioFragment;
-import c.proyecto.interfaces.AdvertsDetailsActivityOps;
-import c.proyecto.models.Anuncio;
-import c.proyecto.models.Usuario;
-import c.proyecto.presenters.AdvertsDetailsPresenter;
+import c.proyecto.mvp_views_interfaces.AdvertsDetailsActivityOps;
+import c.proyecto.pojo.Anuncio;
+import c.proyecto.mvp_models.Usuario;
+import c.proyecto.mvp_presenters.AdvertsDetailsPresenter;
 
 public class DetallesAnuncioActivity extends AppCompatActivity implements AdvertsDetailsActivityOps, DetallesAnuncioFragment.IDetallesAnuncioFragmentListener{
 

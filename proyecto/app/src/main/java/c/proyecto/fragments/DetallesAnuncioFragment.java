@@ -27,8 +27,8 @@ import c.proyecto.activities.VerPerfilActivity;
 import c.proyecto.adapters.AdvertsRecyclerViewAdapter;
 import c.proyecto.adapters.PrestacionesAdapter;
 import c.proyecto.adapters.PrestacionesDetalladasAdapter;
-import c.proyecto.models.Anuncio;
-import c.proyecto.models.Usuario;
+import c.proyecto.pojo.Anuncio;
+import c.proyecto.mvp_models.Usuario;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class DetallesAnuncioFragment extends Fragment implements PrestacionesAdapter.IPrestacionAdapter {
