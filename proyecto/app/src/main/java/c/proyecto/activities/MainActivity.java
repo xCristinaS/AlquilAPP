@@ -244,6 +244,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
             case R.id.eliminar:
                 adapter.removeSelections();
                 adapter.clearAllSelections();
+                adapter.disableMultiDeletionMode();
                 toolbar.getMenu().findItem(R.id.eliminar).setVisible(false);
                 toolbar.getMenu().findItem(R.id.limpiar).setVisible(false);
                 return true;

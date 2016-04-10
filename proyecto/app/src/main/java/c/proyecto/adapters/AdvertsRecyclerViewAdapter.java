@@ -145,15 +145,6 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
         return items;
     }
 
-    private void removeItem(int pos) {
-        if (adapter_type == ADAPTER_TYPE_MY_ADVS)
-            presenter.removeUserAdvert(mDatos.get(pos));
-        else
-            presenter.removeUserSub(mDatos.get(pos));
-        removeItem(mDatos.get(pos));
-        notifyItemRemoved(pos);
-    }
-
     public void disableMultiDeletionMode() {
         multiDeletionModeActivated = false;
     }
@@ -247,6 +238,16 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
         if (!stop)
             mDatos.add(a);
         notifyItemInserted(mDatos.indexOf(a));
+        notifyDataSetChanged();
+    }
+
+
+    private void removeItem(int pos) {
+        if (adapter_type == ADAPTER_TYPE_MY_ADVS)
+            presenter.removeUserAdvert(mDatos.get(pos));
+        else
+            presenter.removeUserSub(mDatos.get(pos));
+        removeItem(mDatos.get(pos));
     }
 
     public void removeItem(Anuncio a) {

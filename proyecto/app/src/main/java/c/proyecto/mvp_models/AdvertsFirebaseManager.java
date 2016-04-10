@@ -89,6 +89,7 @@ public class AdvertsFirebaseManager {
                         ((MainPresenter) presenter).removeAdvert(a);
                     } else if (userSubRemoved) {
                         ((MainPresenter) presenter).advertHasBeenObtained(a);
+                        ((MainPresenter) presenter).removeSub(a);
                     } else
                         ((MainPresenter)presenter).adverHasBeenModified(a);
 
