@@ -326,26 +326,4 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
         }
         return null;
     }
-
-    @Override
-    public void finish() {
-        for (int i = 0; i < mImagenesAnuncio.length; i++)
-            if (mImagenesAnuncio[i] != null)
-                if (mImagenesAnuncio[i].exists()) {
-                    mImagenesAnuncio[i].setWritable(true);
-                    mImagenesAnuncio[i].delete();
-                }
-        super.finish();
-    }
-
-    @Override
-    protected void onDestroy() {
-        for (int i = 0; i < mImagenesAnuncio.length; i++)
-            if (mImagenesAnuncio[i] != null)
-                if (mImagenesAnuncio[i].exists()) {
-                    mImagenesAnuncio[i].setWritable(true);
-                    mImagenesAnuncio[i].delete();
-                }
-        super.onDestroy();
-    }
 }
