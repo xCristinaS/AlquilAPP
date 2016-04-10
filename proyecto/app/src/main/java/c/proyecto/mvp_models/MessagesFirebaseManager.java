@@ -341,8 +341,7 @@ public class MessagesFirebaseManager {
                 mensaje.setFecha(new Date(mAux.getFecha()));
                 mensaje.setContenido(mAux.getContenido());
                 ((ConversationPresenter) presenter).messageHasBeenObtained(mensaje);
-
-                // SI ES UN MENSAJE SIN RESPUESTA EL BLOQUE SIGUIENTE NO SE DEBERÍA DE HACER, O ESO CREO. LUEGO LO PRUEBO
+                
                 String nodoAsunto2 = currentUser.getKey() + "_" + m.getTituloAnuncio().trim().replace(" ", "_");
                 nodoAsunto2 = nodoAsunto2.substring(0, nodoAsunto2.length());
 
