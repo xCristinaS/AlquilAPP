@@ -169,7 +169,6 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
     private static int getAnchoPantalla(Context context){
         Point point = new Point();
         ((Activity)context).getWindowManager().getDefaultDisplay().getSize(point);
-
         return point.x;
     }
 
@@ -203,7 +202,7 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
                 lblLocalizacion.setText(anuncio.getPoblacion());
                 if (anuncio.getImagenes().size() > 0)
                     for (String img : anuncio.getImagenes().keySet())
-                        if (img.equals(Constantes.FOTO_PRINCIPAL)) // si la key es de la imagen principal, cargo la foto
+                        if (img.equals(Constantes.FOTO_PRINCIPAL)) // Si la key es de la imagen principal, cargo la foto
                             Picasso.with(itemView.getContext()).load(anuncio.getImagenes().get(img)).resize(anchoAproxImgAvatar, imgAvatar.getLayoutParams().height).centerCrop().into(imgAvatar);
             }
         }
@@ -231,7 +230,7 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
                 lblSubs.setText(String.valueOf(anuncio.getSolicitantes().size()));
                 if (anuncio.getImagenes().size() > 0)
                     for (String img : anuncio.getImagenes().keySet())
-                        if (img.equals(Constantes.FOTO_PRINCIPAL)) // si la key es de la imagen principal, cargo la foto
+                        if (img.equals(Constantes.FOTO_PRINCIPAL)) // Si la key es de la imagen principal, cargo la foto
                             Picasso.with(itemView.getContext()).load(anuncio.getImagenes().get(img)).resize(anchoAproxImgAvatar, imgAvatar.getLayoutParams().height).centerCrop().into(imgAvatar);
 
             }

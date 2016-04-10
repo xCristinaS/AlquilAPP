@@ -72,10 +72,12 @@ public class MessagesFragment extends Fragment {
 
     public void addItem(MessagePojo m) {
         mAdapter.addItem(m);
+        // si no estoy en el chat, que se posicione en el último mensaje agregado
         if (!isAConversation)
-            rvMessages.scrollToPosition(mAdapter.getmDatos().indexOf(m)); // si no estoy en el chat, que se posicione en el último mensaje agregado
+            rvMessages.scrollToPosition(mAdapter.getmDatos().indexOf(m));
         else
-            rvMessages.scrollToPosition(0); // si estoy en el chat, que se posicione abajo, en el último mensaje recibido
+            // si estoy en el chat, que se posicione abajo, en el último mensaje recibido
+            rvMessages.scrollToPosition(0);
     }
 
     @Override
