@@ -150,7 +150,6 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
                     mListenerClick.onImgSubClicked(mAnuncio);
                 else {
                     mListenerClick.onImgUnSubClicked(mAnuncio);
-                    getActivity().finish();
                 }
             }
         });

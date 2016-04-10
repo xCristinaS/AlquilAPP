@@ -124,21 +124,7 @@ public class AdvertsFirebaseManager {
     public void removeUserSub(final Anuncio a) {
         Firebase mFirebase = new Firebase(URL_ANUNCIOS).child(a.getKey()).child("solicitantes").child(currentUser.getKey());
         mFirebase.setValue(null);
-        mFirebase = new Firebase(URL_SOLICITUDES).child(currentUser.getKey());
-        mFirebase.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot data : dataSnapshot.getChildren())
-                    if (a.getKey().equals(data.getValue(HashMap.class).keySet().iterator().next()))
-                            new Firebase(URL_SOLICITUDES).child(currentUser.getKey()).child(data.getKey()).child(a.getKey()).setValue(null);
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-
-            }
-        });
-        //mFirebase.setValue(null);
+        new Firebase(URL_SOLICITUDES).child(currentUser.getKey()).child(a.getKey()).setValue(null);
         userSubRemoved = true;
     }
 
@@ -146,10 +132,10 @@ public class AdvertsFirebaseManager {
         a.getSolicitantes().put(currentUser.getKey(), true);
         Firebase mFirebase = new Firebase(URL_ANUNCIOS).child(a.getKey());
         mFirebase.setValue(a);
-        mFirebase = new Firebase(URL_SOLICITUDES).child(currentUser.getKey());
+        mFirebase = new Firebase(URL_SOLICITUDES).child(currentUser.getKey()).child(a.getKey());
         HashMap<String, Boolean> map = new HashMap();
         map.put(a.getKey(), true);
-        mFirebase.push().setValue(map);
+        mFirebase.setValue(map);
     }
 
     public void detachFirebaseListeners() {
