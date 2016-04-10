@@ -4,6 +4,7 @@ import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+import com.firebase.client.Query;
 import com.firebase.client.ValueEventListener;
 
 import java.util.Date;
@@ -27,7 +28,8 @@ public class MessagesFirebaseManager {
     private static Firebase mFirebaseReceivedMessages, mFirebaseConversations, mFirebaseMessagesWithoutAnswer;
     private static ValueEventListener  mListenerMessagesWithoutAnswer;
     private static ChildEventListener mListenerConversation, mListenerReceivedMessages;
-    private HashMap<Firebase, ChildEventListener> listenerInternosMessages;
+    private HashMap<Firebase, ChildEventListener> listenerInternosMessages, listenersInternosMessagesSinResp;
+    private HashMap<Query, ChildEventListener> listenersInternosConvers;
 
     private MyPresenter presenter;
     private Usuario currentUser;
@@ -36,6 +38,8 @@ public class MessagesFirebaseManager {
         this.presenter = presenter;
         this.currentUser = currentUser;
         listenerInternosMessages = new HashMap<>();
+        listenersInternosMessagesSinResp = new HashMap<>();
+        listenersInternosConvers = new HashMap<>();
     }
 
     public void initializeMessagesListeners() {
@@ -235,7 +239,8 @@ public class MessagesFirebaseManager {
 
                                         // este listener sirve para mantener actualizado el adaptador. Es decir, si el usuario envía un nuevo mensaje y el receptor sigue sin responder que aparezca ese último
                                         // mensaje enviado
-                                        new Firebase(URL_CONVERSACIONES).child(receptor).child(msgEnviado).addChildEventListener(new ChildEventListener() {
+                                        Firebase fInterno = new Firebase(URL_CONVERSACIONES).child(receptor).child(msgEnviado);
+                                        ChildEventListener listenerInterno = new ChildEventListener() {
                                             @Override
                                             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                                                 Message m = dataSnapshot.getValue(Message.class);
@@ -278,7 +283,9 @@ public class MessagesFirebaseManager {
                                             public void onCancelled(FirebaseError firebaseError) {
 
                                             }
-                                        });
+                                        };
+                                        fInterno.addChildEventListener(listenerInterno);
+                                        listenersInternosMessagesSinResp.put(fInterno, listenerInterno);
                                     }
 
                                     @Override
@@ -338,7 +345,9 @@ public class MessagesFirebaseManager {
                 // SI ES UN MENSAJE SIN RESPUESTA EL BLOQUE SIGUIENTE NO SE DEBERÍA DE HACER, O ESO CREO. LUEGO LO PRUEBO
                 String nodoAsunto2 = currentUser.getKey() + "_" + m.getTituloAnuncio().trim().replace(" ", "_");
                 nodoAsunto2 = nodoAsunto2.substring(0, nodoAsunto2.length());
-                new Firebase(URL_CONVERSACIONES).child(m.getEmisor().getKey()).child(nodoAsunto2).limitToLast(MESSAGES_LIMIT_CONVER).addChildEventListener(new ChildEventListener() {
+
+                Query fInterno = new Firebase(URL_CONVERSACIONES).child(m.getEmisor().getKey()).child(nodoAsunto2).limitToLast(MESSAGES_LIMIT_CONVER);
+                ChildEventListener listenerInterno = new ChildEventListener() {
                     @Override
                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                         MessagePojo mensaje = new MessagePojo();
@@ -371,7 +380,9 @@ public class MessagesFirebaseManager {
                     public void onCancelled(FirebaseError firebaseError) {
 
                     }
-                });
+                };
+                fInterno.addChildEventListener(listenerInterno);
+                listenersInternosConvers.put(fInterno, listenerInterno);
             }
 
             @Override
@@ -420,6 +431,12 @@ public class MessagesFirebaseManager {
             mListenerConversation = null;
             mFirebaseConversations = null;
         }
+
+        for (Query f : listenersInternosConvers.keySet())
+            f.removeEventListener(listenersInternosConvers.get(f));
+
+        listenersInternosConvers.clear();
+        listenersInternosConvers = null;
     }
 
     public void detachMessagesListeners() {
@@ -440,6 +457,12 @@ public class MessagesFirebaseManager {
 
         listenerInternosMessages.clear();
         listenerInternosMessages = null;
+
+        for (Firebase f : listenersInternosMessagesSinResp.keySet())
+            f.removeEventListener(listenersInternosMessagesSinResp.get(f));
+
+        listenersInternosMessagesSinResp.clear();
+        listenersInternosMessagesSinResp = null;
     }
 
 }
