@@ -89,12 +89,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
         txtUserNavDrawer = (TextView) navigationView.getHeaderView(0).findViewById(R.id.txtUserNavDrawer);
         txtUserNavDrawer.setText(String.format("%s %s", mUser.getNombre(), mUser.getApellidos()));
         imgNavDrawer = (CircleImageView) navigationView.getHeaderView(0).findViewById(R.id.imgNavDrawer);
+
+        //Foto del usuario en el nav drawer.
         if (mUser.getFoto() != null)
             Picasso.with(this).load(mUser.getFoto()).fit().centerCrop().error(R.drawable.default_user).into(imgNavDrawer);
         else
             Picasso.with(this).load(R.drawable.default_user).fit().centerCrop().into(imgNavDrawer);
 
-        //Foto del usuario en el nav drawer.
         navHeader = (CircleImageView) navigationView.getHeaderView(0).findViewById(R.id.imgNavDrawer);
         navHeader.setOnClickListener(new View.OnClickListener() {
             @Override
