@@ -87,9 +87,9 @@ public class AdvertsFirebaseManager {
                     else if (!userSubRemoved && a.getSolicitantes().containsKey(currentUser.getKey())) {
                         ((MainPresenter) presenter).subHasBeenModified(a);
                         ((MainPresenter) presenter).removeAdvert(a);
-                    } else if (userSubRemoved)
-                        ((MainPresenter)presenter).advertHasBeenObtained(a);
-                    else
+                    } else if (userSubRemoved) {
+                        ((MainPresenter) presenter).advertHasBeenObtained(a);
+                    } else
                         ((MainPresenter)presenter).adverHasBeenModified(a);
 
                     userSubRemoved = false;
@@ -121,11 +121,24 @@ public class AdvertsFirebaseManager {
         mFirebase.setValue(null);
     }
 
-    public void removeUserSub(Anuncio a) {
+    public void removeUserSub(final Anuncio a) {
         Firebase mFirebase = new Firebase(URL_ANUNCIOS).child(a.getKey()).child("solicitantes").child(currentUser.getKey());
         mFirebase.setValue(null);
-        mFirebase = new Firebase(URL_SOLICITUDES).child(currentUser.getKey()).child(a.getKey());
-        mFirebase.setValue(null);
+        mFirebase = new Firebase(URL_SOLICITUDES).child(currentUser.getKey());
+        mFirebase.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot data : dataSnapshot.getChildren())
+                    if (a.getKey().equals(data.getValue(HashMap.class).keySet().iterator().next()))
+                            new Firebase(URL_SOLICITUDES).child(currentUser.getKey()).child(data.getKey()).child(a.getKey()).setValue(null);
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+        //mFirebase.setValue(null);
         userSubRemoved = true;
     }
 

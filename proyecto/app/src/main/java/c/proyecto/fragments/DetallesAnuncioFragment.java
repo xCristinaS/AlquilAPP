@@ -37,8 +37,9 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
         void onImgEditClicked(Anuncio advert, Usuario user);
     }
 
-    public interface OnImgSubrClick{
+    public interface OnImgSubsClick {
         void onImgSubClicked(Anuncio a);
+        void onImgUnSubClicked(Anuncio a);
     }
 
     private static final String ARG_ANUNCIO = "anuncio";
@@ -59,7 +60,7 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
     private int adverType;
 
     private IDetallesAnuncioFragmentListener mListener;
-    private OnImgSubrClick mListenerClick;
+    private OnImgSubsClick mListenerClick;
 
     public static DetallesAnuncioFragment newInstance(Anuncio anuncio, int advertType, Usuario user, Usuario currentUser) {
         Bundle args = new Bundle();
@@ -120,7 +121,7 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
         imgSubscribe = (ImageView) getView().findViewById(R.id.imgSubscribe);
 
         //Se cambia el icono a subscribirse o desusbribirse dependiendo si está subscrito o no  ------------------------------------
-        switch (adverType){
+        switch (adverType) {
             case AdvertsRecyclerViewAdapter.ADAPTER_TYPE_MY_ADVS:
                 imgEdit.setVisibility(View.VISIBLE);
                 imgMessage.setVisibility(View.GONE);
@@ -145,7 +146,12 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
         imgSubscribe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mListenerClick.onImgSubClicked(mAnuncio);
+                if (adverType == AdvertsRecyclerViewAdapter.ADAPTER_TYPE_ADVS)
+                    mListenerClick.onImgSubClicked(mAnuncio);
+                else {
+                    mListenerClick.onImgUnSubClicked(mAnuncio);
+                    getActivity().finish();
+                }
             }
         });
 
@@ -183,7 +189,7 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
             Picasso.with(getActivity()).load(R.drawable.default_user).fit().centerCrop().into(imgFoto);
 
         //Si no hay ninguna prestación se le cambiará el color al shape del comentario al color del fondo
-        if (mAnuncio.getPrestaciones().size() == 0){
+        if (mAnuncio.getPrestaciones().size() == 0) {
             rvPrestaciones.getLayoutParams().height = 0;
             shapeComentario.setBackgroundColor(getResources().getColor(android.R.color.white));
         }
@@ -257,7 +263,7 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
     @Override
     public void onAttach(Context context) {
         mListener = (IDetallesAnuncioFragmentListener) context;
-        mListenerClick = (OnImgSubrClick) context;
+        mListenerClick = (OnImgSubsClick) context;
         super.onAttach(context);
     }
 
@@ -274,7 +280,7 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
         mPrestacionesAdapter.replaceAll(anuncio.getPrestaciones());
         //Si cuando ha terminado de editar el anuncio tiene prestaciones, se mostrará el hueco de prestaciones
         //sino se ocultará
-        if(anuncio.getPrestaciones().size() > 0)
+        if (anuncio.getPrestaciones().size() > 0)
             rvPrestaciones.getLayoutParams().height = 180;
         else
             rvPrestaciones.getLayoutParams().height = 0;

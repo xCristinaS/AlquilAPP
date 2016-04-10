@@ -54,4 +54,9 @@ public class AdvertsDetailsPresenter implements AdvertsDetailsPresenterOps, MyPr
     public void userNewSubRequested(Anuncio anuncio) {
         advertsManager.createNewUserSub(anuncio);
     }
+
+    @Override
+    public void unSubRequested(Anuncio a) {
+        advertsManager.removeUserSub(a);
+    }
 }

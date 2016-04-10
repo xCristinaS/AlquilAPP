@@ -15,7 +15,7 @@ import c.proyecto.pojo.Anuncio;
 import c.proyecto.mvp_models.Usuario;
 import c.proyecto.mvp_presenters.AdvertsDetailsPresenter;
 
-public class DetallesAnuncioActivity extends AppCompatActivity implements AdvertsDetailsActivityOps, DetallesAnuncioFragment.IDetallesAnuncioFragmentListener, DetallesAnuncioFragment.OnImgSubrClick {
+public class DetallesAnuncioActivity extends AppCompatActivity implements AdvertsDetailsActivityOps, DetallesAnuncioFragment.IDetallesAnuncioFragmentListener, DetallesAnuncioFragment.OnImgSubsClick {
 
 
     private static final String EXTRA_ANUNCIO = "anuncio";
@@ -76,6 +76,11 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
     @Override
     public void onImgSubClicked(Anuncio a) {
         mPresenter.userNewSubRequested(a);
+    }
+
+    @Override
+    public void onImgUnSubClicked(Anuncio a) {
+        mPresenter.unSubRequested(a);
     }
 
     @Override
