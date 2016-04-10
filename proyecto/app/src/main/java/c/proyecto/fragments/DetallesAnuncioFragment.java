@@ -42,7 +42,7 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
     private static final String ARG_ANUNCIO = "anuncio";
 
     private static final String ARG_ADVERT_TYPE = "advert_type";
-    private static final String ARG_USER_ANUNCIANTE = "userAnunciante";
+    private static final String ARG_USER_ANUNCIANTE = "mUserAnunciante";
 
     private static final String ARG_CURRENT_USER = "usuarioLogueado";
     private RelativeLayout shapeComentario;
@@ -55,7 +55,7 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
 
     private Anuncio mAnuncio;
 
-    private Usuario userAnunciante, currentUser;
+    private Usuario mUserAnunciante, mCurrentUser;
     private int adverType;
 
 
@@ -84,8 +84,8 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
         super.onActivityCreated(savedInstanceState);
         mAnuncio = getArguments().getParcelable(ARG_ANUNCIO);
         adverType = getArguments().getInt(ARG_ADVERT_TYPE);
-        userAnunciante = getArguments().getParcelable(ARG_USER_ANUNCIANTE);
-        currentUser = getArguments().getParcelable(ARG_CURRENT_USER);
+        mUserAnunciante = getArguments().getParcelable(ARG_USER_ANUNCIANTE);
+        mCurrentUser = getArguments().getParcelable(ARG_CURRENT_USER);
         initViews();
         confRecyclerview();
         bindData();
@@ -114,7 +114,7 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
         imgMessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ConversationActivity.start(getActivity(), null, currentUser, mAnuncio);
+                ConversationActivity.start(getActivity(), null, mCurrentUser, mAnuncio);
             }
         });
         imgEdit = (ImageView) getView().findViewById(R.id.imgEdit);
@@ -130,11 +130,11 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
         imgEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mListener.onImgEditClicked(mAnuncio, currentUser);
+                mListener.onImgEditClicked(mAnuncio, mCurrentUser);
             }
         });
         //Subscribe al usuario al anuncio
-        imgEdit.setOnClickListener(new View.OnClickListener() {
+        imgSubscribe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //`---------------------------------------------------------------------  SUBSCRIBIRSE POR HACER
@@ -146,13 +146,13 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
         imgAvatar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                VerPerfilActivity.start(getActivity(), currentUser);
+                VerPerfilActivity.start(getActivity(), mUserAnunciante);
             }
         });
         lblNombre.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                VerPerfilActivity.start(getActivity(), currentUser);
+                VerPerfilActivity.start(getActivity(), mUserAnunciante);
             }
         });
     }
@@ -179,9 +179,9 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
         if (mAnuncio.getPrestaciones().size() == 0)
             shapeComentario.setBackgroundColor(getResources().getColor(android.R.color.white));
 
-        lblNombre.setText(userAnunciante.getNombre());
-        if (userAnunciante.getFoto() != null)
-            Picasso.with(getActivity()).load(userAnunciante.getFoto()).error(R.drawable.default_user).into(imgAvatar);
+        lblNombre.setText(mUserAnunciante.getNombre());
+        if (mUserAnunciante.getFoto() != null)
+            Picasso.with(getActivity()).load(mUserAnunciante.getFoto()).error(R.drawable.default_user).into(imgAvatar);
         else
             Picasso.with(getActivity()).load(R.drawable.default_user).into(imgAvatar);
 
