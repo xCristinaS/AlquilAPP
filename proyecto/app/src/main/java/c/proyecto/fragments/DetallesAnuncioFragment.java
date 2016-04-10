@@ -183,8 +183,10 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
             Picasso.with(getActivity()).load(R.drawable.default_user).fit().centerCrop().into(imgFoto);
 
         //Si no hay ninguna prestación se le cambiará el color al shape del comentario al color del fondo
-        if (mAnuncio.getPrestaciones().size() == 0)
-        //    shapeComentario.setBackgroundColor(getResources().getColor(android.R.color.white));
+        if (mAnuncio.getPrestaciones().size() == 0){
+            rvPrestaciones.getLayoutParams().height = 0;
+            shapeComentario.setBackgroundColor(getResources().getColor(android.R.color.white));
+        }
 
         lblNombre.setText(mUserAnunciante.getNombre());
         if (mUserAnunciante.getFoto() != null)
@@ -270,5 +272,11 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
         mAnuncio = anuncio;
         bindData();
         mPrestacionesAdapter.replaceAll(anuncio.getPrestaciones());
+        //Si cuando ha terminado de editar el anuncio tiene prestaciones, se mostrará el hueco de prestaciones
+        //sino se ocultará
+        if(anuncio.getPrestaciones().size() > 0)
+            rvPrestaciones.getLayoutParams().height = 180;
+        else
+            rvPrestaciones.getLayoutParams().height = 0;
     }
 }
