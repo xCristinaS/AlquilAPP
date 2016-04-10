@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
@@ -135,7 +136,6 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
             }
     }
 
-    //Se encarga de subir las imagenes a la API
     class ImageDownloader extends AsyncTask<ImagePojo, Void, ImagePojo> {
 
         @Override
@@ -297,32 +297,55 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
 
     @Nullable
     private File guardarBitmapEnArray(Bitmap bitmap, int idImageView) {
+        File f = mImagenesAnuncio[0] = Imagenes.crearArchivoFoto(this, "foto_piso" + bitmap.hashCode() + ".jpeg", false);
         switch (idImageView) {
             case R.id.imgPrincipal:
-                mImagenesAnuncio[0] = Imagenes.crearArchivoFoto(this, "foto_piso0.jpeg", false);
+                mImagenesAnuncio[0] = f;
                 Imagenes.guardarBitmapEnArchivo(bitmap, mImagenesAnuncio[0]);
                 return mImagenesAnuncio[0];
             case R.id.img1:
-                mImagenesAnuncio[1] = Imagenes.crearArchivoFoto(this, "foto_piso1.jpeg", false);
+                mImagenesAnuncio[1] = f;
                 Imagenes.guardarBitmapEnArchivo(bitmap, mImagenesAnuncio[1]);
                 return mImagenesAnuncio[1];
             case R.id.img2:
-                mImagenesAnuncio[2] = Imagenes.crearArchivoFoto(this, "foto_piso2.jpeg", false);
+                mImagenesAnuncio[2] = f;
                 Imagenes.guardarBitmapEnArchivo(bitmap, mImagenesAnuncio[2]);
                 return mImagenesAnuncio[2];
             case R.id.img3:
-                mImagenesAnuncio[3] = Imagenes.crearArchivoFoto(this, "foto_piso3.jpeg", false);
+                mImagenesAnuncio[3] = f;
                 Imagenes.guardarBitmapEnArchivo(bitmap, mImagenesAnuncio[3]);
                 return mImagenesAnuncio[3];
             case R.id.img4:
-                mImagenesAnuncio[4] = Imagenes.crearArchivoFoto(this, "foto_piso4.jpeg", false);
+                mImagenesAnuncio[4] = f;
                 Imagenes.guardarBitmapEnArchivo(bitmap, mImagenesAnuncio[4]);
                 return mImagenesAnuncio[4];
             case R.id.img5:
-                mImagenesAnuncio[5] = Imagenes.crearArchivoFoto(this, "foto_piso5.jpeg", false);
+                mImagenesAnuncio[5] = f;
                 Imagenes.guardarBitmapEnArchivo(bitmap, mImagenesAnuncio[5]);
                 return mImagenesAnuncio[5];
         }
         return null;
+    }
+
+    @Override
+    public void finish() {
+        for (int i = 0; i < mImagenesAnuncio.length; i++)
+            if (mImagenesAnuncio[i] != null)
+                if (mImagenesAnuncio[i].exists()) {
+                    mImagenesAnuncio[i].setWritable(true);
+                    mImagenesAnuncio[i].delete();
+                }
+        super.finish();
+    }
+
+    @Override
+    protected void onDestroy() {
+        for (int i = 0; i < mImagenesAnuncio.length; i++)
+            if (mImagenesAnuncio[i] != null)
+                if (mImagenesAnuncio[i].exists()) {
+                    mImagenesAnuncio[i].setWritable(true);
+                    mImagenesAnuncio[i].delete();
+                }
+        super.onDestroy();
     }
 }
