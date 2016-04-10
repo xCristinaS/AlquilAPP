@@ -10,12 +10,14 @@ import c.proyecto.R;
 import c.proyecto.adapters.AdvertsRecyclerViewAdapter;
 import c.proyecto.fragments.DetallesAnuncioFragment;
 import c.proyecto.mvp_models.AdvertsFirebaseManager;
+import c.proyecto.mvp_models.MessagesFirebaseManager;
 import c.proyecto.mvp_views_interfaces.AdvertsDetailsActivityOps;
 import c.proyecto.pojo.Anuncio;
 import c.proyecto.mvp_models.Usuario;
 import c.proyecto.mvp_presenters.AdvertsDetailsPresenter;
+import c.proyecto.pojo.MessagePojo;
 
-public class DetallesAnuncioActivity extends AppCompatActivity implements AdvertsDetailsActivityOps, DetallesAnuncioFragment.IDetallesAnuncioFragmentListener, DetallesAnuncioFragment.OnImgSubsClick {
+public class DetallesAnuncioActivity extends AppCompatActivity implements AdvertsDetailsActivityOps, DetallesAnuncioFragment.IDetallesAnuncioFragmentListener, DetallesAnuncioFragment.OnDetallesAnuncioFragmentClic {
 
 
     private static final String EXTRA_ANUNCIO = "anuncio";
@@ -46,6 +48,8 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
         advertType = getIntent().getIntExtra(EXTRA_ADVERT_TYPE, -1);
         mPresenter = AdvertsDetailsPresenter.getPresentador(this);
         mPresenter.setAdvertsManager(new AdvertsFirebaseManager(mPresenter, currentUser));
+        mPresenter.setMessagesManager(new MessagesFirebaseManager(mPresenter, currentUser));
+
         if (advertType != AdvertsRecyclerViewAdapter.ADAPTER_TYPE_MY_ADVS)
             mPresenter.advertPublisherRequested(anuncio.getAnunciante());
         else
@@ -81,6 +85,11 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
     @Override
     public void onImgUnSubClicked(Anuncio a) {
         mPresenter.unSubRequested(a);
+    }
+
+    @Override
+    public void onNewMessageClic(MessagePojo m, String keyReceptor) {
+        mPresenter.sendNewMessage(m, keyReceptor);
     }
 
     @Override

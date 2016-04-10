@@ -7,15 +7,18 @@ import java.lang.ref.WeakReference;
 import c.proyecto.activities.DetallesAnuncioActivity;
 import c.proyecto.interfaces.MyPresenter;
 import c.proyecto.mvp_models.AdvertsFirebaseManager;
+import c.proyecto.mvp_models.MessagesFirebaseManager;
 import c.proyecto.mvp_models.Usuario;
 import c.proyecto.mvp_presenters_interfaces.AdvertsDetailsPresenterOps;
 import c.proyecto.pojo.Anuncio;
+import c.proyecto.pojo.MessagePojo;
 
 public class AdvertsDetailsPresenter implements AdvertsDetailsPresenterOps, MyPresenter {
 
     private static WeakReference<DetallesAnuncioActivity> activity;
     private static AdvertsDetailsPresenter presentador;
     private AdvertsFirebaseManager advertsManager;
+    private MessagesFirebaseManager messagesManager;
 
     private AdvertsDetailsPresenter(Activity activity) {
         this.activity = new WeakReference<>((DetallesAnuncioActivity) activity);
@@ -31,6 +34,14 @@ public class AdvertsDetailsPresenter implements AdvertsDetailsPresenterOps, MyPr
 
     public void setAdvertsManager(AdvertsFirebaseManager advertsManager) {
         this.advertsManager = advertsManager;
+    }
+
+    public MessagesFirebaseManager getMessagesManager() {
+        return messagesManager;
+    }
+
+    public void setMessagesManager(MessagesFirebaseManager messagesManager) {
+        this.messagesManager = messagesManager;
     }
 
     @Override
@@ -58,5 +69,10 @@ public class AdvertsDetailsPresenter implements AdvertsDetailsPresenterOps, MyPr
     @Override
     public void unSubRequested(Anuncio a) {
         advertsManager.removeUserSub(a);
+    }
+
+    @Override
+    public void sendNewMessage(MessagePojo m, String keyReceptor) {
+        messagesManager.sendMessage(m, keyReceptor,true);
     }
 }

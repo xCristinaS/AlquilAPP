@@ -10,25 +10,29 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.Date;
+
 import c.proyecto.Constantes;
 import c.proyecto.R;
-import c.proyecto.activities.ConversationActivity;
 import c.proyecto.activities.VerPerfilActivity;
 import c.proyecto.adapters.AdvertsRecyclerViewAdapter;
 import c.proyecto.adapters.PrestacionesAdapter;
 import c.proyecto.adapters.PrestacionesDetalladasAdapter;
 import c.proyecto.pojo.Anuncio;
 import c.proyecto.mvp_models.Usuario;
+import c.proyecto.pojo.MessagePojo;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class DetallesAnuncioFragment extends Fragment implements PrestacionesAdapter.IPrestacionAdapter {
@@ -37,9 +41,10 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
         void onImgEditClicked(Anuncio advert, Usuario user);
     }
 
-    public interface OnImgSubsClick {
+    public interface OnDetallesAnuncioFragmentClic {
         void onImgSubClicked(Anuncio a);
         void onImgUnSubClicked(Anuncio a);
+        void onNewMessageClic(MessagePojo m, String keyReceptor);
     }
 
     private static final String ARG_ANUNCIO = "anuncio";
@@ -60,7 +65,7 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
     private int adverType;
 
     private IDetallesAnuncioFragmentListener mListener;
-    private OnImgSubsClick mListenerClick;
+    private OnDetallesAnuncioFragmentClic mListenerClick;
 
     public static DetallesAnuncioFragment newInstance(Anuncio anuncio, int advertType, Usuario user, Usuario currentUser) {
         Bundle args = new Bundle();
@@ -114,7 +119,8 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
         imgMessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ConversationActivity.start(getActivity(), null, mCurrentUser, mAnuncio);
+                //ConversationActivity.start(getActivity(), null, mCurrentUser, mAnuncio);
+                showSenMessageDialog();
             }
         });
         imgEdit = (ImageView) getView().findViewById(R.id.imgEdit);
@@ -240,8 +246,8 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
     }
 
     private void mostrarDialogoPrestaciones() {
-        final AlertDialog dialog = new AlertDialog.Builder(getActivity()).create();
-        final View dialogView = View.inflate(getActivity(), R.layout.dialog_prestaciones_detalladas, null);
+        AlertDialog dialog = new AlertDialog.Builder(getActivity()).create();
+        View dialogView = View.inflate(getActivity(), R.layout.dialog_prestaciones_detalladas, null);
         dialog.setView(dialogView);
         dialog.setCanceledOnTouchOutside(true);
 
@@ -258,11 +264,30 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
         dialog.getWindow().setLayout((int) (boundsScreen.x * Constantes.PORCENTAJE_PANTALLA), WindowManager.LayoutParams.WRAP_CONTENT);
     }
 
+    private void showSenMessageDialog(){
+        final EditText txtMensaje;
+        final AlertDialog dialog = new AlertDialog.Builder(getActivity()).create();
+        View dialogView = View.inflate(getActivity(), R.layout.send_message_dialog, null);
+        dialog.setView(dialogView);
+        dialog.setCanceledOnTouchOutside(true);
+        dialog.setTitle("Enviar mensaje");
+        txtMensaje = (EditText) dialogView.findViewById(R.id.txtMensaje);
+        dialogView.findViewById(R.id.imgEnviar).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!TextUtils.isEmpty(txtMensaje.getText())) {
+                    mListenerClick.onNewMessageClic(new MessagePojo(mCurrentUser, mAnuncio.getTitulo(), txtMensaje.getText().toString(), new Date()), mAnuncio.getAnunciante());
+                    dialog.dismiss();
+                }
+            }
+        });
+        dialog.show();
+    }
 
     @Override
     public void onAttach(Context context) {
         mListener = (IDetallesAnuncioFragmentListener) context;
-        mListenerClick = (OnImgSubsClick) context;
+        mListenerClick = (OnDetallesAnuncioFragmentClic) context;
         super.onAttach(context);
     }
 
