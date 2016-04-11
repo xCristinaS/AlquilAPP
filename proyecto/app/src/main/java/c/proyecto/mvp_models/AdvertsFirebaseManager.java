@@ -101,6 +101,8 @@ public class AdvertsFirebaseManager {
                     Anuncio a = dataSnapshot.getValue(Anuncio.class);
                     if (a.getSolicitantes().containsKey(currentUser.getKey()))
                         ((MainPresenter)presenter).removeSub(a);
+                    else
+                        ((MainPresenter)presenter).removeAdvert(a);
                 }
 
                 @Override
