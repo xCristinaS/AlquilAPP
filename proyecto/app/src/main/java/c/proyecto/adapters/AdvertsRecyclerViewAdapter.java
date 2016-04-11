@@ -235,7 +235,7 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
     public void addItem(Anuncio a) {
         boolean stop = false;
         for (int i = 0; !stop && i < mDatos.size(); i++)
-            if (a.getKey().equals(mDatos.get(i).getKey()))
+            if (mDatos.get(i).getKey().equals(a.getKey()))
                 stop = true;
 
         if (!stop)
