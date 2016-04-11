@@ -26,20 +26,17 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
 
     private static final String EXTRA_MENSAJE = "mensaje_extra";
     private static final String EXTRA_USER = "user_extra";
-    private static final String EXTRA_ANUNCIO = "anuncio";
 
     private MessagePojo mensaje;
     private ImageView imgEnviar;
     private EditText txtMensaje;
     private ConversationPresenter mPresenter;
     private Usuario user;
-    private Anuncio anuncio;
 
-    public static void start(Context c, MessagePojo mensaje, Usuario user, Anuncio anuncio) {
+    public static void start(Context c, MessagePojo mensaje, Usuario user) {
         Intent intent = new Intent(c, ConversationActivity.class);
         intent.putExtra(EXTRA_MENSAJE, mensaje);
         intent.putExtra(EXTRA_USER, user);
-        intent.putExtra(EXTRA_ANUNCIO, anuncio);
         c.startActivity(intent);
     }
 
@@ -49,7 +46,6 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
         setContentView(R.layout.activity_conversation);
         mensaje = getIntent().getParcelableExtra(EXTRA_MENSAJE);
         user = getIntent().getParcelableExtra(EXTRA_USER);
-        anuncio = getIntent().getParcelableExtra(EXTRA_ANUNCIO);
         initViews();
     }
 
@@ -60,13 +56,8 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
         if (mensaje != null) {
             mPresenter.userConversationRequested(mensaje);
             getSupportFragmentManager().beginTransaction().replace(R.id.frmContenido, MessagesFragment.newInstance(true, mensaje.getKeyReceptor())).commit();
-        } else if (anuncio != null) {
-            MainActivity.getmPresenter().requestUserMessages(user);
-            MessagePojoWithoutAnswer m = new MessagePojoWithoutAnswer(user, anuncio.getTitulo(), null, new Date());
-            m.setKeyReceptor(anuncio.getAnunciante());
-            mPresenter.userConversationRequested(m);
-            getSupportFragmentManager().beginTransaction().replace(R.id.frmContenido, MessagesFragment.newInstance(true, anuncio.getAnunciante())).commit();
         }
+
         imgEnviar = (ImageView) findViewById(R.id.imgEnviar);
         txtMensaje = (EditText) findViewById(R.id.txtMensaje);
 
@@ -74,18 +65,13 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
             @Override
             public void onClick(View v) {
                 if (!TextUtils.isEmpty(txtMensaje.getText())) {
-                    if (anuncio != null) {
-                        MessagePojoWithoutAnswer m = new MessagePojoWithoutAnswer(user, anuncio.getTitulo(), txtMensaje.getText().toString(), new Date());
-                        m.setKeyReceptor(anuncio.getAnunciante());
-                        mPresenter.sendMessage(m, anuncio.getAnunciante(), true);
-                    } else {
-                        if (mensaje instanceof MessagePojoWithoutAnswer) {
-                            MessagePojo m = new MessagePojo(user, mensaje.getTituloAnuncio(), txtMensaje.getText().toString(), new Date());
-                            m.setKeyReceptor(mensaje.getKeyReceptor());
-                            mPresenter.sendMessage(m, mensaje.getKeyReceptor(), true);
-                        } else
-                            mPresenter.sendMessage(new MessagePojo(user, mensaje.getTituloAnuncio(), txtMensaje.getText().toString(), new Date()), mensaje.getEmisor().getKey(), false);
-                    }
+                    if (mensaje instanceof MessagePojoWithoutAnswer) {
+                        MessagePojo m = new MessagePojo(user, mensaje.getTituloAnuncio(), txtMensaje.getText().toString(), new Date());
+                        m.setKeyReceptor(mensaje.getKeyReceptor());
+                        mPresenter.sendMessage(m, mensaje.getKeyReceptor(), true);
+                    } else
+                        mPresenter.sendMessage(new MessagePojo(user, mensaje.getTituloAnuncio(), txtMensaje.getText().toString(), new Date()), mensaje.getEmisor().getKey(), false);
+
                     txtMensaje.setText("");
                 }
             }

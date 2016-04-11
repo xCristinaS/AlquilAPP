@@ -119,7 +119,6 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
         imgMessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //ConversationActivity.start(getActivity(), null, mCurrentUser, mAnuncio);
                 showSenMessageDialog();
             }
         });
