@@ -1,10 +1,13 @@
 package c.proyecto.activities;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.widget.Toast;
 
 import c.proyecto.R;
 import c.proyecto.adapters.AdvertsRecyclerViewAdapter;
@@ -20,13 +23,17 @@ import c.proyecto.pojo.MessagePojo;
 public class DetallesAnuncioActivity extends AppCompatActivity implements AdvertsDetailsActivityOps, DetallesAnuncioFragment.IDetallesAnuncioFragmentListener, DetallesAnuncioFragment.OnDetallesAnuncioFragmentClic {
 
 
+    public static final String ACTION_CLOSE_ACTIVITY = "c.proyecto.activities.DetallesAnuncioActivity.CLOSE_ACTIVITY";
+
     private static final String EXTRA_ANUNCIO = "anuncio";
     private static final String EXTRA_ADVERT_TYPE = "advert_type";
     private static final String EXTRA_USER = "user";
+
     private static AdvertsDetailsPresenter mPresenter;
     private Anuncio anuncio;
     private int advertType;
     private Usuario currentUser;
+    private BroadcastReceiver receiver;
 
     public static void start(Context context, Anuncio anuncio, int advertType, Usuario u) {
         Intent intent = new Intent(context, DetallesAnuncioActivity.class);
@@ -43,6 +50,14 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
         currentUser = getIntent().getParcelableExtra(EXTRA_USER);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        receiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                Toast.makeText(DetallesAnuncioActivity.this, "Se ha borrado el anuncio", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+        };
 
         anuncio = getIntent().getParcelableExtra(EXTRA_ANUNCIO);
         advertType = getIntent().getIntExtra(EXTRA_ADVERT_TYPE, -1);
@@ -102,6 +117,19 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
                     break;
             }
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        IntentFilter filtro = new IntentFilter(ACTION_CLOSE_ACTIVITY);
+        registerReceiver(receiver, filtro);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(receiver);
     }
 }
 

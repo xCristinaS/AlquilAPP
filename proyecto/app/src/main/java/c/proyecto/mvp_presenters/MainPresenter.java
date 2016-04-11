@@ -129,4 +129,10 @@ public class MainPresenter implements MainPresenterOps, MyPresenter {
     public void setMessagesManager(MessagesFirebaseManager messagesManager) {
         this.messagesManager = messagesManager;
     }
+
+    @Override
+    public void sendAdvertHasBeenRemovedBroadcast() {
+        if (activity.get() != null)
+            activity.get().sendAdvertHasBeenRemovedBroadcast();
+    }
 }

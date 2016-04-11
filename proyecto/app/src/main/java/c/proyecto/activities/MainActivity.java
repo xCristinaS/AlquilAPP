@@ -175,9 +175,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
     }
 
     @Override
-    protected void onDestroy() {
-        mPresenter.detachListeners();
-        super.onDestroy();
+    public void sendAdvertHasBeenRemovedBroadcast() {
+        sendBroadcast(new Intent(DetallesAnuncioActivity.ACTION_CLOSE_ACTIVITY));
     }
 
     //MENU NAV DRAWER
@@ -305,4 +304,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
         ConversationActivity.start(this, mensaje, mUser);
     }
 
+    @Override
+    protected void onDestroy() {
+        mPresenter.detachListeners();
+        super.onDestroy();
+    }
 }

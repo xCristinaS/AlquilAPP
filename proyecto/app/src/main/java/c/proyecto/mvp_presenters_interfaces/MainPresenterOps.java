@@ -23,4 +23,5 @@ public interface MainPresenterOps {
     void userMessageHasBeenObtained(MessagePojo m);
     void userHasBeenModified(Usuario user);
     void removeAdvert(Anuncio a);
+    void sendAdvertHasBeenRemovedBroadcast();
 }

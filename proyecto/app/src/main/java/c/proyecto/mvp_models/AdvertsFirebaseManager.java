@@ -6,9 +6,11 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
+import java.sql.SQLOutput;
 import java.util.HashMap;
 
 import c.proyecto.interfaces.MyPresenter;
+import c.proyecto.mvp_presenters.AdvertsDetailsPresenter;
 import c.proyecto.mvp_presenters.MainPresenter;
 import c.proyecto.pojo.Anuncio;
 
@@ -103,6 +105,8 @@ public class AdvertsFirebaseManager {
                         ((MainPresenter)presenter).removeSub(a);
                     else
                         ((MainPresenter)presenter).removeAdvert(a);
+
+                    ((MainPresenter)presenter).sendAdvertHasBeenRemovedBroadcast();
                 }
 
                 @Override
