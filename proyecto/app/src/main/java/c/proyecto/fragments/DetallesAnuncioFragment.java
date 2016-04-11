@@ -62,7 +62,7 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
 
     private Anuncio mAnuncio;
     private Usuario mUserAnunciante, mCurrentUser;
-    private int adverType;
+    private int mAdverType;
 
     private IDetallesAnuncioFragmentListener mListener;
     private OnDetallesAnuncioFragmentClic mListenerClick;
@@ -88,7 +88,7 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mAnuncio = getArguments().getParcelable(ARG_ANUNCIO);
-        adverType = getArguments().getInt(ARG_ADVERT_TYPE);
+        mAdverType = getArguments().getInt(ARG_ADVERT_TYPE);
         mUserAnunciante = getArguments().getParcelable(ARG_USER_ANUNCIANTE);
         mCurrentUser = getArguments().getParcelable(ARG_CURRENT_USER);
         initViews();
@@ -125,8 +125,7 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
         imgEdit = (ImageView) getView().findViewById(R.id.imgEdit);
         imgSubscribe = (ImageView) getView().findViewById(R.id.imgSubscribe);
 
-        //Se cambia el icono a subscribirse o desusbribirse dependiendo si está subscrito o no  ------------------------------------
-        switch (adverType) {
+        switch (mAdverType) {
             case AdvertsRecyclerViewAdapter.ADAPTER_TYPE_MY_ADVS:
                 imgEdit.setVisibility(View.VISIBLE);
                 imgMessage.setVisibility(View.GONE);
@@ -151,10 +150,17 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
         imgSubscribe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (adverType == AdvertsRecyclerViewAdapter.ADAPTER_TYPE_ADVS)
+                if (mAdverType == AdvertsRecyclerViewAdapter.ADAPTER_TYPE_ADVS){
                     mListenerClick.onImgSubClicked(mAnuncio);
+                    //Al subscribirse, cambiará el icono a la imagen de desubscribirse y cambiará el advertType al de desubscribirse
+                    imgSubscribe.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_unsubscribe));
+                    mAdverType = AdvertsRecyclerViewAdapter.ADAPTER_TYPE_SUBS;
+                }
                 else {
                     mListenerClick.onImgUnSubClicked(mAnuncio);
+                    //Al subscribirse, cambiará el icono a la imagen de subscribirse y cambiará el advertType al de subcribirse.
+                    imgSubscribe.setImageDrawable(getResources().getDrawable(R.drawable.ic_subscribe));
+                    mAdverType = AdvertsRecyclerViewAdapter.ADAPTER_TYPE_ADVS;
                 }
             }
         });
