@@ -126,6 +126,8 @@ public class AdvertsFirebaseManager {
     public void removeUserAdvert(Anuncio a) {
         Firebase mFirebase = new Firebase(URL_ANUNCIOS + a.getKey() + "/");
         mFirebase.setValue(null);
+        for (String keySolicitante: a.getSolicitantes().keySet())
+            new Firebase(URL_SOLICITUDES).child(keySolicitante).child(a.getKey()).setValue(null);
     }
 
     public void removeUserSub(final Anuncio a) {

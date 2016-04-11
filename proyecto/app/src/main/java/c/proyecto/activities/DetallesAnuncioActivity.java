@@ -4,10 +4,16 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
+
+import java.util.Date;
 
 import c.proyecto.R;
 import c.proyecto.adapters.AdvertsRecyclerViewAdapter;
@@ -54,8 +60,7 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
         receiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                Toast.makeText(DetallesAnuncioActivity.this, "Se ha borrado el anuncio", Toast.LENGTH_SHORT).show();
-                finish();
+                showAdvertHasBeenRemovedDialog();
             }
         };
 
@@ -69,6 +74,22 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
             mPresenter.advertPublisherRequested(anuncio.getAnunciante());
         else
             getSupportFragmentManager().beginTransaction().replace(R.id.frmContenido, DetallesAnuncioFragment.newInstance(anuncio, advertType, currentUser, currentUser)).commit();
+    }
+
+    private void showAdvertHasBeenRemovedDialog() {
+        final AlertDialog dialog = new AlertDialog.Builder(this).create();
+        View dialogView = View.inflate(this, R.layout.advert_removed_dialog, null);
+        dialog.setView(dialogView);
+        dialog.setCanceledOnTouchOutside(true);
+        dialog.setTitle("Ups! El anuncio ha sido eliminado");
+        dialogView.findViewById(R.id.btnAceptar).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                finish();
+            }
+        });
+        dialog.show();
     }
 
     @Override
