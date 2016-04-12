@@ -6,6 +6,7 @@ import java.lang.ref.WeakReference;
 
 import c.proyecto.activities.InicioActivity;
 import c.proyecto.interfaces.MyPresenter;
+import c.proyecto.mvp_models.UsersFirebaseManager;
 import c.proyecto.mvp_presenters_interfaces.InicioPresenterOps;
 import c.proyecto.mvp_models.Usuario;
 
@@ -14,6 +15,7 @@ public class InicioPresenter implements InicioPresenterOps, MyPresenter {
 
     private static WeakReference<InicioActivity> activity;
     private static InicioPresenter presentador;
+    private UsersFirebaseManager usersManager;
 
     private InicioPresenter(Activity activity) {
         this.activity = new WeakReference<>((InicioActivity) activity);
@@ -27,6 +29,10 @@ public class InicioPresenter implements InicioPresenterOps, MyPresenter {
         return presentador;
     }
 
+    public void setUsersManager(UsersFirebaseManager usersManager) {
+        this.usersManager = usersManager;
+    }
+
     @Override
     public Usuario createNewUser(String email, String contra, String nombre, String apellidos) {
         Usuario.createNewUser(email, contra, nombre, apellidos);
@@ -35,7 +41,8 @@ public class InicioPresenter implements InicioPresenterOps, MyPresenter {
 
     @Override
     public void singInRequested(String email, String contra) {
-        Usuario.signIn(email, contra, this);
+        //Usuario.signIn(email, contra, this);
+        usersManager.signIn(email, contra);
     }
 
     @Override

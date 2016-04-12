@@ -16,6 +16,7 @@ import com.github.florent37.materialtextfield.MaterialTextField;
 import c.proyecto.Constantes;
 
 import c.proyecto.R;
+import c.proyecto.mvp_models.UsersFirebaseManager;
 import c.proyecto.mvp_views_interfaces.InicioActivityOps;
 import c.proyecto.mvp_models.Usuario;
 import c.proyecto.mvp_presenters.InicioPresenter;
@@ -44,6 +45,7 @@ public class InicioActivity extends AppCompatActivity implements InicioActivityO
     private void initViews() {
         preferences = getSharedPreferences(Constantes.NOMBRE_PREFERENCIAS, MODE_PRIVATE);
         presentador = InicioPresenter.getPresentador(this);
+        presentador.setUsersManager(new UsersFirebaseManager(presentador));
         swRememberMe = (SwitchCompat) findViewById(R.id.swRememberMe);
         txtUser = (TextView) findViewById(R.id.txtUser);
         txtPass = (TextView) findViewById(R.id.txtPass);
