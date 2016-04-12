@@ -68,14 +68,16 @@ public class UsersFirebaseManager {
 
                     @Override
                     public void onCancelled(FirebaseError firebaseError) {
-                        ((InicioPresenter) presenter).onSingInResponsed(null);
+
                     }
                 });
             }
 
             @Override
             public void onAuthenticationError(FirebaseError firebaseError) {
-                // there was an error
+                int e = firebaseError.getCode();
+                if (firebaseError.getCode() == FirebaseError.INVALID_PASSWORD)
+                    ((InicioPresenter) presenter).onSingInResponsed(null);
             }
         });
     }
