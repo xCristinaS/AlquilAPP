@@ -39,8 +39,6 @@ public class InicioActivity extends AppCompatActivity implements InicioActivityO
         setContentView(R.layout.activity_inicio);
         initViews();
         checkSavedUser();
-        //Firebase f = new Firebase("https://proyectofinaldam.firebaseio.com").child("conversaciones").child("12052659").child("-386798187_Mi_anuncio").push();
-        //f.setValue(new Message(new Date(), "Pos mu bien chico!"));
     }
 
     private void initViews() {
@@ -66,6 +64,27 @@ public class InicioActivity extends AppCompatActivity implements InicioActivityO
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(InicioActivity.this, RegistroActivity.class));
+            }
+        });
+        //Iniciar sesión con google
+        findViewById(R.id.btnGoogle).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        //Iniciar sesión con twiter
+        findViewById(R.id.btnTwitter).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        //Iniciar sesión con facebook
+        findViewById(R.id.btnFace).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
             }
         });
     }

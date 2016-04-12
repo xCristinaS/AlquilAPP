@@ -66,12 +66,11 @@ public class Usuario implements Parcelable, MyModel {
         mFirebase.addValueEventListener(listener);
     }
 
-    public static Usuario createNewUser(String email, String contra, String nombre, String apellidos) {
+    public static void createNewUser(String email, String contra, String nombre, String apellidos) {
         String key = String.valueOf(email.hashCode() + contra.hashCode() + nombre.hashCode() + apellidos.hashCode());
         Firebase mFirebase = new Firebase(URL_USERS + key + "/");
         Usuario u = new Usuario(email, contra, nombre, apellidos, key);
         mFirebase.setValue(u);
-        return u;
     }
 
     public static void signIn(final String email, final String contra, final InicioPresenter presentador) {

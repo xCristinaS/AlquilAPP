@@ -6,30 +6,37 @@ import java.lang.ref.WeakReference;
 
 import c.proyecto.activities.RegistroActivity;
 import c.proyecto.interfaces.MyPresenter;
+import c.proyecto.mvp_models.UsersFirebaseManager;
 import c.proyecto.mvp_presenters_interfaces.RegistroPresenterOps;
 import c.proyecto.mvp_models.Usuario;
 
 
 public class RegistroPresenter implements RegistroPresenterOps, MyPresenter {
-    private static WeakReference<RegistroActivity> wActivity;
+    private static WeakReference<RegistroActivity> activity;
     private static RegistroPresenter presentador;
+    private UsersFirebaseManager usersManager;
 
     public static RegistroPresenter getPresentador(Activity activity) {
         if (presentador == null)
             presentador = new RegistroPresenter(activity);
         else
-            wActivity = new WeakReference<>((RegistroActivity) activity);
+            RegistroPresenter.activity = new WeakReference<>((RegistroActivity) activity);
 
         return presentador;
     }
 
     private RegistroPresenter(Activity activity) {
-        wActivity = new WeakReference<>((RegistroActivity) activity);
+        RegistroPresenter.activity = new WeakReference<>((RegistroActivity) activity);
+    }
+
+    public void setUsersManager(UsersFirebaseManager usersManager) {
+        this.usersManager = usersManager;
     }
 
     @Override
-    public Usuario register(String user, String pass, String nombre, String apellidos) {
-        return Usuario.createNewUser(user, pass, nombre, apellidos);
+    public void register(String user, String pass, String nombre, String apellidos) {
+        //Usuario.createNewUser(user, pass, nombre, apellidos);
+        usersManager.createNewUser(user, pass, nombre, apellidos);
     }
 
     @Override
@@ -39,7 +46,13 @@ public class RegistroPresenter implements RegistroPresenterOps, MyPresenter {
 
     @Override
     public void onCheckUserExist(boolean exist) {
-        if (wActivity.get() != null)
-            wActivity.get().createUser(exist);
+        if (activity.get() != null)
+            activity.get().createUser(exist);
+    }
+
+    @Override
+    public void userHasBeenCreated(Usuario u) {
+        if (activity.get() != null)
+            activity.get().userHasBeenRegistered(u);
     }
 }

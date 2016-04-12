@@ -29,7 +29,8 @@ public class InicioPresenter implements InicioPresenterOps, MyPresenter {
 
     @Override
     public Usuario createNewUser(String email, String contra, String nombre, String apellidos) {
-        return Usuario.createNewUser(email, contra, nombre, apellidos);
+        Usuario.createNewUser(email, contra, nombre, apellidos);
+        return null;
     }
 
     @Override
