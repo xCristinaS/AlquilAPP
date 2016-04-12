@@ -35,7 +35,6 @@ public class RegistroPresenter implements RegistroPresenterOps, MyPresenter {
 
     @Override
     public void register(String user, String pass, String nombre, String apellidos) {
-        //Usuario.createNewUser(user, pass, nombre, apellidos);
         usersManager.createNewUser(user, pass, nombre, apellidos);
     }
 

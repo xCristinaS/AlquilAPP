@@ -23,11 +23,11 @@ import c.proyecto.mvp_presenters.InicioPresenter;
 
 public class InicioActivity extends AppCompatActivity implements InicioActivityOps {
 
-    private InicioPresenter presentador;
     private TextView txtUser;
     private TextView txtPass;
     private SwitchCompat swRememberMe;
     private SharedPreferences preferences;
+    private InicioPresenter presentador;
 
     public static void start(Activity a){
         Intent intent = new Intent(a, InicioActivity.class);

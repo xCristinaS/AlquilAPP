@@ -66,42 +66,6 @@ public class Usuario implements Parcelable, MyModel {
         mFirebase.addValueEventListener(listener);
     }
 
-    public static void createNewUser(String email, String contra, String nombre, String apellidos) {
-        String key = String.valueOf(email.hashCode() + contra.hashCode() + nombre.hashCode() + apellidos.hashCode());
-        Firebase mFirebase = new Firebase(URL_USERS + key + "/");
-        Usuario u = new Usuario(email, contra, nombre, apellidos, key);
-        mFirebase.setValue(u);
-    }
-
-    public static void signIn(final String email, final String contra, final InicioPresenter presentador) {
-        Firebase firebase = new Firebase(URL_USERS);
-        firebase.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                boolean stop = false;
-                if (!email.equals("") && !contra.equals("")) {
-                    Iterator i = dataSnapshot.getChildren().iterator();
-                    //Recorre todos los usuarios comprobando que el pasado por parámetro existe
-                    while (i.hasNext() && !stop) {
-                        Usuario u  = ((DataSnapshot) i.next()).getValue(Usuario.class);
-                        if (u.getContra().equals(contra) && u.getEmail().equals(email)) {
-                            stop = true;
-                            presentador.onSingInResponsed(u);
-                        }
-                    }
-                    //Si no ha encontrado ninguna semejanza con los usuarios de la BDD devolverá null
-                    if (!stop)
-                        presentador.onSingInResponsed(null);
-                }
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-
-            }
-        });
-    }
-
     //Comprueba si existe algún usuario con este usuario.
     public static void amIRegistrered(final String user, final RegistroPresenter presenter) {
         Firebase firebase = new Firebase(URL_USERS);

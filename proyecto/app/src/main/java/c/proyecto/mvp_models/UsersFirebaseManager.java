@@ -75,7 +75,6 @@ public class UsersFirebaseManager {
 
             @Override
             public void onAuthenticationError(FirebaseError firebaseError) {
-                int e = firebaseError.getCode();
                 if (firebaseError.getCode() == FirebaseError.INVALID_PASSWORD)
                     ((InicioPresenter) presenter).onSingInResponsed(null);
             }
