@@ -18,7 +18,7 @@ import c.proyecto.Constantes;
 import c.proyecto.R;
 import c.proyecto.mvp_models.UsersFirebaseManager;
 import c.proyecto.mvp_views_interfaces.InicioActivityOps;
-import c.proyecto.mvp_models.Usuario;
+import c.proyecto.pojo.Usuario;
 import c.proyecto.mvp_presenters.InicioPresenter;
 
 public class InicioActivity extends AppCompatActivity implements InicioActivityOps {

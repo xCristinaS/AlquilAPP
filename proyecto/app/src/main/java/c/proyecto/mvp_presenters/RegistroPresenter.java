@@ -8,7 +8,7 @@ import c.proyecto.activities.RegistroActivity;
 import c.proyecto.interfaces.MyPresenter;
 import c.proyecto.mvp_models.UsersFirebaseManager;
 import c.proyecto.mvp_presenters_interfaces.RegistroPresenterOps;
-import c.proyecto.mvp_models.Usuario;
+import c.proyecto.pojo.Usuario;
 
 
 public class RegistroPresenter implements RegistroPresenterOps, MyPresenter {
@@ -40,7 +40,7 @@ public class RegistroPresenter implements RegistroPresenterOps, MyPresenter {
 
     @Override
     public void checkUser(String user) {
-        Usuario.amIRegistrered(user, presentador);
+        usersManager.amIRegistrered(user);
     }
 
     @Override

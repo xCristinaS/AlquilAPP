@@ -9,7 +9,7 @@ import android.widget.TextView;
 import c.proyecto.R;
 import c.proyecto.mvp_models.UsersFirebaseManager;
 import c.proyecto.mvp_views_interfaces.RegistroActivityOps;
-import c.proyecto.mvp_models.Usuario;
+import c.proyecto.pojo.Usuario;
 import c.proyecto.mvp_presenters.RegistroPresenter;
 
 public class RegistroActivity extends AppCompatActivity implements RegistroActivityOps {

@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import c.proyecto.Constantes;
 import c.proyecto.R;
-import c.proyecto.mvp_models.Usuario;
+import c.proyecto.pojo.Usuario;
 
 
 public class CaracteristicasUsuarioDialogFragment extends AppCompatDialogFragment {

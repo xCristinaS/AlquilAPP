@@ -8,9 +8,10 @@ import c.proyecto.activities.MainActivity;
 import c.proyecto.interfaces.MyPresenter;
 import c.proyecto.mvp_models.AdvertsFirebaseManager;
 import c.proyecto.mvp_models.MessagesFirebaseManager;
+import c.proyecto.mvp_models.UsersFirebaseManager;
 import c.proyecto.mvp_presenters_interfaces.MainPresenterOps;
 import c.proyecto.pojo.Anuncio;
-import c.proyecto.mvp_models.Usuario;
+import c.proyecto.pojo.Usuario;
 import c.proyecto.pojo.MessagePojo;
 
 public class MainPresenter implements MainPresenterOps, MyPresenter {
@@ -19,6 +20,7 @@ public class MainPresenter implements MainPresenterOps, MyPresenter {
     private static MainPresenter presentador;
     private AdvertsFirebaseManager advertsManager;
     private MessagesFirebaseManager messagesManager;
+    private UsersFirebaseManager usersManager;
 
     private MainPresenter(Activity a) {
         activity = new WeakReference<>((MainActivity) a);
@@ -42,10 +44,14 @@ public class MainPresenter implements MainPresenterOps, MyPresenter {
         advertsManager.removeUserSub(a);
     }
 
+    public void setUsersManager(UsersFirebaseManager usersManager) {
+        this.usersManager = usersManager;
+    }
+
     @Override
     public void initializeFirebaseListeners(Usuario usuario) {
         advertsManager.initializeFirebaseListeners();
-        Usuario.initializeOnUserChangedListener(this, usuario);
+        usersManager.initializeOnUserChangedListener(usuario);
         messagesManager.initializeMessagesListeners();
     }
 
@@ -100,7 +106,7 @@ public class MainPresenter implements MainPresenterOps, MyPresenter {
     @Override
     public void detachListeners() {
         advertsManager.detachFirebaseListeners();
-        Usuario.detachFirebaseListeners();
+        usersManager.detachFirebaseListeners();
         messagesManager.detachMessagesListeners();
     }
 

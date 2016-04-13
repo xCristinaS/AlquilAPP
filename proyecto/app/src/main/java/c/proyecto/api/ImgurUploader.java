@@ -7,7 +7,7 @@ import c.proyecto.Constantes;
 import c.proyecto.interfaces.MyModel;
 import c.proyecto.interfaces.MyPresenter;
 import c.proyecto.pojo.Anuncio;
-import c.proyecto.mvp_models.Usuario;
+import c.proyecto.pojo.Usuario;
 import c.proyecto.mvp_presenters.AdvertsDetailsPresenter;
 import c.proyecto.mvp_presenters.CrearEditarAnuncioPresenter;
 import c.proyecto.mvp_presenters.EditProfilePresenter;

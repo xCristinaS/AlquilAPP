@@ -6,13 +6,12 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
-import java.sql.SQLOutput;
 import java.util.HashMap;
 
 import c.proyecto.interfaces.MyPresenter;
-import c.proyecto.mvp_presenters.AdvertsDetailsPresenter;
 import c.proyecto.mvp_presenters.MainPresenter;
 import c.proyecto.pojo.Anuncio;
+import c.proyecto.pojo.Usuario;
 
 public class AdvertsFirebaseManager {
 

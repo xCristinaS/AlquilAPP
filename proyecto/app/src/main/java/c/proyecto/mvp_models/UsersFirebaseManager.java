@@ -10,8 +10,11 @@ import java.util.Iterator;
 import java.util.Map;
 
 import c.proyecto.interfaces.MyPresenter;
+import c.proyecto.mvp_presenters.AdvertsDetailsPresenter;
 import c.proyecto.mvp_presenters.InicioPresenter;
+import c.proyecto.mvp_presenters.MainPresenter;
 import c.proyecto.mvp_presenters.RegistroPresenter;
+import c.proyecto.pojo.Usuario;
 
 public class UsersFirebaseManager {
 
@@ -19,6 +22,8 @@ public class UsersFirebaseManager {
     private static final String URL_MAIN_FIREBASE = "https://proyectofinaldam.firebaseio.com";
 
     private MyPresenter presenter;
+    private static Firebase mFirebase;
+    private static ValueEventListener listener;
 
     public UsersFirebaseManager(MyPresenter presenter) {
         this.presenter = presenter;
@@ -79,5 +84,76 @@ public class UsersFirebaseManager {
                     ((InicioPresenter) presenter).onSingInResponsed(null);
             }
         });
+    }
+
+    public void initializeOnUserChangedListener(Usuario usuario) {
+        if (listener != null)
+            mFirebase.removeEventListener(listener);
+        if (mFirebase == null)
+            mFirebase = new Firebase(URL_USERS + usuario.getKey());
+        if (listener == null)
+            listener = new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    ((MainPresenter)presenter).userHasBeenModified(dataSnapshot.getValue(Usuario.class));
+                }
+
+                @Override
+                public void onCancelled(FirebaseError firebaseError) {
+
+                }
+            };
+        mFirebase.addValueEventListener(listener);
+    }
+
+    //Comprueba si existe algún usuario con este usuario.
+    public void amIRegistrered(final String user) {
+        Firebase firebase = new Firebase(URL_USERS);
+
+        firebase.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                boolean existe = false;
+                Iterator i = dataSnapshot.getChildren().iterator();
+                //Recorre todos los usuarios comprobando si existe un usuario con ese Email
+                while (i.hasNext() && !existe) {
+                    Usuario u = ((DataSnapshot) i.next()).getValue(Usuario.class);
+                    if (u.getEmail().equals(user))
+                        existe = true;
+                }
+                ((RegistroPresenter)presenter).onCheckUserExist(existe);
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+    }
+
+    public void getAdvertPublisher(String anunciante) {
+        Firebase mFirebase = new Firebase(URL_USERS).child(anunciante);
+        mFirebase.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                ((AdvertsDetailsPresenter)presenter).onAdvertPublisherRequestedResponsed(dataSnapshot.getValue(Usuario.class));
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+    }
+
+    public void updateUserProfile(Usuario u) {
+        Firebase mFirebase = new Firebase(URL_USERS + u.getKey()+ "/");
+        mFirebase.setValue(u);
+    }
+
+    public void detachFirebaseListeners() {
+        mFirebase.removeEventListener(listener);
+        listener = null;
+        mFirebase = null;
     }
 }

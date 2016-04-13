@@ -1,35 +1,19 @@
-package c.proyecto.mvp_models;
+package c.proyecto.pojo;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.firebase.client.DataSnapshot;
-import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-import com.firebase.client.ValueEventListener;
-
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import c.proyecto.interfaces.MyModel;
-import c.proyecto.mvp_presenters.AdvertsDetailsPresenter;
-import c.proyecto.mvp_presenters.InicioPresenter;
-import c.proyecto.mvp_presenters.MainPresenter;
-import c.proyecto.mvp_presenters.RegistroPresenter;
-
 
 public class Usuario implements Parcelable, MyModel {
-
-    private static final String URL_USERS = "https://proyectofinaldam.firebaseio.com/usuarios/";
 
     private String key, email, contra, nombre, apellidos, nacionalidad, profesion, comentario_desc, foto;
     private int ordenado, fiestero, sociable, activo;
     private long fecha_nacimiento;
-    private static Firebase mFirebase;
-    private static ValueEventListener listener;
     private ArrayList<String> itemsHabitos;
     private ArrayList<Integer> idDrawItemsDescriptivos;
-
 
     public Usuario() {
         itemsHabitos = new ArrayList<>();
@@ -43,79 +27,6 @@ public class Usuario implements Parcelable, MyModel {
         this.nombre = nombre;
         this.apellidos = apellidos;
         this.key = key;
-    }
-
-
-    public static void initializeOnUserChangedListener(final MainPresenter presenter, Usuario usuario) {
-        if (listener != null)
-            mFirebase.removeEventListener(listener);
-        if (mFirebase == null)
-            mFirebase = new Firebase(URL_USERS + usuario.getKey());
-        if (listener == null)
-            listener = new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    presenter.userHasBeenModified(dataSnapshot.getValue(Usuario.class));
-                }
-
-                @Override
-                public void onCancelled(FirebaseError firebaseError) {
-
-                }
-            };
-        mFirebase.addValueEventListener(listener);
-    }
-
-    //Comprueba si existe algún usuario con este usuario.
-    public static void amIRegistrered(final String user, final RegistroPresenter presenter) {
-        Firebase firebase = new Firebase(URL_USERS);
-
-        firebase.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                boolean existe = false;
-                Iterator i = dataSnapshot.getChildren().iterator();
-                //Recorre todos los usuarios comprobando si existe un usuario con ese Email
-                while (i.hasNext() && !existe) {
-                    Usuario u = ((DataSnapshot) i.next()).getValue(Usuario.class);
-                    if (u.getEmail().equals(user))
-                        existe = true;
-                }
-                presenter.onCheckUserExist(existe);
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-
-            }
-        });
-    }
-
-    public static void getAdvertPublisher(String anunciante, final AdvertsDetailsPresenter presenter) {
-        Firebase mFirebase = new Firebase(URL_USERS).child(anunciante);
-        mFirebase.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                presenter.onAdvertPublisherRequestedResponsed(dataSnapshot.getValue(Usuario.class));
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-
-            }
-        });
-    }
-
-    public static void updateUserProfile(Usuario u) {
-        Firebase mFirebase = new Firebase(URL_USERS + u.key + "/");
-        mFirebase.setValue(u);
-    }
-
-
-    public static void detachFirebaseListeners() {
-        mFirebase.removeEventListener(listener);
-        listener = null;
-        mFirebase = null;
     }
 
     public String getEmail() {
