@@ -13,12 +13,27 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/imgAvatar"
+        <RelativeLayout
             android:layout_width="wrap_content"
-            android:layout_height="150dp"
-            android:scaleType="centerCrop"
-            android:transitionName="transition_image_anime" />
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/imgAvatar"
+                android:layout_width="wrap_content"
+                android:layout_height="150dp"
+                android:scaleType="centerCrop"
+                android:transitionName="transition_image_anime" />
+
+            <ProgressBar
+                android:id="@+id/prbAnuncio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true"
+                android:indeterminate="true"
+                android:max="10"
+                android:visibility="gone" />
+        </RelativeLayout>
 
         <RelativeLayout
             android:layout_width="wrap_content"
