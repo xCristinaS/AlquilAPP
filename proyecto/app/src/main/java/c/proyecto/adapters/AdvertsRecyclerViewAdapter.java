@@ -2,7 +2,9 @@ package c.proyecto.adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Point;
+import android.graphics.PorterDuff;
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
@@ -158,9 +160,9 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
         this.listenerItemClick = listenerItemClick;
     }
 
-    private static int getAnchoPantalla(Context context){
+    private static int getAnchoPantalla(Context context) {
         Point point = new Point();
-        ((Activity)context).getWindowManager().getDefaultDisplay().getSize(point);
+        ((Activity) context).getWindowManager().getDefaultDisplay().getSize(point);
         return point.x;
     }
 
@@ -187,7 +189,7 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
             lblLocalizacion = (TextView) itemView.findViewById(R.id.lblLocalizacion);
             imgAvatar = (ImageView) itemView.findViewById(R.id.imgAvatar);
             prbAnuncio = (ProgressBar) itemView.findViewById(R.id.prbAnuncio);
-            anchoAproxImgAvatar = getAnchoPantalla(itemView.getContext())/2;
+            anchoAproxImgAvatar = getAnchoPantalla(itemView.getContext()) / 2;
         }
 
         public void onBind(final Anuncio anuncio) {
@@ -195,7 +197,7 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
                 prbAnuncio.setVisibility(View.VISIBLE);
                 lblTituloAnuncio.setText(anuncio.getTitulo());
                 lblLocalizacion.setText(anuncio.getPoblacion());
-                if (anuncio.getImagenes().size() > 0){
+                if (anuncio.getImagenes().size() > 0) {
                     for (String img : anuncio.getImagenes().keySet())
                         if (img.equals(Constantes.FOTO_PRINCIPAL)) // Si la key es de la imagen principal, cargo la foto
                             Picasso.with(itemView.getContext()).load(anuncio.getImagenes().get(img)).resize(anchoAproxImgAvatar, imgAvatar.getLayoutParams().height).centerCrop().into(imgAvatar, new ImageLoadedCallback(prbAnuncio));
@@ -218,7 +220,7 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
             lblLocalizacion = (TextView) itemView.findViewById(R.id.lblLocalizacion);
             lblSubs = (TextView) itemView.findViewById(R.id.lblSubs);
             imgAvatar = (ImageView) itemView.findViewById(R.id.imgAvatar);
-            anchoAproxImgAvatar = getAnchoPantalla(itemView.getContext())/2;
+            anchoAproxImgAvatar = getAnchoPantalla(itemView.getContext()) / 2;
             prbAnuncio = (ProgressBar) itemView.findViewById(R.id.prbAnuncio);
         }
 
@@ -265,7 +267,7 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
         int pos = mDatos.indexOf(a);
         if (pos >= 0)
             mDatos.remove(a);
-         else {
+        else {
             for (int i = 0; !stop && i < mDatos.size(); i++)
                 if (mDatos.get(i).getKey().equals(a.getKey())) {
                     mDatos.remove(i);
@@ -297,7 +299,7 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
     private static class ImageLoadedCallback implements Callback {
         ProgressBar progressBar;
 
-        public  ImageLoadedCallback(ProgressBar progBar){
+        public ImageLoadedCallback(ProgressBar progBar) {
             progressBar = progBar;
         }
 
