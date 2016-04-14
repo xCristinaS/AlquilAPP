@@ -6,23 +6,23 @@ import android.os.Parcelable;
 
 public class Prestacion implements Parcelable{
 
-    private int idDrawable;
+    private String nameDrawable;
     private String nombre;
 
     public Prestacion(){
 
     }
-    public Prestacion(int idDrawable, String nombre) {
-        this.idDrawable = idDrawable;
+    public Prestacion(String nameDrawable, String nombre) {
+        this.nameDrawable = nameDrawable;
         this.nombre = nombre;
     }
 
-    public int getIdDrawable() {
-        return idDrawable;
+    public String getNameDrawable() {
+        return nameDrawable;
     }
 
-    public void setIdDrawable(int idDrawable) {
-        this.idDrawable = idDrawable;
+    public void setNameDrawable(String nameDrawable) {
+        this.nameDrawable = nameDrawable;
     }
 
     public String getNombre() {
@@ -41,20 +41,22 @@ public class Prestacion implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(this.idDrawable);
+        dest.writeString(this.nameDrawable);
         dest.writeString(this.nombre);
     }
 
     protected Prestacion(Parcel in) {
-        this.idDrawable = in.readInt();
+        this.nameDrawable = in.readString();
         this.nombre = in.readString();
     }
 
     public static final Creator<Prestacion> CREATOR = new Creator<Prestacion>() {
+        @Override
         public Prestacion createFromParcel(Parcel source) {
             return new Prestacion(source);
         }
 
+        @Override
         public Prestacion[] newArray(int size) {
             return new Prestacion[size];
         }

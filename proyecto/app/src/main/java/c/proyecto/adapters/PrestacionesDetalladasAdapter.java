@@ -48,7 +48,7 @@ public class PrestacionesDetalladasAdapter extends RecyclerView.Adapter<Recycler
             lblNombre = (TextView) itemView.findViewById(R.id.lblNombre);
         }
         public void onBind(Prestacion prestacion){
-            imgPrestacion.setImageResource(prestacion.getIdDrawable());
+            imgPrestacion.setImageResource(itemView.getResources().getIdentifier(prestacion.getNameDrawable(), "drawable", itemView.getContext().getPackageName()));
             lblNombre.setText(prestacion.getNombre());
         }
     }

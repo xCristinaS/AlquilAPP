@@ -56,7 +56,7 @@ public class PrestacionesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             imgPrestacion = (ImageView) itemView.findViewById(R.id.imgPrestacion);
         }
         public void onBind(Prestacion prestacion){
-            imgPrestacion.setImageResource(prestacion.getIdDrawable());
+            imgPrestacion.setImageResource(itemView.getResources().getIdentifier(prestacion.getNameDrawable(), "drawable", itemView.getContext().getPackageName()));
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
