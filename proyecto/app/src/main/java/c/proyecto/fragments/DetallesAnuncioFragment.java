@@ -272,7 +272,7 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
     private void showSenMessageDialog(){
         final EditText txtMensaje;
         final AlertDialog dialog = new AlertDialog.Builder(getActivity()).create();
-        View dialogView = View.inflate(getActivity(), R.layout.send_message_dialog, null);
+        View dialogView = View.inflate(getActivity(), R.layout.dialog_fragment_send_message, null);
         dialog.setView(dialogView);
         dialog.setCanceledOnTouchOutside(true);
         dialog.setTitle("Enviar mensaje");
