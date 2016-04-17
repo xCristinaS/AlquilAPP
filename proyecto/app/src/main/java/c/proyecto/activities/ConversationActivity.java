@@ -22,6 +22,7 @@ import c.proyecto.R;
 import c.proyecto.adapters.MessagesRecyclerViewAdapter;
 import c.proyecto.fragments.MessagesFragment;
 import c.proyecto.mvp_models.MessagesFirebaseManager;
+import c.proyecto.mvp_models.UsersFirebaseManager;
 import c.proyecto.mvp_views_interfaces.ConversationActivityOps;
 import c.proyecto.pojo.Usuario;
 import c.proyecto.pojo.MessagePojo;
@@ -57,7 +58,6 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
         setContentView(R.layout.activity_conversation);
         mensaje = getIntent().getParcelableExtra(EXTRA_MENSAJE);
         user = getIntent().getParcelableExtra(EXTRA_USER);
-
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("");
@@ -99,18 +99,23 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
     }
 
     private void confToolbar() {
-        Picasso.with(this).load(mensaje.getEmisor().getFoto()).fit().centerCrop().error(R.drawable.default_user).into(imgContacto);
-        lblNombreContacto.setText(mensaje.getEmisor().getNombre());
         lblTituloAnuncio.setText(mensaje.getTituloAnuncio());
-        View.OnClickListener perfilOnClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                VerPerfilActivity.start(ConversationActivity.this, mensaje.getEmisor());
-            }
-        };
+        if (mensaje instanceof MessagePojoWithoutAnswer) {
+            mPresenter.setUsersManager(new UsersFirebaseManager(mPresenter));
+            mPresenter.getReceptor(mensaje.getKeyReceptor());
+        } else {
+            lblNombreContacto.setText(mensaje.getEmisor().getNombre());
+            Picasso.with(this).load(mensaje.getEmisor().getFoto()).fit().centerCrop().error(R.drawable.default_user).into(imgContacto);
+            View.OnClickListener perfilOnClickListener = new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    VerPerfilActivity.start(ConversationActivity.this, mensaje.getEmisor());
+                }
+            };
 
-        imgContacto.setOnClickListener(perfilOnClickListener);
-        lblNombreContacto.setOnClickListener(perfilOnClickListener);
+            imgContacto.setOnClickListener(perfilOnClickListener);
+            lblNombreContacto.setOnClickListener(perfilOnClickListener);
+        }
 
         lblTituloAnuncio.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,12 +123,21 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
               //  DetallesAnuncioActivity.start(ConversationActivity.this, mensaje.);
             }
         });
-
     }
 
-
-
-
+    @Override
+    public void receptorObtained(final Usuario usuario) {
+        lblNombreContacto.setText(usuario.getNombre());
+        Picasso.with(this).load(usuario.getFoto()).fit().centerCrop().error(R.drawable.default_user).into(imgContacto);
+        View.OnClickListener perfilOnClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                VerPerfilActivity.start(ConversationActivity.this, usuario);
+            }
+        };
+        imgContacto.setOnClickListener(perfilOnClickListener);
+        lblNombreContacto.setOnClickListener(perfilOnClickListener);
+    }
 
     @Override
     public void messageHasBeenObtained(MessagePojo m) {
@@ -142,6 +156,5 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
     public void removeMessage(MessagePojo m) {
         mPresenter.removeMessage(m);
     }
-
 
 }

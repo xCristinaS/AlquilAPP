@@ -12,6 +12,7 @@ import java.util.Map;
 
 import c.proyecto.interfaces.MyPresenter;
 import c.proyecto.mvp_presenters.AdvertsDetailsPresenter;
+import c.proyecto.mvp_presenters.ConversationPresenter;
 import c.proyecto.mvp_presenters.InicioPresenter;
 import c.proyecto.mvp_presenters.MainPresenter;
 import c.proyecto.mvp_presenters.RegistroPresenter;
@@ -160,7 +161,10 @@ public class UsersFirebaseManager {
         mFirebase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                ((AdvertsDetailsPresenter) presenter).onAdvertPublisherRequestedResponsed(dataSnapshot.getValue(Usuario.class));
+                if (presenter instanceof AdvertsDetailsPresenter)
+                    ((AdvertsDetailsPresenter) presenter).onAdvertPublisherRequestedResponsed(dataSnapshot.getValue(Usuario.class));
+                else if (presenter instanceof ConversationPresenter)
+                    ((ConversationPresenter) presenter).receptorObtained(dataSnapshot.getValue(Usuario.class));
             }
 
             @Override
