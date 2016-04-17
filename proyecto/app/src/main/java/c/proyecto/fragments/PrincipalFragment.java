@@ -11,6 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.ogaclejapan.smarttablayout.SmartTabLayout;
+
 import c.proyecto.R;
 import c.proyecto.activities.MainActivity;
 import c.proyecto.adapters.CachedFragmentPagerAdapter;
@@ -26,7 +28,7 @@ public class PrincipalFragment extends Fragment {
     private static Usuario user;
     private SectionsPagerAdapter vpAdapter;
     private ViewPager viewPager;
-    private TabLayout tabLayout;
+    private SmartTabLayout tabLayout;
 
     @Nullable
     @Override
@@ -46,8 +48,8 @@ public class PrincipalFragment extends Fragment {
         vpAdapter = new SectionsPagerAdapter(getChildFragmentManager());
         viewPager = (ViewPager) getActivity().findViewById(R.id.container);
         viewPager.setAdapter(vpAdapter);
-        tabLayout = (TabLayout) getActivity().findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(viewPager);
+        tabLayout = (SmartTabLayout) getActivity().findViewById(R.id.tabs);
+        tabLayout.setViewPager(viewPager);
         viewPager.setOffscreenPageLimit(2);
         viewPager.setCurrentItem(1); // el fragmento principal será el de anuncios
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -69,6 +71,8 @@ public class PrincipalFragment extends Fragment {
             }
         });
         mPresenter.initializeFirebaseListeners(user);
+
+
     }
 
     public void addAdvertToAdapter(Anuncio a) {

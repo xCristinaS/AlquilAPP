@@ -59,7 +59,6 @@ public class AdvertsRecyclerViewFragment extends Fragment {
         rvLista.setAdapter(mAdapter);
         rvLista.setLayoutManager(mLayoutManager);
         rvLista.setItemAnimator(new DefaultItemAnimator());
-        //rvLista.setHasFixedSize(true);
         mAdapter.setListenerItemClick(listenerItemClick);
         if (adapter_type == AdvertsRecyclerViewAdapter.ADAPTER_TYPE_MY_ADVS || adapter_type == AdvertsRecyclerViewAdapter.ADAPTER_TYPE_SUBS) {
             mAdapter.setListenerLongClick(listenerLongClick);
