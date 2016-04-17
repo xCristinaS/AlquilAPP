@@ -104,10 +104,12 @@
         android:id="@+id/btnGoogle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Google"/>
+        android:text="Google"
+        android:visibility="gone"/>
 
     <Button
         android:id="@+id/btnFace"
+        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Facebook"
@@ -115,6 +117,7 @@
 
 
     <Button
+        android:visibility="gone"
         android:id="@+id/btnTwitter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

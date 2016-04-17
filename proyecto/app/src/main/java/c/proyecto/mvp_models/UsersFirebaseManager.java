@@ -37,7 +37,7 @@ public class UsersFirebaseManager {
             public void onSuccess(Map<String, Object> result) {
                 String key = (String) result.get("uid");
                 Firebase mFirebase = new Firebase(URL_USERS + key + "/");
-                Usuario u = new Usuario(email, contra, nombre, apellidos, key);
+                Usuario u = new Usuario(email, nombre, apellidos, key);
                 mFirebase.setValue(u);
                 ((RegistroPresenter) presenter).userHasBeenCreated(u);
             }

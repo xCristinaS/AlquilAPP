@@ -4,12 +4,13 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import c.proyecto.interfaces.MyModel;
 
 public class Usuario implements Parcelable, MyModel {
 
-    private String key, email, contra, nombre, apellidos, nacionalidad, profesion, comentario_desc, foto;
+    private String key, email, nombre, apellidos, nacionalidad, profesion, comentario_desc, foto;
     private int ordenado, fiestero, sociable, activo;
     private long fecha_nacimiento;
     private ArrayList<String> itemsHabitos;
@@ -20,10 +21,9 @@ public class Usuario implements Parcelable, MyModel {
         idDrawItemsDescriptivos = new ArrayList<>();
     }
 
-    public Usuario(String email, String contra, String nombre, String apellidos, String key) {
+    public Usuario(String email, String nombre, String apellidos, String key) {
         this();
         this.email = email;
-        this.contra = contra;
         this.nombre = nombre;
         this.apellidos = apellidos;
         this.key = key;
@@ -35,14 +35,6 @@ public class Usuario implements Parcelable, MyModel {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getContra() {
-        return contra;
-    }
-
-    public void setContra(String contra) {
-        this.contra = contra;
     }
 
     public String getNombre() {
@@ -161,7 +153,6 @@ public class Usuario implements Parcelable, MyModel {
 
     //      PARCELABLE
 
-
     @Override
     public int describeContents() {
         return 0;
@@ -171,7 +162,6 @@ public class Usuario implements Parcelable, MyModel {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.key);
         dest.writeString(this.email);
-        dest.writeString(this.contra);
         dest.writeString(this.nombre);
         dest.writeString(this.apellidos);
         dest.writeString(this.nacionalidad);
@@ -190,7 +180,6 @@ public class Usuario implements Parcelable, MyModel {
     protected Usuario(Parcel in) {
         this.key = in.readString();
         this.email = in.readString();
-        this.contra = in.readString();
         this.nombre = in.readString();
         this.apellidos = in.readString();
         this.nacionalidad = in.readString();
@@ -204,16 +193,14 @@ public class Usuario implements Parcelable, MyModel {
         this.fecha_nacimiento = in.readLong();
         this.itemsHabitos = in.createStringArrayList();
         this.idDrawItemsDescriptivos = new ArrayList<Integer>();
-        in.readList(this.idDrawItemsDescriptivos, Integer.class.getClassLoader());
+        in.readList(this.idDrawItemsDescriptivos, List.class.getClassLoader());
     }
 
     public static final Creator<Usuario> CREATOR = new Creator<Usuario>() {
-        @Override
         public Usuario createFromParcel(Parcel source) {
             return new Usuario(source);
         }
 
-        @Override
         public Usuario[] newArray(int size) {
             return new Usuario[size];
         }
