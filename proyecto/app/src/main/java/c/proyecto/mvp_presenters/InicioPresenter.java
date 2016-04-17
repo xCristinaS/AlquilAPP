@@ -17,8 +17,8 @@ public class InicioPresenter implements InicioPresenterOps, MyPresenter {
     private static InicioPresenter presentador;
     private UsersFirebaseManager usersManager;
 
-    private InicioPresenter(Activity activity) {
-        this.activity = new WeakReference<>((InicioActivity) activity);
+    private InicioPresenter(Activity a) {
+        activity = new WeakReference<>((InicioActivity) a);
     }
 
     public static InicioPresenter getPresentador(Activity a) {
@@ -34,13 +34,23 @@ public class InicioPresenter implements InicioPresenterOps, MyPresenter {
     }
 
     @Override
-    public void singInRequested(String email, String contra) {
+    public void signInRequested(String email, String contra) {
         usersManager.signIn(email, contra);
     }
 
     @Override
-    public void onSingInResponsed(Usuario u) {
+    public void signInWithTwitterRequested(String email, String contra) {
+        usersManager.signInWithTwitter(email, contra);
+    }
+
+    @Override
+    public void onSignInResponsed(Usuario u) {
         if (activity.get() != null)
             activity.get().enter(u);
+    }
+
+    @Override
+    public void signInWithFacebookRequested(String email, String contra) {
+        usersManager.signInWithFacebook(email, contra);
     }
 }

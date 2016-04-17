@@ -6,6 +6,7 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -66,7 +67,7 @@ public class UsersFirebaseManager {
                                 stop = true;
                                 if (u.getFoto() == null)
                                     u.setFoto((String) authData.getProviderData().get("profileImageURL"));
-                                ((InicioPresenter) presenter).onSingInResponsed(u);
+                                ((InicioPresenter) presenter).onSignInResponsed(u);
                             }
                         }
                     }
@@ -81,9 +82,32 @@ public class UsersFirebaseManager {
             @Override
             public void onAuthenticationError(FirebaseError firebaseError) {
                 if (firebaseError.getCode() == FirebaseError.INVALID_PASSWORD)
-                    ((InicioPresenter) presenter).onSingInResponsed(null);
+                    ((InicioPresenter) presenter).onSignInResponsed(null);
             }
         });
+    }
+
+    public void signInWithTwitter(final String email, final String contra) {
+        Firebase ref = new Firebase(URL_MAIN_FIREBASE);
+        Map<String, String> options = new HashMap<String, String>();
+        options.put("oauth_token", "3131343071-q9oM9NEb6NX1HZs7FEuxda6cmvgBMSvtxdZCFKh");
+        options.put("oauth_token_secret", "mO4pPS4S9LoW0fcwAp1Jw19sPq2L1SMdhINgbShpInYnY");
+        options.put("user_id", email);
+        ref.authWithOAuthToken("twitter", options, new Firebase.AuthResultHandler() {
+            @Override
+            public void onAuthenticated(AuthData authData) {
+                System.out.println("SESION INICIADA");
+            }
+
+            @Override
+            public void onAuthenticationError(FirebaseError firebaseError) {
+                System.out.println(firebaseError.getDetails());
+            }
+        });
+    }
+
+    public void signInWithFacebook(String email, String contra) {
+
     }
 
     public void initializeOnUserChangedListener(Usuario usuario) {
@@ -95,7 +119,7 @@ public class UsersFirebaseManager {
             listener = new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    ((MainPresenter)presenter).userHasBeenModified(dataSnapshot.getValue(Usuario.class));
+                    ((MainPresenter) presenter).userHasBeenModified(dataSnapshot.getValue(Usuario.class));
                 }
 
                 @Override
@@ -121,7 +145,7 @@ public class UsersFirebaseManager {
                     if (u.getEmail().equals(user))
                         existe = true;
                 }
-                ((RegistroPresenter)presenter).onCheckUserExist(existe);
+                ((RegistroPresenter) presenter).onCheckUserExist(existe);
             }
 
             @Override
@@ -136,7 +160,7 @@ public class UsersFirebaseManager {
         mFirebase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                ((AdvertsDetailsPresenter)presenter).onAdvertPublisherRequestedResponsed(dataSnapshot.getValue(Usuario.class));
+                ((AdvertsDetailsPresenter) presenter).onAdvertPublisherRequestedResponsed(dataSnapshot.getValue(Usuario.class));
             }
 
             @Override
@@ -147,7 +171,7 @@ public class UsersFirebaseManager {
     }
 
     public void updateUserProfile(Usuario u) {
-        Firebase mFirebase = new Firebase(URL_USERS + u.getKey()+ "/");
+        Firebase mFirebase = new Firebase(URL_USERS + u.getKey() + "/");
         mFirebase.setValue(u);
     }
 

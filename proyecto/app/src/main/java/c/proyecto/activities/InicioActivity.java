@@ -58,7 +58,7 @@ public class InicioActivity extends AppCompatActivity implements InicioActivityO
         findViewById(R.id.btnIniciar).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presentador.singInRequested(txtUser.getText().toString(), txtPass.getText().toString());
+                presentador.signInRequested(txtUser.getText().toString(), txtPass.getText().toString());
             }
         });
         //Botón Registrarse
@@ -79,14 +79,14 @@ public class InicioActivity extends AppCompatActivity implements InicioActivityO
         findViewById(R.id.btnTwitter).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                presentador.signInWithTwitterRequested(txtUser.getText().toString(), txtPass.getText().toString());
             }
         });
         //Iniciar sesión con facebook
         findViewById(R.id.btnFace).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                presentador.signInWithFacebookRequested(txtUser.getText().toString(), txtPass.getText().toString());
             }
         });
     }

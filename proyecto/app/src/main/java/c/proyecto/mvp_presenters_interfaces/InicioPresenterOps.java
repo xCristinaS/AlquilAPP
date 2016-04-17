@@ -4,6 +4,8 @@ import c.proyecto.pojo.Usuario;
 
 
 public interface InicioPresenterOps {
-    void singInRequested(String email, String contra);
-    void onSingInResponsed(Usuario u);
+    void signInRequested(String email, String contra);
+    void signInWithTwitterRequested(String email, String contra);
+    void onSignInResponsed(Usuario u);
+    void signInWithFacebookRequested(String email, String contra);
 }
