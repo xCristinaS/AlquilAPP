@@ -5,10 +5,12 @@
     android:layout_height="match_parent"
     tools:context="c.proyecto.activities.ConversationActivity">
 
-    <android.support.design.widget.AppBarLayout
-        android:id="@+id/appBar"
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize">
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -49,15 +51,8 @@
                 android:textStyle="italic" />
         </RelativeLayout>
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
 
-            android:background="?attr/colorPrimary" />
-
-
-    </android.support.design.widget.AppBarLayout>
+    </android.support.v7.widget.Toolbar>
 
 
     <EditText
@@ -74,9 +69,9 @@
     <FrameLayout
         android:id="@+id/frmContenido"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_above="@id/txtMensaje"
-        android:layout_alignParentTop="true" />
+        android:layout_below="@id/toolbar" />
 
     <ImageView
         android:id="@+id/imgEnviar"

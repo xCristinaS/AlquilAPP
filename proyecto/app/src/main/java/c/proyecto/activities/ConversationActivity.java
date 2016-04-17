@@ -1,12 +1,14 @@
 package c.proyecto.activities;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.design.widget.AppBarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -40,7 +42,6 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
     private ConversationPresenter mPresenter;
     private Usuario user;
     private Toolbar toolbar;
-    private AppBarLayout appBar;
 
 
     public static void start(Context c, MessagePojo mensaje, Usuario user) {
@@ -57,11 +58,10 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
         mensaje = getIntent().getParcelableExtra(EXTRA_MENSAJE);
         user = getIntent().getParcelableExtra(EXTRA_USER);
 
-        appBar = (AppBarLayout) findViewById(R.id.appbar);
+
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
-
         initViews();
     }
 
@@ -102,21 +102,28 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
         Picasso.with(this).load(mensaje.getEmisor().getFoto()).fit().centerCrop().error(R.drawable.default_user).into(imgContacto);
         lblNombreContacto.setText(mensaje.getEmisor().getNombre());
         lblTituloAnuncio.setText(mensaje.getTituloAnuncio());
-
-        imgContacto.setOnClickListener(new View.OnClickListener() {
+        View.OnClickListener perfilOnClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 VerPerfilActivity.start(ConversationActivity.this, mensaje.getEmisor());
             }
-        });
+        };
 
-        lblNombreContacto.setOnClickListener(new View.OnClickListener() {
+        imgContacto.setOnClickListener(perfilOnClickListener);
+        lblNombreContacto.setOnClickListener(perfilOnClickListener);
+
+        lblTituloAnuncio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                VerPerfilActivity.start(ConversationActivity.this, mensaje.getEmisor());
+              //  DetallesAnuncioActivity.start(ConversationActivity.this, mensaje.);
             }
         });
+
     }
+
+
+
+
 
     @Override
     public void messageHasBeenObtained(MessagePojo m) {
@@ -135,4 +142,6 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
     public void removeMessage(MessagePojo m) {
         mPresenter.removeMessage(m);
     }
+
+
 }

@@ -75,7 +75,7 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
 
     private void showAdvertHasBeenRemovedDialog() {
         final AlertDialog dialog = new AlertDialog.Builder(this).create();
-        View dialogView = View.inflate(this, R.layout.advert_removed_dialog, null);
+        View dialogView = View.inflate(this, R.layout.dialog_removed_advert, null);
         dialog.setView(dialogView);
         dialog.setTitle("Ups! El anuncio ha sido eliminado");
         dialogView.findViewById(R.id.btnAceptar).setOnClickListener(new View.OnClickListener() {
