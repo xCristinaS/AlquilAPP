@@ -26,7 +26,6 @@ import c.proyecto.pojo.MessagePojoWithoutAnswer;
 import c.proyecto.utils.ComparatorMessages;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-
 public class MessagesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static final int LIMIT_MESSAGES = 40;

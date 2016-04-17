@@ -1,6 +1,7 @@
 package c.proyecto.mvp_presenters_interfaces;
 
 import c.proyecto.pojo.MessagePojo;
+import c.proyecto.pojo.Usuario;
 
 /**
  * Created by Cristina on 24/03/2016.
@@ -11,4 +12,6 @@ public interface ConversationPresenterOps {
     void sendMessage(MessagePojo mensaje, String keyReceptor, boolean isFirstMessageSended);
     void detachFirebaseListeners();
     void removeMessage(MessagePojo m);
+    void getReceptor(String keyReceptor);
+    void receptorObtained(Usuario usuario);
 }
