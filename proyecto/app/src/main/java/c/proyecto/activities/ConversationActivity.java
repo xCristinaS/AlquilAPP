@@ -2,6 +2,7 @@ package c.proyecto.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.design.widget.AppBarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -39,6 +40,7 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
     private ConversationPresenter mPresenter;
     private Usuario user;
     private Toolbar toolbar;
+    private AppBarLayout appBar;
 
 
     public static void start(Context c, MessagePojo mensaje, Usuario user) {
@@ -52,11 +54,14 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_conversation);
+        mensaje = getIntent().getParcelableExtra(EXTRA_MENSAJE);
+        user = getIntent().getParcelableExtra(EXTRA_USER);
+
+        appBar = (AppBarLayout) findViewById(R.id.appbar);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
-        mensaje = getIntent().getParcelableExtra(EXTRA_MENSAJE);
-        user = getIntent().getParcelableExtra(EXTRA_USER);
+
         initViews();
     }
 
@@ -91,11 +96,6 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
             }
         });
         confToolbar();
-        //mensaje.getEmisor().getFoto(); // FOTO DEL QUE TE HA HABLADO
-        //mensaje.getEmisor().getNombre(); // NOMBRE DEL QUE TE HA HABLADO
-        //mensaje.getTituloAnuncio(); // TITULO DEL ANUNCIO
-
-
     }
 
     private void confToolbar() {
