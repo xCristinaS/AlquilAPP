@@ -14,7 +14,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -28,7 +27,7 @@ import c.proyecto.dialog_fragments.SeleccionPrestacionesDialogFragment;
 import c.proyecto.interfaces.MyPresenter;
 import c.proyecto.mvp_models.AdvertsFirebaseManager;
 import c.proyecto.pojo.Anuncio;
-import c.proyecto.mvp_models.Usuario;
+import c.proyecto.pojo.Usuario;
 import c.proyecto.pojo.Prestacion;
 import c.proyecto.mvp_presenters.CrearEditarAnuncioPresenter;
 

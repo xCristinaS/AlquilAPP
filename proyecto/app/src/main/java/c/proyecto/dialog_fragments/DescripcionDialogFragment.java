@@ -12,7 +12,7 @@ import android.widget.ImageView;
 import java.util.ArrayList;
 
 import c.proyecto.R;
-import c.proyecto.mvp_models.Usuario;
+import c.proyecto.pojo.Usuario;
 
 
 public class DescripcionDialogFragment extends AppCompatDialogFragment {

@@ -31,7 +31,7 @@ import c.proyecto.adapters.AdvertsRecyclerViewAdapter;
 import c.proyecto.adapters.PrestacionesAdapter;
 import c.proyecto.adapters.PrestacionesDetalladasAdapter;
 import c.proyecto.pojo.Anuncio;
-import c.proyecto.mvp_models.Usuario;
+import c.proyecto.pojo.Usuario;
 import c.proyecto.pojo.MessagePojo;
 import de.hdodenhof.circleimageview.CircleImageView;
 

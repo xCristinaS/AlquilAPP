@@ -8,21 +8,17 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.Toast;
-
-import java.util.Date;
 
 import c.proyecto.R;
 import c.proyecto.adapters.AdvertsRecyclerViewAdapter;
 import c.proyecto.fragments.DetallesAnuncioFragment;
 import c.proyecto.mvp_models.AdvertsFirebaseManager;
 import c.proyecto.mvp_models.MessagesFirebaseManager;
+import c.proyecto.mvp_models.UsersFirebaseManager;
 import c.proyecto.mvp_views_interfaces.AdvertsDetailsActivityOps;
 import c.proyecto.pojo.Anuncio;
-import c.proyecto.mvp_models.Usuario;
+import c.proyecto.pojo.Usuario;
 import c.proyecto.mvp_presenters.AdvertsDetailsPresenter;
 import c.proyecto.pojo.MessagePojo;
 
@@ -69,6 +65,7 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
         mPresenter = AdvertsDetailsPresenter.getPresentador(this);
         mPresenter.setAdvertsManager(new AdvertsFirebaseManager(mPresenter, currentUser));
         mPresenter.setMessagesManager(new MessagesFirebaseManager(mPresenter, currentUser));
+        mPresenter.setUsersManager(new UsersFirebaseManager(mPresenter));
 
         if (advertType != AdvertsRecyclerViewAdapter.ADAPTER_TYPE_MY_ADVS)
             mPresenter.advertPublisherRequested(anuncio.getAnunciante());

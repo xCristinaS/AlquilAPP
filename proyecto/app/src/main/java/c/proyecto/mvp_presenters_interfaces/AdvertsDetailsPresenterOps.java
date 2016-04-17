@@ -1,7 +1,7 @@
 package c.proyecto.mvp_presenters_interfaces;
 
 import c.proyecto.pojo.Anuncio;
-import c.proyecto.mvp_models.Usuario;
+import c.proyecto.pojo.Usuario;
 import c.proyecto.pojo.MessagePojo;
 
 /**

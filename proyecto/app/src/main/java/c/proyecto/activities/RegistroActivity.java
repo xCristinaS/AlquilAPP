@@ -7,8 +7,9 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import c.proyecto.R;
+import c.proyecto.mvp_models.UsersFirebaseManager;
 import c.proyecto.mvp_views_interfaces.RegistroActivityOps;
-import c.proyecto.mvp_models.Usuario;
+import c.proyecto.pojo.Usuario;
 import c.proyecto.mvp_presenters.RegistroPresenter;
 
 public class RegistroActivity extends AppCompatActivity implements RegistroActivityOps {
@@ -27,6 +28,7 @@ public class RegistroActivity extends AppCompatActivity implements RegistroActiv
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registro);
         presentador = RegistroPresenter.getPresentador(this);
+        presentador.setUsersManager(new UsersFirebaseManager(presentador));
         initViews();
     }
 
@@ -93,12 +95,15 @@ public class RegistroActivity extends AppCompatActivity implements RegistroActiv
     public void createUser(boolean exist) {
         if(!exist){
             if(comprobarPass()){
-                Usuario u = presentador.register(txtUser.getText().toString(), txtPass.getText().toString(), txtNombre.getText().toString(), txtApellidos.getText().toString());
-                //Iniciar Sesion con el usuario creado
-                MainActivity.start(RegistroActivity.this, u);
+                presentador.register(txtUser.getText().toString(), txtPass.getText().toString(), txtNombre.getText().toString(), txtApellidos.getText().toString());
             }else
                 txtRepeatPass.setError("Las contraseñas no son iguales");
         }else
             txtUser.setError("Este usuario ya existe");
+    }
+
+    @Override
+    public void userHasBeenRegistered(Usuario u) {
+        MainActivity.start(RegistroActivity.this, u);
     }
 }

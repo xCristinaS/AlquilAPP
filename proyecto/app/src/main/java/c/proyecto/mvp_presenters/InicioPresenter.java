@@ -6,17 +6,19 @@ import java.lang.ref.WeakReference;
 
 import c.proyecto.activities.InicioActivity;
 import c.proyecto.interfaces.MyPresenter;
+import c.proyecto.mvp_models.UsersFirebaseManager;
 import c.proyecto.mvp_presenters_interfaces.InicioPresenterOps;
-import c.proyecto.mvp_models.Usuario;
+import c.proyecto.pojo.Usuario;
 
 
 public class InicioPresenter implements InicioPresenterOps, MyPresenter {
 
     private static WeakReference<InicioActivity> activity;
     private static InicioPresenter presentador;
+    private UsersFirebaseManager usersManager;
 
-    private InicioPresenter(Activity activity) {
-        this.activity = new WeakReference<>((InicioActivity) activity);
+    private InicioPresenter(Activity a) {
+        activity = new WeakReference<>((InicioActivity) a);
     }
 
     public static InicioPresenter getPresentador(Activity a) {
@@ -27,19 +29,28 @@ public class InicioPresenter implements InicioPresenterOps, MyPresenter {
         return presentador;
     }
 
-    @Override
-    public Usuario createNewUser(String email, String contra, String nombre, String apellidos) {
-        return Usuario.createNewUser(email, contra, nombre, apellidos);
+    public void setUsersManager(UsersFirebaseManager usersManager) {
+        this.usersManager = usersManager;
     }
 
     @Override
-    public void singInRequested(String email, String contra) {
-        Usuario.signIn(email, contra, this);
+    public void signInRequested(String email, String contra) {
+        usersManager.signIn(email, contra);
     }
 
     @Override
-    public void onSingInResponsed(Usuario u) {
+    public void signInWithTwitterRequested(String email, String contra) {
+        usersManager.signInWithTwitter(email, contra);
+    }
+
+    @Override
+    public void onSignInResponsed(Usuario u) {
         if (activity.get() != null)
             activity.get().enter(u);
+    }
+
+    @Override
+    public void signInWithFacebookRequested(String email, String contra) {
+        usersManager.signInWithFacebook(email, contra);
     }
 }

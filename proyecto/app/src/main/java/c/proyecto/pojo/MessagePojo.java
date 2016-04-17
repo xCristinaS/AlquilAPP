@@ -6,7 +6,6 @@ import android.os.Parcelable;
 import java.util.Date;
 
 import c.proyecto.interfaces.IMessageAdapter;
-import c.proyecto.mvp_models.Usuario;
 
 /**
  * Created by Cristina on 23/03/2016.

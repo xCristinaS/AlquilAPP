@@ -17,6 +17,7 @@ import c.proyecto.mvp_presenters.MainPresenter;
 import c.proyecto.pojo.Message;
 import c.proyecto.pojo.MessagePojo;
 import c.proyecto.pojo.MessagePojoWithoutAnswer;
+import c.proyecto.pojo.Usuario;
 
 public class MessagesFirebaseManager {
 

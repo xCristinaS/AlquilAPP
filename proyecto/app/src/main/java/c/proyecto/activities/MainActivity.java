@@ -26,9 +26,10 @@ import c.proyecto.fragments.MessagesFragment;
 import c.proyecto.fragments.PrincipalFragment;
 import c.proyecto.mvp_models.AdvertsFirebaseManager;
 import c.proyecto.mvp_models.MessagesFirebaseManager;
+import c.proyecto.mvp_models.UsersFirebaseManager;
 import c.proyecto.mvp_views_interfaces.MainActivityOps;
 import c.proyecto.pojo.Anuncio;
-import c.proyecto.mvp_models.Usuario;
+import c.proyecto.pojo.Usuario;
 import c.proyecto.pojo.MessagePojo;
 import c.proyecto.mvp_presenters.MainPresenter;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -77,6 +78,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
         mPresenter = MainPresenter.getPresentador(this);
         mPresenter.setAdvertsManager(new AdvertsFirebaseManager(mPresenter, mUser));
         mPresenter.setMessagesManager(new MessagesFirebaseManager(mPresenter, mUser));
+        mPresenter.setUsersManager(new UsersFirebaseManager(mPresenter));
 
         mFragmentManager = getSupportFragmentManager();
         mFragmentManager.beginTransaction().replace(R.id.frmContenido, new PrincipalFragment(), TAG_PRINCIPAL_FRAGMENT).commit();
