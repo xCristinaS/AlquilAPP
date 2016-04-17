@@ -68,7 +68,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
         setContentView(R.layout.activity_main);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        setSupportActionBar(toolbar);
         if (getIntent().hasExtra(ARG_USUARIO))
             mUser = getIntent().getParcelableExtra(ARG_USUARIO);
         initViews();

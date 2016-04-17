@@ -5,6 +5,54 @@
     android:layout_height="match_parent"
     tools:context="c.proyecto.activities.ConversationActivity">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+         >
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/imgContacto"
+                android:layout_width="43dp"
+                android:layout_height="43dp"
+                android:layout_centerVertical="true"
+                android:src="@drawable/default_user"
+                />
+
+            <TextView
+                android:id="@+id/lblNombreContacto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Alejandro Torres"
+                android:textColor="@android:color/white"
+                android:textSize="17sp"
+                android:layout_toRightOf="@id/imgContacto"
+                android:layout_toEndOf="@id/imgContacto"
+                android:layout_marginTop="4dp"
+                android:layout_marginLeft="10dp"
+                android:textStyle="bold"
+                />
+
+            <TextView
+                android:id="@+id/lblTituloAnuncio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Anuncio 01"
+                android:textSize="16sp"
+                android:textColor="@android:color/white"
+                android:layout_toRightOf="@id/imgContacto"
+                android:layout_toEndOf="@id/imgContacto"
+                android:layout_marginLeft="10dp"
+                android:layout_below="@id/lblNombreContacto"
+                android:textStyle="italic"
+                />
+        </RelativeLayout>
+
+    </android.support.v7.widget.Toolbar>
+
     <EditText
         android:id="@+id/txtMensaje"
         android:layout_width="wrap_content"

@@ -36,7 +36,8 @@
             android:name=".activities.CrearAnuncio1Activity"
             android:label="Imagenes" />
         <activity android:name=".activities.CrearAnuncio2Activity" />
-        <activity android:name=".activities.ConversationActivity" />
+        <activity android:name=".activities.ConversationActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".activities.VerPerfilActivity" />
     </application>
 

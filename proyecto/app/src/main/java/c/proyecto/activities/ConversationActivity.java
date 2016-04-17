@@ -4,10 +4,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.Date;
 
@@ -20,6 +24,7 @@ import c.proyecto.pojo.Usuario;
 import c.proyecto.pojo.MessagePojo;
 import c.proyecto.pojo.MessagePojoWithoutAnswer;
 import c.proyecto.mvp_presenters.ConversationPresenter;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ConversationActivity extends AppCompatActivity implements ConversationActivityOps, MessagesRecyclerViewAdapter.ConversationManager {
 
@@ -28,9 +33,13 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
 
     private MessagePojo mensaje;
     private ImageView imgEnviar;
+    private CircleImageView imgContacto;
+    private TextView lblNombreContacto, lblTituloAnuncio;
     private EditText txtMensaje;
     private ConversationPresenter mPresenter;
     private Usuario user;
+    private Toolbar toolbar;
+
 
     public static void start(Context c, MessagePojo mensaje, Usuario user) {
         Intent intent = new Intent(c, ConversationActivity.class);
@@ -43,12 +52,18 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_conversation);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("");
+        setSupportActionBar(toolbar);
         mensaje = getIntent().getParcelableExtra(EXTRA_MENSAJE);
         user = getIntent().getParcelableExtra(EXTRA_USER);
         initViews();
     }
 
     private void initViews() {
+        imgContacto = (CircleImageView) findViewById(R.id.imgContacto);
+        lblNombreContacto = (TextView) findViewById(R.id.lblNombreContacto);
+        lblTituloAnuncio = (TextView) findViewById(R.id.lblTituloAnuncio);
         mPresenter = ConversationPresenter.getPresentador(this);
         mPresenter.setMessagesManager(new MessagesFirebaseManager(mPresenter, user));
 
@@ -75,10 +90,32 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
                 }
             }
         });
-
+        confToolbar();
         //mensaje.getEmisor().getFoto(); // FOTO DEL QUE TE HA HABLADO
         //mensaje.getEmisor().getNombre(); // NOMBRE DEL QUE TE HA HABLADO
         //mensaje.getTituloAnuncio(); // TITULO DEL ANUNCIO
+
+
+    }
+
+    private void confToolbar() {
+        Picasso.with(this).load(mensaje.getEmisor().getFoto()).fit().centerCrop().error(R.drawable.default_user).into(imgContacto);
+        lblNombreContacto.setText(mensaje.getEmisor().getNombre());
+        lblTituloAnuncio.setText(mensaje.getTituloAnuncio());
+
+        imgContacto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                VerPerfilActivity.start(ConversationActivity.this, mensaje.getEmisor());
+            }
+        });
+
+        lblNombreContacto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                VerPerfilActivity.start(ConversationActivity.this, mensaje.getEmisor());
+            }
+        });
     }
 
     @Override
