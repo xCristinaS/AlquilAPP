@@ -8,7 +8,6 @@ import c.proyecto.activities.ConversationActivity;
 import c.proyecto.mvp_models.MessagesFirebaseManager;
 import c.proyecto.mvp_presenters_interfaces.ConversationPresenterOps;
 import c.proyecto.interfaces.MyPresenter;
-import c.proyecto.mvp_models.Usuario;
 import c.proyecto.pojo.MessagePojo;
 
 public class ConversationPresenter implements ConversationPresenterOps, MyPresenter {

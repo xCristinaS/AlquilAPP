@@ -25,7 +25,7 @@ import java.util.List;
 import c.proyecto.Constantes;
 import c.proyecto.R;
 import c.proyecto.pojo.Anuncio;
-import c.proyecto.mvp_models.Usuario;
+import c.proyecto.pojo.Usuario;
 import c.proyecto.mvp_presenters.MainPresenter;
 
 

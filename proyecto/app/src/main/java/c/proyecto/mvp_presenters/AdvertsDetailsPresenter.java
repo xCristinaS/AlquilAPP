@@ -8,7 +8,8 @@ import c.proyecto.activities.DetallesAnuncioActivity;
 import c.proyecto.interfaces.MyPresenter;
 import c.proyecto.mvp_models.AdvertsFirebaseManager;
 import c.proyecto.mvp_models.MessagesFirebaseManager;
-import c.proyecto.mvp_models.Usuario;
+import c.proyecto.mvp_models.UsersFirebaseManager;
+import c.proyecto.pojo.Usuario;
 import c.proyecto.mvp_presenters_interfaces.AdvertsDetailsPresenterOps;
 import c.proyecto.pojo.Anuncio;
 import c.proyecto.pojo.MessagePojo;
@@ -19,9 +20,10 @@ public class AdvertsDetailsPresenter implements AdvertsDetailsPresenterOps, MyPr
     private static AdvertsDetailsPresenter presentador;
     private AdvertsFirebaseManager advertsManager;
     private MessagesFirebaseManager messagesManager;
+    private UsersFirebaseManager usersManager;
 
-    private AdvertsDetailsPresenter(Activity activity) {
-        this.activity = new WeakReference<>((DetallesAnuncioActivity) activity);
+    private AdvertsDetailsPresenter(Activity a) {
+        activity = new WeakReference<>((DetallesAnuncioActivity) a);
     }
 
     public static AdvertsDetailsPresenter getPresentador(Activity a) {
@@ -30,6 +32,10 @@ public class AdvertsDetailsPresenter implements AdvertsDetailsPresenterOps, MyPr
         else
             activity = new WeakReference<>((DetallesAnuncioActivity) a);
         return presentador;
+    }
+
+    public void setUsersManager(UsersFirebaseManager usersManager) {
+        this.usersManager = usersManager;
     }
 
     public void setAdvertsManager(AdvertsFirebaseManager advertsManager) {
@@ -46,7 +52,7 @@ public class AdvertsDetailsPresenter implements AdvertsDetailsPresenterOps, MyPr
 
     @Override
     public void advertPublisherRequested(String anunciante) {
-        Usuario.getAdvertPublisher(anunciante, this);
+        usersManager.getAdvertPublisher(anunciante);
     }
 
     @Override

@@ -1,10 +1,11 @@
 package c.proyecto.mvp_presenters_interfaces;
 
-import c.proyecto.mvp_models.Usuario;
+import c.proyecto.pojo.Usuario;
 
 
 public interface InicioPresenterOps {
-    Usuario createNewUser(String email, String contra, String nombre, String apellidos);
-    void singInRequested(String email, String contra);
-    void onSingInResponsed(Usuario u);
+    void signInRequested(String email, String contra);
+    void signInWithTwitterRequested(String email, String contra);
+    void onSignInResponsed(Usuario u);
+    void signInWithFacebookRequested(String email, String contra);
 }

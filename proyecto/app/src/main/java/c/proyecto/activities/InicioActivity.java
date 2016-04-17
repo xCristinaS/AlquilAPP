@@ -16,17 +16,18 @@ import com.github.florent37.materialtextfield.MaterialTextField;
 import c.proyecto.Constantes;
 
 import c.proyecto.R;
+import c.proyecto.mvp_models.UsersFirebaseManager;
 import c.proyecto.mvp_views_interfaces.InicioActivityOps;
-import c.proyecto.mvp_models.Usuario;
+import c.proyecto.pojo.Usuario;
 import c.proyecto.mvp_presenters.InicioPresenter;
 
 public class InicioActivity extends AppCompatActivity implements InicioActivityOps {
 
-    private InicioPresenter presentador;
     private TextView txtUser;
     private TextView txtPass;
     private SwitchCompat swRememberMe;
     private SharedPreferences preferences;
+    private InicioPresenter presentador;
 
     public static void start(Activity a){
         Intent intent = new Intent(a, InicioActivity.class);
@@ -39,13 +40,12 @@ public class InicioActivity extends AppCompatActivity implements InicioActivityO
         setContentView(R.layout.activity_inicio);
         initViews();
         checkSavedUser();
-        //Firebase f = new Firebase("https://proyectofinaldam.firebaseio.com").child("conversaciones").child("12052659").child("-386798187_Mi_anuncio").push();
-        //f.setValue(new Message(new Date(), "Pos mu bien chico!"));
     }
 
     private void initViews() {
         preferences = getSharedPreferences(Constantes.NOMBRE_PREFERENCIAS, MODE_PRIVATE);
         presentador = InicioPresenter.getPresentador(this);
+        presentador.setUsersManager(new UsersFirebaseManager(presentador));
         swRememberMe = (SwitchCompat) findViewById(R.id.swRememberMe);
         txtUser = (TextView) findViewById(R.id.txtUser);
         txtPass = (TextView) findViewById(R.id.txtPass);
@@ -58,7 +58,7 @@ public class InicioActivity extends AppCompatActivity implements InicioActivityO
         findViewById(R.id.btnIniciar).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presentador.singInRequested(txtUser.getText().toString(), txtPass.getText().toString());
+                presentador.signInRequested(txtUser.getText().toString(), txtPass.getText().toString());
             }
         });
         //Botón Registrarse
@@ -66,6 +66,27 @@ public class InicioActivity extends AppCompatActivity implements InicioActivityO
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(InicioActivity.this, RegistroActivity.class));
+            }
+        });
+        //Iniciar sesión con google
+        findViewById(R.id.btnGoogle).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        //Iniciar sesión con twiter
+        findViewById(R.id.btnTwitter).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presentador.signInWithTwitterRequested(txtUser.getText().toString(), txtPass.getText().toString());
+            }
+        });
+        //Iniciar sesión con facebook
+        findViewById(R.id.btnFace).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presentador.signInWithFacebookRequested(txtUser.getText().toString(), txtPass.getText().toString());
             }
         });
     }

@@ -39,7 +39,8 @@ import c.proyecto.api.ImgurUploader;
 import c.proyecto.dialog_fragments.CaracteristicasUsuarioDialogFragment;
 import c.proyecto.dialog_fragments.DescripcionDialogFragment;
 import c.proyecto.interfaces.MyPresenter;
-import c.proyecto.mvp_models.Usuario;
+import c.proyecto.mvp_models.UsersFirebaseManager;
+import c.proyecto.pojo.Usuario;
 import c.proyecto.mvp_presenters.EditProfilePresenter;
 import c.proyecto.utils.Imagenes;
 
@@ -75,6 +76,7 @@ public class EditProfileActivity extends AppCompatActivity {
         mNationalities = new String[248];
         getNationalitiesFromFile();
         mPresenter = EditProfilePresenter.getPresentador(this);
+        mPresenter.setUsersManager(new UsersFirebaseManager(mPresenter));
         mUser = getIntent().getParcelableExtra(ARG_USUARIO);
         initViews();
         recuperarUser();

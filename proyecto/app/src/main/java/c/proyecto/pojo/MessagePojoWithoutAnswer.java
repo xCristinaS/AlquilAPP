@@ -4,8 +4,6 @@ import android.os.Parcel;
 
 import java.util.Date;
 
-import c.proyecto.mvp_models.Usuario;
-
 /**
  * Created by Cristina on 01/04/2016.
  */
