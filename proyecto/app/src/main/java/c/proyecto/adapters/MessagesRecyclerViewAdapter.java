@@ -148,7 +148,7 @@ public class MessagesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
             else//sino la fecha
                 lblFecha.setText(fecha.format(m.getFecha()));
 
-            if (m instanceof MessagePojoWithoutAnswer){
+            if (m instanceof MessagePojoWithoutAnswer) {
                 Usuario receptor = ((MessagePojoWithoutAnswer) m).getReceptor();
                 if (receptor.getFoto() != null)
                     Picasso.with(itemView.getContext()).load(receptor.getFoto()).into(imgEmisor);
@@ -163,8 +163,11 @@ public class MessagesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
 
             lblTituloAnuncio.setText(m.getTituloAnuncio());
             lblContenido.setText(m.getContenido());
-            lblNombreEmisor.setText(m.getEmisor().getNombre());
 
+            if (m instanceof MessagePojoWithoutAnswer)
+                lblNombreEmisor.setText(((MessagePojoWithoutAnswer) m).getReceptor().getNombre());
+            else
+                lblNombreEmisor.setText(m.getEmisor().getNombre());
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -229,7 +232,6 @@ public class MessagesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
     }
 
 
-
     private void toggleMessages(MessageAdapterHeader tipo) {
         int posicion = mDatos.indexOf(tipo);
         if (tipo.getHiddenChildren() == null) {
@@ -274,7 +276,7 @@ public class MessagesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
                     }
 
             opHecha = false;
-            for (int i = mDatos.size()-1; !opHecha && i >= 0; i--)
+            for (int i = mDatos.size() - 1; !opHecha && i >= 0; i--)
                 if (mDatos.get(i) instanceof MessagePojoWithoutAnswer) {
                     if (((MessagePojoWithoutAnswer) mDatos.get(i)).getEmisor().getKey().equals(m.getKeyReceptor()) && ((MessagePojoWithoutAnswer) mDatos.get(i)).getTituloAnuncio().trim().equals(m.getTituloAnuncio().trim())) {
                         mDatos.remove(mDatos.get(i));
