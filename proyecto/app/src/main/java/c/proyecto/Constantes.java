@@ -26,7 +26,7 @@ public final class Constantes {
     //Número por el que se divide/multiplica los SeekBar de las características.
     public static final int MULTIPLICADOR_SEEK_BAR = 10;
 
-    //Longitud del titulo del anuncio en ConversationActivity
+    //Longitud del título del anuncio en ConversationActivity
     public static final int LENGTH_TITULO_ANUNCIO_CONVERSATION_ACTIVITY = 25;
 }
 

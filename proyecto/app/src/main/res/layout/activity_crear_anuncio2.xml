@@ -23,6 +23,7 @@
                 android:layout_height="wrap_content"
                 android:inputType="text"
                 android:maxLines="1"
+                android:maxLength="30"
                 android:hint="Título del anuncio" />
 
             <!-- CASA -->
