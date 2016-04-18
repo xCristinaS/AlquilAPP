@@ -7,9 +7,6 @@ import java.util.Date;
 
 import c.proyecto.interfaces.IMessageAdapter;
 
-/**
- * Created by Cristina on 23/03/2016.
- */
 public class MessagePojo implements Parcelable, IMessageAdapter {
 
     public static final int TIPO_ENVIADO = 2;
@@ -112,4 +109,13 @@ public class MessagePojo implements Parcelable, IMessageAdapter {
         this.fecha = tmpFecha == -1 ? null : new Date(tmpFecha);
     }
 
+    public static final Creator<MessagePojo> CREATOR = new Creator<MessagePojo>() {
+        public MessagePojo createFromParcel(Parcel source) {
+            return new MessagePojo(source);
+        }
+
+        public MessagePojo[] newArray(int size) {
+            return new MessagePojo[size];
+        }
+    };
 }

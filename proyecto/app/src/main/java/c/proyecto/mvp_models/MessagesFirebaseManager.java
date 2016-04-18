@@ -29,8 +29,7 @@ public class MessagesFirebaseManager {
     private static Firebase mFirebaseReceivedMessages, mFirebaseConversations, mFirebaseMessagesWithoutAnswer;
     private static ValueEventListener mListenerMessagesWithoutAnswer;
     private static ChildEventListener mListenerConversation, mListenerReceivedMessages;
-    private HashMap<Firebase, ChildEventListener> listenerInternosMessages;
-    private HashMap<Query, ChildEventListener> listenersInternosConvers, listenersInternosMessagesSinResp;
+    private HashMap<Query, ChildEventListener> listenersInternosConvers, listenersInternosMessagesSinResp, listenerInternosMessages;
 
     private MyPresenter presenter;
     private Usuario currentUser;
@@ -70,27 +69,11 @@ public class MessagesFirebaseManager {
                             mensaje.setKeyReceptor(currentUser.getKey()); // asigno al receptor
 
                             // obtengo el último mensaje de la conversación, para mostrar el último en la actividad de mensajes
-                            new Firebase(URL_CONVERSACIONES).child(currentUser.getKey()).child(emisor_titleAdvert).limitToLast(1).addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(DataSnapshot dataSnapshot) {
-                                    for (DataSnapshot data : dataSnapshot.getChildren()) {
-                                        Message m = data.getValue(Message.class);
-                                        mensaje.setContenido(m.getContenido()); // meto el contenido en el mensaje que será devuelto
-                                        mensaje.setFecha(new Date(m.getFecha())); // meto la fecha en `` ´´
-                                        mensaje.setKey(dataSnapshot.getKey()); // meto la key en `` ´´
-                                    }
-                                    ((MainPresenter) presenter).userMessageHasBeenObtained(mensaje); // le devuelvo el mensaje al presentador, para que se lo pase a la vista
-                                }
 
-                                @Override
-                                public void onCancelled(FirebaseError firebaseError) {
-
-                                }
-                            });
 
                             // este listener es el que estará a la escucha por si se recibe un nuevo mensaje en una conversación ya existente. El primer listener estará a la escucha y obtendrá los
                             // nuevos mensajes recibidos, éste en cambio obtendra los mensajes recibidos sobre una conversación existente, para mantener el adaptador en la vista de mensajes actualizado
-                            Firebase fInterno = new Firebase(URL_CONVERSACIONES).child(currentUser.getKey()).child(emisor_titleAdvert);
+                            Query fInterno = new Firebase(URL_CONVERSACIONES).child(currentUser.getKey()).child(emisor_titleAdvert).limitToLast(1);
                             ChildEventListener listenerInterno = new ChildEventListener() {
                                 @Override
                                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -425,7 +408,7 @@ public class MessagesFirebaseManager {
             mFirebaseMessagesWithoutAnswer = null;
         }
 
-        for (Firebase f : listenerInternosMessages.keySet())
+        for (Query f : listenerInternosMessages.keySet())
             f.removeEventListener(listenerInternosMessages.get(f));
 
         listenerInternosMessages.clear();
