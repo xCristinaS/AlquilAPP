@@ -97,6 +97,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/imgCasa"
                 android:layout_marginTop="50dp"
+                android:inputType="text"
                 android:hint="Dirección" />
 
             <EditText
@@ -116,6 +117,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/txtDireccion"
                 android:maxLines="1"
+                android:inputType="text"
                 android:hint="Población" />
 
             <EditText
@@ -123,6 +125,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/txtPoblacion"
+                android:inputType="text"
                 android:maxLines="1"
                 android:hint="Provincia" />
         </RelativeLayout>

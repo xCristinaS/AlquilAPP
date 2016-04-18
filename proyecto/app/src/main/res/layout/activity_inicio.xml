@@ -33,7 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Usuario"
-            android:inputType="text"
+            android:inputType="textEmailAddress"
             android:maxLines="1"
             />
     </com.github.florent37.materialtextfield.MaterialTextField>
