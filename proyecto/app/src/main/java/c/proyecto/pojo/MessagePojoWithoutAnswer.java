@@ -4,22 +4,20 @@ import android.os.Parcel;
 
 import java.util.Date;
 
-/**
- * Created by Cristina on 01/04/2016.
- */
 public class MessagePojoWithoutAnswer extends MessagePojo {
 
     public static final int WITHOUT_ANSWER = 19;
 
+    private Usuario receptor;
+
     public MessagePojoWithoutAnswer(){}
 
-    public MessagePojoWithoutAnswer(Usuario emisor, String tituloAnuncio, String contenido, Date fehca){
-        super(emisor, tituloAnuncio, contenido, fehca);
+    public Usuario getReceptor() {
+        return receptor;
     }
 
-    @Override
-    public int getType(String keyCurrentUser) {
-        return WITHOUT_ANSWER;
+    public void setReceptor(Usuario receptor) {
+        this.receptor = receptor;
     }
 
     @Override
@@ -30,10 +28,12 @@ public class MessagePojoWithoutAnswer extends MessagePojo {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         super.writeToParcel(dest, flags);
+        dest.writeParcelable(this.receptor, 0);
     }
 
     protected MessagePojoWithoutAnswer(Parcel in) {
         super(in);
+        this.receptor = in.readParcelable(Usuario.class.getClassLoader());
     }
 
     public static final Creator<MessagePojoWithoutAnswer> CREATOR = new Creator<MessagePojoWithoutAnswer>() {

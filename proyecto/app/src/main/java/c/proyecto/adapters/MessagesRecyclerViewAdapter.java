@@ -23,6 +23,7 @@ import c.proyecto.interfaces.IMessageAdapter;
 import c.proyecto.pojo.MessageAdapterHeader;
 import c.proyecto.pojo.MessagePojo;
 import c.proyecto.pojo.MessagePojoWithoutAnswer;
+import c.proyecto.pojo.Usuario;
 import c.proyecto.utils.ComparatorMessages;
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -147,10 +148,18 @@ public class MessagesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
             else//sino la fecha
                 lblFecha.setText(fecha.format(m.getFecha()));
 
-            if (m.getEmisor().getFoto() != null)
-                Picasso.with(itemView.getContext()).load(m.getEmisor().getFoto()).into(imgEmisor);
-            else
-                Picasso.with(itemView.getContext()).load(R.drawable.default_user).into(imgEmisor);
+            if (m instanceof MessagePojoWithoutAnswer){
+                Usuario receptor = ((MessagePojoWithoutAnswer) m).getReceptor();
+                if (receptor.getFoto() != null)
+                    Picasso.with(itemView.getContext()).load(receptor.getFoto()).into(imgEmisor);
+                else
+                    Picasso.with(itemView.getContext()).load(R.drawable.default_user).into(imgEmisor);
+            } else {
+                if (m.getEmisor().getFoto() != null)
+                    Picasso.with(itemView.getContext()).load(m.getEmisor().getFoto()).into(imgEmisor);
+                else
+                    Picasso.with(itemView.getContext()).load(R.drawable.default_user).into(imgEmisor);
+            }
 
             lblTituloAnuncio.setText(m.getTituloAnuncio());
             lblContenido.setText(m.getContenido());
