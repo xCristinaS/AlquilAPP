@@ -18,6 +18,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.Date;
 
+import c.proyecto.Constantes;
 import c.proyecto.R;
 import c.proyecto.adapters.MessagesRecyclerViewAdapter;
 import c.proyecto.fragments.MessagesFragment;
@@ -99,7 +100,15 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
     }
 
     private void confToolbar() {
-        lblTituloAnuncio.setText(mensaje.getTituloAnuncio());
+        String tituloAnuncio = mensaje.getTituloAnuncio();
+        if(tituloAnuncio.length()>Constantes.LENGTH_TITULO_ANUNCIO_CONVERSATION_ACTIVITY){
+            tituloAnuncio = mensaje.getTituloAnuncio().substring(0, Constantes.LENGTH_TITULO_ANUNCIO_CONVERSATION_ACTIVITY);
+            tituloAnuncio = tituloAnuncio.trim();
+            tituloAnuncio+="...";
+        }
+
+        lblTituloAnuncio.setText(tituloAnuncio);
+
         if (mensaje instanceof MessagePojoWithoutAnswer) {
             mPresenter.setUsersManager(new UsersFirebaseManager(mPresenter));
             mPresenter.getReceptor(mensaje.getKeyReceptor());

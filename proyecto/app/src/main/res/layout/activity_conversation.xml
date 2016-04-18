@@ -48,7 +48,8 @@
                 android:text="Anuncio 01"
                 android:textColor="@android:color/white"
                 android:textSize="16sp"
-                android:textStyle="italic" />
+                android:textStyle="italic"
+                android:maxLines="1"/>
         </RelativeLayout>
 
 
