@@ -20,6 +20,12 @@ public class MessagePojoWithoutAnswer extends MessagePojo {
         this.receptor = receptor;
     }
 
+
+    @Override
+    public int getType(String keyCurrentUser) {
+        return WITHOUT_ANSWER;
+    }
+
     @Override
     public int describeContents() {
         return 0;

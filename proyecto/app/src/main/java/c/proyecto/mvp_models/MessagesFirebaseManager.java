@@ -27,10 +27,10 @@ public class MessagesFirebaseManager {
     private static final int MESSAGES_LIMIT_CONVER = 20;
 
     private static Firebase mFirebaseReceivedMessages, mFirebaseConversations, mFirebaseMessagesWithoutAnswer;
-    private static ValueEventListener  mListenerMessagesWithoutAnswer;
+    private static ValueEventListener mListenerMessagesWithoutAnswer;
     private static ChildEventListener mListenerConversation, mListenerReceivedMessages;
-    private HashMap<Firebase, ChildEventListener> listenerInternosMessages, listenersInternosMessagesSinResp;
-    private HashMap<Query, ChildEventListener> listenersInternosConvers;
+    private HashMap<Firebase, ChildEventListener> listenerInternosMessages;
+    private HashMap<Query, ChildEventListener> listenersInternosConvers, listenersInternosMessagesSinResp;
 
     private MyPresenter presenter;
     private Usuario currentUser;
@@ -205,44 +205,9 @@ public class MessagesFirebaseManager {
                                         final String tituloAnuncio = dataSnapshot.getKey().trim().replace("_", " ");
 
                                         // me voy a la rama de mensajes del receptor y obtengo el último mensaje que le envío el usuario
-                                        new Firebase(URL_CONVERSACIONES).child(keyReceptor).child(msgEnviado).limitToLast(1).addListenerForSingleValueEvent(new ValueEventListener() {
-                                            @Override
-                                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                                for (DataSnapshot data : dataSnapshot.getChildren()) {
-                                                    Message m = data.getValue(Message.class);
-                                                    final MessagePojoWithoutAnswer mensaje = new MessagePojoWithoutAnswer();
-                                                    mensaje.setContenido(m.getContenido());
-                                                    mensaje.setFecha(new Date(m.getFecha()));
-                                                    mensaje.setKey(dataSnapshot.getKey());
-                                                    mensaje.setEmisor(currentUser);
-                                                    mensaje.setTituloAnuncio(tituloAnuncio);
-
-                                                    new Firebase(URL_USERS).child(keyReceptor).addListenerForSingleValueEvent(new ValueEventListener() {
-                                                        @Override
-                                                        public void onDataChange(DataSnapshot dataSnapshot) {
-                                                            Usuario receptor = dataSnapshot.getValue(Usuario.class);
-                                                            mensaje.setReceptor(receptor);
-                                                            mensaje.setKeyReceptor(receptor.getKey());
-                                                            ((MainPresenter) presenter).userMessageHasBeenObtained(mensaje);
-                                                        }
-
-                                                        @Override
-                                                        public void onCancelled(FirebaseError firebaseError) {
-
-                                                        }
-                                                    });
-                                                }
-                                            }
-
-                                            @Override
-                                            public void onCancelled(FirebaseError firebaseError) {
-
-                                            }
-                                        });
-
                                         // este listener sirve para mantener actualizado el adaptador. Es decir, si el usuario envía un nuevo mensaje y el receptor sigue sin responder que aparezca ese último
                                         // mensaje enviado
-                                        Firebase fInterno = new Firebase(URL_CONVERSACIONES).child(keyReceptor).child(msgEnviado);
+                                        Query fInterno = new Firebase(URL_CONVERSACIONES).child(keyReceptor).child(msgEnviado).limitToLast(1);
                                         ChildEventListener listenerInterno = new ChildEventListener() {
                                             @Override
                                             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -256,7 +221,9 @@ public class MessagesFirebaseManager {
                                                 new Firebase(URL_USERS).child(keyReceptor).addListenerForSingleValueEvent(new ValueEventListener() {
                                                     @Override
                                                     public void onDataChange(DataSnapshot dataSnapshot) {
-                                                        mensaje.setKeyReceptor(dataSnapshot.getValue(Usuario.class).getKey());
+                                                        Usuario receptor = dataSnapshot.getValue(Usuario.class);
+                                                        mensaje.setReceptor(receptor);
+                                                        mensaje.setKeyReceptor(receptor.getKey());
                                                         ((MainPresenter) presenter).userMessageHasBeenObtained(mensaje);
                                                     }
 
@@ -287,32 +254,36 @@ public class MessagesFirebaseManager {
 
                                             }
                                         };
-                                        fInterno.addChildEventListener(listenerInterno);
-                                        listenersInternosMessagesSinResp.put(fInterno, listenerInterno);
-                                    }
+                                    fInterno.addChildEventListener(listenerInterno);
+                                    listenersInternosMessagesSinResp.put(fInterno,listenerInterno);
+                                }
 
-                                    @Override
-                                    public void onCancelled(FirebaseError firebaseError) {
+                            @Override
+                            public void onCancelled (FirebaseError firebaseError){
 
-                                    }
-                                });
-
+                            }
                         }
 
-                        @Override
-                        public void onCancelled(FirebaseError firebaseError) {
+                        );
 
-                        }
-                    });
-                }
+                    }
+
+                    @Override
+                    public void onCancelled (FirebaseError firebaseError){
+
+                    }
+                });
             }
+        }
 
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
+        @Override
+        public void onCancelled (FirebaseError firebaseError){
 
-            }
-        });
+        }
     }
+
+    );
+}
 
     // obtengo la conversación entera sobre un anuncio concreto
     public void getUserConversation(final MessagePojo m) {
@@ -344,7 +315,7 @@ public class MessagesFirebaseManager {
                 mensaje.setFecha(new Date(mAux.getFecha()));
                 mensaje.setContenido(mAux.getContenido());
                 ((ConversationPresenter) presenter).messageHasBeenObtained(mensaje);
-                
+
                 String nodoAsunto2 = currentUser.getKey() + "_" + m.getTituloAnuncio().trim().replace(" ", "_");
                 nodoAsunto2 = nodoAsunto2.substring(0, nodoAsunto2.length());
 
@@ -460,7 +431,7 @@ public class MessagesFirebaseManager {
         listenerInternosMessages.clear();
         listenerInternosMessages = null;
 
-        for (Firebase f : listenersInternosMessagesSinResp.keySet())
+        for (Query f : listenersInternosMessagesSinResp.keySet())
             f.removeEventListener(listenersInternosMessagesSinResp.get(f));
 
         listenersInternosMessagesSinResp.clear();
