@@ -250,7 +250,7 @@ public class EditProfileActivity extends AppCompatActivity {
             public void onClick(View v) {
                 AlertDialog.Builder dialog = new AlertDialog.Builder(EditProfileActivity.this);
                 dialog.setTitle("Seleccione una de las opciones");
-                dialog.setItems(R.array.chooseImageWithRemoveListItem, new DialogInterface.OnClickListener() {
+                dialog.setItems(R.array.chooseImageWithoutRemoveListItem, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         //Se guarda cual fue el ultimo ImageView seleccionado
