@@ -8,5 +8,4 @@ import c.proyecto.pojo.Usuario;
  */
 public interface ConversationActivityOps {
     void messageHasBeenObtained(MessagePojo m);
-    void receptorObtained(Usuario usuario);
 }

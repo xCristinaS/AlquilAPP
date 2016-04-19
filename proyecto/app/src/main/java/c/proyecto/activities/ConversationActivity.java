@@ -101,8 +101,17 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
     private void confToolbar() {
         lblTituloAnuncio.setText(mensaje.getTituloAnuncio());
         if (mensaje instanceof MessagePojoWithoutAnswer) {
-            mPresenter.setUsersManager(new UsersFirebaseManager(mPresenter));
-            mPresenter.getReceptor(mensaje.getKeyReceptor());
+            lblNombreContacto.setText(((MessagePojoWithoutAnswer) mensaje).getReceptor().getNombre());
+            Picasso.with(this).load(((MessagePojoWithoutAnswer) mensaje).getReceptor().getFoto()).fit().centerCrop().error(R.drawable.default_user).into(imgContacto);
+            View.OnClickListener perfilOnClickListener = new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    VerPerfilActivity.start(ConversationActivity.this, ((MessagePojoWithoutAnswer) mensaje).getReceptor());
+                }
+            };
+
+            imgContacto.setOnClickListener(perfilOnClickListener);
+            lblNombreContacto.setOnClickListener(perfilOnClickListener);
         } else {
             lblNombreContacto.setText(mensaje.getEmisor().getNombre());
             Picasso.with(this).load(mensaje.getEmisor().getFoto()).fit().centerCrop().error(R.drawable.default_user).into(imgContacto);
@@ -123,20 +132,6 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
               //  DetallesAnuncioActivity.start(ConversationActivity.this, mensaje.);
             }
         });
-    }
-
-    @Override
-    public void receptorObtained(final Usuario usuario) {
-        lblNombreContacto.setText(usuario.getNombre());
-        Picasso.with(this).load(usuario.getFoto()).fit().centerCrop().error(R.drawable.default_user).into(imgContacto);
-        View.OnClickListener perfilOnClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                VerPerfilActivity.start(ConversationActivity.this, usuario);
-            }
-        };
-        imgContacto.setOnClickListener(perfilOnClickListener);
-        lblNombreContacto.setOnClickListener(perfilOnClickListener);
     }
 
     @Override

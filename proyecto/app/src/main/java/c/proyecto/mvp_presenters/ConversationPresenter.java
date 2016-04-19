@@ -17,7 +17,6 @@ public class ConversationPresenter implements ConversationPresenterOps, MyPresen
     private static WeakReference<ConversationActivity> activity;
     private static ConversationPresenter presentador;
     private MessagesFirebaseManager messagesManager;
-    private UsersFirebaseManager usersManager;
 
     private ConversationPresenter(Activity activity) {
         this.activity = new WeakReference<>((ConversationActivity) activity);
@@ -34,10 +33,6 @@ public class ConversationPresenter implements ConversationPresenterOps, MyPresen
     @Override
     public void userConversationRequested(MessagePojo mensaje) {
         messagesManager.getUserConversation(mensaje);
-    }
-
-    public void setUsersManager(UsersFirebaseManager usersManager) {
-        this.usersManager = usersManager;
     }
 
     @Override
@@ -63,16 +58,5 @@ public class ConversationPresenter implements ConversationPresenterOps, MyPresen
 
     public void setMessagesManager(MessagesFirebaseManager messagesManager) {
         this.messagesManager = messagesManager;
-    }
-
-    @Override
-    public void getReceptor(String keyReceptor) {
-        usersManager.getAdvertPublisher(keyReceptor);
-    }
-
-    @Override
-    public void receptorObtained(Usuario usuario) {
-        if (activity.get() != null)
-            activity.get().receptorObtained(usuario);
     }
 }
