@@ -13,6 +13,7 @@ import com.squareup.picasso.Picasso;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -260,67 +261,63 @@ public class MessagesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
 
     //Manejo del Adaptador
     public void addItem(MessagePojo m) {
-        boolean stop = false, isMessageWithoutAnswer = false, opHecha = false;
-        for (int i = 0; !stop && i < mDatos.size(); i++)
-            if (mDatos.get(i) instanceof MessagePojo)
-                if (((MessagePojo) mDatos.get(i)).getKey().equals(m.getKey()))
-                    stop = true;
+        boolean opHecha = false;
 
-        if (!stop && !isAConversation) {
-            for (int i = 0; !opHecha && i < mDatos.size(); i++)
-                if (mDatos.get(i) instanceof MessagePojo)
+        if (!isAConversation) // si no estoy en conversationActivity y recibo un nuevo mensaje
+            for (int i = 0; !opHecha && i < mDatos.size(); i++) // recorro los mensajes que tengo en mDatos
+                if (mDatos.get(i) instanceof MessagePojo) // esta comprobación es para que no pete cuando llegue a un elemento "cabecera"
+                    // si el emisor del mensaje que tengo es el mismo que el emisor del mensaje que me viene, y el titulo del anuncio es el mismo en el mensaje que tengo y en el que me viene
                     if (((MessagePojo) mDatos.get(i)).getEmisor().getKey().equals(m.getEmisor().getKey()) && ((MessagePojo) mDatos.get(i)).getTituloAnuncio().equals(m.getTituloAnuncio())) {
-                        mDatos.remove(mDatos.get(i));
-                        notifyItemRemoved(i);
-                        opHecha = true;
+                        mDatos.remove(mDatos.get(i)); // borro ese mensaje
+                        opHecha = true; // paro de recorrer la lista
                     }
+
+
+        if (m instanceof MessagePojoWithoutAnswer) // si el mensaje que me llega es un mensaje sin respuesta
+            mDatos.add(mDatos.indexOf(cabeceraMensajesSinRespuesta) + 1, m); // lo agrego detrás de la cabecera de mensajes sin respuesta
+        else // en caso contrario
+            mDatos.add(mDatos.indexOf(cabeceraMensajesRecibidos) + 1, m); // lo agrego detrás de la cabecera de mensajes recibidos
+
+        if (isAConversation && mDatos.size() == LIMIT_MESSAGES) { // si estoy en conversación activity y he el adaptador contiene tantos elementos como indica el límite
+            listenerConverManager.removeMessage((MessagePojo) mDatos.remove(0)); // borro el primer mensaje que recibí de la bdd
+            mDatos.remove(0); // lo borro del adaptador
+            notifyItemRemoved(0); // notifico
         }
+        orderData(); // ORDENAR LOS MENSAJES DEL ADAPTADOR
+    }
 
-        if (m instanceof MessagePojoWithoutAnswer)
-            isMessageWithoutAnswer = true;
+    private void orderData() {
+        if (!isAConversation) { // si no estoy en conversationActivity, los mensajes deben aparecer en orden de más reciente a más antiguos, para ello:
+            List<MessagePojo> aux = new ArrayList<>(), aux2 = new ArrayList<>(); // creo dos listas auxiliares. La primera para ordenar los mensajes recibidos. La segunda para ordenar los mensajes enviados sin respuesta
+            int hasta = mDatos.indexOf(cabeceraMensajesSinRespuesta);  // obtengo el índice de la cabecera de mensajesSinRespuesta, porque ahí acaban los mensajes recibidos
 
-        if (!stop) {
-            if (isMessageWithoutAnswer)
-                mDatos.add(mDatos.indexOf(cabeceraMensajesSinRespuesta) + 1, m);
-            else
-                mDatos.add(mDatos.indexOf(cabeceraMensajesRecibidos) + 1, m);
+            for (int i = mDatos.indexOf(cabeceraMensajesRecibidos) + 1; i < hasta; i++) // recorro los mensajes que hay entre la cabecera de mensajes recibidos y la de mensajes enviados sin respuesta
+                if (mDatos.get(i) instanceof MessagePojo)
+                    aux.add((MessagePojo) mDatos.get(i)); // los agrego a la primera lista auxiliar
+
+            Collections.sort(aux, messagesComp); // ordeno esa lista
+
+            for (int i = mDatos.indexOf(cabeceraMensajesSinRespuesta) + 1; i < mDatos.size(); i++) // recorro los mensajes desde la cabecera de mensajes sin respuesta hasta el final
+                if (mDatos.get(i) instanceof MessagePojo)
+                    aux2.add((MessagePojo) mDatos.get(i)); // los agrego a la segunda lista auxiliar.
+
+            Collections.sort(aux2, messagesComp); // ordeno esa segunda lista
+
+            mDatos.clear(); // limpio el adaptador
+            mDatos.add(cabeceraMensajesRecibidos); // agrego la cabecera de mensajes recibidos
+            mDatos.addAll(aux); // agrego la lista ordenada de los mensajes recibidos
+            mDatos.add(cabeceraMensajesSinRespuesta); // agrego la cabecera de mensajes sin respuesta
+            mDatos.addAll(aux2); // agrego la lista ordenada de los mensajes enviados sin respuestas
+        } else { // si estoy en conversationActivity
+            List<MessagePojo> aux = new ArrayList<>(); // me creo una lista auxiliar
+            for (int i = 0; i < mDatos.size(); i++) // recorro todos los mensajes
+                if (mDatos.get(i) instanceof MessagePojo)
+                    aux.add((MessagePojo) mDatos.get(i)); // los agrego a la lista auxiliar. Este paso lo tengo que hacer porque el comparator compara MessagesPojo.
+
+            Collections.sort(aux, messagesComp); // ordeno la lista
+            mDatos.clear(); // limpio el contenido de mDatos
+            mDatos.addAll(aux); // agrego toda la lista auxiliar con los mensajes de la conversación ya ordenada
         }
-
-        if (isAConversation && mDatos.size() == LIMIT_MESSAGES)
-            listenerConverManager.removeMessage((MessagePojo) mDatos.remove(1));
-
-        if (!isAConversation) {
-            List<MessagePojo> aux = new ArrayList<>(), aux2 = new ArrayList<>();
-            int hasta = mDatos.indexOf(cabeceraMensajesSinRespuesta);
-            for (int i = mDatos.indexOf(cabeceraMensajesRecibidos) + 1; i < hasta; i++)
-                if (mDatos.get(i) instanceof MessagePojo)
-                    aux.add((MessagePojo) mDatos.get(i));
-
-            Collections.sort(aux, messagesComp);
-
-            hasta = mDatos.size();
-            for (int i = mDatos.indexOf(cabeceraMensajesSinRespuesta) + 1; i < hasta; i++)
-                if (mDatos.get(i) instanceof MessagePojo)
-                    aux2.add((MessagePojo) mDatos.get(i));
-
-            Collections.sort(aux2, messagesComp);
-
-            mDatos.clear();
-            mDatos.add(cabeceraMensajesRecibidos);
-            mDatos.add(cabeceraMensajesSinRespuesta);
-            mDatos.addAll(mDatos.indexOf(cabeceraMensajesRecibidos) + 1, aux);
-            mDatos.addAll(mDatos.indexOf(cabeceraMensajesSinRespuesta) + 1, aux2);
-        } else {
-            List<MessagePojo> aux = new ArrayList<>();
-            for (int i = 0; i < mDatos.size(); i++)
-                if (mDatos.get(i) instanceof MessagePojo)
-                    aux.add((MessagePojo) mDatos.get(i));
-
-            Collections.sort(aux, messagesComp);
-            mDatos.clear();
-            mDatos.addAll(aux);
-        }
-
         notifyDataSetChanged();
     }
 

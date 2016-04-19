@@ -99,32 +99,24 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
     }
 
     private void confToolbar() {
+        final Usuario usuarioAux;
         lblTituloAnuncio.setText(mensaje.getTituloAnuncio());
-        if (mensaje instanceof MessagePojoWithoutAnswer) {
-            lblNombreContacto.setText(((MessagePojoWithoutAnswer) mensaje).getReceptor().getNombre());
-            Picasso.with(this).load(((MessagePojoWithoutAnswer) mensaje).getReceptor().getFoto()).fit().centerCrop().error(R.drawable.default_user).into(imgContacto);
-            View.OnClickListener perfilOnClickListener = new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    VerPerfilActivity.start(ConversationActivity.this, ((MessagePojoWithoutAnswer) mensaje).getReceptor());
-                }
-            };
+        if (mensaje instanceof MessagePojoWithoutAnswer)
+            usuarioAux = ((MessagePojoWithoutAnswer) mensaje).getReceptor();
+        else
+            usuarioAux = mensaje.getEmisor();
 
-            imgContacto.setOnClickListener(perfilOnClickListener);
-            lblNombreContacto.setOnClickListener(perfilOnClickListener);
-        } else {
-            lblNombreContacto.setText(mensaje.getEmisor().getNombre());
-            Picasso.with(this).load(mensaje.getEmisor().getFoto()).fit().centerCrop().error(R.drawable.default_user).into(imgContacto);
-            View.OnClickListener perfilOnClickListener = new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    VerPerfilActivity.start(ConversationActivity.this, mensaje.getEmisor());
-                }
-            };
+        lblNombreContacto.setText(usuarioAux.getNombre());
+        Picasso.with(this).load(usuarioAux.getFoto()).fit().centerCrop().error(R.drawable.default_user).into(imgContacto);
+        View.OnClickListener perfilOnClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                VerPerfilActivity.start(ConversationActivity.this, usuarioAux);
+            }
+        };
 
-            imgContacto.setOnClickListener(perfilOnClickListener);
-            lblNombreContacto.setOnClickListener(perfilOnClickListener);
-        }
+        imgContacto.setOnClickListener(perfilOnClickListener);
+        lblNombreContacto.setOnClickListener(perfilOnClickListener);
 
         lblTituloAnuncio.setOnClickListener(new View.OnClickListener() {
             @Override
