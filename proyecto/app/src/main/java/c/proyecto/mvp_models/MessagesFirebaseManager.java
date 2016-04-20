@@ -172,100 +172,100 @@ public class MessagesFirebaseManager {
     private void getUserMessagesSendedWithoutAnswer() {
         // Obtengo los mensajes que el usuario ha enviado y que aún no tienen respuesta
         new Firebase(URL_MSG_SIN_RESP).child(currentUser.getKey()).addListenerForSingleValueEvent(new ValueEventListener() {
-                                                                                                      @Override
-                                                                                                      public void onDataChange(DataSnapshot dataSnapshot) {
-                                                                                                          for (DataSnapshot data : dataSnapshot.getChildren()) {
-                                                                                                              final String keyReceptor = data.getKey(); // obtengo el receptor
-                                                                                                              new Firebase(URL_MSG_SIN_RESP).child(currentUser.getKey()).child(keyReceptor).addListenerForSingleValueEvent(new ValueEventListener() { // voy a la rama de mensajes que le he enviado a ese receptor
-                                                                                                                  @Override
-                                                                                                                  public void onDataChange(DataSnapshot dataSnapshot) {
-                                                                                                                      for (DataSnapshot data2 : dataSnapshot.getChildren())
-                                                                                                                          new Firebase(URL_MSG_SIN_RESP).child(currentUser.getKey()).child(keyReceptor).child(data2.getKey()).addListenerForSingleValueEvent(new ValueEventListener() { // leo los anuncios sobre los que le he enviado el mensaje a ese receptor
-                                                                                                                                                                                                                                                                 @Override
-                                                                                                                                                                                                                                                                 public void onDataChange(DataSnapshot dataSnapshot) {
-                                                                                                                                                                                                                                                                     HashMap map = dataSnapshot.getValue(HashMap.class);
-                                                                                                                                                                                                                                                                     String msgEnviado = (String) map.keySet().iterator().next(); // obtengo la referencia del mensaje que tiene que tener el receptor. Es decir, la referencia del mensaje que le envió en usuario
-                                                                                                                                                                                                                                                                     final String tituloAnuncio = dataSnapshot.getKey().trim().replace("_", " ");
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot data : dataSnapshot.getChildren()) {
+                    final String keyReceptor = data.getKey(); // obtengo el receptor
+                    // voy a la rama de mensajes que le he enviado a ese receptor
+                    new Firebase(URL_MSG_SIN_RESP).child(currentUser.getKey()).child(keyReceptor).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            for (DataSnapshot data2 : dataSnapshot.getChildren())
+                                // leo los anuncios sobre los que le he enviado el mensaje a ese receptor
+                                new Firebase(URL_MSG_SIN_RESP).child(currentUser.getKey()).child(keyReceptor).child(data2.getKey()).addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        HashMap map = dataSnapshot.getValue(HashMap.class);
+                                        String msgEnviado = (String) map.keySet().iterator().next();
+                                        // obtengo la referencia del mensaje que tiene que tener el receptor. Es decir, la referencia del mensaje que le envió en usuario
+                                        final String tituloAnuncio = dataSnapshot.getKey().trim().replace("_", " ");
 
-                                                                                                                                                                                                                                                                     // me voy a la rama de mensajes del receptor y obtengo el último mensaje que le envío el usuario
-                                                                                                                                                                                                                                                                     // este listener sirve para mantener actualizado el adaptador. Es decir, si el usuario envía un nuevo mensaje y el receptor sigue sin responder que aparezca ese último
-                                                                                                                                                                                                                                                                     // mensaje enviado
-                                                                                                                                                                                                                                                                     Query fInterno = new Firebase(URL_CONVERSACIONES).child(keyReceptor).child(msgEnviado).limitToLast(1);
-                                                                                                                                                                                                                                                                     ChildEventListener listenerInterno = new ChildEventListener() {
-                                                                                                                                                                                                                                                                         @Override
-                                                                                                                                                                                                                                                                         public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                                                                                                                                                                                                                                                                             Message m = dataSnapshot.getValue(Message.class);
-                                                                                                                                                                                                                                                                             final MessagePojoWithoutAnswer mensaje = new MessagePojoWithoutAnswer();
-                                                                                                                                                                                                                                                                             mensaje.setContenido(m.getContenido());
-                                                                                                                                                                                                                                                                             mensaje.setFecha(new Date(m.getFecha()));
-                                                                                                                                                                                                                                                                             mensaje.setKey(dataSnapshot.getKey());
-                                                                                                                                                                                                                                                                             mensaje.setEmisor(currentUser);
-                                                                                                                                                                                                                                                                             mensaje.setTituloAnuncio(tituloAnuncio);
-                                                                                                                                                                                                                                                                             new Firebase(URL_USERS).child(keyReceptor).addListenerForSingleValueEvent(new ValueEventListener() {
-                                                                                                                                                                                                                                                                                 @Override
-                                                                                                                                                                                                                                                                                 public void onDataChange(DataSnapshot dataSnapshot) {
-                                                                                                                                                                                                                                                                                     Usuario receptor = dataSnapshot.getValue(Usuario.class);
-                                                                                                                                                                                                                                                                                     mensaje.setReceptor(receptor);
-                                                                                                                                                                                                                                                                                     mensaje.setKeyReceptor(receptor.getKey());
-                                                                                                                                                                                                                                                                                     ((MainPresenter) presenter).userMessageHasBeenObtained(mensaje);
-                                                                                                                                                                                                                                                                                 }
+                                        // me voy a la rama de mensajes del receptor y obtengo el último mensaje que le envío el usuario
+                                        // este listener sirve para mantener actualizado el adaptador. Es decir, si el usuario envía un nuevo mensaje y el receptor sigue sin responder que aparezca ese último
+                                        // mensaje enviado
+                                        Query fInterno = new Firebase(URL_CONVERSACIONES).child(keyReceptor).child(msgEnviado).limitToLast(1);
+                                        ChildEventListener listenerInterno = new ChildEventListener() {
+                                            @Override
+                                            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                                                Message m = dataSnapshot.getValue(Message.class);
+                                                final MessagePojoWithoutAnswer mensaje = new MessagePojoWithoutAnswer();
+                                                mensaje.setContenido(m.getContenido());
+                                                mensaje.setFecha(new Date(m.getFecha()));
+                                                mensaje.setKey(dataSnapshot.getKey());
+                                                mensaje.setEmisor(currentUser);
+                                                mensaje.setTituloAnuncio(tituloAnuncio);
+                                                new Firebase(URL_USERS).child(keyReceptor).addListenerForSingleValueEvent(new ValueEventListener() {
+                                                    @Override
+                                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                                        Usuario receptor = dataSnapshot.getValue(Usuario.class);
+                                                        mensaje.setReceptor(receptor);
+                                                        mensaje.setKeyReceptor(receptor.getKey());
+                                                        ((MainPresenter) presenter).userMessageHasBeenObtained(mensaje);
+                                                    }
 
-                                                                                                                                                                                                                                                                                 @Override
-                                                                                                                                                                                                                                                                                 public void onCancelled(FirebaseError firebaseError) {
+                                                    @Override
+                                                    public void onCancelled(FirebaseError firebaseError) {
 
-                                                                                                                                                                                                                                                                                 }
-                                                                                                                                                                                                                                                                             });
-                                                                                                                                                                                                                                                                         }
+                                                    }
+                                                });
+                                            }
 
-                                                                                                                                                                                                                                                                         @Override
-                                                                                                                                                                                                                                                                         public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                                            @Override
+                                            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
 
-                                                                                                                                                                                                                                                                         }
+                                            }
 
-                                                                                                                                                                                                                                                                         @Override
-                                                                                                                                                                                                                                                                         public void onChildRemoved(DataSnapshot dataSnapshot) {
+                                            @Override
+                                            public void onChildRemoved(DataSnapshot dataSnapshot) {
 
-                                                                                                                                                                                                                                                                         }
+                                            }
 
-                                                                                                                                                                                                                                                                         @Override
-                                                                                                                                                                                                                                                                         public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                                            @Override
+                                            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
 
-                                                                                                                                                                                                                                                                         }
+                                            }
 
-                                                                                                                                                                                                                                                                         @Override
-                                                                                                                                                                                                                                                                         public void onCancelled(FirebaseError firebaseError) {
+                                            @Override
+                                            public void onCancelled(FirebaseError firebaseError) {
 
-                                                                                                                                                                                                                                                                         }
-                                                                                                                                                                                                                                                                     };
-                                                                                                                                                                                                                                                                     fInterno.addChildEventListener(listenerInterno);
-                                                                                                                                                                                                                                                                     listenersInternosMessagesSinResp.put(fInterno, listenerInterno);
-                                                                                                                                                                                                                                                                 }
+                                            }
+                                        };
+                                        fInterno.addChildEventListener(listenerInterno);
+                                        listenersInternosMessagesSinResp.put(fInterno, listenerInterno);
+                                    }
 
-                                                                                                                                                                                                                                                                 @Override
-                                                                                                                                                                                                                                                                 public void onCancelled(FirebaseError firebaseError) {
+                                    @Override
+                                    public void onCancelled(FirebaseError firebaseError) {
 
-                                                                                                                                                                                                                                                                 }
-                                                                                                                                                                                                                                                             }
+                                    }
 
-                                                                                                                          );
+                                });
 
-                                                                                                                  }
+                        }
 
-                                                                                                                  @Override
-                                                                                                                  public void onCancelled(FirebaseError firebaseError) {
+                        @Override
+                        public void onCancelled(FirebaseError firebaseError) {
 
-                                                                                                                  }
-                                                                                                              });
-                                                                                                          }
-                                                                                                      }
+                        }
+                    });
+                }
+            }
 
-                                                                                                      @Override
-                                                                                                      public void onCancelled(FirebaseError firebaseError) {
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
 
-                                                                                                      }
-                                                                                                  }
-
-        );
+            }
+        });
     }
 
     // obtengo la conversación entera sobre un anuncio concreto
