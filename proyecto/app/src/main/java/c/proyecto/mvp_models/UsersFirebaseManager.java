@@ -110,7 +110,7 @@ public class UsersFirebaseManager {
     }
 
     public void signInWithFacebook(String email, String contra) {
-
+        
     }
 
     public void initializeOnUserChangedListener(Usuario usuario) {
