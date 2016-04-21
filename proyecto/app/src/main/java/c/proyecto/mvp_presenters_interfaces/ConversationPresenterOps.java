@@ -12,6 +12,4 @@ public interface ConversationPresenterOps {
     void sendMessage(MessagePojo mensaje, String keyReceptor, boolean isFirstMessageSended);
     void detachFirebaseListeners();
     void removeMessage(MessagePojo m);
-    void getReceptor(String keyReceptor);
-    void receptorObtained(Usuario usuario);
 }

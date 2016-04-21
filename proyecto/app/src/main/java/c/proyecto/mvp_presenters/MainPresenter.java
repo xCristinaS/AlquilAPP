@@ -119,7 +119,6 @@ public class MainPresenter implements MainPresenterOps, MyPresenter {
     public void userMessageHasBeenObtained(MessagePojo m) {
         if (activity.get() != null)
             activity.get().userMessageHasBeenObtained(m);
-
     }
 
     @Override

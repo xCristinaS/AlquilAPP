@@ -7,9 +7,6 @@ import java.util.Date;
 
 import c.proyecto.interfaces.IMessageAdapter;
 
-/**
- * Created by Cristina on 23/03/2016.
- */
 public class MessagePojo implements Parcelable, IMessageAdapter {
 
     public static final int TIPO_ENVIADO = 2;

@@ -165,8 +165,6 @@ public class UsersFirebaseManager {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (presenter instanceof AdvertsDetailsPresenter)
                     ((AdvertsDetailsPresenter) presenter).onAdvertPublisherRequestedResponsed(dataSnapshot.getValue(Usuario.class));
-                else if (presenter instanceof ConversationPresenter)
-                    ((ConversationPresenter) presenter).receptorObtained(dataSnapshot.getValue(Usuario.class));
             }
 
             @Override

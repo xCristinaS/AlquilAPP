@@ -85,11 +85,11 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
             @Override
             public void onClick(View v) {
                 if (!TextUtils.isEmpty(txtMensaje.getText())) {
-                    if (mensaje instanceof MessagePojoWithoutAnswer) {
+                    /*if (mensaje instanceof MessagePojoWithoutAnswer) {
                         MessagePojo m = new MessagePojo(user, mensaje.getTituloAnuncio(), txtMensaje.getText().toString(), new Date());
                         m.setKeyReceptor(mensaje.getKeyReceptor());
                         mPresenter.sendMessage(m, mensaje.getKeyReceptor(), true);
-                    } else
+                    } else*/
                         mPresenter.sendMessage(new MessagePojo(user, mensaje.getTituloAnuncio(), txtMensaje.getText().toString(), new Date()), mensaje.getEmisor().getKey(), false);
 
                     txtMensaje.setText("");
@@ -100,6 +100,7 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
     }
 
     private void confToolbar() {
+        final Usuario usuarioAux;
         String tituloAnuncio = mensaje.getTituloAnuncio();
         if(tituloAnuncio.length()>Constantes.LENGTH_TITULO_ANUNCIO_CONVERSATION_ACTIVITY){
             tituloAnuncio = mensaje.getTituloAnuncio().substring(0, Constantes.LENGTH_TITULO_ANUNCIO_CONVERSATION_ACTIVITY);
@@ -108,23 +109,22 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
         }
 
         lblTituloAnuncio.setText(tituloAnuncio);
+        if (mensaje instanceof MessagePojoWithoutAnswer)
+            usuarioAux = ((MessagePojoWithoutAnswer) mensaje).getReceptor();
+        else
+            usuarioAux = mensaje.getEmisor();
 
-        if (mensaje instanceof MessagePojoWithoutAnswer) {
-            mPresenter.setUsersManager(new UsersFirebaseManager(mPresenter));
-            mPresenter.getReceptor(mensaje.getKeyReceptor());
-        } else {
-            lblNombreContacto.setText(mensaje.getEmisor().getNombre());
-            Picasso.with(this).load(mensaje.getEmisor().getFoto()).fit().centerCrop().error(R.drawable.default_user).into(imgContacto);
-            View.OnClickListener perfilOnClickListener = new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    VerPerfilActivity.start(ConversationActivity.this, mensaje.getEmisor());
-                }
-            };
+        lblNombreContacto.setText(usuarioAux.getNombre());
+        Picasso.with(this).load(usuarioAux.getFoto()).fit().centerCrop().error(R.drawable.default_user).into(imgContacto);
+        View.OnClickListener perfilOnClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                VerPerfilActivity.start(ConversationActivity.this, usuarioAux);
+            }
+        };
 
-            imgContacto.setOnClickListener(perfilOnClickListener);
-            lblNombreContacto.setOnClickListener(perfilOnClickListener);
-        }
+        imgContacto.setOnClickListener(perfilOnClickListener);
+        lblNombreContacto.setOnClickListener(perfilOnClickListener);
 
         lblTituloAnuncio.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -132,20 +132,6 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
               //  DetallesAnuncioActivity.start(ConversationActivity.this, mensaje.);
             }
         });
-    }
-
-    @Override
-    public void receptorObtained(final Usuario usuario) {
-        lblNombreContacto.setText(usuario.getNombre());
-        Picasso.with(this).load(usuario.getFoto()).fit().centerCrop().error(R.drawable.default_user).into(imgContacto);
-        View.OnClickListener perfilOnClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                VerPerfilActivity.start(ConversationActivity.this, usuario);
-            }
-        };
-        imgContacto.setOnClickListener(perfilOnClickListener);
-        lblNombreContacto.setOnClickListener(perfilOnClickListener);
     }
 
     @Override
@@ -157,7 +143,6 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
     @Override
     protected void onDestroy() {
         mPresenter.detachFirebaseListeners();
-        MainActivity.getmPresenter().requestUserMessages(user);
         super.onDestroy();
     }
 
