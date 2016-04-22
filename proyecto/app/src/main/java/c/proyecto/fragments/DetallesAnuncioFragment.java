@@ -6,6 +6,8 @@ import android.graphics.Point;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -20,6 +22,12 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.squareup.picasso.Picasso;
 
 import java.util.Date;
@@ -35,7 +43,7 @@ import c.proyecto.pojo.Usuario;
 import c.proyecto.pojo.MessagePojo;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class DetallesAnuncioFragment extends Fragment implements PrestacionesAdapter.IPrestacionAdapter {
+public class DetallesAnuncioFragment extends Fragment implements PrestacionesAdapter.IPrestacionAdapter, OnMapReadyCallback {
 
     public interface IDetallesAnuncioFragmentListener {
         void onImgEditClicked(Anuncio advert, Usuario user);
@@ -93,8 +101,10 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
         mCurrentUser = getArguments().getParcelable(ARG_CURRENT_USER);
         initViews();
         confRecyclerview();
+        confMap();
         bindData();
     }
+
 
     private void initViews() {
         lblNombre = (TextView) getView().findViewById(R.id.lblNombre);
@@ -188,6 +198,19 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         rvPrestaciones.setLayoutManager(mLayoutManager);
         rvPrestaciones.setItemAnimator(new DefaultItemAnimator());
+    }
+
+
+    private void confMap() {
+        FragmentManager fm = getChildFragmentManager();
+        SupportMapFragment mapFragment =  SupportMapFragment.newInstance();
+        mapFragment.getMapAsync(this);
+        fm.beginTransaction().replace(R.id.frmMap, mapFragment).commit();
+    }
+
+    @Override
+    public void onMapReady(GoogleMap map) {
+        map.addMarker(new MarkerOptions().position(new LatLng(20, 50)));
     }
 
     private void bindData() {
