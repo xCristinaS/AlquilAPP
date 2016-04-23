@@ -91,14 +91,17 @@
 
             <!-- LOCALIZACIÓN -->
 
-            <EditText
+
+            <AutoCompleteTextView
                 android:id="@+id/txtDireccion"
                 android:layout_width="220dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/imgCasa"
                 android:layout_marginTop="50dp"
                 android:inputType="text"
-                android:hint="Dirección" />
+                android:hint="Dirección"
+                android:dropDownWidth="match_parent"
+                />
 
             <EditText
                 android:id="@+id/txtNum"

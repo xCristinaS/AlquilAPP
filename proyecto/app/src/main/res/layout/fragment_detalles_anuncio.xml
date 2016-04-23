@@ -293,6 +293,11 @@
 
         <!-- Mapa Google -->
 
+        <FrameLayout
+            android:id="@+id/frmMap"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_below="@id/shapeComentario"/>
     </RelativeLayout>
 
 </ScrollView>

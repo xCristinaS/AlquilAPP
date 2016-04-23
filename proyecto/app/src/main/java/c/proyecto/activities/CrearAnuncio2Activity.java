@@ -2,6 +2,7 @@ package c.proyecto.activities;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.location.Address;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,8 +13,10 @@ import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
+
+import com.google.android.gms.maps.model.LatLng;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -27,6 +30,7 @@ import c.proyecto.dialog_fragments.SeleccionPrestacionesDialogFragment;
 import c.proyecto.interfaces.MyPresenter;
 import c.proyecto.mvp_models.AdvertsFirebaseManager;
 import c.proyecto.pojo.Anuncio;
+import c.proyecto.pojo.MyLatLng;
 import c.proyecto.pojo.Usuario;
 import c.proyecto.pojo.Prestacion;
 import c.proyecto.mvp_presenters.CrearEditarAnuncioPresenter;
@@ -44,7 +48,9 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
     private static final String EXTRA_IMAGE_4 = "img4";
     private static final String EXTRA_IMAGE_5 = "img5";
 
-    private TextView txtTituloAnuncio, txtDireccion, txtNum, txtPoblacion, txtProvincia, txtCamas, txtToilets, txtTamano, txtDescripcion, txtPrecio;
+
+
+    private EditText txtTituloAnuncio, txtNum, txtPoblacion, txtProvincia, txtCamas, txtToilets, txtTamano, txtDescripcion, txtPrecio, txtDireccion;
     private ImageView imgCasa, imgHabitacion, imgPiso;
     private RecyclerView rvPrestaciones, rvHuespedes;
 
@@ -53,6 +59,7 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
     private ArrayList<File> imagenesAnuncio;
     private Anuncio mAnuncio;
     private Usuario user;
+
 
     public static void startForResult(Activity a, Anuncio anuncio, Usuario user, int requestCode, File img0, File img1, File img2, File img3, File img4, File img5) {
         Intent intent = new Intent(a, CrearAnuncio2Activity.class);
@@ -114,25 +121,42 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
     }
 
     private void initViews() {
-        txtTituloAnuncio = (TextView) findViewById(R.id.txtTituloAnuncio);
+        txtTituloAnuncio = (EditText) findViewById(R.id.txtTituloAnuncio);
         imgCasa = (ImageView) findViewById(R.id.imgCasa);
         imgHabitacion = (ImageView) findViewById(R.id.imgHabitacion);
         imgPiso = (ImageView) findViewById(R.id.imgPiso);
-        txtDireccion = (TextView) findViewById(R.id.txtDireccion);
-        txtNum = (TextView) findViewById(R.id.txtNum);
-        txtPoblacion = (TextView) findViewById(R.id.txtPoblacion);
-        txtProvincia = (TextView) findViewById(R.id.txtProvincia);
+        txtDireccion = (EditText) findViewById(R.id.txtDireccion);
+        txtNum = (EditText) findViewById(R.id.txtNum);
+        txtPoblacion = (EditText) findViewById(R.id.txtPoblacion);
+        txtProvincia = (EditText) findViewById(R.id.txtProvincia);
         rvPrestaciones = (RecyclerView) findViewById(R.id.rvPrestaciones);
-        txtCamas = (TextView) findViewById(R.id.txtCamas);
-        txtToilets = (TextView) findViewById(R.id.txtToilets);
-        txtTamano = (TextView) findViewById(R.id.txtTamano);
-        txtDescripcion = (TextView) findViewById(R.id.txtDescripcion);
-        txtPrecio = (TextView) findViewById(R.id.txtPrecio);
+        txtCamas = (EditText) findViewById(R.id.txtCamas);
+        txtToilets = (EditText) findViewById(R.id.txtToilets);
+        txtTamano = (EditText) findViewById(R.id.txtTamano);
+        txtDescripcion = (EditText) findViewById(R.id.txtDescripcion);
+        txtPrecio = (EditText) findViewById(R.id.txtPrecio);
         rvHuespedes = (RecyclerView) findViewById(R.id.rvHuespedes);
+
+        View.OnClickListener onClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Si este anuncio ya existe y tiene una localización asignada se cargará está como punto de partida
+                if(mAnuncio != null && mAnuncio.getLats() != null)
+                    LocalizacionActivity.startForResult(CrearAnuncio2Activity.this, new LatLng(mAnuncio.getLats().getLatitude(), mAnuncio.getLats().getLongitude()));
+                else
+                    LocalizacionActivity.startForResult(CrearAnuncio2Activity.this);
+            }
+        };
+        txtDireccion.setOnClickListener(onClickListener);
+
+
+
         confImgTipoVivienda();
         confRecyclerPrestaciones();
         confRecyclerHuespedes();
+
     }
+
 
     private void confImgTipoVivienda() {
         imgCasa.setOnClickListener(new View.OnClickListener() {
@@ -196,7 +220,9 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
         txtTamano.setText(String.valueOf(mAnuncio.getTamanio()));
         txtDescripcion.setText(mAnuncio.getDescripcion());
         txtPrecio.setText(String.valueOf(mAnuncio.getPrecio()));
+
     }
+
 
     @Override
     public void onPrestacionClicked() {
@@ -304,5 +330,23 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
             mAnuncio.setTamanio(Integer.valueOf(txtTamano.getText().toString()));
         if (!TextUtils.isEmpty(txtDescripcion.getText()))
             mAnuncio.setDescripcion(txtDescripcion.getText().toString());
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == RESULT_OK)
+            switch (requestCode){
+                case LocalizacionActivity.RC_ADDRESS:
+                    Address address = data.getParcelableExtra(LocalizacionActivity.EXTRA_ADDRESS);
+                    txtDireccion.setText(address.getThoroughfare());
+                    txtNum.setText(address.getSubThoroughfare());
+                    txtPoblacion.setText(address.getLocality());
+                    txtProvincia.setText(address.getSubAdminArea());
+                    //Se guarda la latitud del punto seleccionado para la localización de la vivienda.
+                    mAnuncio.setLats(new MyLatLng(address.getLatitude(), address.getLongitude()));
+                    break;
+            }
     }
 }
