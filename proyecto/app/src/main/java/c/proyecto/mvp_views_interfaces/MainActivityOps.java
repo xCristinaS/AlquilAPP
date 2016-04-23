@@ -6,9 +6,6 @@ import c.proyecto.pojo.Anuncio;
 import c.proyecto.pojo.Usuario;
 import c.proyecto.pojo.MessagePojo;
 
-/**
- * Created by Cristina on 20/03/2016.
- */
 public interface MainActivityOps {
     void advertHasBeenObtained(Anuncio a);
     void adverHasBeenModified(Anuncio a);

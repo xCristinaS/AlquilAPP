@@ -159,9 +159,14 @@ public class AdvertsFirebaseManager {
                 Anuncio a;
                 for (DataSnapshot data : dataSnapshot.getChildren()) {
                     a = data.getValue(Anuncio.class);
-                    if ((tipoVivienda[0] != null && a.getTipo_vivienda().equals(tipoVivienda[0]) || tipoVivienda[1] != null && a.getTipo_vivienda().equals(tipoVivienda[1]) || tipoVivienda[2] != null && a.getTipo_vivienda().equals(tipoVivienda[2])) &&
-                            a.getPrecio() >= minPrice && a.getPrecio() <= maxPrice && a.getTamanio() >= minSize && a.getTamanio() <= maxSize)
-                        filteredAdverts.add(a);
+                    if (!a.getAnunciante().equals(currentUser.getKey()) && (tipoVivienda[0] != null && a.getTipo_vivienda().equals(tipoVivienda[0]) || tipoVivienda[1] != null && a.getTipo_vivienda().equals(tipoVivienda[1]) || tipoVivienda[2] != null && a.getTipo_vivienda().equals(tipoVivienda[2])) && a.getPrecio() >= minPrice && a.getTamanio() >= minSize) {
+                        if (maxPrice == 1000 && maxSize == 1000)
+                            filteredAdverts.add(a);
+                        else if (maxPrice != 1000 && a.getPrecio() <= maxPrice)
+                            filteredAdverts.add(a);
+                        else if (maxSize != 1000 && a.getTamanio() <= maxSize)
+                            filteredAdverts.add(a);
+                    }
                 }
                 ((MainPresenter) presenter).onFilterResponsed(filteredAdverts);
             }
@@ -173,7 +178,7 @@ public class AdvertsFirebaseManager {
         });
     }
 
-    public void attachFirebaseListeners(){
+    public void attachFirebaseListeners() {
         createListeners();
         mFirebase.addChildEventListener(listener);
     }

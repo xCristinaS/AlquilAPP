@@ -70,7 +70,8 @@ public class PrincipalFragment extends Fragment {
             public void onPageSelected(int position) {
                 AdvertsRecyclerViewFragment fragmento = (AdvertsRecyclerViewFragment) vpAdapter.getItem(viewPager.getCurrentItem());
                 ((AdvertsRecyclerViewAdapter.OnAdapterItemLongClick) getActivity()).setAdapterAllowMultiDeletion(fragmento.getmAdapter());
-                if (fragmento.getmAdapter().getAdapter_type() == AdvertsRecyclerViewAdapter.ADAPTER_TYPE_ADVS)
+                AdvertsRecyclerViewAdapter adapter = fragmento.getmAdapter();
+                if (adapter != null && adapter.getAdapter_type() == AdvertsRecyclerViewAdapter.ADAPTER_TYPE_ADVS)
                     listener.showFilterIcon();
             }
 
@@ -79,7 +80,9 @@ public class PrincipalFragment extends Fragment {
                 AdvertsRecyclerViewFragment f = (AdvertsRecyclerViewFragment) vpAdapter.getItem(viewPager.getCurrentItem());
                 if (f != null)
                     f.disableMultideletion();
-                if (f.getmAdapter().getAdapter_type() != AdvertsRecyclerViewAdapter.ADAPTER_TYPE_ADVS)
+
+                AdvertsRecyclerViewAdapter adapter = f.getmAdapter();
+                if (adapter != null && adapter.getAdapter_type() != AdvertsRecyclerViewAdapter.ADAPTER_TYPE_ADVS)
                     listener.hideFilterIcon();
             }
         });
