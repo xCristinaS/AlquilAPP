@@ -265,8 +265,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
                 Fragment f = getSupportFragmentManager().findFragmentById(R.id.frmContenido);
                 if (f instanceof PrincipalFragment)
                     ((PrincipalFragment) f).removeFilter();
-                mPresenter.detachListeners();
-                mPresenter.initializeFirebaseListeners(mUser);
+
+                mPresenter.detachAdvertsListener();
+                mPresenter.attachAdvertsListeners();
                 toolbar.getMenu().findItem(R.id.deshacerFiltro).setVisible(false);
                 return true;
         }

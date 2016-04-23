@@ -242,7 +242,7 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
     //Manejo del Adaptador
     public void addItem(Anuncio a) {
         boolean stop = false;
-        //if (adapter_type != ADAPTER_TYPE_ADVS && !filtersApplied) { // No estoy segura de si vale
+        if (adapter_type != ADAPTER_TYPE_ADVS || !filtersApplied) {
             for (int i = 0; !stop && i < mDatos.size(); i++)
                 if (mDatos.get(i).getKey().equals(a.getKey()))
                     stop = true;
@@ -251,7 +251,7 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
                 mDatos.add(a);
             notifyItemInserted(mDatos.indexOf(a));
             notifyDataSetChanged();
-        //}
+        }
     }
 
     public void addItems(ArrayList<Anuncio> filteredAdverts) {

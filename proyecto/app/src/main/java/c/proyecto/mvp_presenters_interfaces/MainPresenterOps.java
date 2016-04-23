@@ -25,4 +25,6 @@ public interface MainPresenterOps {
     void sendAdvertHasBeenRemovedBroadcast();
     void filterRequest(String[] tipoVivienda, int minPrice, int maxPrice, int minSize, int maxSize);
     void onFilterResponsed(ArrayList<Anuncio> filteredAdverts);
+    void detachAdvertsListener();
+    void attachAdvertsListeners();
 }

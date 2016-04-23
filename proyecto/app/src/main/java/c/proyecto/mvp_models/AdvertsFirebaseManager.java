@@ -63,7 +63,11 @@ public class AdvertsFirebaseManager {
 
             }
         });
+        createListeners();
+        mFirebase.addChildEventListener(listener);
+    }
 
+    private void createListeners() {
         if (mFirebase == null)
             mFirebase = new Firebase(URL_ANUNCIOS);
 
@@ -120,7 +124,6 @@ public class AdvertsFirebaseManager {
                 }
             };
         }
-        mFirebase.addChildEventListener(listener);
     }
 
     public void removeUserAdvert(Anuncio a) {
@@ -160,7 +163,7 @@ public class AdvertsFirebaseManager {
                             a.getPrecio() >= minPrice && a.getPrecio() <= maxPrice && a.getTamanio() >= minSize && a.getTamanio() <= maxSize)
                         filteredAdverts.add(a);
                 }
-                ((MainPresenter)presenter).onFilterResponsed(filteredAdverts);
+                ((MainPresenter) presenter).onFilterResponsed(filteredAdverts);
             }
 
             @Override
@@ -170,9 +173,14 @@ public class AdvertsFirebaseManager {
         });
     }
 
+    public void attachFirebaseListeners(){
+        createListeners();
+        mFirebase.addChildEventListener(listener);
+    }
+
     public void detachFirebaseListeners() {
         mFirebase.removeEventListener(listener);
-        listener = null;
         mFirebase = null;
+        listener = null;
     }
 }

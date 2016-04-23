@@ -152,4 +152,14 @@ public class MainPresenter implements MainPresenterOps, MyPresenter {
         if (activity.get() != null)
             activity.get().filteredAdvertsObtained(filteredAdverts);
     }
+
+    @Override
+    public void detachAdvertsListener() {
+        advertsManager.detachFirebaseListeners();
+    }
+
+    @Override
+    public void attachAdvertsListeners() {
+        advertsManager.attachFirebaseListeners();
+    }
 }
