@@ -14,6 +14,8 @@ import android.view.ViewGroup;
 
 import com.ogaclejapan.smarttablayout.SmartTabLayout;
 
+import java.util.ArrayList;
+
 import c.proyecto.R;
 import c.proyecto.activities.MainActivity;
 import c.proyecto.adapters.CachedFragmentPagerAdapter;
@@ -130,6 +132,20 @@ public class PrincipalFragment extends Fragment {
         AdvertsRecyclerViewFragment f = (AdvertsRecyclerViewFragment) vpAdapter.getItem(1);
         if (f.getmAdapter().getAdapter_type() == AdvertsRecyclerViewAdapter.ADAPTER_TYPE_ADVS)
             f.getmAdapter().removeItem(a);
+    }
+
+
+    public void loadFilteredAdverts(ArrayList<Anuncio> filteredAdverts) {
+        AdvertsRecyclerViewFragment f = (AdvertsRecyclerViewFragment) vpAdapter.getItem(1);
+        if (f.getmAdapter().getAdapter_type() == AdvertsRecyclerViewAdapter.ADAPTER_TYPE_ADVS)
+            f.getmAdapter().addItems(filteredAdverts);
+    }
+
+
+    public void removeFilter() {
+        AdvertsRecyclerViewFragment f = (AdvertsRecyclerViewFragment) vpAdapter.getItem(1);
+        if (f.getmAdapter().getAdapter_type() == AdvertsRecyclerViewAdapter.ADAPTER_TYPE_ADVS)
+            f.getmAdapter().setFiltersApplied(false);
     }
 
     public Usuario getUser() {

@@ -19,6 +19,8 @@ import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+
 import c.proyecto.R;
 
 import c.proyecto.adapters.MessagesRecyclerViewAdapter;
@@ -259,6 +261,14 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
             case R.id.filters:
                 new FilterDialogFramgent().show(getSupportFragmentManager(), "FILTERS");
                 return true;
+            case R.id.deshacerFiltro:
+                Fragment f = getSupportFragmentManager().findFragmentById(R.id.frmContenido);
+                if (f instanceof PrincipalFragment)
+                    ((PrincipalFragment) f).removeFilter();
+                mPresenter.detachListeners();
+                mPresenter.initializeFirebaseListeners(mUser);
+                toolbar.getMenu().findItem(R.id.deshacerFiltro).setVisible(false);
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -316,6 +326,14 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
     @Override
     public void filterRequest(String[] tipoVivienda, int minPrice, int maxPrice, int minSize, int maxSize) {
         mPresenter.filterRequest(tipoVivienda, minPrice, maxPrice, minSize, maxSize);
+    }
+
+    @Override
+    public void filteredAdvertsObtained(ArrayList<Anuncio> filteredAdverts){
+        Fragment f = getSupportFragmentManager().findFragmentById(R.id.frmContenido);
+        if (f instanceof PrincipalFragment)
+            ((PrincipalFragment) f).loadFilteredAdverts(filteredAdverts);
+        toolbar.getMenu().findItem(R.id.deshacerFiltro).setVisible(true);
     }
 
     public Usuario getmUser() {

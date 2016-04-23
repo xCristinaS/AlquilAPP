@@ -3,6 +3,7 @@ package c.proyecto.mvp_presenters;
 import android.app.Activity;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 
 import c.proyecto.activities.MainActivity;
 import c.proyecto.interfaces.MyPresenter;
@@ -144,5 +145,11 @@ public class MainPresenter implements MainPresenterOps, MyPresenter {
     @Override
     public void filterRequest(String[] tipoVivienda, int minPrice, int maxPrice, int minSize, int maxSize){
         advertsManager.filterRequest(tipoVivienda, minPrice, maxPrice, minSize, maxSize);
+    }
+
+    @Override
+    public void onFilterResponsed(ArrayList<Anuncio> filteredAdverts){
+        if (activity.get() != null)
+            activity.get().filteredAdvertsObtained(filteredAdverts);
     }
 }

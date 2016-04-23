@@ -20,4 +20,11 @@
         app:showAsAction="ifRoom"
         android:visible="false"
         android:icon="@drawable/ic_search" />
+
+    <item
+        android:title="@string/menu_item_deshacer_filtro_title"
+        android:id="@+id/deshacerFiltro"
+        app:showAsAction="ifRoom"
+        android:visible="false"
+        android:icon="@drawable/ic_deshacer_filtro" />
 </menu>

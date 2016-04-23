@@ -1,12 +1,11 @@
 package c.proyecto.mvp_presenters_interfaces;
 
+import java.util.ArrayList;
+
 import c.proyecto.pojo.Anuncio;
 import c.proyecto.pojo.Usuario;
 import c.proyecto.pojo.MessagePojo;
 
-/**
- * Created by Cristina on 20/03/2016.
- */
 public interface MainPresenterOps {
     void removeUserAdvert(Anuncio a);
     void removeUserSub(Anuncio a);
@@ -25,4 +24,5 @@ public interface MainPresenterOps {
     void removeAdvert(Anuncio a);
     void sendAdvertHasBeenRemovedBroadcast();
     void filterRequest(String[] tipoVivienda, int minPrice, int maxPrice, int minSize, int maxSize);
+    void onFilterResponsed(ArrayList<Anuncio> filteredAdverts);
 }

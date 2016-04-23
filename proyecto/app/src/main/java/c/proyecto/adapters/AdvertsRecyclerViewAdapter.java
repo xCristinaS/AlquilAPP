@@ -56,6 +56,7 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
     private SparseBooleanArray mSelectedItems = new SparseBooleanArray();
     private boolean multiDeletionModeActivated = false;
     private static Usuario user;
+    private boolean filtersApplied;
 
 
     public AdvertsRecyclerViewAdapter(int adapter_type, MainPresenter presenter, Usuario u) {
@@ -201,7 +202,7 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
                     for (String img : anuncio.getImagenes().keySet())
                         if (img.equals(Constantes.FOTO_PRINCIPAL)) // Si la key es de la imagen principal, cargo la foto
                             Picasso.with(itemView.getContext()).load(anuncio.getImagenes().get(img)).resize(anchoAproxImgAvatar, imgAvatar.getLayoutParams().height).centerCrop().into(imgAvatar, new ImageLoadedCallback(prbAnuncio));
-                } 
+                }
             }
         }
     }
@@ -241,16 +242,24 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
     //Manejo del Adaptador
     public void addItem(Anuncio a) {
         boolean stop = false;
-        for (int i = 0; !stop && i < mDatos.size(); i++)
-            if (mDatos.get(i).getKey().equals(a.getKey()))
-                stop = true;
+        if (adapter_type != ADAPTER_TYPE_ADVS && !filtersApplied) { // No estoy segura de si vale
+            for (int i = 0; !stop && i < mDatos.size(); i++)
+                if (mDatos.get(i).getKey().equals(a.getKey()))
+                    stop = true;
 
-        if (!stop)
-            mDatos.add(a);
-        notifyItemInserted(mDatos.indexOf(a));
-        notifyDataSetChanged();
+            if (!stop)
+                mDatos.add(a);
+            notifyItemInserted(mDatos.indexOf(a));
+            notifyDataSetChanged();
+        }
     }
 
+    public void addItems(ArrayList<Anuncio> filteredAdverts) {
+        filtersApplied = true;
+        mDatos.clear();
+        mDatos.addAll(filteredAdverts);
+        notifyDataSetChanged();
+    }
 
     private void removeItem(int pos) {
         if (adapter_type == ADAPTER_TYPE_MY_ADVS)
@@ -292,6 +301,10 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
 
     public Anuncio getAdvert(int position) {
         return mDatos.get(position);
+    }
+
+    public void setFiltersApplied(boolean filtersApplied) {
+        this.filtersApplied = filtersApplied;
     }
 
     private static class ImageLoadedCallback implements Callback {

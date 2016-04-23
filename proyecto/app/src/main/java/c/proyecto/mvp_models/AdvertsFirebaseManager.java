@@ -148,7 +148,7 @@ public class AdvertsFirebaseManager {
     }
 
     public void filterRequest(final String[] tipoVivienda, final int minPrice, final int maxPrice, final int minSize, final int maxSize) {
-        final ArrayList<Anuncio> filtersAdverts = new ArrayList<>();
+        final ArrayList<Anuncio> filteredAdverts = new ArrayList<>();
 
         new Firebase(URL_ANUNCIOS).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -158,9 +158,9 @@ public class AdvertsFirebaseManager {
                     a = data.getValue(Anuncio.class);
                     if ((tipoVivienda[0] != null && a.getTipo_vivienda().equals(tipoVivienda[0]) || tipoVivienda[1] != null && a.getTipo_vivienda().equals(tipoVivienda[1]) || tipoVivienda[2] != null && a.getTipo_vivienda().equals(tipoVivienda[2])) &&
                             a.getPrecio() >= minPrice && a.getPrecio() <= maxPrice && a.getTamanio() >= minSize && a.getTamanio() <= maxSize)
-                        filtersAdverts.add(a);
+                        filteredAdverts.add(a);
                 }
-                System.out.println("aa");
+                ((MainPresenter)presenter).onFilterResponsed(filteredAdverts);
             }
 
             @Override

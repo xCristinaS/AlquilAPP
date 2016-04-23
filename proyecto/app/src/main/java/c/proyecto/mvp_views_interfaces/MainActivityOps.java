@@ -1,5 +1,7 @@
 package c.proyecto.mvp_views_interfaces;
 
+import java.util.ArrayList;
+
 import c.proyecto.pojo.Anuncio;
 import c.proyecto.pojo.Usuario;
 import c.proyecto.pojo.MessagePojo;
@@ -19,4 +21,5 @@ public interface MainActivityOps {
     void userAdvertHasBeenModified(Usuario user);
     void removeAdvert(Anuncio a);
     void sendAdvertHasBeenRemovedBroadcast();
+    void filteredAdvertsObtained(ArrayList<Anuncio> filteredAdverts);
 }
