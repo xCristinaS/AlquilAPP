@@ -9,17 +9,31 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
+import android.text.Html;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AutoCompleteTextView;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.location.places.AutocompletePrediction;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.PlaceBuffer;
 import com.google.android.gms.location.places.Places;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -27,6 +41,7 @@ import java.util.HashMap;
 
 import c.proyecto.Constantes;
 import c.proyecto.R;
+import c.proyecto.adapters.GooglePlacesAutocompleteAdapter;
 import c.proyecto.adapters.PrestacionesAdapter;
 import c.proyecto.api.ImgurUploader;
 import c.proyecto.dialog_fragments.SeleccionPrestacionesDialogFragment;
@@ -50,7 +65,9 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
     private static final String EXTRA_IMAGE_4 = "img4";
     private static final String EXTRA_IMAGE_5 = "img5";
 
-    private TextView txtTituloAnuncio, txtDireccion, txtNum, txtPoblacion, txtProvincia, txtCamas, txtToilets, txtTamano, txtDescripcion, txtPrecio;
+
+
+    private EditText txtTituloAnuncio, txtNum, txtPoblacion, txtProvincia, txtCamas, txtToilets, txtTamano, txtDescripcion, txtPrecio, txtDireccion;
     private ImageView imgCasa, imgHabitacion, imgPiso;
     private RecyclerView rvPrestaciones, rvHuespedes;
 
@@ -59,6 +76,7 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
     private ArrayList<File> imagenesAnuncio;
     private Anuncio mAnuncio;
     private Usuario user;
+
 
     public static void startForResult(Activity a, Anuncio anuncio, Usuario user, int requestCode, File img0, File img1, File img2, File img3, File img4, File img5) {
         Intent intent = new Intent(a, CrearAnuncio2Activity.class);
@@ -120,46 +138,34 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
     }
 
     private void initViews() {
-        txtTituloAnuncio = (TextView) findViewById(R.id.txtTituloAnuncio);
+        txtTituloAnuncio = (EditText) findViewById(R.id.txtTituloAnuncio);
         imgCasa = (ImageView) findViewById(R.id.imgCasa);
         imgHabitacion = (ImageView) findViewById(R.id.imgHabitacion);
         imgPiso = (ImageView) findViewById(R.id.imgPiso);
-        txtDireccion = (TextView) findViewById(R.id.txtDireccion);
-        txtNum = (TextView) findViewById(R.id.txtNum);
-        txtPoblacion = (TextView) findViewById(R.id.txtPoblacion);
-        txtProvincia = (TextView) findViewById(R.id.txtProvincia);
+        txtDireccion = (EditText) findViewById(R.id.txtDireccion);
+        txtNum = (EditText) findViewById(R.id.txtNum);
+        txtPoblacion = (EditText) findViewById(R.id.txtPoblacion);
+        txtProvincia = (EditText) findViewById(R.id.txtProvincia);
         rvPrestaciones = (RecyclerView) findViewById(R.id.rvPrestaciones);
-        txtCamas = (TextView) findViewById(R.id.txtCamas);
-        txtToilets = (TextView) findViewById(R.id.txtToilets);
-        txtTamano = (TextView) findViewById(R.id.txtTamano);
-        txtDescripcion = (TextView) findViewById(R.id.txtDescripcion);
-        txtPrecio = (TextView) findViewById(R.id.txtPrecio);
+        txtCamas = (EditText) findViewById(R.id.txtCamas);
+        txtToilets = (EditText) findViewById(R.id.txtToilets);
+        txtTamano = (EditText) findViewById(R.id.txtTamano);
+        txtDescripcion = (EditText) findViewById(R.id.txtDescripcion);
+        txtPrecio = (EditText) findViewById(R.id.txtPrecio);
         rvHuespedes = (RecyclerView) findViewById(R.id.rvHuespedes);
-        confAutoCompletadoDireccion();
-        confImgTipoVivienda();
-        confRecyclerPrestaciones();
-        confRecyclerHuespedes();
-    }
-
-    private void confAutoCompletadoDireccion() {
-        txtDireccion.addTextChangedListener(new TextWatcher() {
+        txtDireccion.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
+            public void onClick(View v) {
+                startActivity(new Intent(CrearAnuncio2Activity.this, LocalizacionActivity.class));
             }
         });
 
+        confImgTipoVivienda();
+        confRecyclerPrestaciones();
+        confRecyclerHuespedes();
+
     }
+
 
     private void confImgTipoVivienda() {
         imgCasa.setOnClickListener(new View.OnClickListener() {
@@ -332,4 +338,8 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
         if (!TextUtils.isEmpty(txtDescripcion.getText()))
             mAnuncio.setDescripcion(txtDescripcion.getText().toString());
     }
+
+
+
+
 }
