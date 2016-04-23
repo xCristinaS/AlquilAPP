@@ -22,10 +22,12 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.squareup.picasso.Picasso;
@@ -210,7 +212,10 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
 
     @Override
     public void onMapReady(GoogleMap map) {
-        map.addMarker(new MarkerOptions().position(new LatLng(20, 50)));
+        LatLng lat = new LatLng(mAnuncio.getLats().getLatitude(), mAnuncio.getLats().getLongitude());
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(lat, Constantes.ZOOM_ANUNCIO_CON_LOCALIZACION));
+        map.addCircle(new CircleOptions().center(lat).radius(30).fillColor(0x5500ff00).strokeWidth(2));
+
     }
 
     private void bindData() {

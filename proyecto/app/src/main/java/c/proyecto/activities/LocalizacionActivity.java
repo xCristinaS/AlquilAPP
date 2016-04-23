@@ -45,6 +45,7 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import java.io.IOException;
 import java.util.Locale;
 
+import c.proyecto.Constantes;
 import c.proyecto.R;
 import c.proyecto.adapters.GooglePlacesAutocompleteAdapter;
 import c.proyecto.pojo.Anuncio;
@@ -108,7 +109,7 @@ public class LocalizacionActivity extends AppCompatActivity implements OnMapRead
         mGoogleMap = googleMap;
         //Si se entra con un objeto que ya contiene una posición, se cargará esta.
         if(oldLat != null)
-            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(oldLat));
+            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(oldLat, Constantes.ZOOM_ANUNCIO_CON_LOCALIZACION));
         //Mueve la cámara al lugar pulsado por el usuario.
         googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override

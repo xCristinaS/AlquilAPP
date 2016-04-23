@@ -28,5 +28,9 @@ public final class Constantes {
 
     //Longitud del título del anuncio en ConversationActivity
     public static final int LENGTH_TITULO_ANUNCIO_CONVERSATION_ACTIVITY = 25;
+
+    //MAPS
+        //Zoom LocalizacionActivity cuando se abre el mapa con un anuncio que ya contiene una localización.
+    public static final float ZOOM_ANUNCIO_CON_LOCALIZACION = 16f;
 }
 
