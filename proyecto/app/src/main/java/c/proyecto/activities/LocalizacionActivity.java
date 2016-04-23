@@ -60,19 +60,23 @@ public class LocalizacionActivity extends AppCompatActivity implements OnMapRead
     private GoogleApiClient mGoogleApiClient;
     private GooglePlacesAutocompleteAdapter mAdapter;
     private GoogleMap mGoogleMap;
-    private Anuncio mAnuncio;
+    private LatLng oldLat;
 
 
-    public static void startForResult(Activity activity, Anuncio anuncio){
+    public static void startForResult(Activity activity, LatLng latLng){
         Intent intent = new Intent(activity, LocalizacionActivity.class);
-        intent.putExtra(EXTRA_ANUNCIO, anuncio);
+        intent.putExtra(EXTRA_ANUNCIO, latLng);
         activity.startActivityForResult(intent, RC_ADDRESS);
     }
+    public static void startForResult(Activity activity){
+        activity.startActivityForResult(new Intent(activity, LocalizacionActivity.class), RC_ADDRESS);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_localizacion);
-        mAnuncio = getIntent().getParcelableExtra(EXTRA_ANUNCIO);
+        oldLat = getIntent().getParcelableExtra(EXTRA_ANUNCIO);
 
         confMap();
         confAutoCompletado();
@@ -102,6 +106,9 @@ public class LocalizacionActivity extends AppCompatActivity implements OnMapRead
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mGoogleMap = googleMap;
+        //Si se entra con un objeto que ya contiene una posición, se cargará esta.
+        if(oldLat != null)
+            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(oldLat));
         //Mueve la cámara al lugar pulsado por el usuario.
         googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override

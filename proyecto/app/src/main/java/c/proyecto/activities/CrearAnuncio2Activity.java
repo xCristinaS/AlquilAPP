@@ -16,6 +16,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -134,12 +136,20 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
         txtDescripcion = (EditText) findViewById(R.id.txtDescripcion);
         txtPrecio = (EditText) findViewById(R.id.txtPrecio);
         rvHuespedes = (RecyclerView) findViewById(R.id.rvHuespedes);
-        txtDireccion.setOnClickListener(new View.OnClickListener() {
+
+        View.OnClickListener onClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LocalizacionActivity.startForResult(CrearAnuncio2Activity.this, mAnuncio);
+                //Si este anuncio ya existe y tiene una localización asignada se cargará está como punto de partida
+                if(mAnuncio != null && mAnuncio.getLats() != null)
+                    LocalizacionActivity.startForResult(CrearAnuncio2Activity.this, new LatLng(mAnuncio.getLats().getLatitude(), mAnuncio.getLats().getLongitude()));
+                else
+                    LocalizacionActivity.startForResult(CrearAnuncio2Activity.this);
             }
-        });
+        };
+        txtDireccion.setOnClickListener(onClickListener);
+
+
 
         confImgTipoVivienda();
         confRecyclerPrestaciones();
@@ -210,7 +220,9 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
         txtTamano.setText(String.valueOf(mAnuncio.getTamanio()));
         txtDescripcion.setText(mAnuncio.getDescripcion());
         txtPrecio.setText(String.valueOf(mAnuncio.getPrecio()));
+
     }
+
 
     @Override
     public void onPrestacionClicked() {
