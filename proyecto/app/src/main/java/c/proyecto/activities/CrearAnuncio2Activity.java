@@ -2,38 +2,19 @@ package c.proyecto.activities;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.location.Address;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
-import android.text.Html;
 import android.text.TextUtils;
-import android.text.TextWatcher;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.PendingResult;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.location.places.AutocompletePrediction;
-import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.PlaceBuffer;
-import com.google.android.gms.location.places.Places;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -41,7 +22,6 @@ import java.util.HashMap;
 
 import c.proyecto.Constantes;
 import c.proyecto.R;
-import c.proyecto.adapters.GooglePlacesAutocompleteAdapter;
 import c.proyecto.adapters.PrestacionesAdapter;
 import c.proyecto.api.ImgurUploader;
 import c.proyecto.dialog_fragments.SeleccionPrestacionesDialogFragment;
@@ -156,7 +136,7 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
         txtDireccion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(CrearAnuncio2Activity.this, LocalizacionActivity.class));
+                LocalizacionActivity.startForResult(CrearAnuncio2Activity.this, mAnuncio);
             }
         });
 
@@ -340,6 +320,18 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
     }
 
 
-
-
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == RESULT_OK)
+            switch (requestCode){
+                case LocalizacionActivity.RC_ADDRESS:
+                    Address address = data.getParcelableExtra(LocalizacionActivity.EXTRA_ADDRESS);
+                    txtDireccion.setText(address.getThoroughfare());
+                    txtNum.setText(address.getSubThoroughfare());
+                    txtPoblacion.setText(address.getLocality());
+                    txtProvincia.setText(address.getSubAdminArea());
+                    break;
+            }
+    }
 }

@@ -129,7 +129,7 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
         lblTituloAnuncio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              //  DetallesAnuncioActivity.start(ConversationActivity.this, mensaje.);
+              //  DetallesAnuncioActivity.startForResult(ConversationActivity.this, mensaje.);
             }
         });
     }

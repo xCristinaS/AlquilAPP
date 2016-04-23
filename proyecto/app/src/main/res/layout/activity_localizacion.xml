@@ -11,9 +11,24 @@
         android:layout_height="wrap_content"
         android:hint="¿Donde se encuentra tu piso?"
         android:gravity="center"/>
-
-    <FrameLayout
-        android:id="@+id/frmMap"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent">
+
+        <FrameLayout
+            android:id="@+id/frmMap"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_location"
+            android:tint="@color/colorAccent"
+            android:layout_centerInParent="true"
+            />
+    </RelativeLayout>
+
+
+
 </LinearLayout>

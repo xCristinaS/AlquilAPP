@@ -3,6 +3,9 @@ package c.proyecto.pojo;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -15,6 +18,7 @@ public class Anuncio implements Parcelable, MyModel {
     private HashMap<String, String> imagenes;
     private ArrayList<Prestacion> prestaciones;
     private HashMap<String, Boolean> solicitantes;
+    private LatLng lats;
 
     public Anuncio() {
         imagenes = new HashMap<>();
@@ -157,6 +161,15 @@ public class Anuncio implements Parcelable, MyModel {
         this.key = key;
     }
 
+    public LatLng getLats() {
+        return lats;
+    }
+
+    public void setLats(LatLng lats) {
+        this.lats = lats;
+    }
+
+
     @Override
     public int describeContents() {
         return 0;
@@ -180,6 +193,7 @@ public class Anuncio implements Parcelable, MyModel {
         dest.writeSerializable(this.imagenes);
         dest.writeTypedList(prestaciones);
         dest.writeSerializable(this.solicitantes);
+        dest.writeParcelable(this.lats, flags);
     }
 
     protected Anuncio(Parcel in) {
@@ -199,13 +213,16 @@ public class Anuncio implements Parcelable, MyModel {
         this.imagenes = (HashMap<String, String>) in.readSerializable();
         this.prestaciones = in.createTypedArrayList(Prestacion.CREATOR);
         this.solicitantes = (HashMap<String, Boolean>) in.readSerializable();
+        this.lats = in.readParcelable(LatLng.class.getClassLoader());
     }
 
     public static final Creator<Anuncio> CREATOR = new Creator<Anuncio>() {
+        @Override
         public Anuncio createFromParcel(Parcel source) {
             return new Anuncio(source);
         }
 
+        @Override
         public Anuncio[] newArray(int size) {
             return new Anuncio[size];
         }
