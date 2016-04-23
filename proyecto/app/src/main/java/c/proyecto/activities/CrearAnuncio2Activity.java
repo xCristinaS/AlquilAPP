@@ -28,6 +28,7 @@ import c.proyecto.dialog_fragments.SeleccionPrestacionesDialogFragment;
 import c.proyecto.interfaces.MyPresenter;
 import c.proyecto.mvp_models.AdvertsFirebaseManager;
 import c.proyecto.pojo.Anuncio;
+import c.proyecto.pojo.MyLatLng;
 import c.proyecto.pojo.Usuario;
 import c.proyecto.pojo.Prestacion;
 import c.proyecto.mvp_presenters.CrearEditarAnuncioPresenter;
@@ -331,6 +332,8 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
                     txtNum.setText(address.getSubThoroughfare());
                     txtPoblacion.setText(address.getLocality());
                     txtProvincia.setText(address.getSubAdminArea());
+                    //Se guarda la latitud del punto seleccionado para la localización de la vivienda.
+                    mAnuncio.setLats(new MyLatLng(address.getLatitude(), address.getLongitude()));
                     break;
             }
     }

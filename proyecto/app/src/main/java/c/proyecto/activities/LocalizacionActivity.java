@@ -48,6 +48,7 @@ import java.util.Locale;
 import c.proyecto.R;
 import c.proyecto.adapters.GooglePlacesAutocompleteAdapter;
 import c.proyecto.pojo.Anuncio;
+import c.proyecto.pojo.MyLatLng;
 
 public class LocalizacionActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.OnConnectionFailedListener {
 
@@ -187,8 +188,6 @@ public class LocalizacionActivity extends AppCompatActivity implements OnMapRead
     private void confirmarCambios() {
         Intent result = new Intent();
         LatLng lat = mGoogleMap.getCameraPosition().target;
-        //Se guarda la latitud del punto seleccionado para la localización de la vivienda.
-        mAnuncio.setLats(lat);
 
         //Se devuelve la dirección del lugar seleccionado para su introducción en el EditText pulsado anteriormente.
         result.putExtra(EXTRA_ADDRESS, getAddress(lat.latitude, lat.longitude));

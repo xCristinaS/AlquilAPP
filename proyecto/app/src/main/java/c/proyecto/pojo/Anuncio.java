@@ -18,7 +18,7 @@ public class Anuncio implements Parcelable, MyModel {
     private HashMap<String, String> imagenes;
     private ArrayList<Prestacion> prestaciones;
     private HashMap<String, Boolean> solicitantes;
-    private LatLng lats;
+    private MyLatLng lats;
 
     public Anuncio() {
         imagenes = new HashMap<>();
@@ -161,14 +161,13 @@ public class Anuncio implements Parcelable, MyModel {
         this.key = key;
     }
 
-    public LatLng getLats() {
+    public MyLatLng getLats() {
         return lats;
     }
 
-    public void setLats(LatLng lats) {
+    public void setLats(MyLatLng lats) {
         this.lats = lats;
     }
-
 
     @Override
     public int describeContents() {
@@ -213,7 +212,7 @@ public class Anuncio implements Parcelable, MyModel {
         this.imagenes = (HashMap<String, String>) in.readSerializable();
         this.prestaciones = in.createTypedArrayList(Prestacion.CREATOR);
         this.solicitantes = (HashMap<String, Boolean>) in.readSerializable();
-        this.lats = in.readParcelable(LatLng.class.getClassLoader());
+        this.lats = in.readParcelable(MyLatLng.class.getClassLoader());
     }
 
     public static final Creator<Anuncio> CREATOR = new Creator<Anuncio>() {
