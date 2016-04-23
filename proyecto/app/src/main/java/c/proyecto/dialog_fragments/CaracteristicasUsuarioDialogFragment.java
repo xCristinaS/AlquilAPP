@@ -71,7 +71,6 @@ public class CaracteristicasUsuarioDialogFragment extends AppCompatDialogFragmen
         confSeekBar(skFiestero, lblNumFiestero);
         confSeekBar(skSociable, lblNumSociable);
         confSeekBar(skActivo, lblNumActivo);
-
     }
 
     private void confSeekBar(SeekBar sk, final TextView txt){

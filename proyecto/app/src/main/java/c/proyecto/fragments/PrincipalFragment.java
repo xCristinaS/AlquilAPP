@@ -1,6 +1,7 @@
 package c.proyecto.fragments;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -24,11 +25,17 @@ import c.proyecto.mvp_presenters.MainPresenter;
 
 public class PrincipalFragment extends Fragment {
 
+    public interface AllowFilters{
+        void showFilterIcon();
+        void hideFilterIcon();
+    }
+
     private static MainPresenter mPresenter;
     private static Usuario user;
     private SectionsPagerAdapter vpAdapter;
     private ViewPager viewPager;
     private SmartTabLayout tabLayout;
+    private AllowFilters listener;
 
     @Nullable
     @Override
@@ -61,6 +68,8 @@ public class PrincipalFragment extends Fragment {
             public void onPageSelected(int position) {
                 AdvertsRecyclerViewFragment fragmento = (AdvertsRecyclerViewFragment) vpAdapter.getItem(viewPager.getCurrentItem());
                 ((AdvertsRecyclerViewAdapter.OnAdapterItemLongClick) getActivity()).setAdapterAllowMultiDeletion(fragmento.getmAdapter());
+                if (fragmento.getmAdapter().getAdapter_type() == AdvertsRecyclerViewAdapter.ADAPTER_TYPE_ADVS)
+                    listener.showFilterIcon();
             }
 
             @Override
@@ -68,11 +77,11 @@ public class PrincipalFragment extends Fragment {
                 AdvertsRecyclerViewFragment f = (AdvertsRecyclerViewFragment) vpAdapter.getItem(viewPager.getCurrentItem());
                 if (f != null)
                     f.disableMultideletion();
+                if (f.getmAdapter().getAdapter_type() != AdvertsRecyclerViewAdapter.ADAPTER_TYPE_ADVS)
+                    listener.hideFilterIcon();
             }
         });
         mPresenter.initializeFirebaseListeners(user);
-
-
     }
 
     public void addAdvertToAdapter(Anuncio a) {
@@ -175,5 +184,17 @@ public class PrincipalFragment extends Fragment {
             }
             return null;
         }
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        listener = (AllowFilters) context;
+        super.onAttach(context);
+    }
+
+    @Override
+    public void onDetach() {
+        listener = null;
+        super.onDetach();
     }
 }

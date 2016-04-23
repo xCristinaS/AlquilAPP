@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -22,6 +23,7 @@ import c.proyecto.R;
 
 import c.proyecto.adapters.MessagesRecyclerViewAdapter;
 import c.proyecto.adapters.AdvertsRecyclerViewAdapter;
+import c.proyecto.dialog_fragments.FilterDialogFramgent;
 import c.proyecto.fragments.MessagesFragment;
 import c.proyecto.fragments.PrincipalFragment;
 import c.proyecto.mvp_models.AdvertsFirebaseManager;
@@ -35,7 +37,7 @@ import c.proyecto.mvp_presenters.MainPresenter;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 
-public class MainActivity extends AppCompatActivity implements MainActivityOps, AdvertsRecyclerViewAdapter.OnAdapterItemLongClick, AdvertsRecyclerViewAdapter.OnAdapterItemClick, NavigationView.OnNavigationItemSelectedListener, MessagesRecyclerViewAdapter.OnMessagesAdapterItemClick {
+public class MainActivity extends AppCompatActivity implements MainActivityOps, AdvertsRecyclerViewAdapter.OnAdapterItemLongClick, AdvertsRecyclerViewAdapter.OnAdapterItemClick, NavigationView.OnNavigationItemSelectedListener, MessagesRecyclerViewAdapter.OnMessagesAdapterItemClick, PrincipalFragment.AllowFilters, FilterDialogFramgent.ApplyFilters {
 
 
     private static final String ARG_USUARIO = "usuario_extra";
@@ -229,6 +231,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
     }
 
     @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        showFilterIcon();
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         switch (id) {
@@ -248,13 +256,21 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
                 toolbar.getMenu().findItem(R.id.eliminar).setVisible(false);
                 toolbar.getMenu().findItem(R.id.limpiar).setVisible(false);
                 return true;
+            case R.id.filters:
+                new FilterDialogFramgent().show(getSupportFragmentManager(), "FILTERS");
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
     @Override
-    public void onItemClick(Anuncio anuncio, int advertType) {
-        DetallesAnuncioActivity.start(this, anuncio, advertType, mUser);
+    public void showFilterIcon() {
+        toolbar.getMenu().findItem(R.id.filters).setVisible(true);
+    }
+
+    @Override
+    public void hideFilterIcon() {
+        toolbar.getMenu().findItem(R.id.filters).setVisible(false);
     }
 
     @Override
@@ -267,6 +283,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
     public void desactivarMultiseleccion() {
         toolbar.getMenu().findItem(R.id.eliminar).setVisible(false);
         toolbar.getMenu().findItem(R.id.limpiar).setVisible(false);
+    }
+
+    @Override
+    public void onItemClick(Anuncio anuncio, int advertType) {
+        DetallesAnuncioActivity.start(this, anuncio, advertType, mUser);
     }
 
     @Override
@@ -290,6 +311,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
     public void userMessageHasBeenObtained(MessagePojo m) {
         if (getSupportFragmentManager().findFragmentById(R.id.frmContenido) instanceof MessagesFragment)
             ((MessagesFragment) getSupportFragmentManager().findFragmentById(R.id.frmContenido)).getmAdapter().addItem(m);
+    }
+
+    @Override
+    public void filterRequest(String[] tipoVivienda, int minPrice, int maxPrice, int minSize, int maxSize) {
+        mPresenter.filterRequest(tipoVivienda, minPrice, maxPrice, minSize, maxSize);
     }
 
     public Usuario getmUser() {

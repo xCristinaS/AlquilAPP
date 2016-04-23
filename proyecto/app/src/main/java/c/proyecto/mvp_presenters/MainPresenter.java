@@ -140,4 +140,9 @@ public class MainPresenter implements MainPresenterOps, MyPresenter {
         if (activity.get() != null)
             activity.get().sendAdvertHasBeenRemovedBroadcast();
     }
+
+    @Override
+    public void filterRequest(String[] tipoVivienda, int minPrice, int maxPrice, int minSize, int maxSize){
+        advertsManager.filterRequest(tipoVivienda, minPrice, maxPrice, minSize, maxSize);
+    }
 }

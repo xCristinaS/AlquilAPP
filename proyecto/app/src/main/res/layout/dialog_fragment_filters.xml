@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- CASA -->
+    <ImageView
+        android:id="@+id/imgCasa"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_below="@id/txtTituloAnuncio"
+        android:layout_marginLeft="25dp"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/casa" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/imgCasa"
+        android:layout_marginLeft="41dp"
+        android:layout_marginTop="10dp"
+        android:text="Casa"
+        android:textStyle="bold" />
+
+    <!-- HABITACIÓN -->
+    <ImageView
+        android:id="@+id/imgHabitacion"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_below="@id/txtTituloAnuncio"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/habitacion" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/imgHabitacion"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="41dp"
+        android:layout_marginTop="10dp"
+        android:text="Habitación"
+        android:textStyle="bold" />
+
+    <!-- PISO -->
+    <ImageView
+        android:id="@+id/imgPiso"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/txtTituloAnuncio"
+        android:layout_marginRight="25dp"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/piso" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/imgPiso"
+        android:layout_marginRight="40dp"
+        android:layout_marginTop="10dp"
+        android:text="Piso"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/lblPrecio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/imgPiso"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="50dp"
+        android:text="Precio" />
+
+    <com.appyvet.rangebar.RangeBar xmlns:custom="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/rangeBarPrecio"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_below="@id/lblPrecio"
+        custom:tickEnd="+1000"
+        custom:tickInterval="1"
+        custom:tickStart="1"
+        custom:temporaryPins="false"
+        custom:pinMaxFont="14sp"
+
+        custom:pinColor="@color/colorFondoAplicacion"
+        custom:connectingLineColor="@color/colorFondoAplicacion"
+        custom:rangeBarColor="@color/colorFondoAplicacion"
+        custom:connectingLineWeight="4dp"
+        custom:selectorSize="7dp"
+        custom:selectorColor="@color/colorFondoAplicacion" />
+
+    <TextView
+        android:id="@+id/lblTamanio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rangeBarPrecio"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="10dp"
+        android:text="Tamaño" />
+
+    <com.appyvet.rangebar.RangeBar xmlns:custom="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/rangeBarTamanio"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_below="@id/lblTamanio"
+        custom:tickEnd="+1000"
+        custom:tickInterval="1"
+        custom:tickStart="1"
+        custom:temporaryPins="false"
+        custom:pinMaxFont="14sp"
+
+        custom:pinColor="@color/colorFondoAplicacion"
+        custom:connectingLineColor="@color/colorFondoAplicacion"
+        custom:rangeBarColor="@color/colorFondoAplicacion"
+        custom:connectingLineWeight="4dp"
+        custom:selectorSize="7dp"
+        custom:selectorColor="@color/colorFondoAplicacion" />
+
+    <Button
+        android:id="@+id/btnFiltrar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="Filtrar" />
+
+</RelativeLayout>

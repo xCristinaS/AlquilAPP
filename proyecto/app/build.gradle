@@ -43,4 +43,5 @@ dependencies {
     compile 'com.squareup.retrofit2:converter-gson:2.0.0-beta4'
     compile 'com.squareup.okhttp3:logging-interceptor:3.1.2'
     compile 'com.ogaclejapan.smarttablayout:library:1.6.0@aar'
+    compile 'com.appyvet:materialrangebar:1.3'
 }

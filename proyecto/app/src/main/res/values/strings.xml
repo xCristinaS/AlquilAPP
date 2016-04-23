@@ -32,5 +32,6 @@
     <string name="television">Televisión</string>
     <string name="internet">Internet</string>
     <string name="menu_item_aceptar_title">aceptar</string>
+    <string name="menu_item_filtrar_title">filtrar</string>
 
 </resources>

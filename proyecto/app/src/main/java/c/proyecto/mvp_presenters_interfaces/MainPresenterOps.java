@@ -24,4 +24,5 @@ public interface MainPresenterOps {
     void userHasBeenModified(Usuario user);
     void removeAdvert(Anuncio a);
     void sendAdvertHasBeenRemovedBroadcast();
+    void filterRequest(String[] tipoVivienda, int minPrice, int maxPrice, int minSize, int maxSize);
 }
