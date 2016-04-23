@@ -8,12 +8,18 @@ import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.location.places.Places;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -129,9 +135,30 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
         txtDescripcion = (TextView) findViewById(R.id.txtDescripcion);
         txtPrecio = (TextView) findViewById(R.id.txtPrecio);
         rvHuespedes = (RecyclerView) findViewById(R.id.rvHuespedes);
+        confAutoCompletadoDireccion();
         confImgTipoVivienda();
         confRecyclerPrestaciones();
         confRecyclerHuespedes();
+    }
+
+    private void confAutoCompletadoDireccion() {
+        txtDireccion.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
     }
 
     private void confImgTipoVivienda() {

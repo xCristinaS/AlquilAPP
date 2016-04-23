@@ -91,6 +91,7 @@
 
             <!-- LOCALIZACIÓN -->
 
+
             <EditText
                 android:id="@+id/txtDireccion"
                 android:layout_width="220dp"
