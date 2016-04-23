@@ -186,9 +186,7 @@ public class GooglePlacesAutocompleteAdapter extends ArrayAdapter<AutocompletePr
 
             // This method should have been called off the main UI thread. Block and wait for at most 60s
             // for a result from the API.
-            AutocompletePredictionBuffer autocompletePredictions = results
-                    .await(60, TimeUnit.SECONDS);
-
+            AutocompletePredictionBuffer autocompletePredictions = results.await(60, TimeUnit.SECONDS);
 
             // Freeze the results immutable representation that can be stored safely.
             return DataBufferUtils.freezeAndClose(autocompletePredictions);

@@ -126,8 +126,7 @@ public class LocalizacionActivity extends AppCompatActivity implements OnMapRead
              Issue a request to the Places Geo Data API to retrieve a Place object with additional
              details about the place.
               */
-            PendingResult<PlaceBuffer> placeResult = Places.GeoDataApi
-                    .getPlaceById(mGoogleApiClient, placeId);
+            PendingResult<PlaceBuffer> placeResult = Places.GeoDataApi.getPlaceById(mGoogleApiClient, placeId);
             placeResult.setResultCallback(mUpdatePlaceDetailsCallback);
 
         }
@@ -137,8 +136,7 @@ public class LocalizacionActivity extends AppCompatActivity implements OnMapRead
      * Callback for results from a Places Geo Data API query that shows the first place result in
      * the details view on screen.
      */
-    private ResultCallback<PlaceBuffer> mUpdatePlaceDetailsCallback
-            = new ResultCallback<PlaceBuffer>() {
+    private ResultCallback<PlaceBuffer> mUpdatePlaceDetailsCallback = new ResultCallback<PlaceBuffer>() {
         @Override
         public void onResult(PlaceBuffer places) {
             if (!places.getStatus().isSuccess()) {
@@ -148,9 +146,10 @@ public class LocalizacionActivity extends AppCompatActivity implements OnMapRead
             }
             // Get the Place object from the buffer.
             final Place place = places.get(0);
+            LatLngBounds latBound = LatLngBounds.builder().include(place.getLatLng()).build();
 
             //Mueve la cámara a la posición seleccionada haciendo el zoom suficiente para que se vea toda la dirección entera
-            mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(place.getViewport(), 10)); // 10 is padding
+            mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(latBound, 10)); // 10 is padding
 
             places.release();
         }
