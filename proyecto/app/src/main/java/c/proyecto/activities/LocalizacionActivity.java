@@ -19,6 +19,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.Toast;
@@ -107,7 +109,7 @@ public class LocalizacionActivity extends AppCompatActivity implements OnMapRead
             }
         });
     }
-
+    //Click para los items del autocompletado
     private AdapterView.OnItemClickListener mAutocompleteClickListener
             = new AdapterView.OnItemClickListener() {
         @Override
@@ -119,7 +121,6 @@ public class LocalizacionActivity extends AppCompatActivity implements OnMapRead
               */
             final AutocompletePrediction item = mAdapter.getItem(position);
             final String placeId = item.getPlaceId();
-            final CharSequence primaryText = item.getPrimaryText(null);
 
 
             /*
@@ -129,9 +130,10 @@ public class LocalizacionActivity extends AppCompatActivity implements OnMapRead
             PendingResult<PlaceBuffer> placeResult = Places.GeoDataApi.getPlaceById(mGoogleApiClient, placeId);
             placeResult.setResultCallback(mUpdatePlaceDetailsCallback);
 
+
         }
     };
-
+    //Respuesta
     /**
      * Callback for results from a Places Geo Data API query that shows the first place result in
      * the details view on screen.
@@ -146,11 +148,15 @@ public class LocalizacionActivity extends AppCompatActivity implements OnMapRead
             }
             // Get the Place object from the buffer.
             final Place place = places.get(0);
-            LatLngBounds latBound = LatLngBounds.builder().include(place.getLatLng()).build();
+            LatLngBounds latBound = place.getViewport();
 
-            //Mueve la cámara a la posición seleccionada haciendo el zoom suficiente para que se vea toda la dirección entera
+            //Si el tamaño del sitio no es conocido para Google Maps API se mostrará el punto sin hacer un zoom exacto
+            if(latBound == null)
+                latBound = LatLngBounds.builder().include(place.getLatLng()).build();
+
+            //Mueve la cámara a la posición seleccionada haciendo el zoom escogido
             mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(latBound, 10)); // 10 is padding
-
+            hideKeyboard();
             places.release();
         }
     };
@@ -201,5 +207,16 @@ public class LocalizacionActivity extends AppCompatActivity implements OnMapRead
         }
 
         return address;
+    }
+
+    public void hideKeyboard() {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+        //Find the currently focused view, so we can grab the correct window token from it.
+        View view = getCurrentFocus();
+        //If no view currently has focus, create a new one, just so we can grab a window token from it
+        if (view == null)
+            view = new View(this);
+
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 }
