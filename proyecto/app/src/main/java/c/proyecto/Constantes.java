@@ -37,6 +37,6 @@ public final class Constantes {
         //DetallesAnuncioFragment
     public static final int CIRCLE_COLOR = Color.argb(100, 255, 64, 129);
     public static final float CIRCLE_STROKE_WIDTH = 2;
-    public static final double CIRCLE_RADIUS = 30;
+    public static final double CIRCLE_RADIUS = 35;
 }
 

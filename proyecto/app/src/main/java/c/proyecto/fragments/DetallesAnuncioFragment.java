@@ -22,6 +22,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -45,6 +46,8 @@ import c.proyecto.pojo.MessagePojo;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class DetallesAnuncioFragment extends Fragment implements PrestacionesAdapter.IPrestacionAdapter, OnMapReadyCallback {
+
+
 
     public interface IDetallesAnuncioFragmentListener {
         void onImgEditClicked(Anuncio advert, Usuario user);
@@ -72,6 +75,7 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
     private Anuncio mAnuncio;
     private Usuario mUserAnunciante, mCurrentUser;
     private int mAdverType;
+    private GoogleMap mGoogleMap;
 
     private IDetallesAnuncioFragmentListener mListener;
     private OnDetallesAnuncioFragmentClic mListenerClick;
@@ -211,20 +215,24 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
 
     @Override
     public void onMapReady(final GoogleMap map) {
-        //No se le permite al usuario mover el mapa de ninguna forma
-        map.getUiSettings().setAllGesturesEnabled(false);
-        LatLng lat = new LatLng(mAnuncio.getLats().getLatitude(), mAnuncio.getLats().getLongitude());
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(lat, Constantes.ZOOM_ANUNCIO_CON_LOCALIZACION));
-        map.addCircle(new CircleOptions().center(lat).radius(Constantes.CIRCLE_RADIUS).fillColor(Constantes.CIRCLE_COLOR).strokeWidth(Constantes.CIRCLE_STROKE_WIDTH));
+        mGoogleMap = map;
+        posicionarMapa();
+
         map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
                 LocalizacionActivity.start(getActivity(), map.getCameraPosition().target, false);
             }
         });
-
     }
-
+    private void posicionarMapa(){
+        mGoogleMap.clear();
+        //No se le permite al usuario mover el mapa de ninguna forma
+        mGoogleMap.getUiSettings().setAllGesturesEnabled(false);
+        LatLng lat = new LatLng(mAnuncio.getLats().getLatitude(), mAnuncio.getLats().getLongitude());
+        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(lat, Constantes.ZOOM_ANUNCIO_CON_LOCALIZACION));
+        mGoogleMap.addCircle(new CircleOptions().center(lat).radius(Constantes.CIRCLE_RADIUS).fillColor(Constantes.CIRCLE_COLOR).strokeWidth(Constantes.CIRCLE_STROKE_WIDTH));
+    }
     private void bindData() {
         if (mAnuncio.getImagenes().size() > 0) {
             for (String img : mAnuncio.getImagenes().keySet())
@@ -273,6 +281,8 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
             lblDescripcionNoDisponible.setVisibility(View.VISIBLE);
         else
             lblDescripcion.setText(mAnuncio.getDescripcion());
+
+
     }
 
     @Override
@@ -341,6 +351,8 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
     public void setmAnuncio(Anuncio anuncio) {
         mAnuncio = anuncio;
         bindData();
+        posicionarMapa();
+
         mPrestacionesAdapter.replaceAll(anuncio.getPrestaciones());
         //Si cuando ha terminado de editar el anuncio tiene prestaciones, se mostrará el hueco de prestaciones
         //sino se ocultará
