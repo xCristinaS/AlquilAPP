@@ -20,13 +20,23 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 
+        <!-- Sirve para centrar el puntero del icono de localización -->
+        <View
+            android:id="@+id/barraCentrada"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_centerInParent="true"
+            />
+
         <ImageView
             android:id="@+id/imgLocIcon"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:src="@drawable/ic_location"
             android:tint="@color/colorAccent"
-            android:layout_centerInParent="true"
+            android:layout_centerHorizontal="true"
+            android:layout_above="@id/barraCentrada"
+
             />
     </RelativeLayout>
 
