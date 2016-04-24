@@ -42,7 +42,6 @@ public class SeleccionPrestacionesDialogFragment extends AppCompatDialogFragment
     private List<Prestacion> mPrestaciones;
 
     public static SeleccionPrestacionesDialogFragment newInstance(ArrayList<Prestacion> prestacionesSelected) {
-
         Bundle args = new Bundle();
         args.putParcelableArrayList(ARG_PRESTACIONES, prestacionesSelected);
         SeleccionPrestacionesDialogFragment fragment = new SeleccionPrestacionesDialogFragment();

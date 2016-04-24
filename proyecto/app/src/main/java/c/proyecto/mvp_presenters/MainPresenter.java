@@ -12,6 +12,7 @@ import c.proyecto.mvp_models.MessagesFirebaseManager;
 import c.proyecto.mvp_models.UsersFirebaseManager;
 import c.proyecto.mvp_presenters_interfaces.MainPresenterOps;
 import c.proyecto.pojo.Anuncio;
+import c.proyecto.pojo.Prestacion;
 import c.proyecto.pojo.Usuario;
 import c.proyecto.pojo.MessagePojo;
 
@@ -143,8 +144,8 @@ public class MainPresenter implements MainPresenterOps, MyPresenter {
     }
 
     @Override
-    public void filterRequest(String[] tipoVivienda, int minPrice, int maxPrice, int minSize, int maxSize){
-        advertsManager.filterRequest(tipoVivienda, minPrice, maxPrice, minSize, maxSize);
+    public void filterRequest(String[] tipoVivienda, int minPrice, int maxPrice, int minSize, int maxSize, ArrayList<Prestacion> prestaciones){
+        advertsManager.filterRequest(tipoVivienda, minPrice, maxPrice, minSize, maxSize, prestaciones);
     }
 
     @Override

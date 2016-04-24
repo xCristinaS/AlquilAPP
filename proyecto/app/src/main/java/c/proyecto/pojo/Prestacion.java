@@ -33,6 +33,13 @@ public class Prestacion implements Parcelable{
         this.nombre = nombre;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        boolean r = false;
+        if (o instanceof  Prestacion && nombre.equals(((Prestacion) o).getNombre()) && nameDrawable.equals(((Prestacion) o).getNameDrawable()))
+            r = true;
+        return r;
+    }
 
     @Override
     public int describeContents() {

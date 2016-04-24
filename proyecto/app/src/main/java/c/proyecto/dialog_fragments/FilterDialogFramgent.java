@@ -5,29 +5,44 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatDialogFragment;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Range;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.appyvet.rangebar.RangeBar;
 
+import java.util.ArrayList;
+
 import c.proyecto.Constantes;
 import c.proyecto.R;
+import c.proyecto.adapters.PrestacionesAdapter;
+import c.proyecto.pojo.Prestacion;
 
-public class FilterDialogFramgent extends AppCompatDialogFragment {
+public class FilterDialogFramgent extends AppCompatDialogFragment implements PrestacionesAdapter.IPrestacionAdapter {
+
+    private static final String TAG_DIALOG_PRESTACIONES = "dialogo_prestaciones";
 
     public interface ApplyFilters {
-        void filterRequest(String[] tipoVivienda, int minPrice, int maxPrice, int minSize, int maxSize);
+        void filterRequest(String[] tipoVivienda, int minPrice, int maxPrice, int minSize, int maxSize, ArrayList<Prestacion> prestaciones);
     }
 
     private ImageView imgPiso, imgCasa, imgHabitacion;
     private RangeBar rangeBarPrecio, rangeBarTamanio;
+    private PrestacionesAdapter mPrestacionesAdapter;
+    private RecyclerView rvPrestaciones;
+    private TextView emptyViewPres;
     private Button btnFiltrar;
     private ApplyFilters listener;
+    private ArrayList<Prestacion> prestaciones;
 
     @Nullable
     @Override
@@ -44,12 +59,15 @@ public class FilterDialogFramgent extends AppCompatDialogFragment {
     }
 
     private void initViews(View view) {
+        prestaciones = new ArrayList<>();
         imgPiso = (ImageView) view.findViewById(R.id.imgPiso);
         imgCasa = (ImageView) view.findViewById(R.id.imgCasa);
         imgHabitacion = (ImageView) view.findViewById(R.id.imgHabitacion);
         btnFiltrar = (Button) view.findViewById(R.id.btnFiltrar);
         rangeBarPrecio = (RangeBar) view.findViewById(R.id.rangeBarPrecio);
         rangeBarTamanio = (RangeBar) view.findViewById(R.id.rangeBarTamanio);
+        rvPrestaciones = (RecyclerView) view.findViewById(R.id.rvPrestaciones);
+        emptyViewPres = (TextView) view.findViewById(R.id.emptyViewPrestaciones);
 
         btnFiltrar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,8 +77,41 @@ public class FilterDialogFramgent extends AppCompatDialogFragment {
             }
         });
 
+        confRecyclerPrestaciones();
         confImgTipoVivienda();
     }
+
+    private void confRecyclerPrestaciones() {
+        rvPrestaciones.setHasFixedSize(true);
+
+        mPrestacionesAdapter = new PrestacionesAdapter(prestaciones, this);
+        mPrestacionesAdapter.setEmptyView(emptyViewPres);
+        rvPrestaciones.setAdapter(mPrestacionesAdapter);
+
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        rvPrestaciones.setLayoutManager(mLayoutManager);
+        rvPrestaciones.setItemAnimator(new DefaultItemAnimator());
+    }
+
+    @Override
+    public void onPrestacionClicked() {
+        showPrestacionesDialog();
+    }
+
+    @Override
+    public void onEmptyViewClicked() {
+        showPrestacionesDialog();
+    }
+
+    private void showPrestacionesDialog() {
+        FragmentManager fm = getActivity().getSupportFragmentManager();
+        SeleccionPrestacionesDialogFragment.newInstance(prestaciones).show(fm, TAG_DIALOG_PRESTACIONES);
+    }
+
+    public void updatePrestaciones(){
+        mPrestacionesAdapter.actualizarAdapter();
+    }
+
 
     private void confImgTipoVivienda() {
         imgCasa.setOnClickListener(new View.OnClickListener() {
@@ -106,7 +157,7 @@ public class FilterDialogFramgent extends AppCompatDialogFragment {
         if (imgHabitacion.getColorFilter() != null)
             viviendasSeleccionadas[2] = Constantes.HABITACION;
 
-        listener.filterRequest(viviendasSeleccionadas, minPrice, maxPrice, minTam, maxTam);
+        listener.filterRequest(viviendasSeleccionadas, minPrice, maxPrice, minTam, maxTam, prestaciones);
     }
 
     @Override

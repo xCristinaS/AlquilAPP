@@ -12,6 +12,7 @@ import java.util.HashMap;
 import c.proyecto.interfaces.MyPresenter;
 import c.proyecto.mvp_presenters.MainPresenter;
 import c.proyecto.pojo.Anuncio;
+import c.proyecto.pojo.Prestacion;
 import c.proyecto.pojo.Usuario;
 
 public class AdvertsFirebaseManager {
@@ -150,21 +151,25 @@ public class AdvertsFirebaseManager {
         mFirebase.setValue(map);
     }
 
-    public void filterRequest(final String[] tipoVivienda, final int minPrice, final int maxPrice, final int minSize, final int maxSize) {
+    public void filterRequest(final String[] tipoVivienda, final int minPrice, final int maxPrice, final int minSize, final int maxSize, final ArrayList<Prestacion> prestaciones) {
         final ArrayList<Anuncio> filteredAdverts = new ArrayList<>();
 
         new Firebase(URL_ANUNCIOS).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Anuncio a;
+                boolean agregar;
                 for (DataSnapshot data : dataSnapshot.getChildren()) {
                     a = data.getValue(Anuncio.class);
-                    if (!a.getAnunciante().equals(currentUser.getKey()) && (tipoVivienda[0] != null && a.getTipo_vivienda().equals(tipoVivienda[0]) || tipoVivienda[1] != null && a.getTipo_vivienda().equals(tipoVivienda[1]) || tipoVivienda[2] != null && a.getTipo_vivienda().equals(tipoVivienda[2])) && a.getPrecio() >= minPrice && a.getTamanio() >= minSize) {
-                        if (maxPrice == 1000 && maxSize == 1000)
-                            filteredAdverts.add(a);
-                        else if (maxPrice != 1000 && a.getPrecio() <= maxPrice)
-                            filteredAdverts.add(a);
-                        else if (maxSize != 1000 && a.getTamanio() <= maxSize)
+                    if (!a.getAnunciante().equals(currentUser.getKey()) && a.getTamanio() >= minSize) {
+                        agregar = anuncioCumpleFiltroTipoVivienda(tipoVivienda, a);
+                        if (agregar)
+                            agregar = anuncioCumpleFiltroPrecio(minPrice, maxPrice, a);
+                        if (agregar)
+                            agregar = anuncioCumpleFiltroTamanio(minSize, maxSize, a);
+                        if (prestaciones.size() > 0 && agregar)
+                            agregar = anuncioCumpleFiltroPrestaciones(prestaciones, a);
+                        if (agregar)
                             filteredAdverts.add(a);
                     }
                 }
@@ -176,6 +181,51 @@ public class AdvertsFirebaseManager {
 
             }
         });
+    }
+
+    private boolean anuncioCumpleFiltroTipoVivienda(String[] tipoVivienda, Anuncio a) {
+        boolean r = false;
+        if (tipoVivienda[0] == null && tipoVivienda[1] == null && tipoVivienda[2] == null)
+            r = true;
+        else if ((tipoVivienda[0] != null && a.getTipo_vivienda().equals(tipoVivienda[0]) || tipoVivienda[1] != null && a.getTipo_vivienda().equals(tipoVivienda[1]) || tipoVivienda[2] != null && a.getTipo_vivienda().equals(tipoVivienda[2])))
+            r = true;
+        return r;
+    }
+
+    private boolean anuncioCumpleFiltroPrecio(int minPrice, int maxPrice, Anuncio a) {
+        boolean r = false;
+        if (a.getPrecio() >= minPrice && (maxPrice == 1000 || a.getPrecio() <= maxPrice))
+            r = true;
+        return r;
+    }
+
+    private boolean anuncioCumpleFiltroTamanio(int minSize, int maxSize, Anuncio a) {
+        boolean r = false;
+        if (a.getTamanio() >= minSize && (maxSize == 1000 || a.getTamanio() <= maxSize))
+            r = true;
+        return r;
+    }
+
+    private boolean anuncioCumpleFiltroPrestaciones(ArrayList<Prestacion> prestaciones, Anuncio a) {
+        boolean r = true, encontrada, salir = false;
+        int i, j;
+        if (a.getPrestaciones().size() == 0)
+            r = false;
+        else {
+            if (a.getPrestaciones().size() >= prestaciones.size()) // si el anuncio tiene la misma cantidad de prestaciones o más que la lista de prestaciones por las que filtrar
+                for (i = 0; !salir && i < prestaciones.size(); i++) { // voy cogiendo las prestaciones que debe tener el anuncio
+                    encontrada = false;
+                    for (j = 0; !encontrada && j < a.getPrestaciones().size(); j++) // recorro la lista de prestaciones del anuncio
+                        if (prestaciones.get(i).equals(a.getPrestaciones().get(j))) // si encuentra la prestación por la que se tiene que filtrar en la lista de prestaciones del anuncio
+                            encontrada = true; // el centinela indica que la encontró y pasa a la siguiente prestación a buscar
+
+                    if (!encontrada) { // si después de recorrer la lista de prestaciones del anuncio no encontró la prestación por la que hay que filtrar
+                        salir = true; // el centinela indica que se debe salir del bucle
+                        r = false; // el resultado es false
+                    }
+                }
+        }
+        return r;
     }
 
     public void attachFirebaseListeners() {

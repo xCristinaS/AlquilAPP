@@ -3,6 +3,7 @@ package c.proyecto.mvp_presenters_interfaces;
 import java.util.ArrayList;
 
 import c.proyecto.pojo.Anuncio;
+import c.proyecto.pojo.Prestacion;
 import c.proyecto.pojo.Usuario;
 import c.proyecto.pojo.MessagePojo;
 
@@ -23,7 +24,7 @@ public interface MainPresenterOps {
     void userHasBeenModified(Usuario user);
     void removeAdvert(Anuncio a);
     void sendAdvertHasBeenRemovedBroadcast();
-    void filterRequest(String[] tipoVivienda, int minPrice, int maxPrice, int minSize, int maxSize);
+    void filterRequest(String[] tipoVivienda, int minPrice, int maxPrice, int minSize, int maxSize, ArrayList<Prestacion> prestaciones);
     void onFilterResponsed(ArrayList<Anuncio> filteredAdverts);
     void detachAdvertsListener();
     void attachAdvertsListeners();

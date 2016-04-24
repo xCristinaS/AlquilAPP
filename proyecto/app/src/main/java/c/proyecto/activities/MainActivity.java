@@ -26,6 +26,7 @@ import c.proyecto.R;
 import c.proyecto.adapters.MessagesRecyclerViewAdapter;
 import c.proyecto.adapters.AdvertsRecyclerViewAdapter;
 import c.proyecto.dialog_fragments.FilterDialogFramgent;
+import c.proyecto.dialog_fragments.SeleccionPrestacionesDialogFragment;
 import c.proyecto.fragments.MessagesFragment;
 import c.proyecto.fragments.PrincipalFragment;
 import c.proyecto.mvp_models.AdvertsFirebaseManager;
@@ -33,18 +34,20 @@ import c.proyecto.mvp_models.MessagesFirebaseManager;
 import c.proyecto.mvp_models.UsersFirebaseManager;
 import c.proyecto.mvp_views_interfaces.MainActivityOps;
 import c.proyecto.pojo.Anuncio;
+import c.proyecto.pojo.Prestacion;
 import c.proyecto.pojo.Usuario;
 import c.proyecto.pojo.MessagePojo;
 import c.proyecto.mvp_presenters.MainPresenter;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 
-public class MainActivity extends AppCompatActivity implements MainActivityOps, AdvertsRecyclerViewAdapter.OnAdapterItemLongClick, AdvertsRecyclerViewAdapter.OnAdapterItemClick, NavigationView.OnNavigationItemSelectedListener, MessagesRecyclerViewAdapter.OnMessagesAdapterItemClick, PrincipalFragment.AllowFilters, FilterDialogFramgent.ApplyFilters {
+public class MainActivity extends AppCompatActivity implements MainActivityOps, AdvertsRecyclerViewAdapter.OnAdapterItemLongClick, AdvertsRecyclerViewAdapter.OnAdapterItemClick, NavigationView.OnNavigationItemSelectedListener, MessagesRecyclerViewAdapter.OnMessagesAdapterItemClick, PrincipalFragment.AllowFilters, FilterDialogFramgent.ApplyFilters, SeleccionPrestacionesDialogFragment.ICallBackOnDismiss {
 
 
     private static final String ARG_USUARIO = "usuario_extra";
     private static final String TAG_PRINCIPAL_FRAGMENT = "principal_fragment";
     private static final String TAG_MESSAGES_FRAGMENT = "messages_fragment";
+    private static final String TAG_FILTER_DIALOG_FRAMGENT = "filtros_dialog_fragment";
 
     private static MainPresenter mPresenter;
     private Usuario mUser;
@@ -259,7 +262,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
                 toolbar.getMenu().findItem(R.id.limpiar).setVisible(false);
                 return true;
             case R.id.filters:
-                new FilterDialogFramgent().show(getSupportFragmentManager(), "FILTERS");
+                new FilterDialogFramgent().show(getSupportFragmentManager(), TAG_FILTER_DIALOG_FRAMGENT);
                 return true;
             case R.id.deshacerFiltro:
                 Fragment f = getSupportFragmentManager().findFragmentById(R.id.frmContenido);
@@ -325,8 +328,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
     }
 
     @Override
-    public void filterRequest(String[] tipoVivienda, int minPrice, int maxPrice, int minSize, int maxSize) {
-        mPresenter.filterRequest(tipoVivienda, minPrice, maxPrice, minSize, maxSize);
+    public void filterRequest(String[] tipoVivienda, int minPrice, int maxPrice, int minSize, int maxSize, ArrayList<Prestacion> prestaciones) {
+        mPresenter.filterRequest(tipoVivienda, minPrice, maxPrice, minSize, maxSize, prestaciones);
     }
 
     @Override
@@ -354,5 +357,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
     protected void onDestroy() {
         mPresenter.detachListeners();
         super.onDestroy();
+    }
+
+    @Override
+    public void onDismiss() {
+        ((FilterDialogFramgent)getSupportFragmentManager().findFragmentByTag(TAG_FILTER_DIALOG_FRAMGENT)).updatePrestaciones();
     }
 }
