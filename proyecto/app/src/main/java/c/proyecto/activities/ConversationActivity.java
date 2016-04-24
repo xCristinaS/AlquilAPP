@@ -85,11 +85,11 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
             @Override
             public void onClick(View v) {
                 if (!TextUtils.isEmpty(txtMensaje.getText())) {
-                    /*if (mensaje instanceof MessagePojoWithoutAnswer) {
+                    if (mensaje instanceof MessagePojoWithoutAnswer) {
                         MessagePojo m = new MessagePojo(user, mensaje.getTituloAnuncio(), txtMensaje.getText().toString(), new Date());
                         m.setKeyReceptor(mensaje.getKeyReceptor());
                         mPresenter.sendMessage(m, mensaje.getKeyReceptor(), true);
-                    } else*/
+                    } else
                         mPresenter.sendMessage(new MessagePojo(user, mensaje.getTituloAnuncio(), txtMensaje.getText().toString(), new Date()), mensaje.getEmisor().getKey(), false);
 
                     txtMensaje.setText("");
