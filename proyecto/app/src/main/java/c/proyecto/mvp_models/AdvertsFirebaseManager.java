@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import c.proyecto.interfaces.MyPresenter;
+import c.proyecto.mvp_presenters.ConversationPresenter;
 import c.proyecto.mvp_presenters.MainPresenter;
 import c.proyecto.pojo.Anuncio;
 import c.proyecto.pojo.Prestacion;
@@ -149,6 +150,22 @@ public class AdvertsFirebaseManager {
         HashMap<String, Boolean> map = new HashMap();
         map.put(a.getKey(), true);
         mFirebase.setValue(map);
+    }
+
+
+    public void getAdvertFromTitle(String tituloAnuncio) {
+        new Firebase(URL_ANUNCIOS).orderByChild("titulo").equalTo(tituloAnuncio).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Anuncio a = dataSnapshot.getChildren().iterator().next().getValue(Anuncio.class);
+                ((ConversationPresenter)presenter).advertObtained(a);
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
     }
 
     public void filterRequest(final String[] tipoVivienda, final int minPrice, final int maxPrice, final int minSize, final int maxSize, final ArrayList<Prestacion> prestaciones) {

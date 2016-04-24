@@ -20,11 +20,14 @@ import java.util.Date;
 
 import c.proyecto.Constantes;
 import c.proyecto.R;
+import c.proyecto.adapters.AdvertsRecyclerViewAdapter;
 import c.proyecto.adapters.MessagesRecyclerViewAdapter;
 import c.proyecto.fragments.MessagesFragment;
+import c.proyecto.mvp_models.AdvertsFirebaseManager;
 import c.proyecto.mvp_models.MessagesFirebaseManager;
 import c.proyecto.mvp_models.UsersFirebaseManager;
 import c.proyecto.mvp_views_interfaces.ConversationActivityOps;
+import c.proyecto.pojo.Anuncio;
 import c.proyecto.pojo.Usuario;
 import c.proyecto.pojo.MessagePojo;
 import c.proyecto.pojo.MessagePojoWithoutAnswer;
@@ -72,6 +75,7 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
         lblTituloAnuncio = (TextView) findViewById(R.id.lblTituloAnuncio);
         mPresenter = ConversationPresenter.getPresentador(this);
         mPresenter.setMessagesManager(new MessagesFirebaseManager(mPresenter, user));
+        mPresenter.setAdvertsManager(new AdvertsFirebaseManager(mPresenter, user));
 
         if (mensaje != null) {
             mPresenter.userConversationRequested(mensaje);
@@ -129,9 +133,14 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
         lblTituloAnuncio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              //  DetallesAnuncioActivity.startForResult(ConversationActivity.this, mensaje.);
+                mPresenter.getAdvertFromTitle(mensaje.getTituloAnuncio());
             }
         });
+    }
+
+    @Override
+    public void advertObtained(Anuncio a){
+        DetallesAnuncioActivity.start(this, a, AdvertsRecyclerViewAdapter.ADAPTER_TYPE_ADVS, user);
     }
 
     @Override
@@ -140,15 +149,15 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
             ((MessagesFragment) getSupportFragmentManager().findFragmentById(R.id.frmContenido)).addItem(m);
     }
 
-    @Override
-    protected void onDestroy() {
-        mPresenter.detachFirebaseListeners();
-        super.onDestroy();
-    }
 
     @Override
     public void removeMessage(MessagePojo m) {
         mPresenter.removeMessage(m);
     }
 
+    @Override
+    protected void onDestroy() {
+        mPresenter.detachFirebaseListeners();
+        super.onDestroy();
+    }
 }

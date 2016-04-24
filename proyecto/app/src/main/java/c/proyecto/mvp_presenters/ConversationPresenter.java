@@ -5,10 +5,12 @@ import android.app.Activity;
 import java.lang.ref.WeakReference;
 
 import c.proyecto.activities.ConversationActivity;
+import c.proyecto.mvp_models.AdvertsFirebaseManager;
 import c.proyecto.mvp_models.MessagesFirebaseManager;
 import c.proyecto.mvp_models.UsersFirebaseManager;
 import c.proyecto.mvp_presenters_interfaces.ConversationPresenterOps;
 import c.proyecto.interfaces.MyPresenter;
+import c.proyecto.pojo.Anuncio;
 import c.proyecto.pojo.MessagePojo;
 import c.proyecto.pojo.Usuario;
 
@@ -17,9 +19,10 @@ public class ConversationPresenter implements ConversationPresenterOps, MyPresen
     private static WeakReference<ConversationActivity> activity;
     private static ConversationPresenter presentador;
     private MessagesFirebaseManager messagesManager;
+    private AdvertsFirebaseManager advertsManager;
 
-    private ConversationPresenter(Activity activity) {
-        this.activity = new WeakReference<>((ConversationActivity) activity);
+    private ConversationPresenter(Activity a) {
+        activity = new WeakReference<>((ConversationActivity) a);
     }
 
     public static ConversationPresenter getPresentador(Activity a) {
@@ -28,6 +31,14 @@ public class ConversationPresenter implements ConversationPresenterOps, MyPresen
         else
             activity = new WeakReference<>((ConversationActivity) a);
         return presentador;
+    }
+
+    public void setMessagesManager(MessagesFirebaseManager messagesManager) {
+        this.messagesManager = messagesManager;
+    }
+
+    public void setAdvertsManager(AdvertsFirebaseManager advertsManager) {
+        this.advertsManager = advertsManager;
     }
 
     @Override
@@ -56,7 +67,14 @@ public class ConversationPresenter implements ConversationPresenterOps, MyPresen
         messagesManager.removeMessage(m);
     }
 
-    public void setMessagesManager(MessagesFirebaseManager messagesManager) {
-        this.messagesManager = messagesManager;
+    @Override
+    public void getAdvertFromTitle(String tituloAnuncio) {
+        advertsManager.getAdvertFromTitle(tituloAnuncio);
+    }
+
+    @Override
+    public void advertObtained(Anuncio a){
+        if (activity.get() != null)
+            activity.get().advertObtained(a);
     }
 }
