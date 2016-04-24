@@ -9,6 +9,8 @@
         android:id="@+id/txtDireccion"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:inputType="text"
+        android:maxLines="1"
         android:hint="¿Donde se encuentra tu piso?"
         android:gravity="center"/>
     <RelativeLayout
