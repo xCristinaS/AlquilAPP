@@ -1,29 +1,19 @@
 package c.proyecto.activities;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.location.Address;
 import android.location.Geocoder;
-import android.net.Uri;
-import android.os.Parcelable;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.Html;
-import android.text.Spanned;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
-import android.widget.Toast;
+import android.widget.ImageView;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -33,12 +23,11 @@ import com.google.android.gms.location.places.AutocompletePrediction;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.PlaceBuffer;
 import com.google.android.gms.location.places.Places;
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 
@@ -48,21 +37,21 @@ import java.util.Locale;
 import c.proyecto.Constantes;
 import c.proyecto.R;
 import c.proyecto.adapters.GooglePlacesAutocompleteAdapter;
-import c.proyecto.pojo.Anuncio;
-import c.proyecto.pojo.MyLatLng;
 
 public class LocalizacionActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.OnConnectionFailedListener {
 
     private static final LatLngBounds BOUNDS_GREATER_SYDNEY = new LatLngBounds( new LatLng(-34.041458, 150.790100), new LatLng(-33.682247, 151.383362));
     private static final String EXTRA_ANUNCIO = "ExtraAnuncio";
     public static final String EXTRA_ADDRESS = "ExtraAddress";
+    private static final String EXTRA_SELECTOR_MODE = "ExtraEditable";
     public static final int RC_ADDRESS = 233;
     private AutoCompleteTextView txtDireccion;
+    private ImageView imgLocIcon;
     private GoogleApiClient mGoogleApiClient;
     private GooglePlacesAutocompleteAdapter mAdapter;
     private GoogleMap mGoogleMap;
     private LatLng oldLat;
-
+    private boolean mSelectorMode;
 
     public static void startForResult(Activity activity, LatLng latLng){
         Intent intent = new Intent(activity, LocalizacionActivity.class);
@@ -72,18 +61,26 @@ public class LocalizacionActivity extends AppCompatActivity implements OnMapRead
     public static void startForResult(Activity activity){
         activity.startActivityForResult(new Intent(activity, LocalizacionActivity.class), RC_ADDRESS);
     }
+    public static void start(Activity activity, LatLng latLng, boolean selectorMode){
+        Intent intent = new Intent(activity, LocalizacionActivity.class);
+        intent.putExtra(EXTRA_ANUNCIO, latLng);
+        intent.putExtra(EXTRA_SELECTOR_MODE, selectorMode);
+        activity.startActivity(intent);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_localizacion);
         oldLat = getIntent().getParcelableExtra(EXTRA_ANUNCIO);
+        mSelectorMode = getIntent().getBooleanExtra(EXTRA_SELECTOR_MODE, true);
 
         confMap();
         confAutoCompletado();
     }
 
     private void confMap() {
+        imgLocIcon = (ImageView) findViewById(R.id.imgLocIcon);
         FragmentManager fm = getSupportFragmentManager();
         SupportMapFragment mapFragment =  SupportMapFragment.newInstance();
         mapFragment.getMapAsync(this);
@@ -110,6 +107,13 @@ public class LocalizacionActivity extends AppCompatActivity implements OnMapRead
         //Si se entra con un objeto que ya contiene una posición, se cargará esta.
         if(oldLat != null)
             mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(oldLat, Constantes.ZOOM_ANUNCIO_CON_LOCALIZACION));
+
+        if(!mSelectorMode){
+            mGoogleMap.addCircle(new CircleOptions().center(oldLat).radius(Constantes.CIRCLE_RADIUS).fillColor(Constantes.CIRCLE_COLOR).strokeWidth(Constantes.CIRCLE_STROKE_WIDTH));
+            imgLocIcon.setVisibility(View.GONE);
+            txtDireccion.setVisibility(View.GONE);
+        }
+
         //Mueve la cámara al lugar pulsado por el usuario.
         googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
@@ -118,6 +122,9 @@ public class LocalizacionActivity extends AppCompatActivity implements OnMapRead
             }
         });
     }
+
+
+
     //Click para los items del autocompletado
     private AdapterView.OnItemClickListener mAutocompleteClickListener
             = new AdapterView.OnItemClickListener() {
@@ -180,8 +187,10 @@ public class LocalizacionActivity extends AppCompatActivity implements OnMapRead
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_localizacion, menu);
+        menu.findItem(R.id.aceptar).setVisible(mSelectorMode);
         return true;
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
