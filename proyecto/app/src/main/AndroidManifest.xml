@@ -43,6 +43,9 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".activities.VerPerfilActivity" />
 
+        <activity android:name=".activities.LocalizacionActivity"
+            android:label="Localización"/>
+
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
@@ -54,7 +57,7 @@
             android:glEsVersion="0x00020000"
             android:required="true" />
 
-        <activity android:name=".activities.LocalizacionActivity"></activity>
+
     </application>
 
 </manifest>
