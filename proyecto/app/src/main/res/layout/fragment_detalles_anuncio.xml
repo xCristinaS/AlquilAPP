@@ -268,9 +268,11 @@
         <RelativeLayout
             android:id="@+id/shapeComentario"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="wrap_content"
             android:background="@color/colorShape"
             android:layout_below="@id/rvPrestaciones"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
             >
             <!-- Cuando el anuncio no contiene descripción -->
             <TextView
@@ -285,7 +287,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:maxLines="5"
-                android:layout_marginTop="10dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp" />
         </RelativeLayout>

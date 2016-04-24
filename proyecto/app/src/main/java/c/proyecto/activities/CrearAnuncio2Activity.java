@@ -327,12 +327,20 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
             mAnuncio.setPrestaciones((ArrayList<Prestacion>) mPrestacionesAdapter.getmDatos());
         if (!TextUtils.isEmpty(txtToilets.getText()))
             mAnuncio.setNumero_banios(Integer.valueOf(txtToilets.getText().toString()));
+        else
+            mAnuncio.setNumero_banios(0);
         if (!TextUtils.isEmpty(txtCamas.getText()))
             mAnuncio.setHabitaciones_o_camas(Integer.valueOf(txtCamas.getText().toString()));
+        else
+            mAnuncio.setHabitaciones_o_camas(0);
         if (!TextUtils.isEmpty(txtTamano.getText()))
             mAnuncio.setTamanio(Integer.valueOf(txtTamano.getText().toString()));
+        else
+            mAnuncio.setTamanio(0);
         if (!TextUtils.isEmpty(txtDescripcion.getText()))
             mAnuncio.setDescripcion(txtDescripcion.getText().toString());
+        else
+            mAnuncio.setDescripcion("");
     }
 
 

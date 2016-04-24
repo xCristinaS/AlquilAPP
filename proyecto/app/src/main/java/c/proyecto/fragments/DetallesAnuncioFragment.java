@@ -245,7 +245,8 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
         if (mAnuncio.getPrestaciones().size() == 0) {
             rvPrestaciones.getLayoutParams().height = 0;
             shapeComentario.setBackgroundColor(getResources().getColor(android.R.color.white));
-        }
+        }else
+            shapeComentario.setBackgroundColor(getResources().getColor(R.color.colorShape));
 
         lblNombre.setText(mUserAnunciante.getNombre());
         if (mUserAnunciante.getFoto() != null)
@@ -277,10 +278,14 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
         lblNumCamas.setText(String.valueOf(mAnuncio.getHabitaciones_o_camas()));
         //Num Huespedes
 
-        if (mAnuncio.getDescripcion().isEmpty())
+        if (mAnuncio.getDescripcion().isEmpty()){
             lblDescripcionNoDisponible.setVisibility(View.VISIBLE);
-        else
+            lblDescripcion.setText("");
+        }
+        else{
+            lblDescripcionNoDisponible.setVisibility(View.GONE);
             lblDescripcion.setText(mAnuncio.getDescripcion());
+        }
 
 
     }
