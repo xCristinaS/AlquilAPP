@@ -20,9 +20,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -286,8 +284,11 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
             lblDescripcionNoDisponible.setVisibility(View.GONE);
             lblDescripcion.setText(mAnuncio.getDescripcion());
         }
-
-
+        //Evita que se pueda hacer scroll cuando no haya suficientes items
+        if(mAnuncio.getPrestaciones().size()<5)
+            rvPrestaciones.setOverScrollMode(View.OVER_SCROLL_NEVER);
+        else
+            rvPrestaciones.setOverScrollMode(View.OVER_SCROLL_ALWAYS);
     }
 
     @Override
@@ -306,11 +307,11 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
         dialog.setView(dialogView);
         dialog.setCanceledOnTouchOutside(true);
 
-        rvPrestaciones = (RecyclerView) dialogView.findViewById(R.id.rvPrestaciones);
-        rvPrestaciones.setAdapter(new PrestacionesDetalladasAdapter(mAnuncio.getPrestaciones()));
+        RecyclerView rvPrestacionesDialogo = (RecyclerView) dialogView.findViewById(R.id.rvPrestaciones);
+        rvPrestacionesDialogo.setAdapter(new PrestacionesDetalladasAdapter(mAnuncio.getPrestaciones()));
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-        rvPrestaciones.setLayoutManager(mLayoutManager);
-        rvPrestaciones.setItemAnimator(new DefaultItemAnimator());
+        rvPrestacionesDialogo.setLayoutManager(mLayoutManager);
+        rvPrestacionesDialogo.setItemAnimator(new DefaultItemAnimator());
 
         dialog.show();
         Point boundsScreen = new Point();
