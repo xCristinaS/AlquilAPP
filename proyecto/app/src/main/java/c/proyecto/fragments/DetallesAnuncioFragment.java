@@ -274,7 +274,7 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
         }
         lblTipoVivienda.setText(mAnuncio.getTipo_vivienda());
         lblNumCamas.setText(String.valueOf(mAnuncio.getHabitaciones_o_camas()));
-        //Num Huespedes
+
 
         if (mAnuncio.getDescripcion().isEmpty()){
             lblDescripcionNoDisponible.setVisibility(View.VISIBLE);

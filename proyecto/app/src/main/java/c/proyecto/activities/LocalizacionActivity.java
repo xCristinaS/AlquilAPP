@@ -94,7 +94,7 @@ public class LocalizacionActivity extends AppCompatActivity implements OnMapRead
                 .addApi(Places.GEO_DATA_API)
                 .build();
 
-        mAdapter = new GooglePlacesAutocompleteAdapter(this, mGoogleApiClient, BOUNDS_GREATER_SYDNEY,null);
+        mAdapter = new GooglePlacesAutocompleteAdapter(this, mGoogleApiClient, BOUNDS_GREATER_SYDNEY, null);
         txtDireccion.setAdapter(mAdapter);
         //Click en los items del autocompletado.
         txtDireccion.setOnItemClickListener(mAutocompleteClickListener);

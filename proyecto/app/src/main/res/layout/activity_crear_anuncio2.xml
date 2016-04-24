@@ -92,13 +92,14 @@
             <!-- LOCALIZACIÓN -->
 
 
-            <AutoCompleteTextView
+            <EditText
                 android:id="@+id/txtDireccion"
                 android:layout_width="220dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/imgCasa"
                 android:layout_marginTop="50dp"
-                android:inputType="text"
+                android:inputType="none"
+                android:focusable="false"
                 android:hint="Dirección"
                 android:dropDownWidth="match_parent"
                 />
@@ -120,7 +121,8 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/txtDireccion"
                 android:maxLines="1"
-                android:inputType="text"
+                android:inputType="none"
+                android:focusable="false"
                 android:hint="Población" />
 
             <EditText
@@ -128,7 +130,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/txtPoblacion"
-                android:inputType="text"
+                android:inputType="none"
+                android:focusable="false"
                 android:maxLines="1"
                 android:hint="Provincia" />
         </RelativeLayout>

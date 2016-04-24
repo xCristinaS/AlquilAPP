@@ -150,7 +150,6 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
         txtDireccion.setOnClickListener(onClickListener);
         txtProvincia.setOnClickListener(onClickListener);
         txtPoblacion.setOnClickListener(onClickListener);
-        txtNum.setOnClickListener(onClickListener);
 
 
 
