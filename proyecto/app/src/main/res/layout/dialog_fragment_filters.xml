@@ -147,6 +147,27 @@
             android:visibility="gone"/>
     </RelativeLayout>
 
+
+    <android.support.v7.widget.AppCompatAutoCompleteTextView
+        android:id="@+id/txtProvincia"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:maxLines="1"
+        android:hint="Provincia"
+        android:gravity="center"
+        android:layout_below="@id/groupPrestaciones"/>
+
+    <android.support.v7.widget.AppCompatAutoCompleteTextView
+        android:id="@+id/txtPoblacion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:maxLines="1"
+        android:hint="Población"
+        android:gravity="center"
+        android:layout_below="@id/txtProvincia"/>
+
     <Button
         android:id="@+id/btnFiltrar"
         android:layout_width="match_parent"
