@@ -1,5 +1,7 @@
 package c.proyecto.mvp_presenters_interfaces;
 
+import com.firebase.geofire.GeoLocation;
+
 import java.util.ArrayList;
 
 import c.proyecto.pojo.Anuncio;
@@ -28,4 +30,6 @@ public interface MainPresenterOps {
     void onFilterResponsed(ArrayList<Anuncio> filteredAdverts);
     void detachAdvertsListener();
     void attachAdvertsListeners();
+    void getLocations(GeoLocation centerPosition, double radius);
+    void detachGeoLocationListeners();
 }

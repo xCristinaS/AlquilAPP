@@ -14,6 +14,14 @@
         app:showAsAction="ifRoom"
         android:visible="false"
         android:icon="@drawable/ic_action_trash" />
+
+    <item
+        android:title="@string/menu_item_mostrar_mapa_title"
+        android:id="@+id/map"
+        app:showAsAction="ifRoom"
+        android:visible="false"
+        android:icon="@drawable/ic_map" />
+
     <item
         android:title="@string/menu_item_filtrar_title"
         android:id="@+id/filters"
