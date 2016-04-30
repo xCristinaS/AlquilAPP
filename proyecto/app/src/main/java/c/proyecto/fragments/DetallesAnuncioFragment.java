@@ -21,6 +21,13 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.daimajia.slider.library.Animations.DescriptionAnimation;
+import com.daimajia.slider.library.SliderLayout;
+import com.daimajia.slider.library.SliderTypes.BaseSliderView;
+import com.daimajia.slider.library.SliderTypes.DefaultSliderView;
+import com.daimajia.slider.library.SliderTypes.TextSliderView;
+import com.daimajia.slider.library.Transformers.BaseTransformer;
+import com.daimajia.slider.library.Tricks.ViewPagerEx;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -30,6 +37,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.squareup.picasso.Picasso;
 
 import java.util.Date;
+import java.util.LinkedList;
 
 import c.proyecto.Constantes;
 import c.proyecto.R;
@@ -43,8 +51,7 @@ import c.proyecto.pojo.Usuario;
 import c.proyecto.pojo.MessagePojo;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class DetallesAnuncioFragment extends Fragment implements PrestacionesAdapter.IPrestacionAdapter, OnMapReadyCallback {
-
+public class DetallesAnuncioFragment extends Fragment implements PrestacionesAdapter.IPrestacionAdapter, OnMapReadyCallback, ViewPagerEx.OnPageChangeListener {
 
 
     public interface IDetallesAnuncioFragmentListener {
@@ -63,7 +70,8 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
     private static final String ARG_CURRENT_USER = "usuarioLogueado";
 
     private RelativeLayout shapeComentario;
-    private ImageView imgFoto, imgTipoVivienda, imgCamas, imgMessage, imgEdit, imgSubscribe;
+    private SliderLayout slider;
+    private ImageView imgTipoVivienda,imgCamas,imgMessage, imgEdit, imgSubscribe;
 
     private CircleImageView imgAvatar;
     private TextView lblNombre, lblPrecio, lblTamano, lblTipoVivienda, lblCamas, lblNumCamas, lblNumHuespedes, lblDescripcionNoDisponible, lblDescripcion;
@@ -103,15 +111,15 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
         mUserAnunciante = getArguments().getParcelable(ARG_USER_ANUNCIANTE);
         mCurrentUser = getArguments().getParcelable(ARG_CURRENT_USER);
         initViews();
+        confSlider();
         confRecyclerview();
         confMap();
         bindData();
     }
 
-
     private void initViews() {
         lblNombre = (TextView) getView().findViewById(R.id.lblNombre);
-        imgFoto = (ImageView) getView().findViewById(R.id.imgFoto);
+        slider = (SliderLayout) getView().findViewById(R.id.slider);
         imgAvatar = (CircleImageView) getView().findViewById(R.id.imgAvatar);
         lblPrecio = (TextView) getView().findViewById(R.id.lblPrecio);
         lblTamano = (TextView) getView().findViewById(R.id.lblTamano);
@@ -193,6 +201,17 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
         });
     }
 
+
+
+    private void confSlider() {
+        slider.setPresetTransformer(SliderLayout.Transformer.Default);
+        slider.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
+        slider.setCustomAnimation(new DescriptionAnimation());
+        slider.setDuration(4000);
+        slider.stopAutoCycle();
+        slider.addOnPageChangeListener(this);
+    }
+
     private void confRecyclerview() {
         rvPrestaciones.setHasFixedSize(true);
         mPrestacionesAdapter = new PrestacionesAdapter(mAnuncio.getPrestaciones(), this);
@@ -232,12 +251,34 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
         mGoogleMap.addCircle(new CircleOptions().center(lat).radius(Constantes.CIRCLE_RADIUS).fillColor(Constantes.CIRCLE_COLOR).strokeWidth(Constantes.CIRCLE_STROKE_WIDTH));
     }
     private void bindData() {
+        DefaultSliderView defaultSliderView;
+        slider.removeAllSliders();
+
+        LinkedList<String> lista = new LinkedList<>();
+        //Ordena la lista de imagenes
         if (mAnuncio.getImagenes().size() > 0) {
-            for (String img : mAnuncio.getImagenes().keySet())
-                if (img.equals(Constantes.FOTO_PRINCIPAL)) // si la key es de la imagen principal, cargo la foto
-                    Picasso.with(getActivity()).load(mAnuncio.getImagenes().get(img)).fit().centerCrop().into(imgFoto);
+            for (String key : mAnuncio.getImagenes().keySet())
+                if (key.equals(Constantes.FOTO_PRINCIPAL)) // si la key es de la imagen principal, cargo la foto
+                    lista.addFirst(mAnuncio.getImagenes().get(key));
+                else
+                    lista.add(mAnuncio.getImagenes().get(key));
         } else
-            Picasso.with(getActivity()).load(R.drawable.default_user).fit().centerCrop().into(imgFoto);
+            slider.addSlider(new DefaultSliderView(getContext()).image(R.drawable.default_user));
+
+        //Introduce imagenes en el slider.
+        for(String url : lista){
+            defaultSliderView = new DefaultSliderView(getContext());
+            defaultSliderView.image(url).setScaleType(BaseSliderView.ScaleType.CenterCrop);
+            slider.addSlider(defaultSliderView);
+        }
+
+        //No permite que se pueda hacer slider si no hay mas de una imagen.
+        if(lista.size() < 2)
+            slider.setPagerTransformer(false, new BaseTransformer() {
+                @Override
+                protected void onTransform(View view, float v) {
+                }
+            });
 
         //Si no hay ninguna prestación se le cambiará el color al shape del comentario al color del fondo
         if (mAnuncio.getPrestaciones().size() == 0) {
@@ -351,6 +392,7 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
     public void onDetach() {
         mListener = null;
         mListenerClick = null;
+        slider.stopAutoCycle();
         super.onDetach();
     }
 
@@ -366,5 +408,21 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
             rvPrestaciones.getLayoutParams().height = 180;
         else
             rvPrestaciones.getLayoutParams().height = 0;
+    }
+
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
     }
 }

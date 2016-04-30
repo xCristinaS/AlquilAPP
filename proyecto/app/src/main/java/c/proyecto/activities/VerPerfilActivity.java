@@ -44,7 +44,7 @@ public class VerPerfilActivity extends AppCompatActivity {
     }
 
     private void initView() {
-        imgFoto = (ImageView) findViewById(R.id.imgFoto);
+        imgFoto = (ImageView) findViewById(R.id.slider);
         lblNombre = (TextView) findViewById(R.id.lblNombre);
         lblNacionalidad = (TextView) findViewById(R.id.lblNacionalidad);
         lblProfesion = (TextView) findViewById(R.id.lblProfesion);

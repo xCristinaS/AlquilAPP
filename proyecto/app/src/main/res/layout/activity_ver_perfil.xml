@@ -6,7 +6,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <ImageView
-            android:id="@+id/imgFoto"
+            android:id="@+id/slider"
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:scaleType="centerCrop"/>
@@ -17,13 +17,13 @@
             android:scaleType="centerCrop"
             android:layout_height="wrap_content"
             android:src="@drawable/degradado_negro"
-            android:layout_alignBottom="@id/imgFoto"/>
+            android:layout_alignBottom="@id/slider"/>
 
         <RelativeLayout
             android:id="@+id/groupDescripcion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/imgFoto"
+            android:layout_below="@id/slider"
             android:layout_marginRight="40dp"
             android:layout_marginLeft="40dp"
             android:layout_marginTop="10dp"
