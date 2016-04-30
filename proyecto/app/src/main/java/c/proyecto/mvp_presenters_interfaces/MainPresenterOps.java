@@ -24,7 +24,7 @@ public interface MainPresenterOps {
     void userHasBeenModified(Usuario user);
     void removeAdvert(Anuncio a);
     void sendAdvertHasBeenRemovedBroadcast();
-    void filterRequest(String[] tipoVivienda, int minPrice, int maxPrice, int minSize, int maxSize, ArrayList<Prestacion> prestaciones);
+    void filterRequest(String[] tipoVivienda, int minPrice, int maxPrice, int minSize, int maxSize, ArrayList<Prestacion> prestaciones, String provincia, String poblacion);
     void onFilterResponsed(ArrayList<Anuncio> filteredAdverts);
     void detachAdvertsListener();
     void attachAdvertsListeners();

@@ -15,8 +15,10 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.appyvet.rangebar.RangeBar;
 import com.google.android.gms.common.ConnectionResult;
@@ -41,11 +43,9 @@ import c.proyecto.pojo.Prestacion;
 public class FilterDialogFramgent extends AppCompatDialogFragment implements PrestacionesAdapter.IPrestacionAdapter, GoogleApiClient.OnConnectionFailedListener {
 
     private static final String TAG_DIALOG_PRESTACIONES = "dialogo_prestaciones";
-    private GoogleApiClient mGoogleApiClient;
-    private GooglePlacesAutocompleteAdapter mAdapterPoblacion, mAdapterProvincia;
 
     public interface ApplyFilters {
-        void filterRequest(String[] tipoVivienda, int minPrice, int maxPrice, int minSize, int maxSize, ArrayList<Prestacion> prestaciones);
+        void filterRequest(String[] tipoVivienda, int minPrice, int maxPrice, int minSize, int maxSize, ArrayList<Prestacion> prestaciones, String provincia, String poblacion);
     }
 
     private ImageView imgPiso, imgCasa, imgHabitacion;
@@ -56,7 +56,7 @@ public class FilterDialogFramgent extends AppCompatDialogFragment implements Pre
     private Button btnFiltrar;
     private ApplyFilters listener;
     private ArrayList<Prestacion> prestaciones;
-    private AutoCompleteTextView txtProvincia, txtPoblacion;
+    private EditText txtPoblacion, txtProvincia;
 
     @Nullable
     @Override
@@ -82,8 +82,8 @@ public class FilterDialogFramgent extends AppCompatDialogFragment implements Pre
         rangeBarTamanio = (RangeBar) view.findViewById(R.id.rangeBarTamanio);
         rvPrestaciones = (RecyclerView) view.findViewById(R.id.rvPrestaciones);
         emptyViewPres = (TextView) view.findViewById(R.id.emptyViewPrestaciones);
-        txtProvincia = (AutoCompleteTextView) view.findViewById(R.id.txtProvincia);
-        txtPoblacion = (AutoCompleteTextView) view.findViewById(R.id.txtPoblacion);
+        txtPoblacion = (EditText) view.findViewById(R.id.txtPoblacion);
+        txtProvincia = (EditText) view.findViewById(R.id.txtProvincia);
 
         btnFiltrar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,18 +95,6 @@ public class FilterDialogFramgent extends AppCompatDialogFragment implements Pre
 
         confRecyclerPrestaciones();
         confImgTipoVivienda();
-        configAutoComplete();
-    }
-
-    private void configAutoComplete() {
-        mGoogleApiClient = new GoogleApiClient.Builder(getContext()).enableAutoManage(getActivity(), 0 /* clientId */, this).addApi(Places.GEO_DATA_API).build();
-        mAdapterPoblacion = new GooglePlacesAutocompleteAdapter(getActivity(), mGoogleApiClient, Constantes.BOUNDS_GREATER_SYDNEY, new Builder().setTypeFilter(AutocompleteFilter.TYPE_FILTER_CITIES).build());
-        mAdapterProvincia = new GooglePlacesAutocompleteAdapter(getActivity(), mGoogleApiClient, Constantes.BOUNDS_GREATER_SYDNEY, new Builder().setTypeFilter(AutocompleteFilter.TYPE_FILTER_REGIONS).build());
-        txtProvincia.setAdapter(mAdapterProvincia);
-        txtPoblacion.setAdapter(mAdapterPoblacion);
-        //Click en los items del autocompletado.
-        txtPoblacion.setOnItemClickListener(mAutocompleteClickListenerPoblacion);
-        txtProvincia.setOnItemClickListener(mAutocompleteClickListenerProvincia);
     }
 
     private void confRecyclerPrestaciones() {
@@ -139,7 +127,6 @@ public class FilterDialogFramgent extends AppCompatDialogFragment implements Pre
     public void updatePrestaciones() {
         mPrestacionesAdapter.actualizarAdapter();
     }
-
 
     private void confImgTipoVivienda() {
         imgCasa.setOnClickListener(new View.OnClickListener() {
@@ -185,13 +172,7 @@ public class FilterDialogFramgent extends AppCompatDialogFragment implements Pre
         if (imgHabitacion.getColorFilter() != null)
             viviendasSeleccionadas[2] = Constantes.HABITACION;
 
-        listener.filterRequest(viviendasSeleccionadas, minPrice, maxPrice, minTam, maxTam, prestaciones);
-    }
-
-
-    @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
-
+        listener.filterRequest(viviendasSeleccionadas, minPrice, maxPrice, minTam, maxTam, prestaciones, txtProvincia.getText().toString(), txtPoblacion.getText().toString());
     }
 
     @Override
@@ -206,90 +187,8 @@ public class FilterDialogFramgent extends AppCompatDialogFragment implements Pre
         super.onDetach();
     }
 
-    //Click para los items del autocompletado
-    private AdapterView.OnItemClickListener mAutocompleteClickListenerProvincia = new AdapterView.OnItemClickListener() {
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            /*
-             Retrieve the place ID of the selected item from the Adapter.
-             The adapter stores each Place suggestion in a AutocompletePrediction from which we
-             read the place ID and title.
-              */
-            final AutocompletePrediction item = mAdapterPoblacion.getItem(position);
-            final String placeId = item.getPlaceId();
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
 
-
-            /*
-             Issue a request to the Places Geo Data API to retrieve a Place object with additional
-             details about the place.
-              */
-            PendingResult<PlaceBuffer> placeResult = Places.GeoDataApi.getPlaceById(mGoogleApiClient, placeId);
-            placeResult.setResultCallback(mUpdatePlaceDetailsCallbackProvincia);
-
-
-        }
-    };
-    //Respuesta
-    /**
-     * Callback for results from a Places Geo Data API query that shows the first place result in
-     * the details view on screen.
-     */
-    private ResultCallback<PlaceBuffer> mUpdatePlaceDetailsCallbackProvincia = new ResultCallback<PlaceBuffer>() {
-        @Override
-        public void onResult(PlaceBuffer places) {
-            if (!places.getStatus().isSuccess()) {
-                // Request did not complete successfully
-                places.release();
-                return;
-            }
-            // Get the Place object from the buffer.
-            Place place = places.get(0);
-            //txtProvincia.setText(place.getPlaceTypes().);
-            places.release();
-        }
-    };
-
-    //Click para los items del autocompletado
-    private AdapterView.OnItemClickListener mAutocompleteClickListenerPoblacion = new AdapterView.OnItemClickListener() {
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            /*
-             Retrieve the place ID of the selected item from the Adapter.
-             The adapter stores each Place suggestion in a AutocompletePrediction from which we
-             read the place ID and title.
-              */
-            final AutocompletePrediction item = mAdapterPoblacion.getItem(position);
-            final String placeId = item.getPlaceId();
-
-
-            /*
-             Issue a request to the Places Geo Data API to retrieve a Place object with additional
-             details about the place.
-              */
-            PendingResult<PlaceBuffer> placeResult = Places.GeoDataApi.getPlaceById(mGoogleApiClient, placeId);
-            placeResult.setResultCallback(mUpdatePlaceDetailsCallbackPoblacion);
-
-
-        }
-    };
-    //Respuesta
-    /**
-     * Callback for results from a Places Geo Data API query that shows the first place result in
-     * the details view on screen.
-     */
-    private ResultCallback<PlaceBuffer> mUpdatePlaceDetailsCallbackPoblacion = new ResultCallback<PlaceBuffer>() {
-        @Override
-        public void onResult(PlaceBuffer places) {
-            if (!places.getStatus().isSuccess()) {
-                // Request did not complete successfully
-                places.release();
-                return;
-            }
-            // Get the Place object from the buffer.
-            final Place place = places.get(0);
-            //txtPoblacion.setText();
-            places.release();
-        }
-    };
-
+    }
 }
