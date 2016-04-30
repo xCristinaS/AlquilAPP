@@ -83,7 +83,7 @@ public class EditProfileActivity extends AppCompatActivity {
     }
 
     private void initViews() {
-        imgFoto = (ImageView) findViewById(R.id.imgFoto);
+        imgFoto = (ImageView) findViewById(R.id.slider);
         txtNombre = (EditText) findViewById(R.id.txtNombre);
         txtApellidos = (EditText) findViewById(R.id.txtApellidos);
         txtFechaNac = (EditText) findViewById(R.id.txtFechaNac);
