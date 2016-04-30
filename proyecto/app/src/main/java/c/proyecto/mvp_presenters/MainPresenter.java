@@ -2,6 +2,8 @@ package c.proyecto.mvp_presenters;
 
 import android.app.Activity;
 
+import com.firebase.geofire.GeoLocation;
+
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
@@ -162,5 +164,15 @@ public class MainPresenter implements MainPresenterOps, MyPresenter {
     @Override
     public void attachAdvertsListeners() {
         advertsManager.attachFirebaseListeners();
+    }
+
+    @Override
+    public void getLocations(GeoLocation centerPosition, double radius) {
+        advertsManager.getLocations(centerPosition, radius);
+    }
+
+    @Override
+    public void detachGeoLocationListeners() {
+        advertsManager.detachGeoLocationListener();
     }
 }

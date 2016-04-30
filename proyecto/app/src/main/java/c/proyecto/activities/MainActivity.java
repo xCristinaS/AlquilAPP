@@ -1,9 +1,16 @@
 package c.proyecto.activities;
 
+import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
@@ -16,10 +23,21 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.firebase.client.Firebase;
+import com.firebase.geofire.GeoFire;
+import com.firebase.geofire.GeoLocation;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CircleOptions;
+import com.google.android.gms.maps.model.LatLng;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import c.proyecto.Constantes;
 import c.proyecto.R;
 
 import c.proyecto.adapters.MessagesRecyclerViewAdapter;
@@ -40,7 +58,7 @@ import c.proyecto.mvp_presenters.MainPresenter;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 
-public class MainActivity extends AppCompatActivity implements MainActivityOps, AdvertsRecyclerViewAdapter.OnAdapterItemLongClick, AdvertsRecyclerViewAdapter.OnAdapterItemClick, NavigationView.OnNavigationItemSelectedListener, MessagesRecyclerViewAdapter.OnMessagesAdapterItemClick, PrincipalFragment.AllowFilters, FilterDialogFramgent.ApplyFilters, SeleccionPrestacionesDialogFragment.ICallBackOnDismiss {
+public class MainActivity extends AppCompatActivity implements MainActivityOps, AdvertsRecyclerViewAdapter.OnAdapterItemLongClick, AdvertsRecyclerViewAdapter.OnAdapterItemClick, NavigationView.OnNavigationItemSelectedListener, MessagesRecyclerViewAdapter.OnMessagesAdapterItemClick, PrincipalFragment.AllowFilters, FilterDialogFramgent.ApplyFilters, SeleccionPrestacionesDialogFragment.ICallBackOnDismiss, OnMapReadyCallback {
 
 
     private static final String ARG_USUARIO = "usuario_extra";
@@ -59,6 +77,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
     private TextView txtUserNavDrawer;
     private CircleImageView navHeader;
     private FragmentManager mFragmentManager;
+    private GoogleMap mGoogleMap;
 
     public static void start(Activity a, Usuario u) {
         Intent intent = new Intent(a, MainActivity.class);
@@ -175,7 +194,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
     }
 
     @Override
-    public void removeAdvert(Anuncio a){
+    public void removeAdvert(Anuncio a) {
         Fragment f = getSupportFragmentManager().findFragmentById(R.id.frmContenido);
         if (f instanceof PrincipalFragment)
             ((PrincipalFragment) f).removeAdvert(a);
@@ -192,9 +211,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
         switch (item.getItemId()) {
             case R.id.nav_home:
                 //Si el principalFragment no está cargado en el FrameLayout
-                if(!(mFragmentManager.findFragmentById(R.id.frmContenido) instanceof PrincipalFragment)){
+                if (!(mFragmentManager.findFragmentById(R.id.frmContenido) instanceof PrincipalFragment)) {
                     //Si ya existe se carga
-                    if(mFragmentManager.findFragmentByTag(TAG_PRINCIPAL_FRAGMENT) != null)
+                    if (mFragmentManager.findFragmentByTag(TAG_PRINCIPAL_FRAGMENT) != null)
                         mFragmentManager.beginTransaction().replace(R.id.frmContenido, mFragmentManager.findFragmentByTag(TAG_PRINCIPAL_FRAGMENT)).commit();
                     else
                         mFragmentManager.beginTransaction().replace(R.id.frmContenido, new PrincipalFragment()).commit();
@@ -262,6 +281,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
                 toolbar.getMenu().findItem(R.id.limpiar).setVisible(false);
                 return true;
             case R.id.map:
+                confMap();
                 return true;
             case R.id.filters:
                 new FilterDialogFramgent().show(getSupportFragmentManager(), TAG_FILTER_DIALOG_FRAMGENT);
@@ -277,6 +297,58 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void confMap() {
+        FragmentManager fm = getSupportFragmentManager();
+        SupportMapFragment mapFragment = SupportMapFragment.newInstance();
+        mapFragment.getMapAsync(this);
+        fm.beginTransaction().replace(R.id.frmContenido, mapFragment).commit();
+    }
+
+    @Override
+    public void onMapReady(final GoogleMap map) {
+        mGoogleMap = map;
+        Location l = getLastKnownLocation();
+        if (l != null)
+            mPresenter.getLocations(new GeoLocation(l.getLatitude(), l.getLongitude()), 2);
+
+        posicionarMapa();
+    }
+
+    private void posicionarMapa() {
+        Location l = getLastKnownLocation();
+        if (l != null) {
+            mGoogleMap.clear();
+            mGoogleMap.getUiSettings().setAllGesturesEnabled(true);
+            LatLng lat = new LatLng(l.getLatitude(), l.getLongitude());
+            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(lat, Constantes.ZOOM_ANUNCIO_CON_LOCALIZACION));
+            mGoogleMap.addCircle(new CircleOptions().center(lat).radius(Constantes.CIRCLE_RADIUS).fillColor(Constantes.CIRCLE_COLOR).strokeWidth(Constantes.CIRCLE_STROKE_WIDTH));
+        }
+    }
+
+    private Location getLastKnownLocation() {
+        LocationManager mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        List<String> providers = mLocationManager.getProviders(true);
+        Location bestLocation = null;
+        for (String provider : providers) {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+                return null;
+
+            Location l = mLocationManager.getLastKnownLocation(provider);
+
+            if (l == null) {
+                continue;
+            }
+            if (bestLocation == null
+                    || l.getAccuracy() < bestLocation.getAccuracy()) {
+                bestLocation = l;
+            }
+        }
+        if (bestLocation == null) {
+            return null;
+        }
+        return bestLocation;
     }
 
     @Override
@@ -319,15 +391,19 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
     @Override
     public void onBackPressed() {
         //Si el navDrawer está abierto lo cierra
-        if(drawer.isDrawerOpen(GravityCompat.START))
+        if (drawer.isDrawerOpen(GravityCompat.START))
             drawer.closeDrawers();
-        else{
-            if (getSupportFragmentManager().findFragmentById(R.id.frmContenido) instanceof MessagesFragment) {
+        else {
+            Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.frmContenido);
+            if (fragment instanceof MessagesFragment || fragment instanceof SupportMapFragment) {
                 PrincipalFragment f = (PrincipalFragment) getSupportFragmentManager().findFragmentByTag(TAG_PRINCIPAL_FRAGMENT);
                 if (f != null)
                     getSupportFragmentManager().beginTransaction().replace(R.id.frmContenido, f).commit();
                 else
                     getSupportFragmentManager().beginTransaction().replace(R.id.frmContenido, new PrincipalFragment(), TAG_PRINCIPAL_FRAGMENT).commit();
+
+                if (fragment instanceof SupportMapFragment)
+                    mPresenter.detachGeoLocationListeners();
             } else
                 super.onBackPressed();
         }
@@ -345,7 +421,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
     }
 
     @Override
-    public void filteredAdvertsObtained(ArrayList<Anuncio> filteredAdverts){
+    public void filteredAdvertsObtained(ArrayList<Anuncio> filteredAdverts) {
         Fragment f = getSupportFragmentManager().findFragmentById(R.id.frmContenido);
         if (f instanceof PrincipalFragment)
             ((PrincipalFragment) f).loadFilteredAdverts(filteredAdverts);
@@ -373,6 +449,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
 
     @Override
     public void onDismiss() {
-        ((FilterDialogFramgent)getSupportFragmentManager().findFragmentByTag(TAG_FILTER_DIALOG_FRAMGENT)).updatePrestaciones();
+        ((FilterDialogFramgent) getSupportFragmentManager().findFragmentByTag(TAG_FILTER_DIALOG_FRAMGENT)).updatePrestaciones();
     }
 }
