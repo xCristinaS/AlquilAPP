@@ -212,6 +212,7 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
         slider.setDuration(4000);
         slider.stopAutoCycle();
         slider.addOnPageChangeListener(this);
+        slider.getPagerIndicator().destroySelf();
 
         DefaultSliderView defaultSliderView;
         LinkedList<String> lista = new LinkedList<>();
