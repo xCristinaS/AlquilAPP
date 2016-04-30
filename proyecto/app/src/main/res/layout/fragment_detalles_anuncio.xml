@@ -83,7 +83,7 @@
                 android:id="@+id/lblNumCamas"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="2"
+                android:text="0"
                 android:textStyle="bold"
                 android:layout_toRightOf="@id/groupCamas"
                 android:layout_toEndOf="@id/groupCamas"
@@ -124,24 +124,24 @@
                 android:orientation="vertical"
                 android:layout_toRightOf="@id/groupCamas"
                 android:layout_toEndOf="@id/groupCamas"
-                android:layout_marginLeft="40dp"
+                android:layout_marginLeft="64dp"
                 >
                 <ImageView
-                    android:id="@+id/imgHuespedes"
+                    android:id="@+id/imgToilet"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:src="@drawable/ic_huespedes"
+                    android:src="@drawable/ic_toilet"
                     android:layout_gravity="center"
                     />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="Huéspedes"
+                    android:text="Baños"
                     />
             </LinearLayout>
             <TextView
-                android:id="@+id/lblNumHuespedes"
+                android:id="@+id/lblNumToilets"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="0"
@@ -149,6 +149,7 @@
                 android:layout_toRightOf="@id/groupHuespedes"
                 android:layout_toEndOf="@id/groupHuespedes"
                 android:layout_marginTop="30dp"
+                android:layout_marginLeft="5dp"
                 />
 
         </RelativeLayout>

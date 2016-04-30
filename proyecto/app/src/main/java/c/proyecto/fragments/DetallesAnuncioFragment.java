@@ -120,7 +120,7 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
         imgCamas = (ImageView) getView().findViewById(R.id.imgCamas);
         lblCamas = (TextView) getView().findViewById(R.id.lblCamas);
         lblNumCamas = (TextView) getView().findViewById(R.id.lblNumCamas);
-        lblNumHuespedes = (TextView) getView().findViewById(R.id.lblNumHuespedes);
+        lblNumHuespedes = (TextView) getView().findViewById(R.id.lblNumToilets);
         rvPrestaciones = (RecyclerView) getView().findViewById(R.id.rvPrestaciones);
         lblDescripcionNoDisponible = (TextView) getView().findViewById(R.id.lblDescripcionNoDisponible);
         lblDescripcion = (TextView) getView().findViewById(R.id.lblDescripcion);
