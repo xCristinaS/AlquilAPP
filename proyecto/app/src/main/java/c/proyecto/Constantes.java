@@ -43,5 +43,9 @@ public final class Constantes {
     public static final float CIRCLE_STROKE_WIDTH = 2;
     public static final double CIRCLE_RADIUS = 35;
 
+    //IMAGE SLIDER
+    public static final long DELAY_TIME = 8000;
+    public static final long DURATION = 8000;
+
 }
 

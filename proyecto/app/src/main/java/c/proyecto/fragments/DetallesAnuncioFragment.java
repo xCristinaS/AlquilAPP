@@ -22,6 +22,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.daimajia.slider.library.Animations.DescriptionAnimation;
+import com.daimajia.slider.library.Indicators.PagerIndicator;
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.DefaultSliderView;
@@ -205,13 +206,12 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
 
 
     private void confSlider() {
-        slider.setPresetTransformer(SliderLayout.Transformer.Default);
+        slider.setPresetTransformer(SliderLayout.Transformer.Stack);
         slider.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
         slider.setCustomAnimation(new DescriptionAnimation());
-        slider.setDuration(4000);
-        slider.stopAutoCycle();
-        slider.addOnPageChangeListener(this);
+        slider.startAutoCycle(Constantes.DELAY_TIME, Constantes.DURATION, false);
         slider.getPagerIndicator().destroySelf();
+        slider.addOnPageChangeListener(this);
 
         DefaultSliderView defaultSliderView;
         LinkedList<String> lista = new LinkedList<>();
