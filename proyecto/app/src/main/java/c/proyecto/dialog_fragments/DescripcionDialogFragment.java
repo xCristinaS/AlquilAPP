@@ -67,21 +67,21 @@ public class DescripcionDialogFragment extends AppCompatDialogFragment {
     }
 
     private void recuperarDatos() {
-        ArrayList<Integer> ids = mUser.getIdDrawItemsDescriptivos();
+        ArrayList<String> ids = mUser.getIdDrawItemsDescriptivos();
 
-        if(ids.contains(R.drawable.genero_masculino))
+        if(ids.contains(getResources().getResourceEntryName(R.drawable.genero_masculino)))
             tintImageView(imgMasculino);
-        else if(ids.contains(R.drawable.genero_femenino))
+        else if(ids.contains(getResources().getResourceEntryName(R.drawable.genero_femenino)))
             tintImageView(imgFemenino);
 
-        if(ids.contains(R.drawable.estudiante))
+        if(ids.contains(getResources().getResourceEntryName(R.drawable.estudiante)))
             tintImageView(imgEstudiante);
-        else if(ids.contains(R.drawable.trabajador))
+        else if(ids.contains(getResources().getResourceEntryName(R.drawable.trabajador)))
             tintImageView(imgTrabajador);
 
-        if(ids.contains(R.drawable.fumador))
+        if(ids.contains(getResources().getResourceEntryName(R.drawable.fumador)))
             tintImageView(imgFumador);
-        else if(ids.contains(R.drawable.no_fumador))
+        else if(ids.contains(getResources().getResourceEntryName(R.drawable.no_fumador)))
             tintImageView(imgNoFumador);
 
     }
@@ -110,10 +110,10 @@ public class DescripcionDialogFragment extends AppCompatDialogFragment {
                 tintImageView(imgOnClick);
                 //Si no contiene el drawable a tintar se tinta
                 if(!mUser.getIdDrawItemsDescriptivos().contains(drawToTint)){
-                    mUser.getIdDrawItemsDescriptivos().add(drawToTint);
+                    mUser.getIdDrawItemsDescriptivos().add(getResources().getResourceEntryName(drawToTint));
                     //Si el drawable contrario está tintado, se borrará del arrayList para que no aparezca tintado.
-                    if(mUser.getIdDrawItemsDescriptivos().contains(drawToClearTint))
-                        mUser.getIdDrawItemsDescriptivos().remove(mUser.getIdDrawItemsDescriptivos().indexOf(drawToClearTint));
+                    if(mUser.getIdDrawItemsDescriptivos().contains(getResources().getResourceEntryName(drawToClearTint)))
+                        mUser.getIdDrawItemsDescriptivos().remove(mUser.getIdDrawItemsDescriptivos().indexOf(getResources().getResourceEntryName(drawToClearTint)));
                 }
             }
         });

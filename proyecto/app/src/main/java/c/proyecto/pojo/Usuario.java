@@ -14,7 +14,7 @@ public class Usuario implements Parcelable, MyModel {
     private int ordenado, fiestero, sociable, activo;
     private long fecha_nacimiento;
     private ArrayList<String> itemsHabitos;
-    private ArrayList<Integer> idDrawItemsDescriptivos;
+    private ArrayList<String> idDrawItemsDescriptivos;
 
     public Usuario() {
         itemsHabitos = new ArrayList<>();
@@ -109,11 +109,11 @@ public class Usuario implements Parcelable, MyModel {
         this.fiestero = fiestero;
     }
 
-    public ArrayList<Integer> getIdDrawItemsDescriptivos() {
+    public ArrayList<String> getIdDrawItemsDescriptivos() {
         return idDrawItemsDescriptivos;
     }
 
-    public void setIdDrawItemsDescriptivos(ArrayList<Integer> idDrawItemsDescriptivos) {
+    public void setIdDrawItemsDescriptivos(ArrayList<String> idDrawItemsDescriptivos) {
         this.idDrawItemsDescriptivos = idDrawItemsDescriptivos;
     }
 
@@ -153,6 +153,7 @@ public class Usuario implements Parcelable, MyModel {
 
     //      PARCELABLE
 
+
     @Override
     public int describeContents() {
         return 0;
@@ -174,7 +175,7 @@ public class Usuario implements Parcelable, MyModel {
         dest.writeInt(this.activo);
         dest.writeLong(this.fecha_nacimiento);
         dest.writeStringList(this.itemsHabitos);
-        dest.writeList(this.idDrawItemsDescriptivos);
+        dest.writeStringList(this.idDrawItemsDescriptivos);
     }
 
     protected Usuario(Parcel in) {
@@ -192,15 +193,16 @@ public class Usuario implements Parcelable, MyModel {
         this.activo = in.readInt();
         this.fecha_nacimiento = in.readLong();
         this.itemsHabitos = in.createStringArrayList();
-        this.idDrawItemsDescriptivos = new ArrayList<Integer>();
-        in.readList(this.idDrawItemsDescriptivos, List.class.getClassLoader());
+        this.idDrawItemsDescriptivos = in.createStringArrayList();
     }
 
     public static final Creator<Usuario> CREATOR = new Creator<Usuario>() {
+        @Override
         public Usuario createFromParcel(Parcel source) {
             return new Usuario(source);
         }
 
+        @Override
         public Usuario[] newArray(int size) {
             return new Usuario[size];
         }

@@ -77,19 +77,19 @@ public class VerPerfilActivity extends AppCompatActivity {
     }
 
     private void cargarItemsDescriptivos() {
-        ArrayList<Integer> items = mUser.getIdDrawItemsDescriptivos();
+        ArrayList<String> items = mUser.getIdDrawItemsDescriptivos();
 
         if(items.size() > 0){
             if(items.size() == 1)
-                imgDescripcion2.setImageResource(items.get(0));
+                imgDescripcion1.setImageResource(getResources().getIdentifier(items.get(0), "drawable", getPackageName()));
             else if(items.size() == 2){
-                imgDescripcion1.setImageResource(items.get(0));
-                imgDescripcion2.setImageResource(items.get(1));
+                imgDescripcion1.setImageResource(getResources().getIdentifier(items.get(0), "drawable", getPackageName()));
+                imgDescripcion2.setImageResource(getResources().getIdentifier(items.get(1), "drawable", getPackageName()));
             }
             else{
-                imgDescripcion1.setImageResource(items.get(0));
-                imgDescripcion2.setImageResource(items.get(1));
-                imgDescripcion3.setImageResource(items.get(2));
+                imgDescripcion1.setImageResource(getResources().getIdentifier(items.get(0), "drawable", getPackageName()));
+                imgDescripcion2.setImageResource(getResources().getIdentifier(items.get(1), "drawable", getPackageName()));
+                imgDescripcion3.setImageResource(getResources().getIdentifier(items.get(2), "drawable", getPackageName()));
             }
         }
     }
