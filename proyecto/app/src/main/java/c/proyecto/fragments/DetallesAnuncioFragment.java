@@ -54,6 +54,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class DetallesAnuncioFragment extends Fragment implements PrestacionesAdapter.IPrestacionAdapter, OnMapReadyCallback, ViewPagerEx.OnPageChangeListener {
 
 
+
+
     public interface IDetallesAnuncioFragmentListener {
         void onImgEditClicked(Anuncio advert, Usuario user);
     }
@@ -69,7 +71,7 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
     private static final String ARG_USER_ANUNCIANTE = "mUserAnunciante";
     private static final String ARG_CURRENT_USER = "usuarioLogueado";
 
-    private RelativeLayout shapeComentario;
+    private RelativeLayout shapeComentario, groupImagenes;
     private SliderLayout slider;
     private ImageView imgTipoVivienda,imgCamas,imgMessage, imgEdit, imgSubscribe;
 
@@ -111,13 +113,13 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
         mUserAnunciante = getArguments().getParcelable(ARG_USER_ANUNCIANTE);
         mCurrentUser = getArguments().getParcelable(ARG_CURRENT_USER);
         initViews();
-        confSlider();
         confRecyclerview();
         confMap();
         bindData();
     }
 
     private void initViews() {
+        groupImagenes = (RelativeLayout) getView().findViewById(R.id.groupImagenes);
         lblNombre = (TextView) getView().findViewById(R.id.lblNombre);
         slider = (SliderLayout) getView().findViewById(R.id.slider);
         imgAvatar = (CircleImageView) getView().findViewById(R.id.imgAvatar);
@@ -210,6 +212,34 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
         slider.setDuration(4000);
         slider.stopAutoCycle();
         slider.addOnPageChangeListener(this);
+
+        DefaultSliderView defaultSliderView;
+        LinkedList<String> lista = new LinkedList<>();
+        //Ordena la lista de imagenes
+        if (mAnuncio.getImagenes().size() > 0) {
+            for (String key : mAnuncio.getImagenes().keySet())
+                if (key.equals(Constantes.FOTO_PRINCIPAL)) // si la key es de la imagen principal, cargo la foto
+                    lista.addFirst(mAnuncio.getImagenes().get(key));
+                else
+                    lista.add(mAnuncio.getImagenes().get(key));
+
+            //Introduce imagenes en el slider.
+            for(String url : lista){
+                defaultSliderView = new DefaultSliderView(getContext());
+                defaultSliderView.image(url).setScaleType(BaseSliderView.ScaleType.CenterCrop);
+                slider.addSlider(defaultSliderView);
+            }
+        } else
+            slider.addSlider(new DefaultSliderView(getContext()).image(R.drawable.default_user));
+
+
+        //No permite que se pueda pasar de página si no hay mas de una imagen.
+        if(lista.size() < 2)
+            slider.setPagerTransformer(false, new BaseTransformer() {
+                @Override
+                protected void onTransform(View view, float v) {
+                }
+            });
     }
 
     private void confRecyclerview() {
@@ -220,6 +250,7 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         rvPrestaciones.setLayoutManager(mLayoutManager);
         rvPrestaciones.setItemAnimator(new DefaultItemAnimator());
+
     }
 
 
@@ -250,35 +281,17 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
         mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(lat, Constantes.ZOOM_ANUNCIO_CON_LOCALIZACION));
         mGoogleMap.addCircle(new CircleOptions().center(lat).radius(Constantes.CIRCLE_RADIUS).fillColor(Constantes.CIRCLE_COLOR).strokeWidth(Constantes.CIRCLE_STROKE_WIDTH));
     }
+
     private void bindData() {
-        DefaultSliderView defaultSliderView;
-        slider.removeAllSliders();
+        //Se infla un slider cada vez que se actualiza las imagenes
+        //Se coloca la View inflada a modo de FrameLayout en el RelativeLayout
+        RelativeLayout r = (RelativeLayout) View.inflate(getContext(), R.layout.slider, null);
+        slider = (SliderLayout) r.findViewById(R.id.slider);
+        confSlider();
 
-        LinkedList<String> lista = new LinkedList<>();
-        //Ordena la lista de imagenes
-        if (mAnuncio.getImagenes().size() > 0) {
-            for (String key : mAnuncio.getImagenes().keySet())
-                if (key.equals(Constantes.FOTO_PRINCIPAL)) // si la key es de la imagen principal, cargo la foto
-                    lista.addFirst(mAnuncio.getImagenes().get(key));
-                else
-                    lista.add(mAnuncio.getImagenes().get(key));
-        } else
-            slider.addSlider(new DefaultSliderView(getContext()).image(R.drawable.default_user));
+        groupImagenes.removeAllViews();
+        groupImagenes.addView(r);
 
-        //Introduce imagenes en el slider.
-        for(String url : lista){
-            defaultSliderView = new DefaultSliderView(getContext());
-            defaultSliderView.image(url).setScaleType(BaseSliderView.ScaleType.CenterCrop);
-            slider.addSlider(defaultSliderView);
-        }
-
-        //No permite que se pueda hacer slider si no hay mas de una imagen.
-        if(lista.size() < 2)
-            slider.setPagerTransformer(false, new BaseTransformer() {
-                @Override
-                protected void onTransform(View view, float v) {
-                }
-            });
 
         //Si no hay ninguna prestación se le cambiará el color al shape del comentario al color del fondo
         if (mAnuncio.getPrestaciones().size() == 0) {
