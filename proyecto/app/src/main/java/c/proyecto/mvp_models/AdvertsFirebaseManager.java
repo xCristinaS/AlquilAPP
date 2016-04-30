@@ -1,9 +1,12 @@
 package c.proyecto.mvp_models;
 
+import android.text.TextUtils;
+
 import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+import com.firebase.client.Query;
 import com.firebase.client.ValueEventListener;
 
 import java.util.ArrayList;
@@ -158,7 +161,7 @@ public class AdvertsFirebaseManager {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Anuncio a = dataSnapshot.getChildren().iterator().next().getValue(Anuncio.class);
-                ((ConversationPresenter)presenter).advertObtained(a);
+                ((ConversationPresenter) presenter).advertObtained(a);
             }
 
             @Override
@@ -168,7 +171,7 @@ public class AdvertsFirebaseManager {
         });
     }
 
-    public void filterRequest(final String[] tipoVivienda, final int minPrice, final int maxPrice, final int minSize, final int maxSize, final ArrayList<Prestacion> prestaciones) {
+    public void filterRequest(final String[] tipoVivienda, final int minPrice, final int maxPrice, final int minSize, final int maxSize, final ArrayList<Prestacion> prestaciones, final String provincia, final String poblacion) {
         final ArrayList<Anuncio> filteredAdverts = new ArrayList<>();
 
         new Firebase(URL_ANUNCIOS).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -179,7 +182,11 @@ public class AdvertsFirebaseManager {
                 for (DataSnapshot data : dataSnapshot.getChildren()) {
                     a = data.getValue(Anuncio.class);
                     if (!a.getAnunciante().equals(currentUser.getKey()) && a.getTamanio() >= minSize) {
-                        agregar = anuncioCumpleFiltroTipoVivienda(tipoVivienda, a);
+                        agregar = anuncioCumpleFiltroPoblacion(poblacion, a);
+                        if (agregar && !TextUtils.isEmpty(provincia))
+                            agregar = anuncioCumpleFiltroProvincia(provincia, a);
+                        if (agregar)
+                            agregar = anuncioCumpleFiltroTipoVivienda(tipoVivienda, a);
                         if (agregar)
                             agregar = anuncioCumpleFiltroPrecio(minPrice, maxPrice, a);
                         if (agregar)
@@ -198,6 +205,20 @@ public class AdvertsFirebaseManager {
 
             }
         });
+    }
+
+    private boolean anuncioCumpleFiltroPoblacion(String poblacion, Anuncio a) {
+        boolean r = false;
+        if (a.getPoblacion().equalsIgnoreCase(poblacion) || a.getPoblacion().contains(poblacion))
+            r = true;
+        return r;
+    }
+
+    private boolean anuncioCumpleFiltroProvincia(String provincia, Anuncio a) {
+        boolean r = false;
+        if (a.getProvincia().equalsIgnoreCase(provincia) || a.getProvincia().contains(provincia))
+            r = true;
+        return r;
     }
 
     private boolean anuncioCumpleFiltroTipoVivienda(String[] tipoVivienda, Anuncio a) {

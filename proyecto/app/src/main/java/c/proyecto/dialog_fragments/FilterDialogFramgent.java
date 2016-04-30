@@ -2,7 +2,6 @@ package c.proyecto.dialog_fragments;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
@@ -10,29 +9,43 @@ import android.support.v7.app.AppCompatDialogFragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Range;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.appyvet.rangebar.RangeBar;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.location.places.AutocompleteFilter;
+import com.google.android.gms.location.places.AutocompletePrediction;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.PlaceBuffer;
+import com.google.android.gms.location.places.Places;
+import com.google.android.gms.location.places.AutocompleteFilter.Builder;
 
 import java.util.ArrayList;
 
 import c.proyecto.Constantes;
 import c.proyecto.R;
+import c.proyecto.adapters.GooglePlacesAutocompleteAdapter;
 import c.proyecto.adapters.PrestacionesAdapter;
 import c.proyecto.pojo.Prestacion;
 
-public class FilterDialogFramgent extends AppCompatDialogFragment implements PrestacionesAdapter.IPrestacionAdapter {
+public class FilterDialogFramgent extends AppCompatDialogFragment implements PrestacionesAdapter.IPrestacionAdapter, GoogleApiClient.OnConnectionFailedListener {
 
     private static final String TAG_DIALOG_PRESTACIONES = "dialogo_prestaciones";
 
     public interface ApplyFilters {
-        void filterRequest(String[] tipoVivienda, int minPrice, int maxPrice, int minSize, int maxSize, ArrayList<Prestacion> prestaciones);
+        void filterRequest(String[] tipoVivienda, int minPrice, int maxPrice, int minSize, int maxSize, ArrayList<Prestacion> prestaciones, String provincia, String poblacion);
     }
 
     private ImageView imgPiso, imgCasa, imgHabitacion;
@@ -43,6 +56,7 @@ public class FilterDialogFramgent extends AppCompatDialogFragment implements Pre
     private Button btnFiltrar;
     private ApplyFilters listener;
     private ArrayList<Prestacion> prestaciones;
+    private EditText txtPoblacion, txtProvincia;
 
     @Nullable
     @Override
@@ -68,6 +82,8 @@ public class FilterDialogFramgent extends AppCompatDialogFragment implements Pre
         rangeBarTamanio = (RangeBar) view.findViewById(R.id.rangeBarTamanio);
         rvPrestaciones = (RecyclerView) view.findViewById(R.id.rvPrestaciones);
         emptyViewPres = (TextView) view.findViewById(R.id.emptyViewPrestaciones);
+        txtPoblacion = (EditText) view.findViewById(R.id.txtPoblacion);
+        txtProvincia = (EditText) view.findViewById(R.id.txtProvincia);
 
         btnFiltrar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,10 +124,9 @@ public class FilterDialogFramgent extends AppCompatDialogFragment implements Pre
         SeleccionPrestacionesDialogFragment.newInstance(prestaciones).show(fm, TAG_DIALOG_PRESTACIONES);
     }
 
-    public void updatePrestaciones(){
+    public void updatePrestaciones() {
         mPrestacionesAdapter.actualizarAdapter();
     }
-
 
     private void confImgTipoVivienda() {
         imgCasa.setOnClickListener(new View.OnClickListener() {
@@ -157,7 +172,7 @@ public class FilterDialogFramgent extends AppCompatDialogFragment implements Pre
         if (imgHabitacion.getColorFilter() != null)
             viviendasSeleccionadas[2] = Constantes.HABITACION;
 
-        listener.filterRequest(viviendasSeleccionadas, minPrice, maxPrice, minTam, maxTam, prestaciones);
+        listener.filterRequest(viviendasSeleccionadas, minPrice, maxPrice, minTam, maxTam, prestaciones, txtProvincia.getText().toString(), txtPoblacion.getText().toString());
     }
 
     @Override
@@ -170,5 +185,10 @@ public class FilterDialogFramgent extends AppCompatDialogFragment implements Pre
     public void onDetach() {
         listener = null;
         super.onDetach();
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+
     }
 }

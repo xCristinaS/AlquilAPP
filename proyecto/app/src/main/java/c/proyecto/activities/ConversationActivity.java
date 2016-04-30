@@ -106,10 +106,10 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
     private void confToolbar() {
         final Usuario usuarioAux;
         String tituloAnuncio = mensaje.getTituloAnuncio();
-        if(tituloAnuncio.length()>Constantes.LENGTH_TITULO_ANUNCIO_CONVERSATION_ACTIVITY){
+        if (tituloAnuncio.length() > Constantes.LENGTH_TITULO_ANUNCIO_CONVERSATION_ACTIVITY) {
             tituloAnuncio = mensaje.getTituloAnuncio().substring(0, Constantes.LENGTH_TITULO_ANUNCIO_CONVERSATION_ACTIVITY);
             tituloAnuncio = tituloAnuncio.trim();
-            tituloAnuncio+="...";
+            tituloAnuncio += "...";
         }
 
         lblTituloAnuncio.setText(tituloAnuncio);
@@ -139,8 +139,9 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
     }
 
     @Override
-    public void advertObtained(Anuncio a){
-        DetallesAnuncioActivity.start(this, a, AdvertsRecyclerViewAdapter.ADAPTER_TYPE_ADVS, user);
+    public void advertObtained(Anuncio a) {
+        if (a != null)
+            DetallesAnuncioActivity.start(this, a, AdvertsRecyclerViewAdapter.ADAPTER_TYPE_ADVS, user);
     }
 
     @Override

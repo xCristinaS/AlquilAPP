@@ -3,6 +3,9 @@ package c.proyecto;
 
 import android.graphics.Color;
 
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+
 public final class Constantes {
     public static final String MONEDA = "€";
     public static final String UNIDAD = "m²";
@@ -32,11 +35,13 @@ public final class Constantes {
     public static final int LENGTH_TITULO_ANUNCIO_CONVERSATION_ACTIVITY = 25;
 
     //MAPS
+    public static final LatLngBounds BOUNDS_GREATER_SYDNEY = new LatLngBounds( new LatLng(-34.041458, 150.790100), new LatLng(-33.682247, 151.383362));
         //Zoom LocalizacionActivity cuando se abre el mapa con un anuncio que ya contiene una localización.
     public static final float ZOOM_ANUNCIO_CON_LOCALIZACION = 16f;
         //DetallesAnuncioFragment
     public static final int CIRCLE_COLOR = Color.argb(100, 255, 64, 129);
     public static final float CIRCLE_STROKE_WIDTH = 2;
     public static final double CIRCLE_RADIUS = 35;
+
 }
 

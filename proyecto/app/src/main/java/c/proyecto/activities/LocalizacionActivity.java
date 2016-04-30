@@ -40,7 +40,6 @@ import c.proyecto.adapters.GooglePlacesAutocompleteAdapter;
 
 public class LocalizacionActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.OnConnectionFailedListener {
 
-    private static final LatLngBounds BOUNDS_GREATER_SYDNEY = new LatLngBounds( new LatLng(-34.041458, 150.790100), new LatLng(-33.682247, 151.383362));
     private static final String EXTRA_ANUNCIO = "ExtraAnuncio";
     public static final String EXTRA_ADDRESS = "ExtraAddress";
     private static final String EXTRA_SELECTOR_MODE = "ExtraEditable";
@@ -94,7 +93,7 @@ public class LocalizacionActivity extends AppCompatActivity implements OnMapRead
                 .addApi(Places.GEO_DATA_API)
                 .build();
 
-        mAdapter = new GooglePlacesAutocompleteAdapter(this, mGoogleApiClient, BOUNDS_GREATER_SYDNEY, null);
+        mAdapter = new GooglePlacesAutocompleteAdapter(this, mGoogleApiClient, Constantes.BOUNDS_GREATER_SYDNEY, null);
         txtDireccion.setAdapter(mAdapter);
         //Click en los items del autocompletado.
         txtDireccion.setOnItemClickListener(mAutocompleteClickListener);

@@ -248,7 +248,7 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
                     stop = true;
 
             if (!stop)
-                mDatos.add(a);
+                mDatos.add(0, a);
             notifyItemInserted(mDatos.indexOf(a));
             notifyDataSetChanged();
         }
