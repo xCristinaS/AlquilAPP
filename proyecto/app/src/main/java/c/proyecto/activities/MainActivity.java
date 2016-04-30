@@ -15,7 +15,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -238,6 +237,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         showFilterIcon();
+        showMapIcon();
         return super.onPrepareOptionsMenu(menu);
     }
 
@@ -260,6 +260,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
                 adapter.disableMultiDeletionMode();
                 toolbar.getMenu().findItem(R.id.eliminar).setVisible(false);
                 toolbar.getMenu().findItem(R.id.limpiar).setVisible(false);
+                return true;
+            case R.id.map:
                 return true;
             case R.id.filters:
                 new FilterDialogFramgent().show(getSupportFragmentManager(), TAG_FILTER_DIALOG_FRAMGENT);
@@ -285,6 +287,16 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
     @Override
     public void hideFilterIcon() {
         toolbar.getMenu().findItem(R.id.filters).setVisible(false);
+    }
+
+    @Override
+    public void showMapIcon() {
+        toolbar.getMenu().findItem(R.id.map).setVisible(true);
+    }
+
+    @Override
+    public void hideMapIcon() {
+        toolbar.getMenu().findItem(R.id.map).setVisible(false);
     }
 
     @Override
