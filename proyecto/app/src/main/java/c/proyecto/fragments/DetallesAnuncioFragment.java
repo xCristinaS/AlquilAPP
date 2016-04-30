@@ -25,7 +25,6 @@ import com.daimajia.slider.library.Animations.DescriptionAnimation;
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.DefaultSliderView;
-import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.daimajia.slider.library.Transformers.BaseTransformer;
 import com.daimajia.slider.library.Tricks.ViewPagerEx;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -76,7 +75,7 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
     private ImageView imgTipoVivienda,imgCamas,imgMessage, imgEdit, imgSubscribe;
 
     private CircleImageView imgAvatar;
-    private TextView lblNombre, lblPrecio, lblTamano, lblTipoVivienda, lblCamas, lblNumCamas, lblNumHuespedes, lblDescripcionNoDisponible, lblDescripcion;
+    private TextView lblNombre, lblPrecio, lblTamano, lblTipoVivienda, lblCamas, lblNumCamas, lblNumToilets, lblDescripcionNoDisponible, lblDescripcion;
     private RecyclerView rvPrestaciones;
     private PrestacionesAdapter mPrestacionesAdapter;
 
@@ -130,7 +129,7 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
         imgCamas = (ImageView) getView().findViewById(R.id.imgCamas);
         lblCamas = (TextView) getView().findViewById(R.id.lblCamas);
         lblNumCamas = (TextView) getView().findViewById(R.id.lblNumCamas);
-        lblNumHuespedes = (TextView) getView().findViewById(R.id.lblNumToilets);
+        lblNumToilets = (TextView) getView().findViewById(R.id.lblNumToilets);
         rvPrestaciones = (RecyclerView) getView().findViewById(R.id.rvPrestaciones);
         lblDescripcionNoDisponible = (TextView) getView().findViewById(R.id.lblDescripcionNoDisponible);
         lblDescripcion = (TextView) getView().findViewById(R.id.lblDescripcion);
@@ -329,7 +328,7 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
         }
         lblTipoVivienda.setText(mAnuncio.getTipo_vivienda());
         lblNumCamas.setText(String.valueOf(mAnuncio.getHabitaciones_o_camas()));
-
+        lblNumToilets.setText(String.valueOf(mAnuncio.getNumero_banios()));
 
         if (mAnuncio.getDescripcion().isEmpty()){
             lblDescripcionNoDisponible.setVisibility(View.VISIBLE);
