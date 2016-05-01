@@ -5,6 +5,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
@@ -30,8 +32,12 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolygonOptions;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -323,7 +329,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
             mGoogleMap.getUiSettings().setAllGesturesEnabled(true);
             LatLng lat = new LatLng(l.getLatitude(), l.getLongitude());
             mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(lat, Constantes.ZOOM_ANUNCIO_CON_LOCALIZACION));
-            mGoogleMap.addCircle(new CircleOptions().center(lat).radius(Constantes.CIRCLE_RADIUS).fillColor(Constantes.CIRCLE_COLOR).strokeWidth(Constantes.CIRCLE_STROKE_WIDTH));
+            mGoogleMap.addMarker(new MarkerOptions().position(lat).icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_human_marker)));
         }
     }
 
@@ -337,17 +343,15 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
 
             Location l = mLocationManager.getLastKnownLocation(provider);
 
-            if (l == null) {
+            if (l == null)
                 continue;
-            }
-            if (bestLocation == null
-                    || l.getAccuracy() < bestLocation.getAccuracy()) {
+
+            if (bestLocation == null || l.getAccuracy() < bestLocation.getAccuracy())
                 bestLocation = l;
-            }
         }
-        if (bestLocation == null) {
+        if (bestLocation == null)
             return null;
-        }
+
         return bestLocation;
     }
 
