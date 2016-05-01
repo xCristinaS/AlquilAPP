@@ -67,7 +67,6 @@ public class MessagesFragment extends Fragment {
         rvMessages.setAdapter(mAdapter);
         rvMessages.setLayoutManager(mLayoutManager);
         rvMessages.setItemAnimator(new DefaultItemAnimator());
-        //rvMessages.setHasFixedSize(true);
     }
 
     public void addItem(MessagePojo m) {

@@ -5,11 +5,15 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.PorterDuff;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -224,7 +228,7 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
             prbAnuncio = (ProgressBar) itemView.findViewById(R.id.prbAnuncio);
         }
 
-        public void onBind(Anuncio anuncio) {
+        public void onBind(final Anuncio anuncio) {
             if (anuncio != null) {
                 prbAnuncio.setVisibility(View.VISIBLE);
                 lblTituloAnuncio.setText(anuncio.getTitulo());
@@ -235,9 +239,37 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
                         if (img.equals(Constantes.FOTO_PRINCIPAL)) // Si la key es de la imagen principal, cargo la foto
                             Picasso.with(itemView.getContext()).load(anuncio.getImagenes().get(img)).resize(anchoAproxImgAvatar, imgAvatar.getLayoutParams().height).centerCrop().into(imgAvatar, new ImageLoadedCallback(prbAnuncio));
                 }
+
+                lblSubs.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        AlertDialog dialog = new AlertDialog.Builder(itemView.getContext()).create();
+                        View dialogView = View.inflate(itemView.getContext(), R.layout.dialog_prestaciones_detalladas, null);
+                        dialog.setView(dialogView);
+                        dialog.setCanceledOnTouchOutside(true);
+
+                        RecyclerView rvPrestacionesDialogo = (RecyclerView) dialogView.findViewById(R.id.rvPrestaciones);
+                        //Conseguir los solicitantes en una lista
+                        //Crear el adaptador
+                        //Asignarle el adaptador
+                        rvPrestacionesDialogo.setAdapter();
+                        LinearLayoutManager mLayoutManager = new LinearLayoutManager(itemView.getContext(), LinearLayoutManager.VERTICAL, false);
+                        rvPrestacionesDialogo.setLayoutManager(mLayoutManager);
+                        rvPrestacionesDialogo.setItemAnimator(new DefaultItemAnimator());
+
+                        dialog.show();
+                        Point boundsScreen = new Point();
+                        ((WindowManager) itemView.getContext().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getSize(boundsScreen);
+
+
+                        dialog.getWindow().setLayout((int) (boundsScreen.x * Constantes.PORCENTAJE_PANTALLA), WindowManager.LayoutParams.WRAP_CONTENT);
+                    }
+                });
             }
         }
     }
+
+
 
     //Manejo del Adaptador
     public void addItem(Anuncio a) {
