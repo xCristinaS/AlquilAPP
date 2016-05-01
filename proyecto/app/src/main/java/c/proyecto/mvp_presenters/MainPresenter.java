@@ -1,9 +1,11 @@
 package c.proyecto.mvp_presenters;
 
 import android.app.Activity;
+import android.view.View;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import c.proyecto.activities.MainActivity;
 import c.proyecto.interfaces.MyPresenter;
@@ -162,5 +164,16 @@ public class MainPresenter implements MainPresenterOps, MyPresenter {
     @Override
     public void attachAdvertsListeners() {
         advertsManager.attachFirebaseListeners();
+    }
+
+    @Override
+    public void getSolicitantes(View itemView, HashMap<String, Boolean> solicitantes) {
+        usersManager.getSolicitantes(itemView, solicitantes);
+    }
+
+    @Override
+    public void solicitantesObtained(View itemView, ArrayList<Usuario> listaSolicitantes) {
+        if (activity.get() != null)
+            activity.get().solicitantesObtained(itemView, listaSolicitantes);
     }
 }

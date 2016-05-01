@@ -151,6 +151,13 @@ public class PrincipalFragment extends Fragment {
             f.getmAdapter().setFiltersApplied(false);
     }
 
+
+    public void solicitantesObtained(View itemView, ArrayList<Usuario> listaSolicitantes) {
+        AdvertsRecyclerViewFragment f = (AdvertsRecyclerViewFragment) vpAdapter.getItem(2);
+        if (f.getmAdapter().getAdapter_type() == AdvertsRecyclerViewAdapter.ADAPTER_TYPE_MY_ADVS)
+            f.getmAdapter().solicitantesObtained(itemView, listaSolicitantes);
+    }
+
     public Usuario getUser() {
         return user;
     }

@@ -24,6 +24,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 import c.proyecto.Constantes;
@@ -47,6 +48,10 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
         void onItemClick(Anuncio anuncio, int advertType);
     }
 
+    public interface OnSubsIconClick {
+        void onSubsItemClick(View itemView, HashMap<String, Boolean> solicitantes);
+    }
+
     public static final int ADAPTER_TYPE_SUBS = 0;
     public static final int ADAPTER_TYPE_ADVS = 1;
     public static final int ADAPTER_TYPE_MY_ADVS = 2;
@@ -55,6 +60,7 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
     private List<Anuncio> mDatos;
     private OnAdapterItemLongClick listenerLongClick;
     private OnAdapterItemClick listenerItemClick;
+    private static OnSubsIconClick listenerSubsClick;
     private View emptyView;
     private MainPresenter presenter;
     private SparseBooleanArray mSelectedItems = new SparseBooleanArray();
@@ -165,6 +171,10 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
         this.listenerItemClick = listenerItemClick;
     }
 
+    public void setListenerSubsClick(OnSubsIconClick listenerSubsClick) {
+        AdvertsRecyclerViewAdapter.listenerSubsClick = listenerSubsClick;
+    }
+
     private static int getAnchoPantalla(Context context) {
         Point point = new Point();
         ((Activity) context).getWindowManager().getDefaultDisplay().getSize(point);
@@ -243,33 +253,35 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
                 lblSubs.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        AlertDialog dialog = new AlertDialog.Builder(itemView.getContext()).create();
-                        View dialogView = View.inflate(itemView.getContext(), R.layout.dialog_prestaciones_detalladas, null);
-                        dialog.setView(dialogView);
-                        dialog.setCanceledOnTouchOutside(true);
-
-                        RecyclerView rvPrestacionesDialogo = (RecyclerView) dialogView.findViewById(R.id.rvPrestaciones);
-                        //Conseguir los solicitantes en una lista
-                        //Crear el adaptador
-                        //Asignarle el adaptador
-                        rvPrestacionesDialogo.setAdapter();
-                        LinearLayoutManager mLayoutManager = new LinearLayoutManager(itemView.getContext(), LinearLayoutManager.VERTICAL, false);
-                        rvPrestacionesDialogo.setLayoutManager(mLayoutManager);
-                        rvPrestacionesDialogo.setItemAnimator(new DefaultItemAnimator());
-
-                        dialog.show();
-                        Point boundsScreen = new Point();
-                        ((WindowManager) itemView.getContext().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getSize(boundsScreen);
-
-
-                        dialog.getWindow().setLayout((int) (boundsScreen.x * Constantes.PORCENTAJE_PANTALLA), WindowManager.LayoutParams.WRAP_CONTENT);
+                        listenerSubsClick.onSubsItemClick(itemView, anuncio.getSolicitantes());
                     }
                 });
             }
         }
     }
 
+    public void solicitantesObtained(View itemView, ArrayList<Usuario> listaSolicitantes) {
+        AlertDialog dialog = new AlertDialog.Builder(itemView.getContext()).create();
+        View dialogView = View.inflate(itemView.getContext(), R.layout.dialog_prestaciones_detalladas, null);
+        dialog.setView(dialogView);
+        dialog.setCanceledOnTouchOutside(true);
 
+        RecyclerView rvPrestacionesDialogo = (RecyclerView) dialogView.findViewById(R.id.rvPrestaciones);
+        //Conseguir los solicitantes en una lista
+        //Crear el adaptador
+        //Asignarle el adaptador
+        //rvPrestacionesDialogo.setAdapter();
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(itemView.getContext(), LinearLayoutManager.VERTICAL, false);
+        rvPrestacionesDialogo.setLayoutManager(mLayoutManager);
+        rvPrestacionesDialogo.setItemAnimator(new DefaultItemAnimator());
+
+        dialog.show();
+        Point boundsScreen = new Point();
+        ((WindowManager) itemView.getContext().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getSize(boundsScreen);
+
+
+        dialog.getWindow().setLayout((int) (boundsScreen.x * Constantes.PORCENTAJE_PANTALLA), WindowManager.LayoutParams.WRAP_CONTENT);
+    }
 
     //Manejo del Adaptador
     public void addItem(Anuncio a) {

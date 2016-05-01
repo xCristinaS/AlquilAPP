@@ -26,6 +26,7 @@ public class AdvertsRecyclerViewFragment extends Fragment {
     //Variables
     private AdvertsRecyclerViewAdapter.OnAdapterItemLongClick listenerLongClick;
     private AdvertsRecyclerViewAdapter.OnAdapterItemClick listenerItemClick;
+    private AdvertsRecyclerViewAdapter.OnSubsIconClick listenerSubClick;
     private int adapter_type;
 
     public static AdvertsRecyclerViewFragment newInstance(int adapter_type) {
@@ -63,13 +64,15 @@ public class AdvertsRecyclerViewFragment extends Fragment {
         if (adapter_type == AdvertsRecyclerViewAdapter.ADAPTER_TYPE_MY_ADVS || adapter_type == AdvertsRecyclerViewAdapter.ADAPTER_TYPE_SUBS) {
             mAdapter.setListenerLongClick(listenerLongClick);
             mAdapter.setListenerItemClick(listenerItemClick);
-        }
+        } else
+            mAdapter.setListenerSubsClick(listenerSubClick);
     }
 
     @Override
     public void onAttach(Context context) {
         listenerLongClick = (AdvertsRecyclerViewAdapter.OnAdapterItemLongClick) context;
         listenerItemClick = (AdvertsRecyclerViewAdapter.OnAdapterItemClick) context;
+        listenerSubClick = (AdvertsRecyclerViewAdapter.OnSubsIconClick) context;
         super.onAttach(context);
     }
 
@@ -77,6 +80,7 @@ public class AdvertsRecyclerViewFragment extends Fragment {
     public void onDetach() {
         listenerLongClick = null;
         listenerItemClick = null;
+        listenerSubClick = null;
         super.onDetach();
     }
 

@@ -1,6 +1,9 @@
 package c.proyecto.mvp_presenters_interfaces;
 
+import android.view.View;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import c.proyecto.pojo.Anuncio;
 import c.proyecto.pojo.Prestacion;
@@ -28,4 +31,6 @@ public interface MainPresenterOps {
     void onFilterResponsed(ArrayList<Anuncio> filteredAdverts);
     void detachAdvertsListener();
     void attachAdvertsListeners();
+    void getSolicitantes(View itemView, HashMap<String, Boolean> solicitantes);
+    void solicitantesObtained(View itemView, ArrayList<Usuario> listaSolicitantes);
 }
