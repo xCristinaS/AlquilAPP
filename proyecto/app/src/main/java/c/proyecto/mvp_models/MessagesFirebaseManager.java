@@ -386,15 +386,35 @@ public class MessagesFirebaseManager {
     }
 
 
-    public void getMessageIfConverExist(Anuncio anuncio) {
+    public void getMessageIfConverExist(final Anuncio anuncio) {
         Firebase f = new Firebase(URL_CONVERSACIONES).child(currentUser.getKey()).child(anuncio.getAnunciante() + "_" + anuncio.getTitulo().trim());
         f.limitToLast(1).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                MessagePojo m = null;
-                if (dataSnapshot.getValue() != null)
-                    m = dataSnapshot.getChildren().iterator().next().getValue(MessagePojo.class);
-                ((AdvertsDetailsPresenter) presenter).messageIfConverExistObtained(m);
+                if (dataSnapshot.getValue() != null) {
+                    final DataSnapshot data = dataSnapshot.getChildren().iterator().next();
+                    final MessagePojo m = new MessagePojo();
+                    m.setKey(data.getKey());
+                    m.setKeyReceptor(currentUser.getKey());
+                    m.setTituloAnuncio(anuncio.getTitulo());
+                    Message mAux = data.getValue(Message.class);
+                    m.setFecha(new Date(mAux.getFecha()));
+                    m.setContenido(mAux.getContenido());
+
+                    new Firebase(URL_USERS).child(anuncio.getAnunciante()).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            m.setEmisor(dataSnapshot.getValue(Usuario.class));
+                            ((AdvertsDetailsPresenter) presenter).messageIfConverExistObtained(m);
+                        }
+
+                        @Override
+                        public void onCancelled(FirebaseError firebaseError) {
+
+                        }
+                    });
+                } else
+                    ((AdvertsDetailsPresenter) presenter).messageIfConverExistObtained(null);
             }
 
             @Override

@@ -147,7 +147,7 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
                 }
             });
         else {
-            imgMessage.setImageResource(R.drawable.apto_mascotas);
+            imgMessage.setImageResource(R.drawable.ic_chat);
             imgMessage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
