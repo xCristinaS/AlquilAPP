@@ -221,7 +221,7 @@ public class AdvertsFirebaseManager {
         new Firebase(URL_ANUNCIOS).child(advertKey).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Anuncio a = dataSnapshot.getChildren().iterator().next().getValue(Anuncio.class);
+                Anuncio a = dataSnapshot.getValue(Anuncio.class);
                 ((MainPresenter) presenter).advertClickedFromMapObtained(a);
             }
 
