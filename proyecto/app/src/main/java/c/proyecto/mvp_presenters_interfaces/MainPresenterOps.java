@@ -31,6 +31,6 @@ public interface MainPresenterOps {
     void onFilterResponsed(ArrayList<Anuncio> filteredAdverts);
     void detachAdvertsListener();
     void attachAdvertsListeners();
-    void getSolicitantes(View itemView, HashMap<String, Boolean> solicitantes);
-    void solicitantesObtained(View itemView, ArrayList<Usuario> listaSolicitantes);
+    void getSolicitantes(View itemView, Anuncio anuncio);
+    void solicitantesObtained(View itemView, ArrayList<Usuario> listaSolicitantes, Anuncio anuncio);
 }

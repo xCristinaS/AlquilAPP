@@ -14,20 +14,23 @@ import java.util.List;
 
 import c.proyecto.R;
 import c.proyecto.activities.VerPerfilActivity;
+import c.proyecto.pojo.Anuncio;
 import c.proyecto.pojo.Usuario;
 
 
 public class HuespedesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     public interface OnUserSubClick {
-        void onUserSubClick(Usuario u);
+        void onUserSubClick(Usuario u, Anuncio anuncio);
     }
 
     private final List<Usuario> mUsers;
     private OnUserSubClick listener;
+    private Anuncio mAnuncio;
 
-    public HuespedesAdapter(List<Usuario> users){
+    public HuespedesAdapter(List<Usuario> users, Anuncio anuncio){
         mUsers = users;
+        mAnuncio = anuncio;
     }
 
     @Override
@@ -73,7 +76,7 @@ public class HuespedesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listener.onUserSubClick(user);
+                    listener.onUserSubClick(user, mAnuncio);
                 }
             });
         }

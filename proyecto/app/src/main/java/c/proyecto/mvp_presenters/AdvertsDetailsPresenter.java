@@ -79,7 +79,7 @@ public class AdvertsDetailsPresenter implements AdvertsDetailsPresenterOps, MyPr
 
     @Override
     public void sendNewMessage(MessagePojo m, String keyReceptor) {
-        messagesManager.sendMessage(m, keyReceptor,true);
+        messagesManager.sendMessage(m, keyReceptor, true);
     }
 
     @Override

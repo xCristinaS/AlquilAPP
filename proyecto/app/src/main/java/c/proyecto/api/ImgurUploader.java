@@ -10,7 +10,7 @@ import c.proyecto.pojo.Anuncio;
 import c.proyecto.pojo.Usuario;
 import c.proyecto.mvp_presenters.AdvertsDetailsPresenter;
 import c.proyecto.mvp_presenters.CrearEditarAnuncioPresenter;
-import c.proyecto.mvp_presenters.EditProfilePresenter;
+import c.proyecto.mvp_presenters.ProfilePresenter;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import retrofit2.Call;
@@ -34,9 +34,9 @@ public class ImgurUploader {
                     ((CrearEditarAnuncioPresenter)presenter.get(0)).publishNewAdvert((Anuncio) model);
                     if (presenter.size() > 1 && presenter.get(1) instanceof AdvertsDetailsPresenter)
                         ((AdvertsDetailsPresenter) presenter.get(1)).updateAdvert((Anuncio) model);
-                } else if (model instanceof Usuario && presenter.get(0) instanceof EditProfilePresenter){
+                } else if (model instanceof Usuario && presenter.get(0) instanceof ProfilePresenter){
                     ((Usuario) model).setFoto(respuesta.getData().getLink());
-                    ((EditProfilePresenter)presenter.get(0)).updateUserProfile((Usuario) model);
+                    ((ProfilePresenter)presenter.get(0)).updateUserProfile((Usuario) model);
                 }
             }
 

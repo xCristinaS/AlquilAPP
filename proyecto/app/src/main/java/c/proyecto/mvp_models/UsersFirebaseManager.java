@@ -19,6 +19,7 @@ import c.proyecto.mvp_presenters.ConversationPresenter;
 import c.proyecto.mvp_presenters.InicioPresenter;
 import c.proyecto.mvp_presenters.MainPresenter;
 import c.proyecto.mvp_presenters.RegistroPresenter;
+import c.proyecto.pojo.Anuncio;
 import c.proyecto.pojo.Usuario;
 
 public class UsersFirebaseManager {
@@ -183,8 +184,9 @@ public class UsersFirebaseManager {
     }
 
 
-    public void getSolicitantes(final View itemView, final HashMap<String, Boolean> solicitantes) {
+    public void getSolicitantes(final View itemView, final Anuncio anuncio) {
         Firebase f = new Firebase(URL_USERS);
+        final HashMap<String, Boolean> solicitantes = anuncio.getSolicitantes();
         final ArrayList<Usuario> listaSolicitantes = new ArrayList<>();
         final Iterator it = solicitantes.keySet().iterator();
         String solicitanteKey;
@@ -196,7 +198,7 @@ public class UsersFirebaseManager {
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     listaSolicitantes.add(dataSnapshot.getValue(Usuario.class));
                     if (iAux == solicitantes.size()-1)
-                        ((MainPresenter)presenter).solicitantesObtained(itemView, listaSolicitantes);
+                        ((MainPresenter)presenter).solicitantesObtained(itemView, listaSolicitantes, anuncio);
                 }
 
                 @Override

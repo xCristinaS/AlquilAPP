@@ -40,8 +40,9 @@ import c.proyecto.dialog_fragments.CaracteristicasUsuarioDialogFragment;
 import c.proyecto.dialog_fragments.DescripcionDialogFragment;
 import c.proyecto.interfaces.MyPresenter;
 import c.proyecto.mvp_models.UsersFirebaseManager;
+import c.proyecto.pojo.MessagePojo;
 import c.proyecto.pojo.Usuario;
-import c.proyecto.mvp_presenters.EditProfilePresenter;
+import c.proyecto.mvp_presenters.ProfilePresenter;
 import c.proyecto.utils.Imagenes;
 
 public class EditProfileActivity extends AppCompatActivity {
@@ -58,7 +59,7 @@ public class EditProfileActivity extends AppCompatActivity {
     private ImageView imgFoto, imgCaracteristicas, imgGenero;
     private Button btnConfirmar;
     private Usuario mUser;
-    private EditProfilePresenter mPresenter;
+    private ProfilePresenter mPresenter;
     private String[] mNationalities;
     private String mPathOriginal;
     private File mFileUserPhoto;
@@ -75,7 +76,7 @@ public class EditProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_edit_profile);
         mNationalities = new String[248];
         getNationalitiesFromFile();
-        mPresenter = EditProfilePresenter.getPresentador(this);
+        mPresenter = ProfilePresenter.getPresentador(this);
         mPresenter.setUsersManager(new UsersFirebaseManager(mPresenter));
         mUser = getIntent().getParcelableExtra(ARG_USUARIO);
         initViews();
