@@ -4,7 +4,6 @@ package c.proyecto.fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
@@ -30,6 +29,8 @@ public class PrincipalFragment extends Fragment {
     public interface AllowFilters{
         void showFilterIcon();
         void hideFilterIcon();
+        void hideMapIcon();
+        void showMapIcon();
     }
 
     private static MainPresenter mPresenter;
@@ -71,8 +72,10 @@ public class PrincipalFragment extends Fragment {
                 AdvertsRecyclerViewFragment fragmento = (AdvertsRecyclerViewFragment) vpAdapter.getItem(viewPager.getCurrentItem());
                 ((AdvertsRecyclerViewAdapter.OnAdapterItemLongClick) getActivity()).setAdapterAllowMultiDeletion(fragmento.getmAdapter());
                 AdvertsRecyclerViewAdapter adapter = fragmento.getmAdapter();
-                if (adapter != null && adapter.getAdapter_type() == AdvertsRecyclerViewAdapter.ADAPTER_TYPE_ADVS)
+                if (adapter != null && adapter.getAdapter_type() == AdvertsRecyclerViewAdapter.ADAPTER_TYPE_ADVS) {
                     listener.showFilterIcon();
+                    listener.showMapIcon();
+                }
             }
 
             @Override
@@ -82,8 +85,10 @@ public class PrincipalFragment extends Fragment {
                     f.disableMultideletion();
 
                 AdvertsRecyclerViewAdapter adapter = f.getmAdapter();
-                if (adapter != null && adapter.getAdapter_type() != AdvertsRecyclerViewAdapter.ADAPTER_TYPE_ADVS)
+                if (adapter != null && adapter.getAdapter_type() != AdvertsRecyclerViewAdapter.ADAPTER_TYPE_ADVS) {
                     listener.hideFilterIcon();
+                    listener.hideMapIcon();
+                }
             }
         });
         mPresenter.initializeFirebaseListeners(user);

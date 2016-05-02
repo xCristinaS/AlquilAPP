@@ -1,6 +1,7 @@
 package c.proyecto.mvp_views_interfaces;
 
 import android.view.View;
+import com.firebase.geofire.GeoLocation;
 
 import java.util.ArrayList;
 
@@ -22,4 +23,6 @@ public interface MainActivityOps {
     void sendAdvertHasBeenRemovedBroadcast();
     void filteredAdvertsObtained(ArrayList<Anuncio> filteredAdverts);
     void solicitantesObtained(View itemView, ArrayList<Usuario> listaSolicitantes, Anuncio anuncio);
+    void locationObtained(Anuncio a, GeoLocation location);
+    void advertClickedFromMapObtained(Anuncio a);
 }

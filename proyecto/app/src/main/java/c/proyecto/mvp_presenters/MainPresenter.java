@@ -3,6 +3,8 @@ package c.proyecto.mvp_presenters;
 import android.app.Activity;
 import android.view.View;
 
+import com.firebase.geofire.GeoLocation;
+
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -167,6 +169,7 @@ public class MainPresenter implements MainPresenterOps, MyPresenter {
     }
 
     @Override
+
     public void getSolicitantes(View itemView, Anuncio anuncio) {
         usersManager.getSolicitantes(itemView, anuncio);
     }
@@ -175,5 +178,32 @@ public class MainPresenter implements MainPresenterOps, MyPresenter {
     public void solicitantesObtained(View itemView, ArrayList<Usuario> listaSolicitantes, Anuncio anuncio) {
         if (activity.get() != null)
             activity.get().solicitantesObtained(itemView, listaSolicitantes, anuncio);
+    }
+
+    @Override
+    public void getLocations(GeoLocation centerPosition, double radius) {
+        advertsManager.getLocations(centerPosition, radius);
+    }
+
+    @Override
+    public void detachGeoLocationListeners() {
+        advertsManager.detachGeoLocationListener();
+    }
+
+    @Override
+    public void locationObtained(Anuncio a, GeoLocation location) {
+        if (activity.get() != null)
+            activity.get().locationObtained(a, location);
+    }
+
+    @Override
+    public void getAdvertClickedFromMap(String advertKey) {
+        advertsManager.getAdvertClickedFromMap(advertKey);
+    }
+
+    @Override
+    public void advertClickedFromMapObtained(Anuncio a) {
+        if (activity.get() != null)
+            activity.get().advertClickedFromMapObtained(a);
     }
 }

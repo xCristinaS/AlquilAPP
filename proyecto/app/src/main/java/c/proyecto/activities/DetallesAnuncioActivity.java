@@ -99,10 +99,6 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
         getSupportFragmentManager().beginTransaction().replace(R.id.frmContenido, DetallesAnuncioFragment.newInstance(anuncio, advertType, u, currentUser, messagePojoAux)).commit();
     }
 
-    public static AdvertsDetailsPresenter getmPresenter() {
-        return mPresenter;
-    }
-
     @Override
     public void onImgEditClicked(Anuncio advert, Usuario user) {
         CrearAnuncio1Activity.startForResult(this, advert, user, CrearAnuncio1Activity.RC_EDITAR_ANUNCIO);
@@ -153,6 +149,10 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
     protected void onPause() {
         super.onPause();
         unregisterReceiver(receiver);
+    }
+
+    public static AdvertsDetailsPresenter getmPresenter() {
+        return mPresenter;
     }
 }
 

@@ -1,6 +1,7 @@
 package c.proyecto.mvp_presenters_interfaces;
 
 import android.view.View;
+import com.firebase.geofire.GeoLocation;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,4 +34,9 @@ public interface MainPresenterOps {
     void attachAdvertsListeners();
     void getSolicitantes(View itemView, Anuncio anuncio);
     void solicitantesObtained(View itemView, ArrayList<Usuario> listaSolicitantes, Anuncio anuncio);
+    void getLocations(GeoLocation centerPosition, double radius);
+    void detachGeoLocationListeners();
+    void locationObtained(Anuncio a, GeoLocation location);
+    void getAdvertClickedFromMap(String advertKey);
+    void advertClickedFromMapObtained(Anuncio a);
 }

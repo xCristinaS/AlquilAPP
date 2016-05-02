@@ -1,9 +1,15 @@
 package c.proyecto.activities;
 
+import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
@@ -15,18 +21,26 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.firebase.geofire.GeoLocation;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.List;
 
+import c.proyecto.Constantes;
 import c.proyecto.R;
-
+import c.proyecto.adapters.AdvertsRecyclerViewAdapter;
 import c.proyecto.adapters.HuespedesAdapter;
 import c.proyecto.adapters.MessagesRecyclerViewAdapter;
-import c.proyecto.adapters.AdvertsRecyclerViewAdapter;
 import c.proyecto.dialog_fragments.AboutUsDialogFragment;
 import c.proyecto.dialog_fragments.FilterDialogFramgent;
 import c.proyecto.dialog_fragments.SeleccionPrestacionesDialogFragment;
@@ -35,17 +49,15 @@ import c.proyecto.fragments.PrincipalFragment;
 import c.proyecto.mvp_models.AdvertsFirebaseManager;
 import c.proyecto.mvp_models.MessagesFirebaseManager;
 import c.proyecto.mvp_models.UsersFirebaseManager;
+import c.proyecto.mvp_presenters.MainPresenter;
 import c.proyecto.mvp_views_interfaces.MainActivityOps;
 import c.proyecto.pojo.Anuncio;
+import c.proyecto.pojo.MessagePojo;
 import c.proyecto.pojo.Prestacion;
 import c.proyecto.pojo.Usuario;
-import c.proyecto.pojo.MessagePojo;
-import c.proyecto.mvp_presenters.MainPresenter;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-
-public class MainActivity extends AppCompatActivity implements MainActivityOps, AdvertsRecyclerViewAdapter.OnAdapterItemLongClick, AdvertsRecyclerViewAdapter.OnAdapterItemClick, NavigationView.OnNavigationItemSelectedListener, MessagesRecyclerViewAdapter.OnMessagesAdapterItemClick, PrincipalFragment.AllowFilters, FilterDialogFramgent.ApplyFilters, SeleccionPrestacionesDialogFragment.ICallBackOnDismiss, AdvertsRecyclerViewAdapter.OnSubsIconClick, HuespedesAdapter.OnUserSubClick {
-
+public class MainActivity extends AppCompatActivity implements MainActivityOps, AdvertsRecyclerViewAdapter.OnAdapterItemLongClick, AdvertsRecyclerViewAdapter.OnAdapterItemClick, NavigationView.OnNavigationItemSelectedListener, MessagesRecyclerViewAdapter.OnMessagesAdapterItemClick, PrincipalFragment.AllowFilters, FilterDialogFramgent.ApplyFilters, SeleccionPrestacionesDialogFragment.ICallBackOnDismiss, AdvertsRecyclerViewAdapter.OnSubsIconClick, HuespedesAdapter.OnUserSubClick, OnMapReadyCallback {
 
     private static final String ARG_USUARIO = "usuario_extra";
     private static final String TAG_PRINCIPAL_FRAGMENT = "principal_fragment";
@@ -64,6 +76,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
     private TextView txtUserNavDrawer;
     private CircleImageView navHeader;
     private FragmentManager mFragmentManager;
+    private GoogleMap mGoogleMap;
 
     public static void start(Activity a, Usuario u) {
         Intent intent = new Intent(a, MainActivity.class);
@@ -180,7 +193,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
     }
 
     @Override
-    public void removeAdvert(Anuncio a){
+    public void removeAdvert(Anuncio a) {
         Fragment f = getSupportFragmentManager().findFragmentById(R.id.frmContenido);
         if (f instanceof PrincipalFragment)
             ((PrincipalFragment) f).removeAdvert(a);
@@ -197,9 +210,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
         switch (item.getItemId()) {
             case R.id.nav_home:
                 //Si el principalFragment no está cargado en el FrameLayout
-                if(!(mFragmentManager.findFragmentById(R.id.frmContenido) instanceof PrincipalFragment)){
+                if (!(mFragmentManager.findFragmentById(R.id.frmContenido) instanceof PrincipalFragment)) {
                     //Si ya existe se carga
-                    if(mFragmentManager.findFragmentByTag(TAG_PRINCIPAL_FRAGMENT) != null)
+                    if (mFragmentManager.findFragmentByTag(TAG_PRINCIPAL_FRAGMENT) != null)
                         mFragmentManager.beginTransaction().replace(R.id.frmContenido, mFragmentManager.findFragmentByTag(TAG_PRINCIPAL_FRAGMENT)).commit();
                     else
                         mFragmentManager.beginTransaction().replace(R.id.frmContenido, new PrincipalFragment()).commit();
@@ -246,6 +259,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         showFilterIcon();
+        showMapIcon();
         return super.onPrepareOptionsMenu(menu);
     }
 
@@ -269,6 +283,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
                 toolbar.getMenu().findItem(R.id.eliminar).setVisible(false);
                 toolbar.getMenu().findItem(R.id.limpiar).setVisible(false);
                 return true;
+            case R.id.map:
+                confMap();
+                return true;
             case R.id.filters:
                 new FilterDialogFramgent().show(getSupportFragmentManager(), TAG_FILTER_DIALOG_FRAMGENT);
                 return true;
@@ -285,6 +302,86 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
         return super.onOptionsItemSelected(item);
     }
 
+    private void confMap() {
+        FragmentManager fm = getSupportFragmentManager();
+        SupportMapFragment mapFragment = SupportMapFragment.newInstance();
+        mapFragment.getMapAsync(this);
+        fm.beginTransaction().replace(R.id.frmContenido, mapFragment).commit();
+    }
+
+    @Override
+    public void onMapReady(final GoogleMap map) {
+        mGoogleMap = map;
+        Location l = getLastKnownLocation();
+        if (l != null) {
+            mPresenter.getLocations(new GeoLocation(l.getLatitude(), l.getLongitude()), 2);
+            posicionarMapa(l);
+        }// else, mostrar dialogo para que active la localización
+
+    }
+
+    private void posicionarMapa(Location l) {
+        mGoogleMap.clear();
+        mGoogleMap.getUiSettings().setAllGesturesEnabled(true);
+        LatLng lat = new LatLng(l.getLatitude(), l.getLongitude());
+        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(lat, Constantes.ZOOM_ANUNCIO_CON_LOCALIZACION));
+        mGoogleMap.addMarker(new MarkerOptions().position(lat).icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_human_marker)));
+    }
+
+    private Location getLastKnownLocation() {
+        LocationManager mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        List<String> providers = mLocationManager.getProviders(true);
+        Location bestLocation = null;
+        for (String provider : providers) {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+                return null;
+
+            Location l = mLocationManager.getLastKnownLocation(provider);
+
+            if (l == null)
+                continue;
+
+            if (bestLocation == null || l.getAccuracy() < bestLocation.getAccuracy())
+                bestLocation = l;
+        }
+        if (bestLocation == null)
+            return null;
+
+        return bestLocation;
+    }
+
+    @Override
+    public void locationObtained(final Anuncio a, GeoLocation location) {
+        int resource = R.drawable.marker_house;
+        switch (a.getTipo_vivienda()){
+            case Constantes.CASA:
+                resource = R.drawable.marker_house;
+                break;
+            case Constantes.PISO:
+                resource = R.drawable.marker_piso;
+                break;
+            case Constantes.HABITACION:
+                resource = R.drawable.marker_habitacion;
+                break;
+        }
+
+        Marker marker = mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(location.latitude, location.longitude)).icon(BitmapDescriptorFactory.fromResource(resource)));
+        marker.setTitle(a.getKey());
+        mGoogleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                mPresenter.getAdvertClickedFromMap(marker.getTitle());
+                return true;
+            }
+        });
+
+    }
+
+    @Override
+    public void advertClickedFromMapObtained(Anuncio a){
+        DetallesAnuncioActivity.start(MainActivity.this, a, AdvertsRecyclerViewAdapter.ADAPTER_TYPE_ADVS, mUser);
+    }
+
     @Override
     public void showFilterIcon() {
         toolbar.getMenu().findItem(R.id.filters).setVisible(true);
@@ -293,6 +390,16 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
     @Override
     public void hideFilterIcon() {
         toolbar.getMenu().findItem(R.id.filters).setVisible(false);
+    }
+
+    @Override
+    public void showMapIcon() {
+        toolbar.getMenu().findItem(R.id.map).setVisible(true);
+    }
+
+    @Override
+    public void hideMapIcon() {
+        toolbar.getMenu().findItem(R.id.map).setVisible(false);
     }
 
     @Override
@@ -315,15 +422,19 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
     @Override
     public void onBackPressed() {
         //Si el navDrawer está abierto lo cierra
-        if(drawer.isDrawerOpen(GravityCompat.START))
+        if (drawer.isDrawerOpen(GravityCompat.START))
             drawer.closeDrawers();
-        else{
-            if (getSupportFragmentManager().findFragmentById(R.id.frmContenido) instanceof MessagesFragment) {
+        else {
+            Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.frmContenido);
+            if (fragment instanceof MessagesFragment || fragment instanceof SupportMapFragment) {
                 PrincipalFragment f = (PrincipalFragment) getSupportFragmentManager().findFragmentByTag(TAG_PRINCIPAL_FRAGMENT);
                 if (f != null)
                     getSupportFragmentManager().beginTransaction().replace(R.id.frmContenido, f).commit();
                 else
                     getSupportFragmentManager().beginTransaction().replace(R.id.frmContenido, new PrincipalFragment(), TAG_PRINCIPAL_FRAGMENT).commit();
+
+                if (fragment instanceof SupportMapFragment)
+                    mPresenter.detachGeoLocationListeners();
             } else
                 super.onBackPressed();
         }
@@ -341,7 +452,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
     }
 
     @Override
-    public void filteredAdvertsObtained(ArrayList<Anuncio> filteredAdverts){
+    public void filteredAdvertsObtained(ArrayList<Anuncio> filteredAdverts) {
         Fragment f = getSupportFragmentManager().findFragmentById(R.id.frmContenido);
         if (f instanceof PrincipalFragment)
             ((PrincipalFragment) f).loadFilteredAdverts(filteredAdverts);
@@ -381,7 +492,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
 
     @Override
     public void onDismiss() {
-        ((FilterDialogFramgent)getSupportFragmentManager().findFragmentByTag(TAG_FILTER_DIALOG_FRAMGENT)).updatePrestaciones();
+        ((FilterDialogFramgent) getSupportFragmentManager().findFragmentByTag(TAG_FILTER_DIALOG_FRAMGENT)).updatePrestaciones();
     }
 
     public Usuario getmUser() {

@@ -8,6 +8,10 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
 import com.firebase.client.ValueEventListener;
+import com.firebase.geofire.GeoFire;
+import com.firebase.geofire.GeoLocation;
+import com.firebase.geofire.GeoQuery;
+import com.firebase.geofire.GeoQueryEventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,11 +26,14 @@ import c.proyecto.pojo.Usuario;
 public class AdvertsFirebaseManager {
 
     private static final String URL_ANUNCIOS = "https://proyectofinaldam.firebaseio.com/anuncios/";
+    private static final String URL_ANUNCIOS_USUARIOS = "https://proyectofinaldam.firebaseio.com/anuncios_usuarios/";
     private static final String URL_SOLICITUDES = "https://proyectofinaldam.firebaseio.com/solicitudes/";
+    private static final String URL_LOCATIONS = "https://proyectofinaldam.firebaseio.com/Locations/";
 
     private static boolean userSubRemoved = false;
     private static Firebase mFirebase;
     private static ChildEventListener listener;
+    private static GeoQuery geoQuery;
 
     private Usuario currentUser;
     private MyPresenter presenter;
@@ -39,17 +46,24 @@ public class AdvertsFirebaseManager {
     public void publishNewAdvert(Anuncio a) { // crea un nuevo anuncio en la rama /anuncios/keyAnuncio/valorAnuncio --> keyAnuncio = numeroIdentificadoUsuarioQuePublica_numeroIdentificadorAnuncio
         Firebase mFirebase = new Firebase(URL_ANUNCIOS + a.getKey() + "/");
         mFirebase.setValue(a);
+
+        GeoFire g = new GeoFire(new Firebase(URL_LOCATIONS));
+        g.setLocation(a.getKey(), new GeoLocation(a.getLats().getLatitude(), a.getLats().getLongitude()));
+
+        HashMap<String, Boolean> mapAux = new HashMap<>();
+        mapAux.put(a.getKey(), true);
+        new Firebase(URL_ANUNCIOS_USUARIOS).child(currentUser.getKey()).child(a.getKey()).setValue(mapAux);
     }
 
     public void initializeFirebaseListeners() {
         Firebase firebaseSubs = new Firebase(URL_SOLICITUDES).child(currentUser.getKey());
-        final Firebase firebaseAdvertSub = new Firebase(URL_ANUNCIOS);
+        final Firebase fAdverts = new Firebase(URL_ANUNCIOS);
         firebaseSubs.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot data : dataSnapshot.getChildren()) {
                     String subKey = (String) data.getValue(HashMap.class).keySet().iterator().next();
-                    firebaseAdvertSub.child(subKey).addListenerForSingleValueEvent(new ValueEventListener() {
+                    fAdverts.child(subKey).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             ((MainPresenter) presenter).subHasBeenObtained(dataSnapshot.getValue(Anuncio.class));
@@ -68,6 +82,33 @@ public class AdvertsFirebaseManager {
 
             }
         });
+
+        // Obtener los anuncios que ha publicado el usuario
+        new Firebase(URL_ANUNCIOS_USUARIOS).child(currentUser.getKey()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot data : dataSnapshot.getChildren()) {
+                    String advertKey = (String) data.getValue(HashMap.class).keySet().iterator().next();
+                    fAdverts.child(advertKey).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            ((MainPresenter) presenter).userAdvertHasBeenObtained(dataSnapshot.getValue(Anuncio.class));
+                        }
+
+                        @Override
+                        public void onCancelled(FirebaseError firebaseError) {
+
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+
         createListeners();
         mFirebase.addChildEventListener(listener);
     }
@@ -84,9 +125,7 @@ public class AdvertsFirebaseManager {
                 @Override
                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                     Anuncio a = dataSnapshot.getValue(Anuncio.class);
-                    if (dataSnapshot.getKey().contains(currentUser.getKey()))
-                        ((MainPresenter) presenter).userAdvertHasBeenObtained(a);
-                    else if (!a.getSolicitantes().containsKey(currentUser.getKey()))
+                    if (!a.getSolicitantes().containsKey(currentUser.getKey()) && !a.getAnunciante().equals(currentUser.getKey()))
                         ((MainPresenter) presenter).advertHasBeenObtained(a);
                 }
 
@@ -134,6 +173,12 @@ public class AdvertsFirebaseManager {
     public void removeUserAdvert(Anuncio a) {
         Firebase mFirebase = new Firebase(URL_ANUNCIOS + a.getKey() + "/");
         mFirebase.setValue(null);
+
+        GeoFire g = new GeoFire(new Firebase(URL_LOCATIONS));
+        g.removeLocation(a.getKey());
+
+        new Firebase(URL_ANUNCIOS_USUARIOS).child(currentUser.getKey()).child(a.getKey()).setValue(null);
+
         for (String keySolicitante : a.getSolicitantes().keySet())
             new Firebase(URL_SOLICITUDES).child(keySolicitante).child(a.getKey()).setValue(null);
     }
@@ -162,6 +207,22 @@ public class AdvertsFirebaseManager {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Anuncio a = dataSnapshot.getChildren().iterator().next().getValue(Anuncio.class);
                 ((ConversationPresenter) presenter).advertObtained(a);
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+    }
+
+
+    public void getAdvertClickedFromMap(String advertKey) {
+        new Firebase(URL_ANUNCIOS).child(advertKey).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Anuncio a = dataSnapshot.getValue(Anuncio.class);
+                ((MainPresenter) presenter).advertClickedFromMapObtained(a);
             }
 
             @Override
@@ -264,6 +325,55 @@ public class AdvertsFirebaseManager {
                 }
         }
         return r;
+    }
+
+    public void getLocations(GeoLocation centerPosition, double radius) {
+        GeoFire g = new GeoFire(new Firebase(URL_LOCATIONS));
+        final Firebase f = new Firebase(URL_ANUNCIOS);
+        geoQuery = g.queryAtLocation(centerPosition, radius);
+        geoQuery.addGeoQueryEventListener(new GeoQueryEventListener() {
+            @Override
+            public void onKeyEntered(String key, final GeoLocation location) {
+                f.child(key).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        Anuncio a = dataSnapshot.getValue(Anuncio.class);
+                        if (!a.getKey().contains(currentUser.getKey()))
+                            ((MainPresenter) presenter).locationObtained(a, location);
+                    }
+
+                    @Override
+                    public void onCancelled(FirebaseError firebaseError) {
+
+                    }
+                });
+            }
+
+            @Override
+            public void onKeyExited(String key) {
+
+            }
+
+            @Override
+            public void onKeyMoved(String key, GeoLocation location) {
+
+            }
+
+            @Override
+            public void onGeoQueryReady() {
+
+            }
+
+            @Override
+            public void onGeoQueryError(FirebaseError error) {
+
+            }
+        });
+    }
+
+    public void detachGeoLocationListener() {
+        if (geoQuery != null)
+            geoQuery.removeAllListeners();
     }
 
     public void attachFirebaseListeners() {
