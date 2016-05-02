@@ -81,4 +81,15 @@ public class AdvertsDetailsPresenter implements AdvertsDetailsPresenterOps, MyPr
     public void sendNewMessage(MessagePojo m, String keyReceptor) {
         messagesManager.sendMessage(m, keyReceptor,true);
     }
+
+    @Override
+    public void getMessageIfConverExist(Anuncio anuncio) {
+        messagesManager.getMessageIfConverExist(anuncio);
+    }
+
+    @Override
+    public void messageIfConverExistObtained(MessagePojo m) {
+        if (activity.get() != null)
+            activity.get().messageIfConverExistObtained(m);
+    }
 }

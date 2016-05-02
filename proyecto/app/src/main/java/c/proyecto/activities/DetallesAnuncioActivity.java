@@ -36,6 +36,7 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
     private int advertType;
     private Usuario currentUser;
     private BroadcastReceiver receiver;
+    private MessagePojo messagePojoAux;
 
     public static void start(Context context, Anuncio anuncio, int advertType, Usuario u) {
         Intent intent = new Intent(context, DetallesAnuncioActivity.class);
@@ -66,11 +67,7 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
         mPresenter.setAdvertsManager(new AdvertsFirebaseManager(mPresenter, currentUser));
         mPresenter.setMessagesManager(new MessagesFirebaseManager(mPresenter, currentUser));
         mPresenter.setUsersManager(new UsersFirebaseManager(mPresenter));
-
-        if (advertType != AdvertsRecyclerViewAdapter.ADAPTER_TYPE_MY_ADVS)
-            mPresenter.advertPublisherRequested(anuncio.getAnunciante());
-        else
-            getSupportFragmentManager().beginTransaction().replace(R.id.frmContenido, DetallesAnuncioFragment.newInstance(anuncio, advertType, currentUser, currentUser)).commit();
+        mPresenter.getMessageIfConverExist(anuncio);
     }
 
     private void showAdvertHasBeenRemovedDialog() {
@@ -89,8 +86,17 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
     }
 
     @Override
+    public void messageIfConverExistObtained(MessagePojo m) {
+        messagePojoAux = m;
+        if (advertType != AdvertsRecyclerViewAdapter.ADAPTER_TYPE_MY_ADVS)
+            mPresenter.advertPublisherRequested(anuncio.getAnunciante());
+        else
+            getSupportFragmentManager().beginTransaction().replace(R.id.frmContenido, DetallesAnuncioFragment.newInstance(anuncio, advertType, currentUser, currentUser, m)).commit();
+    }
+
+    @Override
     public void onAdvertPublisherRequestedResponsed(Usuario u) {
-        getSupportFragmentManager().beginTransaction().replace(R.id.frmContenido, DetallesAnuncioFragment.newInstance(anuncio, advertType, u, currentUser)).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.frmContenido, DetallesAnuncioFragment.newInstance(anuncio, advertType, u, currentUser, messagePojoAux)).commit();
     }
 
     public static AdvertsDetailsPresenter getmPresenter() {

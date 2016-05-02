@@ -22,7 +22,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.daimajia.slider.library.Animations.DescriptionAnimation;
-import com.daimajia.slider.library.Indicators.PagerIndicator;
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.DefaultSliderView;
@@ -41,20 +40,19 @@ import java.util.LinkedList;
 
 import c.proyecto.Constantes;
 import c.proyecto.R;
+import c.proyecto.activities.ConversationActivity;
 import c.proyecto.activities.LocalizacionActivity;
 import c.proyecto.activities.VerPerfilActivity;
 import c.proyecto.adapters.AdvertsRecyclerViewAdapter;
 import c.proyecto.adapters.PrestacionesAdapter;
 import c.proyecto.adapters.PrestacionesDetalladasAdapter;
+import c.proyecto.mvp_presenters.ConversationPresenter;
 import c.proyecto.pojo.Anuncio;
 import c.proyecto.pojo.Usuario;
 import c.proyecto.pojo.MessagePojo;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class DetallesAnuncioFragment extends Fragment implements PrestacionesAdapter.IPrestacionAdapter, OnMapReadyCallback, ViewPagerEx.OnPageChangeListener {
-
-
-
 
     public interface IDetallesAnuncioFragmentListener {
         void onImgEditClicked(Anuncio advert, Usuario user);
@@ -70,6 +68,7 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
     private static final String ARG_ADVERT_TYPE = "advert_type";
     private static final String ARG_USER_ANUNCIANTE = "mUserAnunciante";
     private static final String ARG_CURRENT_USER = "usuarioLogueado";
+    private static final String ARG_MESSAGE = "mensaje_si_existe_conversacion";
 
     private RelativeLayout shapeComentario, groupImagenes;
     private SliderLayout slider;
@@ -84,16 +83,18 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
     private Usuario mUserAnunciante, mCurrentUser;
     private int mAdverType;
     private GoogleMap mGoogleMap;
+    private MessagePojo mMessage;
 
     private IDetallesAnuncioFragmentListener mListener;
     private OnDetallesAnuncioFragmentClic mListenerClick;
 
-    public static DetallesAnuncioFragment newInstance(Anuncio anuncio, int advertType, Usuario user, Usuario currentUser) {
+    public static DetallesAnuncioFragment newInstance(Anuncio anuncio, int advertType, Usuario user, Usuario currentUser, MessagePojo message) {
         Bundle args = new Bundle();
         args.putParcelable(ARG_ANUNCIO, anuncio);
         args.putInt(ARG_ADVERT_TYPE, advertType);
         args.putParcelable(ARG_USER_ANUNCIANTE, user);
         args.putParcelable(ARG_CURRENT_USER, currentUser);
+        args.putParcelable(ARG_MESSAGE, message);
         DetallesAnuncioFragment fragment = new DetallesAnuncioFragment();
         fragment.setArguments(args);
         return fragment;
@@ -112,6 +113,7 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
         mAdverType = getArguments().getInt(ARG_ADVERT_TYPE);
         mUserAnunciante = getArguments().getParcelable(ARG_USER_ANUNCIANTE);
         mCurrentUser = getArguments().getParcelable(ARG_CURRENT_USER);
+        mMessage = getArguments().getParcelable(ARG_MESSAGE);
         initViews();
         confRecyclerview();
         confMap();
@@ -136,15 +138,24 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
         lblDescripcion = (TextView) getView().findViewById(R.id.lblDescripcion);
         shapeComentario = (RelativeLayout) getView().findViewById(R.id.shapeComentario);
 
-
         imgMessage = (ImageView) getView().findViewById(R.id.imgMessage);
+        if (mMessage == null)
+            imgMessage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showSenMessageDialog();
+                }
+            });
+        else {
+            imgMessage.setImageResource(R.drawable.ic_chat);
+            imgMessage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ConversationActivity.start(getContext(), mMessage, mCurrentUser);
+                }
+            });
+        }
 
-        imgMessage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showSenMessageDialog();
-            }
-        });
         imgEdit = (ImageView) getView().findViewById(R.id.imgEdit);
         imgSubscribe = (ImageView) getView().findViewById(R.id.imgSubscribe);
 
@@ -202,8 +213,6 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
             }
         });
     }
-
-
 
     private void confSlider() {
         slider.setPresetTransformer(SliderLayout.Transformer.Stack);
