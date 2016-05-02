@@ -24,7 +24,6 @@ public class CaracteristicasUsuarioDialogFragment extends AppCompatDialogFragmen
     private SeekBar skOrdenado, skFiestero, skSociable, skActivo;
     private TextView lblNumOrdenado, lblNumFiestero, lblNumSociable, lblNumActivo;
     private Usuario mUser;
-    private boolean mMovible;
 
     public static CaracteristicasUsuarioDialogFragment newInstance(Usuario user, boolean editable) {
 
