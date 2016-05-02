@@ -64,30 +64,30 @@
 
             </LinearLayout>
 
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@id/groupTitulo"
                 android:layout_toEndOf="@id/groupTitulo"
                 android:layout_alignBottom="@id/groupTitulo"
+                android:orientation="vertical"
                >
-                <TextView
-                    android:id="@+id/lblSubs"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_centerHorizontal="true"
-                    android:paddingBottom="6dp"
-                    android:text="222" />
-
                 <ImageView
 
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_above="@id/lblSubs"
-                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center_horizontal"
                     android:src="@drawable/ic_action_user" />
-            </RelativeLayout>
+                <TextView
+                    android:id="@+id/lblSubs"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:paddingBottom="6dp"
+                    android:text="222" />
+
+
+            </LinearLayout>
 
         </RelativeLayout>
     </LinearLayout>
