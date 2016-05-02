@@ -167,13 +167,13 @@ public class MainPresenter implements MainPresenterOps, MyPresenter {
     }
 
     @Override
-    public void getSolicitantes(View itemView, HashMap<String, Boolean> solicitantes) {
-        usersManager.getSolicitantes(itemView, solicitantes);
+    public void getSolicitantes(View itemView, Anuncio anuncio) {
+        usersManager.getSolicitantes(itemView, anuncio);
     }
 
     @Override
-    public void solicitantesObtained(View itemView, ArrayList<Usuario> listaSolicitantes) {
+    public void solicitantesObtained(View itemView, ArrayList<Usuario> listaSolicitantes, Anuncio anuncio) {
         if (activity.get() != null)
-            activity.get().solicitantesObtained(itemView, listaSolicitantes);
+            activity.get().solicitantesObtained(itemView, listaSolicitantes, anuncio);
     }
 }

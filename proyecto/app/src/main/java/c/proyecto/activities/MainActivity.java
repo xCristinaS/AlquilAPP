@@ -343,20 +343,23 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
     }
 
     @Override
-    public void onSubsItemClick(View itemView, HashMap<String, Boolean> solicitantes) {
-        mPresenter.getSolicitantes(itemView, solicitantes);
+    public void onSubsItemClick(View itemView, Anuncio anuncio) {
+        mPresenter.getSolicitantes(itemView, anuncio);
     }
 
     @Override
-    public void onUserSubClick(Usuario u) {
-        VerPerfilActivity.start(this, u);
-    }
-
-    @Override
-    public void solicitantesObtained(View itemView, ArrayList<Usuario> listaSolicitantes){
+    public void onUserSubClick(Usuario u, Anuncio anuncio) {
+        VerPerfilActivity.start(this, u, anuncio, mUser);
         Fragment f = getSupportFragmentManager().findFragmentById(R.id.frmContenido);
         if (f instanceof PrincipalFragment)
-            ((PrincipalFragment) f).solicitantesObtained(itemView, listaSolicitantes);
+            ((PrincipalFragment) f).closeSolicitantesDialog();
+    }
+
+    @Override
+    public void solicitantesObtained(View itemView, ArrayList<Usuario> listaSolicitantes, Anuncio anuncio){
+        Fragment f = getSupportFragmentManager().findFragmentById(R.id.frmContenido);
+        if (f instanceof PrincipalFragment)
+            ((PrincipalFragment) f).solicitantesObtained(itemView, listaSolicitantes, anuncio);
     }
 
     @Override

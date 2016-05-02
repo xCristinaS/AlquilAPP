@@ -152,10 +152,16 @@ public class PrincipalFragment extends Fragment {
     }
 
 
-    public void solicitantesObtained(View itemView, ArrayList<Usuario> listaSolicitantes) {
+    public void solicitantesObtained(View itemView, ArrayList<Usuario> listaSolicitantes, Anuncio anuncio) {
         AdvertsRecyclerViewFragment f = (AdvertsRecyclerViewFragment) vpAdapter.getItem(2);
         if (f.getmAdapter().getAdapter_type() == AdvertsRecyclerViewAdapter.ADAPTER_TYPE_MY_ADVS)
-            f.getmAdapter().solicitantesObtained(itemView, listaSolicitantes);
+            f.getmAdapter().solicitantesObtained(itemView, listaSolicitantes, anuncio);
+    }
+
+    public void closeSolicitantesDialog() {
+        AdvertsRecyclerViewFragment f = (AdvertsRecyclerViewFragment) vpAdapter.getItem(2);
+        if (f.getmAdapter().getAdapter_type() == AdvertsRecyclerViewAdapter.ADAPTER_TYPE_MY_ADVS)
+            f.getmAdapter().closeSolicitantesDialog();
     }
 
     public Usuario getUser() {

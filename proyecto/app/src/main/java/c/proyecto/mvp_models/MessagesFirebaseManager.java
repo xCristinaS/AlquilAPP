@@ -15,6 +15,7 @@ import c.proyecto.interfaces.MyPresenter;
 import c.proyecto.mvp_presenters.AdvertsDetailsPresenter;
 import c.proyecto.mvp_presenters.ConversationPresenter;
 import c.proyecto.mvp_presenters.MainPresenter;
+import c.proyecto.mvp_presenters.ProfilePresenter;
 import c.proyecto.pojo.Anuncio;
 import c.proyecto.pojo.Message;
 import c.proyecto.pojo.MessagePojo;
@@ -385,7 +386,6 @@ public class MessagesFirebaseManager {
         new Firebase(URL_CONVERSACIONES).child(m.getKeyReceptor()).child(nodoAsunto).child(m.getKey()).setValue(null);
     }
 
-
     public void getMessageIfConverExist(final Anuncio anuncio) {
         Firebase f = new Firebase(URL_CONVERSACIONES).child(currentUser.getKey()).child(anuncio.getAnunciante() + "_" + anuncio.getTitulo().trim());
         f.limitToLast(1).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -415,6 +415,44 @@ public class MessagesFirebaseManager {
                     });
                 } else
                     ((AdvertsDetailsPresenter) presenter).messageIfConverExistObtained(null);
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+    }
+
+    public void getMessageIfConverExist(final Anuncio anuncio, String keySolicitante) {
+        Firebase f = new Firebase(URL_CONVERSACIONES).child(currentUser.getKey()).child(keySolicitante + "_" + anuncio.getTitulo().trim());
+        f.limitToLast(1).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getValue() != null) {
+                    final DataSnapshot data = dataSnapshot.getChildren().iterator().next();
+                    final MessagePojo m = new MessagePojo();
+                    m.setKey(data.getKey());
+                    m.setKeyReceptor(currentUser.getKey());
+                    m.setTituloAnuncio(anuncio.getTitulo());
+                    Message mAux = data.getValue(Message.class);
+                    m.setFecha(new Date(mAux.getFecha()));
+                    m.setContenido(mAux.getContenido());
+
+                    new Firebase(URL_USERS).child(anuncio.getAnunciante()).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            m.setEmisor(dataSnapshot.getValue(Usuario.class));
+                            ((ProfilePresenter) presenter).messageIfConverExistObtained(m);
+                        }
+
+                        @Override
+                        public void onCancelled(FirebaseError firebaseError) {
+
+                        }
+                    });
+                } else
+                    ((ProfilePresenter) presenter).messageIfConverExistObtained(null);
             }
 
             @Override
