@@ -355,10 +355,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
 
     @Override
     public void locationObtained(Anuncio a, GeoLocation location) {
-        int resource = R.drawable.casa;
+        int resource = R.drawable.marker_house;
         switch (a.getTipo_vivienda()){
             case Constantes.CASA:
-                resource = R.drawable.casa;
+                resource = R.drawable.marker_house;
                 break;
             case Constantes.PISO:
                 resource = R.drawable.piso;
