@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -228,7 +229,8 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
 
     static class MiAnuncioViewHolder extends RecyclerView.ViewHolder {
 
-        private ImageView imgAvatar, icoSuscritos;
+        private final LinearLayout groupSuscritos;
+        private ImageView imgAvatar;
         private ProgressBar prbAnuncio;
         private TextView lblTituloAnuncio, lblLocalizacion, lblSubs;
         private int anchoAproxImgAvatar;
@@ -241,7 +243,7 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
             imgAvatar = (ImageView) itemView.findViewById(R.id.imgAvatar);
             anchoAproxImgAvatar = getAnchoPantalla(itemView.getContext()) / 2;
             prbAnuncio = (ProgressBar) itemView.findViewById(R.id.prbAnuncio);
-            icoSuscritos = (ImageView) itemView.findViewById(R.id.icoSuscritos);
+            groupSuscritos = (LinearLayout) itemView.findViewById(R.id.groupSuscritos);
         }
 
         public void onBind(final Anuncio anuncio) {
@@ -256,14 +258,12 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
                             Picasso.with(itemView.getContext()).load(anuncio.getImagenes().get(img)).resize(anchoAproxImgAvatar, imgAvatar.getLayoutParams().height).centerCrop().into(imgAvatar, new ImageLoadedCallback(prbAnuncio));
                 }
 
-                View.OnClickListener clickListener = new View.OnClickListener() {
+                groupSuscritos.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         listenerSubsClick.onSubsItemClick(itemView, anuncio.getSolicitantes());
                     }
-                };
-                lblSubs.setOnClickListener(clickListener);
-                icoSuscritos.setOnClickListener(clickListener);
+                });
             }
         }
     }
