@@ -25,6 +25,7 @@
             android:id="@+id/nav_preferences"
             android:icon="@drawable/ic_nav_preferences"
             android:title="@string/title_nav_preferences" />
+
     </group>
 
     <group
@@ -34,5 +35,10 @@
             android:id="@+id/nav_sign_off"
             android:icon="@drawable/ic_nav_sign_off"
             android:title="@string/title_nav_sign_of"/>
+        <item
+            android:id="@+id/nav_about_us"
+            android:icon="@drawable/ic_nav_about_us"
+            android:title="About Us"
+            />
     </group>
 </menu>
