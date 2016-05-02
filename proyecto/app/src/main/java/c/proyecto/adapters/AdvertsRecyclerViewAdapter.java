@@ -267,10 +267,7 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
         dialog.setCanceledOnTouchOutside(true);
 
         RecyclerView rvPrestacionesDialogo = (RecyclerView) dialogView.findViewById(R.id.rvPrestaciones);
-        //Conseguir los solicitantes en una lista
-        //Crear el adaptador
-        //Asignarle el adaptador
-        //rvPrestacionesDialogo.setAdapter();
+        rvPrestacionesDialogo.setAdapter(new HuespedesAdapter(listaSolicitantes));
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(itemView.getContext(), LinearLayoutManager.VERTICAL, false);
         rvPrestacionesDialogo.setLayoutManager(mLayoutManager);
         rvPrestacionesDialogo.setItemAnimator(new DefaultItemAnimator());
