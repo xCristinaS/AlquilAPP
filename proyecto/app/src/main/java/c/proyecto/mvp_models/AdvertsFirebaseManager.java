@@ -318,19 +318,19 @@ public class AdvertsFirebaseManager {
         geoQuery.addGeoQueryEventListener(new GeoQueryEventListener() {
             @Override
             public void onKeyEntered(String key, final GeoLocation location) {
-                f.child(key).addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        Anuncio a = dataSnapshot.getValue(Anuncio.class);
-                        System.out.println();
-                        ((MainPresenter) presenter).locationObtained(a, location);
-                    }
+                    f.child(key).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            Anuncio a = dataSnapshot.getValue(Anuncio.class);
+                            if (!a.getKey().contains(currentUser.getKey()))
+                                ((MainPresenter) presenter).locationObtained(a, location);
+                        }
 
-                    @Override
-                    public void onCancelled(FirebaseError firebaseError) {
+                        @Override
+                        public void onCancelled(FirebaseError firebaseError) {
 
-                    }
-                });
+                        }
+                    });
             }
 
             @Override
