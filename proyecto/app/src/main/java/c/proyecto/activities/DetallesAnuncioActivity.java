@@ -66,7 +66,7 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
         mPresenter.setAdvertsManager(new AdvertsFirebaseManager(mPresenter, currentUser));
         mPresenter.setMessagesManager(new MessagesFirebaseManager(mPresenter, currentUser));
         mPresenter.setUsersManager(new UsersFirebaseManager(mPresenter));
-
+        
         if (advertType != AdvertsRecyclerViewAdapter.ADAPTER_TYPE_MY_ADVS)
             mPresenter.advertPublisherRequested(anuncio.getAnunciante());
         else

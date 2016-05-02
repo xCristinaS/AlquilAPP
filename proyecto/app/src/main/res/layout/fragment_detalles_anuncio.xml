@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -8,43 +10,42 @@
         <RelativeLayout
             android:id="@+id/groupImagenes"
             android:layout_width="match_parent"
-            android:layout_height="200dp"/>
+            android:layout_height="200dp" />
 
         <!-- Degradado negro + flecha blanca-->
         <ImageView
             android:id="@+id/degraded"
             android:layout_width="match_parent"
-            android:scaleType="centerCrop"
             android:layout_height="wrap_content"
-            android:src="@drawable/degradado_negro"
-            android:layout_alignBottom="@id/groupImagenes"/>
-
+            android:layout_alignBottom="@id/groupImagenes"
+            android:scaleType="centerCrop"
+            android:src="@drawable/degradado_negro" />
 
         <RelativeLayout
             android:id="@+id/groupAvatar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/groupImagenes"
-            android:layout_marginTop="20dp"
             android:layout_marginBottom="20dp"
             android:layout_marginLeft="16dp"
-            android:layout_marginStart="16dp">
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="20dp">
+
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/imgAvatar"
                 android:layout_width="70dp"
                 android:layout_height="70dp"
-                android:src="@drawable/default_user"
-                />
+                android:src="@drawable/default_user" />
+
             <TextView
                 android:id="@+id/lblNombre"
                 android:layout_width="70dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/imgAvatar"
-                android:textStyle="bold"
+                android:layout_centerHorizontal="true"
                 android:maxLines="2"
                 android:textAlignment="center"
-                android:layout_centerHorizontal="true"
-                />
+                android:textStyle="bold" />
 
         </RelativeLayout>
 
@@ -53,106 +54,104 @@
             android:id="@+id/shapeRectangulo"
             android:layout_width="match_parent"
             android:layout_height="90dp"
-            android:background="@color/colorShape"
             android:layout_below="@id/groupAvatar"
-            >
+            android:background="@color/colorShape">
+
             <LinearLayout
                 android:id="@+id/groupCamas"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:layout_marginLeft="50dp"
-                android:orientation="vertical"
                 android:layout_centerHorizontal="true"
-                >
+                android:layout_marginLeft="50dp"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical">
+
                 <ImageView
                     android:id="@+id/imgCamas"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:src="@drawable/cama"
                     android:layout_gravity="center"
-                    />
+                    android:src="@drawable/cama" />
+
                 <TextView
                     android:id="@+id/lblCamas"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="Camas"
-                    />
+                    android:text="Camas" />
             </LinearLayout>
 
             <TextView
                 android:id="@+id/lblNumCamas"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="6dp"
+                android:layout_marginTop="30dp"
+                android:layout_toEndOf="@id/groupCamas"
+                android:layout_toRightOf="@id/groupCamas"
                 android:text="0"
                 android:textStyle="bold"
-                android:layout_toRightOf="@id/groupCamas"
-                android:layout_toEndOf="@id/groupCamas"
-                android:layout_marginTop="30dp"
-                android:layout_marginLeft="6dp"
 
                 />
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
                 android:layout_marginTop="20dp"
                 android:layout_toLeftOf="@id/groupCamas"
                 android:layout_toStartOf="@id/groupCamas"
-                android:layout_marginRight="5dp"
-                android:orientation="vertical"
-                >
+                android:orientation="vertical">
+
                 <ImageView
                     android:id="@+id/imgTipoVivienda"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:src="@drawable/habitacion"
                     android:layout_gravity="center"
-                    />
+                    android:src="@drawable/habitacion" />
+
                 <TextView
                     android:id="@+id/lblTipoVivienda"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="Habitación"
-                    />
+                    android:text="Habitación" />
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/groupHuespedes"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:orientation="vertical"
-                android:layout_toRightOf="@id/groupCamas"
-                android:layout_toEndOf="@id/groupCamas"
                 android:layout_marginLeft="64dp"
-                >
+                android:layout_marginTop="20dp"
+                android:layout_toEndOf="@id/groupCamas"
+                android:layout_toRightOf="@id/groupCamas"
+                android:orientation="vertical">
+
                 <ImageView
                     android:id="@+id/imgToilet"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:src="@drawable/ic_toilet"
                     android:layout_gravity="center"
-                    />
+                    android:src="@drawable/ic_toilet" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="Baños"
-                    />
+                    android:text="Baños" />
             </LinearLayout>
+
             <TextView
                 android:id="@+id/lblNumToilets"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0"
-                android:textStyle="bold"
-                android:layout_toRightOf="@id/groupHuespedes"
-                android:layout_toEndOf="@id/groupHuespedes"
-                android:layout_marginTop="30dp"
                 android:layout_marginLeft="5dp"
-                />
+                android:layout_marginTop="30dp"
+                android:layout_toEndOf="@id/groupHuespedes"
+                android:layout_toRightOf="@id/groupHuespedes"
+                android:text="0"
+                android:textStyle="bold" />
 
         </RelativeLayout>
 
@@ -160,63 +159,61 @@
         <View
             android:id="@+id/dividerAvatar"
             style="@style/verticalDivider"
-            android:layout_below="@id/groupImagenes"
             android:layout_above="@id/shapeRectangulo"
-            android:layout_toRightOf="@id/groupAvatar"
-            android:layout_toEndOf="@id/groupAvatar"
-            android:layout_marginTop="12dp"
+            android:layout_below="@id/groupImagenes"
+            android:layout_marginBottom="12dp"
             android:layout_marginLeft="16dp"
             android:layout_marginStart="16dp"
-            android:layout_marginBottom="12dp"
-            />
+            android:layout_marginTop="12dp"
+            android:layout_toEndOf="@id/groupAvatar"
+            android:layout_toRightOf="@id/groupAvatar" />
         <!-- Precio -->
         <TextView
             android:id="@+id/lblTituloPrecio"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignTop="@id/groupAvatar"
+            android:layout_below="@id/groupImagenes"
+            android:layout_marginLeft="15dp"
+            android:layout_toEndOf="@id/dividerAvatar"
+            android:layout_toRightOf="@id/dividerAvatar"
             android:text="Precio:"
             android:textSize="16sp"
-            android:textStyle="bold"
-            android:layout_below="@id/groupImagenes"
-            android:layout_alignTop="@id/groupAvatar"
-            android:layout_toRightOf="@id/dividerAvatar"
-            android:layout_toEndOf="@id/dividerAvatar"
-            android:layout_marginLeft="15dp"
-            />
+            android:textStyle="bold" />
+
         <TextView
             android:id="@+id/lblPrecio"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="223€"
-            android:layout_toRightOf="@id/lblTituloPrecio"
-            android:layout_toEndOf="@id/lblTituloPrecio"
             android:layout_alignBaseline="@id/lblTituloPrecio"
             android:layout_marginLeft="10dp"
-            />
+            android:layout_toEndOf="@id/lblTituloPrecio"
+            android:layout_toRightOf="@id/lblTituloPrecio"
+            android:text="223€" />
         <!-- Tamaño -->
         <TextView
             android:id="@+id/lblTituloTamano"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@id/lblTituloPrecio"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="10dp"
+            android:layout_toEndOf="@id/dividerAvatar"
+            android:layout_toRightOf="@id/dividerAvatar"
             android:text="Tamaño:"
             android:textSize="16sp"
-            android:textStyle="bold"
-            android:layout_below="@id/lblTituloPrecio"
-            android:layout_toRightOf="@id/dividerAvatar"
-            android:layout_toEndOf="@id/dividerAvatar"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="15dp"
-            />
+            android:textStyle="bold" />
+
         <TextView
             android:id="@+id/lblTamano"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="15m2"
-            android:layout_toRightOf="@id/lblTituloTamano"
-            android:layout_toEndOf="@id/lblTituloTamano"
             android:layout_alignBaseline="@id/lblTituloTamano"
             android:layout_marginLeft="10dp"
-            />
+            android:layout_toEndOf="@id/lblTituloTamano"
+            android:layout_toRightOf="@id/lblTituloTamano"
+            android:text="15m2" />
+
         <!-- Icono de Mensaje -->
         <ImageView
             android:id="@+id/imgMessage"
@@ -225,10 +222,9 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_below="@id/groupImagenes"
-            android:layout_marginTop="72dp"
             android:layout_marginRight="25dp"
+            android:layout_marginTop="72dp"
             android:src="@drawable/ic_nav_messages"
-
             />
 
         <!-- Btn Subscribirse -->
@@ -236,13 +232,12 @@
             android:id="@+id/imgSubscribe"
             android:layout_width="35dp"
             android:layout_height="35dp"
-            android:layout_alignRight="@id/imgMessage"
             android:layout_alignEnd="@id/imgMessage"
+            android:layout_alignRight="@id/imgMessage"
             android:layout_below="@id/groupImagenes"
             android:layout_marginTop="25dp"
             android:src="@drawable/ic_subscribe"
-            android:visibility="gone"
-            />
+            android:visibility="gone" />
 
         <!-- Btn Editar -->
         <ImageView
@@ -252,31 +247,28 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_below="@id/groupImagenes"
-            android:layout_marginTop="25dp"
             android:layout_marginRight="25dp"
+            android:layout_marginTop="25dp"
             android:src="@drawable/ic_action_edit"
-            android:visibility="gone"
-            />
+            android:visibility="gone" />
 
         <!-- Prestaciones -->
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rvPrestaciones"
             android:layout_width="wrap_content"
             android:layout_height="100dp"
-            android:layout_centerHorizontal="true"
             android:layout_below="@id/shapeRectangulo"
-            />
+            android:layout_centerHorizontal="true" />
 
         <!-- Descripción -->
         <RelativeLayout
             android:id="@+id/shapeComentario"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorShape"
             android:layout_below="@id/rvPrestaciones"
+            android:background="@color/colorShape"
             android:paddingBottom="10dp"
-            android:paddingTop="10dp"
-            >
+            android:paddingTop="10dp">
             <!-- Cuando el anuncio no contiene descripción -->
             <TextView
                 android:id="@+id/lblDescripcionNoDisponible"
@@ -284,14 +276,15 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:text="Descripción no disponible"
-                android:visibility="gone"/>
+                android:visibility="gone" />
+
             <TextView
                 android:id="@+id/lblDescripcion"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:maxLines="5"
                 android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp" />
+                android:layout_marginRight="16dp"
+                android:maxLines="5" />
         </RelativeLayout>
 
         <!-- Mapa Google -->
@@ -300,8 +293,7 @@
             android:id="@+id/frmMap"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:layout_below="@id/shapeComentario"
-            />
+            android:layout_below="@id/shapeComentario" />
     </RelativeLayout>
 
 </ScrollView>
