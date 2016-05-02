@@ -175,4 +175,10 @@ public class MainPresenter implements MainPresenterOps, MyPresenter {
     public void detachGeoLocationListeners() {
         advertsManager.detachGeoLocationListener();
     }
+
+    @Override
+    public void locationObtained(Anuncio a, GeoLocation location) {
+        if (activity.get() != null)
+            activity.get().locationObtained(a, location);
+    }
 }

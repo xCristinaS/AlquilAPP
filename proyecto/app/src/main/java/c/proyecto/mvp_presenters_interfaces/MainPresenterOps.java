@@ -32,4 +32,5 @@ public interface MainPresenterOps {
     void attachAdvertsListeners();
     void getLocations(GeoLocation centerPosition, double radius);
     void detachGeoLocationListeners();
+    void locationObtained(Anuncio a, GeoLocation location);
 }

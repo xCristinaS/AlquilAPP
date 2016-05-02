@@ -330,7 +330,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
             LatLng lat = new LatLng(l.getLatitude(), l.getLongitude());
             mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(lat, Constantes.ZOOM_ANUNCIO_CON_LOCALIZACION));
             mGoogleMap.addMarker(new MarkerOptions().position(lat).icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_human_marker)));
-        }
+        } // else, mostrar dialogo para que active la localización
     }
 
     private Location getLastKnownLocation() {
@@ -353,6 +353,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
             return null;
 
         return bestLocation;
+    }
+
+    @Override
+    public void locationObtained(Anuncio a, GeoLocation location) {
+        mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(location.latitude, location.longitude)).icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_key)));
     }
 
     @Override

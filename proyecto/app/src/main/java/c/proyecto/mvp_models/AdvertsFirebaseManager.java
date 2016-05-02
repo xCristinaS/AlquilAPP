@@ -313,11 +313,24 @@ public class AdvertsFirebaseManager {
 
     public void getLocations(GeoLocation centerPosition, double radius) {
         GeoFire g = new GeoFire(new Firebase(URL_LOCATIONS));
+        final Firebase f = new Firebase(URL_ANUNCIOS);
         geoQuery = g.queryAtLocation(centerPosition, radius);
         geoQuery.addGeoQueryEventListener(new GeoQueryEventListener() {
             @Override
-            public void onKeyEntered(String key, GeoLocation location) {
+            public void onKeyEntered(String key, final GeoLocation location) {
+                f.child(key).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        Anuncio a = dataSnapshot.getValue(Anuncio.class);
+                        System.out.println();
+                        ((MainPresenter) presenter).locationObtained(a, location);
+                    }
 
+                    @Override
+                    public void onCancelled(FirebaseError firebaseError) {
+
+                    }
+                });
             }
 
             @Override
