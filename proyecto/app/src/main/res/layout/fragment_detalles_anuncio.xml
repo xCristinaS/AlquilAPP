@@ -37,10 +37,12 @@
                 />
             <TextView
                 android:id="@+id/lblNombre"
-                android:layout_width="wrap_content"
+                android:layout_width="70dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/imgAvatar"
                 android:textStyle="bold"
+                android:maxLines="2"
+                android:textAlignment="center"
                 android:layout_centerHorizontal="true"
                 />
 
