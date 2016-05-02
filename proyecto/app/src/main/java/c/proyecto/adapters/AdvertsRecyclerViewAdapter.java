@@ -67,7 +67,7 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
     private boolean multiDeletionModeActivated = false;
     private static Usuario user;
     private boolean filtersApplied;
-
+    private RecyclerView rvSolicitantesDialog;
 
     public AdvertsRecyclerViewAdapter(int adapter_type, MainPresenter presenter, Usuario u) {
         mDatos = new ArrayList<>();
@@ -261,22 +261,34 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
     }
 
     public void solicitantesObtained(View itemView, ArrayList<Usuario> listaSolicitantes) {
+        if (itemView != null)
+            showSolicitantesDialog(itemView, listaSolicitantes);
+        else
+            updateSolicitantesDialog(listaSolicitantes);
+    }
+
+    private void showSolicitantesDialog(View itemView, ArrayList<Usuario> listaSolicitantes) {
         AlertDialog dialog = new AlertDialog.Builder(itemView.getContext()).create();
         View dialogView = View.inflate(itemView.getContext(), R.layout.dialog_prestaciones_detalladas, null);
         dialog.setView(dialogView);
         dialog.setCanceledOnTouchOutside(true);
 
-        RecyclerView rvPrestacionesDialogo = (RecyclerView) dialogView.findViewById(R.id.rvPrestaciones);
-        rvPrestacionesDialogo.setAdapter(new HuespedesAdapter(listaSolicitantes));
+        rvSolicitantesDialog = (RecyclerView) dialogView.findViewById(R.id.rvPrestaciones);
+        rvSolicitantesDialog.setAdapter(new HuespedesAdapter(listaSolicitantes));
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(itemView.getContext(), LinearLayoutManager.VERTICAL, false);
-        rvPrestacionesDialogo.setLayoutManager(mLayoutManager);
-        rvPrestacionesDialogo.setItemAnimator(new DefaultItemAnimator());
-        
+        rvSolicitantesDialog.setLayoutManager(mLayoutManager);
+        rvSolicitantesDialog.setItemAnimator(new DefaultItemAnimator());
+
         dialog.show();
         Point boundsScreen = new Point();
         ((WindowManager) itemView.getContext().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getSize(boundsScreen);
 
         dialog.getWindow().setLayout((int) (boundsScreen.x * Constantes.PORCENTAJE_PANTALLA), WindowManager.LayoutParams.WRAP_CONTENT);
+    }
+
+
+    private void updateSolicitantesDialog(ArrayList<Usuario> listaSolicitantes) {
+        ((HuespedesAdapter)rvSolicitantesDialog.getAdapter()).updateData(listaSolicitantes);
     }
 
     //Manejo del Adaptador
@@ -333,6 +345,7 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
                 mDatos.remove(i);
                 mDatos.add(i, a);
                 stop = true;
+                presenter.getSolicitantes(null, a.getSolicitantes()); // para actualizar el dialogo de solicitantes.
             }
         if (!stop)
             mDatos.add(a);

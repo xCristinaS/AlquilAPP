@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import c.proyecto.R;
@@ -36,6 +37,12 @@ public class HuespedesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     @Override
     public int getItemCount() {
         return mUsers.size();
+    }
+
+    public void updateData(ArrayList<Usuario> listaSolicitantes){
+        mUsers.clear();
+        mUsers.addAll(listaSolicitantes);
+        notifyDataSetChanged();
     }
 
     class HuespedViewHolder extends RecyclerView.ViewHolder{
