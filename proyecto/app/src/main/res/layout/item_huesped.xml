@@ -1,11 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:orientation="horizontal" android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="16dp"
+    android:layout_marginTop="10dp">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/imgHuesped"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:src="@drawable/default_user"/>
+
+    <TextView
+        android:id="@+id/lblNombre"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Alejandro Torres Gómez"
+        android:layout_gravity="center_vertical"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"/>
 </LinearLayout>

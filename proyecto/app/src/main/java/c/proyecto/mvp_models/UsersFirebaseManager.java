@@ -1,11 +1,14 @@
 package c.proyecto.mvp_models;
 
+import android.view.View;
+
 import com.firebase.client.AuthData;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -177,6 +180,30 @@ public class UsersFirebaseManager {
     public void updateUserProfile(Usuario u) {
         Firebase mFirebase = new Firebase(URL_USERS + u.getKey() + "/");
         mFirebase.setValue(u);
+    }
+
+
+    public void getSolicitantes(final View itemView, HashMap<String, Boolean> solicitantes) {
+        Firebase f = new Firebase(URL_USERS);
+        final ArrayList<Usuario> listaSolicitantes = new ArrayList<>();
+        final Iterator it = solicitantes.keySet().iterator();
+        String solicitanteKey;
+        while (it.hasNext()) {
+            solicitanteKey = (String) it.next();
+            f.child(solicitanteKey).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    listaSolicitantes.add(dataSnapshot.getValue(Usuario.class));
+                    if (!it.hasNext())
+                        ((MainPresenter)presenter).solicitantesObtained(itemView, listaSolicitantes);
+                }
+
+                @Override
+                public void onCancelled(FirebaseError firebaseError) {
+
+                }
+            });
+        }
     }
 
     public void detachFirebaseListeners() {

@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import c.proyecto.R;
 
@@ -41,7 +42,7 @@ import c.proyecto.mvp_presenters.MainPresenter;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 
-public class MainActivity extends AppCompatActivity implements MainActivityOps, AdvertsRecyclerViewAdapter.OnAdapterItemLongClick, AdvertsRecyclerViewAdapter.OnAdapterItemClick, NavigationView.OnNavigationItemSelectedListener, MessagesRecyclerViewAdapter.OnMessagesAdapterItemClick, PrincipalFragment.AllowFilters, FilterDialogFramgent.ApplyFilters, SeleccionPrestacionesDialogFragment.ICallBackOnDismiss {
+public class MainActivity extends AppCompatActivity implements MainActivityOps, AdvertsRecyclerViewAdapter.OnAdapterItemLongClick, AdvertsRecyclerViewAdapter.OnAdapterItemClick, NavigationView.OnNavigationItemSelectedListener, MessagesRecyclerViewAdapter.OnMessagesAdapterItemClick, PrincipalFragment.AllowFilters, FilterDialogFramgent.ApplyFilters, SeleccionPrestacionesDialogFragment.ICallBackOnDismiss, AdvertsRecyclerViewAdapter.OnSubsIconClick {
 
 
     private static final String ARG_USUARIO = "usuario_extra";
@@ -340,12 +341,16 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
         toolbar.getMenu().findItem(R.id.deshacerFiltro).setVisible(true);
     }
 
-    public Usuario getmUser() {
-        return mUser;
+    @Override
+    public void onSubsItemClick(View itemView, HashMap<String, Boolean> solicitantes) {
+        mPresenter.getSolicitantes(itemView, solicitantes);
     }
 
-    public static MainPresenter getmPresenter() {
-        return mPresenter;
+    @Override
+    public void solicitantesObtained(View itemView, ArrayList<Usuario> listaSolicitantes){
+        Fragment f = getSupportFragmentManager().findFragmentById(R.id.frmContenido);
+        if (f instanceof PrincipalFragment)
+            ((PrincipalFragment) f).solicitantesObtained(itemView, listaSolicitantes);
     }
 
     @Override
@@ -363,4 +368,14 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
     public void onDismiss() {
         ((FilterDialogFramgent)getSupportFragmentManager().findFragmentByTag(TAG_FILTER_DIALOG_FRAMGENT)).updatePrestaciones();
     }
+
+    public Usuario getmUser() {
+        return mUser;
+    }
+
+    public static MainPresenter getmPresenter() {
+        return mPresenter;
+    }
+
+
 }
