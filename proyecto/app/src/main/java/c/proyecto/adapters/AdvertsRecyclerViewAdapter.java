@@ -38,7 +38,9 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
 
     public interface OnAdapterItemLongClick {
         void setAdapterAllowMultiDeletion(AdvertsRecyclerViewAdapter adaptador);
+
         void onItemLongClick();
+
         void desactivarMultiseleccion();
     }
 
@@ -279,7 +281,7 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
 
         rvSolicitantesDialog = (RecyclerView) dialogView.findViewById(R.id.rvPrestaciones);
         rvSolicitantesDialog.setAdapter(new HuespedesAdapter(listaSolicitantes));
-        ((HuespedesAdapter)rvSolicitantesDialog.getAdapter()).setListener(listenerUserSubClick);
+        ((HuespedesAdapter) rvSolicitantesDialog.getAdapter()).setListener(listenerUserSubClick);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(itemView.getContext(), LinearLayoutManager.VERTICAL, false);
         rvSolicitantesDialog.setLayoutManager(mLayoutManager);
         rvSolicitantesDialog.setItemAnimator(new DefaultItemAnimator());
@@ -293,7 +295,8 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
 
 
     private void updateSolicitantesDialog(ArrayList<Usuario> listaSolicitantes) {
-        ((HuespedesAdapter)rvSolicitantesDialog.getAdapter()).updateData(listaSolicitantes);
+        if (rvSolicitantesDialog != null)
+            ((HuespedesAdapter) rvSolicitantesDialog.getAdapter()).updateData(listaSolicitantes);
     }
 
     //Manejo del Adaptador
