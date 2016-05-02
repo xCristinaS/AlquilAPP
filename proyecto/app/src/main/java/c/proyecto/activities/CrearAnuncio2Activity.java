@@ -48,8 +48,6 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
     private static final String EXTRA_IMAGE_4 = "img4";
     private static final String EXTRA_IMAGE_5 = "img5";
 
-
-
     private EditText txtTituloAnuncio, txtNum, txtPoblacion, txtProvincia, txtCamas, txtToilets, txtTamano, txtDescripcion, txtPrecio, txtDireccion;
     private ImageView imgCasa, imgHabitacion, imgPiso;
     private RecyclerView rvPrestaciones, rvHuespedes;

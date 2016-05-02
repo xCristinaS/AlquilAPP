@@ -228,7 +228,7 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
 
     static class MiAnuncioViewHolder extends RecyclerView.ViewHolder {
 
-        private ImageView imgAvatar;
+        private ImageView imgAvatar, icoSuscritos;
         private ProgressBar prbAnuncio;
         private TextView lblTituloAnuncio, lblLocalizacion, lblSubs;
         private int anchoAproxImgAvatar;
@@ -241,6 +241,7 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
             imgAvatar = (ImageView) itemView.findViewById(R.id.imgAvatar);
             anchoAproxImgAvatar = getAnchoPantalla(itemView.getContext()) / 2;
             prbAnuncio = (ProgressBar) itemView.findViewById(R.id.prbAnuncio);
+            icoSuscritos = (ImageView) itemView.findViewById(R.id.icoSuscritos);
         }
 
         public void onBind(final Anuncio anuncio) {
@@ -255,12 +256,14 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
                             Picasso.with(itemView.getContext()).load(anuncio.getImagenes().get(img)).resize(anchoAproxImgAvatar, imgAvatar.getLayoutParams().height).centerCrop().into(imgAvatar, new ImageLoadedCallback(prbAnuncio));
                 }
 
-                lblSubs.setOnClickListener(new View.OnClickListener() {
+                View.OnClickListener clickListener = new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         listenerSubsClick.onSubsItemClick(itemView, anuncio.getSolicitantes());
                     }
-                });
+                };
+                lblSubs.setOnClickListener(clickListener);
+                icoSuscritos.setOnClickListener(clickListener);
             }
         }
     }
