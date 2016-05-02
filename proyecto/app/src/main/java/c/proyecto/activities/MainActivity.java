@@ -27,6 +27,7 @@ import c.proyecto.R;
 import c.proyecto.adapters.HuespedesAdapter;
 import c.proyecto.adapters.MessagesRecyclerViewAdapter;
 import c.proyecto.adapters.AdvertsRecyclerViewAdapter;
+import c.proyecto.dialog_fragments.AboutUsDialogFragment;
 import c.proyecto.dialog_fragments.FilterDialogFramgent;
 import c.proyecto.dialog_fragments.SeleccionPrestacionesDialogFragment;
 import c.proyecto.fragments.MessagesFragment;
@@ -50,6 +51,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
     private static final String TAG_PRINCIPAL_FRAGMENT = "principal_fragment";
     private static final String TAG_MESSAGES_FRAGMENT = "messages_fragment";
     private static final String TAG_FILTER_DIALOG_FRAMGENT = "filtros_dialog_fragment";
+    private static final String TAG_ABOUT_US = "dialog_fragment_about_us";
 
     private static MainPresenter mPresenter;
     private Usuario mUser;
@@ -221,10 +223,14 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
                 InicioActivity.start(this);
                 finish();
                 break;
+            case R.id.nav_about_us:
+                new AboutUsDialogFragment().show(getSupportFragmentManager(), TAG_ABOUT_US);
+                break;
         }
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
 
     @Override
     public void setAdapterAllowMultiDeletion(AdvertsRecyclerViewAdapter adapter) {
