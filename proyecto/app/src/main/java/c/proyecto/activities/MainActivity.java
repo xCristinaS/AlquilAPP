@@ -316,21 +316,19 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
     public void onMapReady(final GoogleMap map) {
         mGoogleMap = map;
         Location l = getLastKnownLocation();
-        if (l != null)
+        if (l != null) {
             mPresenter.getLocations(new GeoLocation(l.getLatitude(), l.getLongitude()), 2);
+            posicionarMapa(l);
+        }// else, mostrar dialogo para que active la localización
 
-        posicionarMapa();
     }
 
-    private void posicionarMapa() {
-        Location l = getLastKnownLocation();
-        if (l != null) {
-            mGoogleMap.clear();
-            mGoogleMap.getUiSettings().setAllGesturesEnabled(true);
-            LatLng lat = new LatLng(l.getLatitude(), l.getLongitude());
-            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(lat, Constantes.ZOOM_ANUNCIO_CON_LOCALIZACION));
-            mGoogleMap.addMarker(new MarkerOptions().position(lat).icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_human_marker)));
-        } // else, mostrar dialogo para que active la localización
+    private void posicionarMapa(Location l) {
+        mGoogleMap.clear();
+        mGoogleMap.getUiSettings().setAllGesturesEnabled(true);
+        LatLng lat = new LatLng(l.getLatitude(), l.getLongitude());
+        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(lat, Constantes.ZOOM_ANUNCIO_CON_LOCALIZACION));
+        mGoogleMap.addMarker(new MarkerOptions().position(lat).icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_human_marker)));
     }
 
     private Location getLastKnownLocation() {
@@ -357,7 +355,19 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
 
     @Override
     public void locationObtained(Anuncio a, GeoLocation location) {
-        mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(location.latitude, location.longitude)).icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_key)));
+        int resource = R.drawable.casa;
+        switch (a.getTipo_vivienda()){
+            case Constantes.CASA:
+                resource = R.drawable.casa;
+                break;
+            case Constantes.PISO:
+                resource = R.drawable.piso;
+                break;
+            case Constantes.HABITACION:
+                resource = R.drawable.habitacion;
+                break;
+        }
+        mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(location.latitude, location.longitude)).icon(BitmapDescriptorFactory.fromResource(resource)));
     }
 
     @Override
