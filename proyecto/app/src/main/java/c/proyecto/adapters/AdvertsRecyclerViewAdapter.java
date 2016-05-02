@@ -38,9 +38,7 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
 
     public interface OnAdapterItemLongClick {
         void setAdapterAllowMultiDeletion(AdvertsRecyclerViewAdapter adaptador);
-
         void onItemLongClick();
-
         void desactivarMultiseleccion();
     }
 
@@ -61,6 +59,7 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
     private OnAdapterItemLongClick listenerLongClick;
     private OnAdapterItemClick listenerItemClick;
     private static OnSubsIconClick listenerSubsClick;
+    private static HuespedesAdapter.OnUserSubClick listenerUserSubClick;
     private View emptyView;
     private MainPresenter presenter;
     private SparseBooleanArray mSelectedItems = new SparseBooleanArray();
@@ -175,6 +174,10 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
         AdvertsRecyclerViewAdapter.listenerSubsClick = listenerSubsClick;
     }
 
+    public void setListenerUserSubClick(HuespedesAdapter.OnUserSubClick listenerUserSubClick) {
+        AdvertsRecyclerViewAdapter.listenerUserSubClick = listenerUserSubClick;
+    }
+
     private static int getAnchoPantalla(Context context) {
         Point point = new Point();
         ((Activity) context).getWindowManager().getDefaultDisplay().getSize(point);
@@ -272,9 +275,11 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
         View dialogView = View.inflate(itemView.getContext(), R.layout.dialog_prestaciones_detalladas, null);
         dialog.setView(dialogView);
         dialog.setCanceledOnTouchOutside(true);
+        dialog.setTitle("Solicitantes");
 
         rvSolicitantesDialog = (RecyclerView) dialogView.findViewById(R.id.rvPrestaciones);
         rvSolicitantesDialog.setAdapter(new HuespedesAdapter(listaSolicitantes));
+        ((HuespedesAdapter)rvSolicitantesDialog.getAdapter()).setListener(listenerUserSubClick);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(itemView.getContext(), LinearLayoutManager.VERTICAL, false);
         rvSolicitantesDialog.setLayoutManager(mLayoutManager);
         rvSolicitantesDialog.setItemAnimator(new DefaultItemAnimator());

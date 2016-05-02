@@ -13,16 +13,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 import c.proyecto.R;
+import c.proyecto.activities.VerPerfilActivity;
 import c.proyecto.pojo.Usuario;
 
 
 public class HuespedesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
+    public interface OnUserSubClick {
+        void onUserSubClick(Usuario u);
+    }
+
     private final List<Usuario> mUsers;
+    private OnUserSubClick listener;
 
     public HuespedesAdapter(List<Usuario> users){
         mUsers = users;
     }
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_huesped, parent, false);
@@ -45,6 +52,10 @@ public class HuespedesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         notifyDataSetChanged();
     }
 
+    public void setListener(OnUserSubClick listener) {
+        this.listener = listener;
+    }
+
     class HuespedViewHolder extends RecyclerView.ViewHolder{
 
         private final ImageView imgHuesped;
@@ -55,14 +66,14 @@ public class HuespedesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             imgHuesped = (ImageView) itemView.findViewById(R.id.imgHuesped);
             lblNombre = (TextView) itemView.findViewById(R.id.lblNombre);
         }
-        public void onBind(Usuario user){
+        public void onBind(final Usuario user){
             Picasso.with(itemView.getContext()).load(user.getFoto()).error(R.drawable.default_user).into(imgHuesped);
             lblNombre.setText(user.getNombre() + " " + user.getApellidos());
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    listener.onUserSubClick(user);
                 }
             });
         }

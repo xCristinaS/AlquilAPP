@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 
 import c.proyecto.R;
 import c.proyecto.adapters.AdvertsRecyclerViewAdapter;
+import c.proyecto.adapters.HuespedesAdapter;
 import c.proyecto.mvp_presenters.MainPresenter;
 
 
@@ -27,6 +28,7 @@ public class AdvertsRecyclerViewFragment extends Fragment {
     private AdvertsRecyclerViewAdapter.OnAdapterItemLongClick listenerLongClick;
     private AdvertsRecyclerViewAdapter.OnAdapterItemClick listenerItemClick;
     private AdvertsRecyclerViewAdapter.OnSubsIconClick listenerSubClick;
+    private HuespedesAdapter.OnUserSubClick listenerUserSubClick;
     private int adapter_type;
 
     public static AdvertsRecyclerViewFragment newInstance(int adapter_type) {
@@ -64,8 +66,10 @@ public class AdvertsRecyclerViewFragment extends Fragment {
         if (adapter_type == AdvertsRecyclerViewAdapter.ADAPTER_TYPE_MY_ADVS || adapter_type == AdvertsRecyclerViewAdapter.ADAPTER_TYPE_SUBS) {
             mAdapter.setListenerLongClick(listenerLongClick);
             mAdapter.setListenerItemClick(listenerItemClick);
-        } else
+        } else {
             mAdapter.setListenerSubsClick(listenerSubClick);
+            mAdapter.setListenerUserSubClick(listenerUserSubClick);
+        }
     }
 
     @Override
@@ -73,6 +77,7 @@ public class AdvertsRecyclerViewFragment extends Fragment {
         listenerLongClick = (AdvertsRecyclerViewAdapter.OnAdapterItemLongClick) context;
         listenerItemClick = (AdvertsRecyclerViewAdapter.OnAdapterItemClick) context;
         listenerSubClick = (AdvertsRecyclerViewAdapter.OnSubsIconClick) context;
+        listenerUserSubClick = (HuespedesAdapter.OnUserSubClick) context;
         super.onAttach(context);
     }
 
@@ -81,6 +86,7 @@ public class AdvertsRecyclerViewFragment extends Fragment {
         listenerLongClick = null;
         listenerItemClick = null;
         listenerSubClick = null;
+        listenerUserSubClick = null;
         super.onDetach();
     }
 

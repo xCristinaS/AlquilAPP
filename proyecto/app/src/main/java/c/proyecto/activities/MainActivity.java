@@ -24,6 +24,7 @@ import java.util.HashMap;
 
 import c.proyecto.R;
 
+import c.proyecto.adapters.HuespedesAdapter;
 import c.proyecto.adapters.MessagesRecyclerViewAdapter;
 import c.proyecto.adapters.AdvertsRecyclerViewAdapter;
 import c.proyecto.dialog_fragments.FilterDialogFramgent;
@@ -42,7 +43,7 @@ import c.proyecto.mvp_presenters.MainPresenter;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 
-public class MainActivity extends AppCompatActivity implements MainActivityOps, AdvertsRecyclerViewAdapter.OnAdapterItemLongClick, AdvertsRecyclerViewAdapter.OnAdapterItemClick, NavigationView.OnNavigationItemSelectedListener, MessagesRecyclerViewAdapter.OnMessagesAdapterItemClick, PrincipalFragment.AllowFilters, FilterDialogFramgent.ApplyFilters, SeleccionPrestacionesDialogFragment.ICallBackOnDismiss, AdvertsRecyclerViewAdapter.OnSubsIconClick {
+public class MainActivity extends AppCompatActivity implements MainActivityOps, AdvertsRecyclerViewAdapter.OnAdapterItemLongClick, AdvertsRecyclerViewAdapter.OnAdapterItemClick, NavigationView.OnNavigationItemSelectedListener, MessagesRecyclerViewAdapter.OnMessagesAdapterItemClick, PrincipalFragment.AllowFilters, FilterDialogFramgent.ApplyFilters, SeleccionPrestacionesDialogFragment.ICallBackOnDismiss, AdvertsRecyclerViewAdapter.OnSubsIconClick, HuespedesAdapter.OnUserSubClick {
 
 
     private static final String ARG_USUARIO = "usuario_extra";
@@ -347,6 +348,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
     }
 
     @Override
+    public void onUserSubClick(Usuario u) {
+        VerPerfilActivity.start(this, u);
+    }
+
+    @Override
     public void solicitantesObtained(View itemView, ArrayList<Usuario> listaSolicitantes){
         Fragment f = getSupportFragmentManager().findFragmentById(R.id.frmContenido);
         if (f instanceof PrincipalFragment)
@@ -376,6 +382,5 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
     public static MainPresenter getmPresenter() {
         return mPresenter;
     }
-
 
 }
