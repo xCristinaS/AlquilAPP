@@ -50,6 +50,7 @@ import c.proyecto.adapters.MessagesRecyclerViewAdapter;
 import c.proyecto.adapters.AdvertsRecyclerViewAdapter;
 import c.proyecto.dialog_fragments.FilterDialogFramgent;
 import c.proyecto.dialog_fragments.SeleccionPrestacionesDialogFragment;
+import c.proyecto.fragments.DetallesAnuncioFragment;
 import c.proyecto.fragments.MessagesFragment;
 import c.proyecto.fragments.PrincipalFragment;
 import c.proyecto.mvp_models.AdvertsFirebaseManager;
@@ -354,20 +355,31 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
     }
 
     @Override
-    public void locationObtained(Anuncio a, GeoLocation location) {
+    public void locationObtained(final Anuncio a, GeoLocation location) {
         int resource = R.drawable.marker_house;
         switch (a.getTipo_vivienda()){
             case Constantes.CASA:
                 resource = R.drawable.marker_house;
                 break;
             case Constantes.PISO:
-                resource = R.drawable.piso;
+                resource = R.drawable.marker_piso;
                 break;
             case Constantes.HABITACION:
-                resource = R.drawable.habitacion;
+                resource = R.drawable.marker_habitacion;
                 break;
         }
-        mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(location.latitude, location.longitude)).icon(BitmapDescriptorFactory.fromResource(resource)));
+
+        Marker marker = mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(location.latitude, location.longitude)).icon(BitmapDescriptorFactory.fromResource(resource)));
+        marker.setTitle(a.getKey());
+        mGoogleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                DetallesAnuncioActivity.start(MainActivity.this, a, AdvertsRecyclerViewAdapter.ADAPTER_TYPE_ADVS, mUser);
+                return true;
+            }
+        });
+        
+
     }
 
     @Override
