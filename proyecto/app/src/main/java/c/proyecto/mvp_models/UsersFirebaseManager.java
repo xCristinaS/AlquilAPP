@@ -183,10 +183,10 @@ public class UsersFirebaseManager {
     }
 
 
-    public void getSolicitantes(View itemView, HashMap<String, Boolean> solicitantes) {
+    public void getSolicitantes(final View itemView, HashMap<String, Boolean> solicitantes) {
         Firebase f = new Firebase(URL_USERS);
         final ArrayList<Usuario> listaSolicitantes = new ArrayList<>();
-        Iterator it = solicitantes.keySet().iterator();
+        final Iterator it = solicitantes.keySet().iterator();
         String solicitanteKey;
         while (it.hasNext()) {
             solicitanteKey = (String) it.next();
@@ -194,7 +194,8 @@ public class UsersFirebaseManager {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     listaSolicitantes.add(dataSnapshot.getValue(Usuario.class));
-                    System.out.println();
+                    if (!it.hasNext())
+                        ((MainPresenter)presenter).solicitantesObtained(itemView, listaSolicitantes);
                 }
 
                 @Override
@@ -202,8 +203,6 @@ public class UsersFirebaseManager {
 
                 }
             });
-            if (!it.hasNext())
-                ((MainPresenter)presenter).solicitantesObtained(itemView, listaSolicitantes);
         }
     }
 
