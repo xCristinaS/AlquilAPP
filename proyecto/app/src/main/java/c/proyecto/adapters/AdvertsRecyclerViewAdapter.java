@@ -271,7 +271,7 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(itemView.getContext(), LinearLayoutManager.VERTICAL, false);
         rvPrestacionesDialogo.setLayoutManager(mLayoutManager);
         rvPrestacionesDialogo.setItemAnimator(new DefaultItemAnimator());
-
+        
         dialog.show();
         Point boundsScreen = new Point();
         ((WindowManager) itemView.getContext().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getSize(boundsScreen);
