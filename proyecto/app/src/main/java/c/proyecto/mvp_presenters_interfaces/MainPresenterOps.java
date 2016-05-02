@@ -33,4 +33,6 @@ public interface MainPresenterOps {
     void getLocations(GeoLocation centerPosition, double radius);
     void detachGeoLocationListeners();
     void locationObtained(Anuncio a, GeoLocation location);
+    void getAdvertClickedFromMap(String title);
+    void advertClickedFromMapObtained(Anuncio a);
 }

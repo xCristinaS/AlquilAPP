@@ -22,4 +22,5 @@ public interface MainActivityOps {
     void sendAdvertHasBeenRemovedBroadcast();
     void filteredAdvertsObtained(ArrayList<Anuncio> filteredAdverts);
     void locationObtained(Anuncio a, GeoLocation location);
+    void advertClickedFromMapObtained(Anuncio a);
 }

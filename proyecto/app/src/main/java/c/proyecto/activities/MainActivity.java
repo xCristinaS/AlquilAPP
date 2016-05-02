@@ -374,12 +374,16 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
         mGoogleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
-                DetallesAnuncioActivity.start(MainActivity.this, a, AdvertsRecyclerViewAdapter.ADAPTER_TYPE_ADVS, mUser);
+                mPresenter.getAdvertClickedFromMap(marker.getTitle());
                 return true;
             }
         });
-        
 
+    }
+
+    @Override
+    public void advertClickedFromMapObtained(Anuncio a){
+        DetallesAnuncioActivity.start(MainActivity.this, a, AdvertsRecyclerViewAdapter.ADAPTER_TYPE_ADVS, mUser);
     }
 
     @Override

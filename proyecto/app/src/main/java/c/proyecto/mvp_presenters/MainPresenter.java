@@ -181,4 +181,15 @@ public class MainPresenter implements MainPresenterOps, MyPresenter {
         if (activity.get() != null)
             activity.get().locationObtained(a, location);
     }
+
+    @Override
+    public void getAdvertClickedFromMap(String title) {
+        advertsManager.getAdvertFromTitle(title);
+    }
+
+    @Override
+    public void advertClickedFromMapObtained(Anuncio a) {
+        if (activity.get() != null)
+            activity.get().advertClickedFromMapObtained(a);
+    }
 }
