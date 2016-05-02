@@ -40,11 +40,13 @@ import java.util.LinkedList;
 
 import c.proyecto.Constantes;
 import c.proyecto.R;
+import c.proyecto.activities.ConversationActivity;
 import c.proyecto.activities.LocalizacionActivity;
 import c.proyecto.activities.VerPerfilActivity;
 import c.proyecto.adapters.AdvertsRecyclerViewAdapter;
 import c.proyecto.adapters.PrestacionesAdapter;
 import c.proyecto.adapters.PrestacionesDetalladasAdapter;
+import c.proyecto.mvp_presenters.ConversationPresenter;
 import c.proyecto.pojo.Anuncio;
 import c.proyecto.pojo.Usuario;
 import c.proyecto.pojo.MessagePojo;
@@ -145,7 +147,13 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
                 }
             });
         else {
-
+            imgMessage.setImageResource(R.drawable.apto_mascotas);
+            imgMessage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ConversationActivity.start(getContext(), mMessage, mCurrentUser);
+                }
+            });
         }
 
         imgEdit = (ImageView) getView().findViewById(R.id.imgEdit);

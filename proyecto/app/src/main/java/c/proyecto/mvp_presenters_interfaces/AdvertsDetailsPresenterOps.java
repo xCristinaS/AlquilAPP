@@ -4,9 +4,6 @@ import c.proyecto.pojo.Anuncio;
 import c.proyecto.pojo.Usuario;
 import c.proyecto.pojo.MessagePojo;
 
-/**
- * Created by Cristina on 23/03/2016.
- */
 public interface AdvertsDetailsPresenterOps {
 
     void advertPublisherRequested(String anunciante);
@@ -15,4 +12,6 @@ public interface AdvertsDetailsPresenterOps {
     void userNewSubRequested(Anuncio anuncio);
     void unSubRequested(Anuncio a);
     void sendNewMessage(MessagePojo m, String keyReceptor);
+    void getMessageIfConverExist(Anuncio anuncio);
+    void messageIfConverExistObtained(MessagePojo m);
 }

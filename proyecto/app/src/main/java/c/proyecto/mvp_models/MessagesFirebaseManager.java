@@ -12,8 +12,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import c.proyecto.interfaces.MyPresenter;
+import c.proyecto.mvp_presenters.AdvertsDetailsPresenter;
 import c.proyecto.mvp_presenters.ConversationPresenter;
 import c.proyecto.mvp_presenters.MainPresenter;
+import c.proyecto.pojo.Anuncio;
 import c.proyecto.pojo.Message;
 import c.proyecto.pojo.MessagePojo;
 import c.proyecto.pojo.MessagePojoWithoutAnswer;
@@ -383,6 +385,25 @@ public class MessagesFirebaseManager {
         new Firebase(URL_CONVERSACIONES).child(m.getKeyReceptor()).child(nodoAsunto).child(m.getKey()).setValue(null);
     }
 
+
+    public void getMessageIfConverExist(Anuncio anuncio) {
+        Firebase f = new Firebase(URL_CONVERSACIONES).child(currentUser.getKey()).child(anuncio.getAnunciante() + "_" + anuncio.getTitulo().trim());
+        f.limitToLast(1).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                MessagePojo m = null;
+                if (dataSnapshot.getValue() != null)
+                    m = dataSnapshot.getChildren().iterator().next().getValue(MessagePojo.class);
+                ((AdvertsDetailsPresenter) presenter).messageIfConverExistObtained(m);
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+    }
+
     public void detachConversationListeners() {
         if (mFirebaseConversations != null) {
             mFirebaseConversations.removeEventListener(mListenerConversation);
@@ -422,5 +443,4 @@ public class MessagesFirebaseManager {
         listenersInternosMessagesSinResp.clear();
         listenersInternosMessagesSinResp = null;
     }
-
 }
