@@ -216,7 +216,6 @@ public class AdvertsFirebaseManager {
         });
     }
 
-
     public void getAdvertClickedFromMap(String advertKey) {
         new Firebase(URL_ANUNCIOS).child(advertKey).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -270,14 +269,14 @@ public class AdvertsFirebaseManager {
 
     private boolean anuncioCumpleFiltroPoblacion(String poblacion, Anuncio a) {
         boolean r = false;
-        if (a.getPoblacion().equalsIgnoreCase(poblacion) || a.getPoblacion().contains(poblacion))
+        if (a.getPoblacion().equalsIgnoreCase(poblacion) || a.getPoblacion().toLowerCase().contains(poblacion.toLowerCase()))
             r = true;
         return r;
     }
 
     private boolean anuncioCumpleFiltroProvincia(String provincia, Anuncio a) {
         boolean r = false;
-        if (a.getProvincia().equalsIgnoreCase(provincia) || a.getProvincia().contains(provincia))
+        if (a.getProvincia().equalsIgnoreCase(provincia) || a.getProvincia().toLowerCase().contains(provincia.toLowerCase()))
             r = true;
         return r;
     }
