@@ -157,7 +157,7 @@ public class AdvertsFirebaseManager {
 
 
     public void getAdvertFromTitle(String tituloAnuncio) {
-        new Firebase(URL_ANUNCIOS).orderByChild("titulo").equalTo(tituloAnuncio).addListenerForSingleValueEvent(new ValueEventListener() {
+        new Firebase(URL_ANUNCIOS).orderByChild("titulo").equalTo(tituloAnuncio.trim()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Anuncio a = dataSnapshot.getChildren().iterator().next().getValue(Anuncio.class);
