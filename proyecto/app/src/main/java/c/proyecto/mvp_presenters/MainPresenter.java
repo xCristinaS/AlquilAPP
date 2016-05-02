@@ -183,8 +183,8 @@ public class MainPresenter implements MainPresenterOps, MyPresenter {
     }
 
     @Override
-    public void getAdvertClickedFromMap(String title) {
-        advertsManager.getAdvertFromTitle(title);
+    public void getAdvertClickedFromMap(String advertKey) {
+        advertsManager.getAdvertClickedFromMap(advertKey);
     }
 
     @Override

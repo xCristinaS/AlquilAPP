@@ -206,10 +206,23 @@ public class AdvertsFirebaseManager {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Anuncio a = dataSnapshot.getChildren().iterator().next().getValue(Anuncio.class);
-                if (presenter instanceof ConversationPresenter)
-                    ((ConversationPresenter) presenter).advertObtained(a);
-                else
-                    ((MainPresenter)presenter).advertClickedFromMapObtained(a);
+                ((ConversationPresenter) presenter).advertObtained(a);
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+    }
+
+
+    public void getAdvertClickedFromMap(String advertKey) {
+        new Firebase(URL_ANUNCIOS).child(advertKey).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Anuncio a = dataSnapshot.getChildren().iterator().next().getValue(Anuncio.class);
+                ((MainPresenter) presenter).advertClickedFromMapObtained(a);
             }
 
             @Override
