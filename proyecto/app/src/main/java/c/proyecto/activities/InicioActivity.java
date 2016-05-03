@@ -16,12 +16,13 @@ import com.github.florent37.materialtextfield.MaterialTextField;
 import c.proyecto.Constantes;
 
 import c.proyecto.R;
+import c.proyecto.interfaces.MyInicio;
 import c.proyecto.mvp_models.UsersFirebaseManager;
 import c.proyecto.mvp_views_interfaces.InicioActivityOps;
 import c.proyecto.pojo.Usuario;
 import c.proyecto.mvp_presenters.InicioPresenter;
 
-public class InicioActivity extends AppCompatActivity implements InicioActivityOps {
+public class InicioActivity extends AppCompatActivity implements InicioActivityOps, MyInicio {
 
     private TextView txtUser;
     private TextView txtPass;
@@ -96,7 +97,7 @@ public class InicioActivity extends AppCompatActivity implements InicioActivityO
         String pass = preferences.getString(Constantes.KEY_PASS, "");
         txtUser.setText(user);
         txtPass.setText(pass);
-        
+
         if(!user.isEmpty()){
             swRememberMe.setChecked(true);
             presentador.signInRequested(user, pass);

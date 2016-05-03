@@ -5,6 +5,7 @@ import android.app.Activity;
 import java.lang.ref.WeakReference;
 
 import c.proyecto.activities.InicioActivity;
+import c.proyecto.interfaces.MyInicio;
 import c.proyecto.interfaces.MyPresenter;
 import c.proyecto.mvp_models.UsersFirebaseManager;
 import c.proyecto.mvp_presenters_interfaces.InicioPresenterOps;
@@ -13,19 +14,19 @@ import c.proyecto.pojo.Usuario;
 
 public class InicioPresenter implements InicioPresenterOps, MyPresenter {
 
-    private static WeakReference<InicioActivity> activity;
+    private static WeakReference<MyInicio> activity;
     private static InicioPresenter presentador;
     private UsersFirebaseManager usersManager;
 
     private InicioPresenter(Activity a) {
-        activity = new WeakReference<>((InicioActivity) a);
+        activity = new WeakReference<>((MyInicio) a);
     }
 
     public static InicioPresenter getPresentador(Activity a) {
         if (presentador == null)
             presentador = new InicioPresenter(a);
         else
-            activity = new WeakReference<>((InicioActivity) a);
+            activity = new WeakReference<>((MyInicio) a);
         return presentador;
     }
 
