@@ -71,7 +71,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/mTPass"
-        android:text="Recuérdame"
+        android:text="Seguir conectado"
         android:layout_alignBaseline="@id/swRememberMe"
         android:layout_toRightOf="@id/swRememberMe"
         android:layout_toEndOf="@id/swRememberMe"

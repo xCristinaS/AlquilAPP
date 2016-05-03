@@ -23,7 +23,8 @@ public final class Constantes {
     //PREFERENCIAS
     public static final String NOMBRE_PREFERENCIAS = "Preferencias";
         //Keys
-        public static final String KEY_REMEMBER_ME = "rememberMe";
+        public static final String KEY_USER = "keyUser";
+        public static final String KEY_PASS = "keyPass";
 
     //Número de imagenes que contendrá los anuncios
     public static final int NUMERO_IMAGENES_ANUNCIO = 6;
@@ -46,6 +47,7 @@ public final class Constantes {
     //IMAGE SLIDER
     public static final long DELAY_TIME = 8000;
     public static final long DURATION = 8000;
+
 
 }
 

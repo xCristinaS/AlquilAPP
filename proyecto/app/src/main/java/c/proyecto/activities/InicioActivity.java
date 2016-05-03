@@ -39,7 +39,7 @@ public class InicioActivity extends AppCompatActivity implements InicioActivityO
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inicio);
         initViews();
-        checkSavedUser();
+        checkIfSavedUser();
     }
 
     private void initViews() {
@@ -91,12 +91,16 @@ public class InicioActivity extends AppCompatActivity implements InicioActivityO
         });
     }
 
-    private void checkSavedUser() {
-        //Coloca el usuario guardado en el txtUser si el usuario activó el switch de recordar la última vez que inicio sesión.
-        txtUser.setText(preferences.getString(Constantes.KEY_REMEMBER_ME, ""));
-        //Si ha recordado el usuario dejará activado el swift
-        if(!txtUser.getText().toString().isEmpty())
+    private void checkIfSavedUser() {
+        String user = preferences.getString(Constantes.KEY_USER, "");
+        String pass = preferences.getString(Constantes.KEY_PASS, "");
+        txtUser.setText(user);
+        txtPass.setText(pass);
+        
+        if(!user.isEmpty()){
             swRememberMe.setChecked(true);
+            presentador.signInRequested(user, pass);
+        }
     }
 
 
@@ -106,10 +110,14 @@ public class InicioActivity extends AppCompatActivity implements InicioActivityO
 
         if(u != null){
             //Guardará en las preferencias el usuario para la próxima ves que entre.
-            if(swRememberMe.isChecked())
-                editor.putString(Constantes.KEY_REMEMBER_ME, txtUser.getText().toString());
-            else
-                editor.putString(Constantes.KEY_REMEMBER_ME, "");
+            if(swRememberMe.isChecked()){
+                editor.putString(Constantes.KEY_USER, txtUser.getText().toString());
+                editor.putString(Constantes.KEY_PASS, txtPass.getText().toString());
+            }
+            else{
+                editor.putString(Constantes.KEY_USER, "");
+                editor.putString(Constantes.KEY_PASS, "");
+            }
             editor.apply();
             MainActivity.start(this, u);
             finish();
