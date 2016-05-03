@@ -124,9 +124,7 @@ public class AdvertsFirebaseManager {
             listener = new ChildEventListener() {
                 @Override
                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                    Anuncio a = dataSnapshot.getValue(Anuncio.class);
-                    if (!a.getSolicitantes().containsKey(currentUser.getKey()) && !a.getAnunciante().equals(currentUser.getKey()))
-                        ((MainPresenter) presenter).advertHasBeenObtained(a);
+
                 }
 
                 @Override

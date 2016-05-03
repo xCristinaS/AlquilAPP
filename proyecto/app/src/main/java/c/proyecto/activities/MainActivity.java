@@ -314,7 +314,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
         mGoogleMap = map;
         Location l = getLastKnownLocation();
         if (l != null) {
-            mPresenter.getLocations(new GeoLocation(l.getLatitude(), l.getLongitude()), 2);
+            mPresenter.getLocations(new GeoLocation(l.getLatitude(), l.getLongitude()), 10);
             posicionarMapa(l);
         }// else, mostrar dialogo para que active la localización
 
@@ -374,7 +374,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
                 return true;
             }
         });
-
+        advertHasBeenObtained(a);
     }
 
     @Override
