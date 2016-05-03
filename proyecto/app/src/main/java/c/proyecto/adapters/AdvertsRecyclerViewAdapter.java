@@ -37,7 +37,9 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
 
     public interface OnAdapterItemLongClick {
         void setAdapterAllowMultiDeletion(AdvertsRecyclerViewAdapter adaptador);
+
         void onItemLongClick();
+
         void desactivarMultiseleccion();
     }
 
@@ -184,7 +186,7 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
         return point.x;
     }
 
-    public void closeSolicitantesDialog(){
+    public void closeSolicitantesDialog() {
         solicitantesDialog.dismiss();
     }
 
@@ -260,7 +262,7 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
                             Picasso.with(itemView.getContext()).load(anuncio.getImagenes().get(img)).resize(anchoAproxImgAvatar, imgAvatar.getLayoutParams().height).centerCrop().into(imgAvatar, new ImageLoadedCallback(prbAnuncio));
                 }
 
-                if(anuncio.isSubsChanged()){
+                if (anuncio.isSubsChanged()) {
                     imgSuscritos.setColorFilter(itemView.getResources().getColor(R.color.colorAccent));
                     lblSubs.setTextColor(itemView.getResources().getColor(R.color.colorAccent));
                 }
@@ -367,7 +369,7 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
                 Anuncio aux = mDatos.remove(i);
                 mDatos.add(i, a);
                 stop = true;
-                if( aux.getSolicitantes().size() != a.getSolicitantes().size()){
+                if (aux.getSolicitantes().size() != a.getSolicitantes().size()) {
                     presenter.getSolicitantes(null, a); // para actualizar el dialogo de solicitantes.
                     a.setSubsChanged(true);
                 }
@@ -379,6 +381,12 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
 
     public Anuncio getAdvert(int position) {
         return mDatos.get(position);
+    }
+
+
+    public void removeFilter() {
+        setFiltersApplied(false);
+        mDatos.clear();
     }
 
     public void setFiltersApplied(boolean filtersApplied) {

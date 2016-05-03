@@ -54,6 +54,12 @@ public class PrincipalFragment extends Fragment {
         confViewPager();
     }
 
+    @Override
+    public void onResume() {
+        ((MainActivity)getActivity()).getAnunciosCercanos();
+        super.onResume();
+    }
+
     private void confViewPager() {
         vpAdapter = new SectionsPagerAdapter(getChildFragmentManager());
         viewPager = (ViewPager) getActivity().findViewById(R.id.container);
@@ -153,7 +159,7 @@ public class PrincipalFragment extends Fragment {
     public void removeFilter() {
         AdvertsRecyclerViewFragment f = (AdvertsRecyclerViewFragment) vpAdapter.getItem(1);
         if (f.getmAdapter().getAdapter_type() == AdvertsRecyclerViewAdapter.ADAPTER_TYPE_ADVS)
-            f.getmAdapter().setFiltersApplied(false);
+            f.getmAdapter().removeFilter();
     }
 
 

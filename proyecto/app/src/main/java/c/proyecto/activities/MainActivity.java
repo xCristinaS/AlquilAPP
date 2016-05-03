@@ -297,9 +297,16 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
                 mPresenter.detachAdvertsListener();
                 mPresenter.attachAdvertsListeners();
                 toolbar.getMenu().findItem(R.id.deshacerFiltro).setVisible(false);
+                getAnunciosCercanos();
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void getAnunciosCercanos() {
+        Location l = getLastKnownLocation();
+        if (l != null)
+            mPresenter.getLocations(new GeoLocation(l.getLatitude(), l.getLongitude()), 10);
     }
 
     private void confMap() {
@@ -353,7 +360,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
     @Override
     public void locationObtained(final Anuncio a, GeoLocation location) {
         int resource = R.drawable.marker_house;
-        switch (a.getTipo_vivienda()){
+        switch (a.getTipo_vivienda()) {
             case Constantes.CASA:
                 resource = R.drawable.marker_house;
                 break;
@@ -365,20 +372,22 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
                 break;
         }
 
-        Marker marker = mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(location.latitude, location.longitude)).icon(BitmapDescriptorFactory.fromResource(resource)));
-        marker.setTitle(a.getKey());
-        mGoogleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-            @Override
-            public boolean onMarkerClick(Marker marker) {
-                mPresenter.getAdvertClickedFromMap(marker.getTitle());
-                return true;
-            }
-        });
-        advertHasBeenObtained(a);
+        if (mGoogleMap != null) {
+            Marker marker = mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(location.latitude, location.longitude)).icon(BitmapDescriptorFactory.fromResource(resource)));
+            marker.setTitle(a.getKey());
+            mGoogleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                @Override
+                public boolean onMarkerClick(Marker marker) {
+                    mPresenter.getAdvertClickedFromMap(marker.getTitle());
+                    return true;
+                }
+            });
+        } else
+            advertHasBeenObtained(a);
     }
 
     @Override
-    public void advertClickedFromMapObtained(Anuncio a){
+    public void advertClickedFromMapObtained(Anuncio a) {
         DetallesAnuncioActivity.start(MainActivity.this, a, AdvertsRecyclerViewAdapter.ADAPTER_TYPE_ADVS, mUser);
     }
 
@@ -433,8 +442,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
                 else
                     getSupportFragmentManager().beginTransaction().replace(R.id.frmContenido, new PrincipalFragment(), TAG_PRINCIPAL_FRAGMENT).commit();
 
-                if (fragment instanceof SupportMapFragment)
+                if (fragment instanceof SupportMapFragment) {
                     mPresenter.detachGeoLocationListeners();
+                    mGoogleMap = null;
+                }
             } else
                 super.onBackPressed();
         }
@@ -473,7 +484,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
     }
 
     @Override
-    public void solicitantesObtained(View itemView, ArrayList<Usuario> listaSolicitantes, Anuncio anuncio){
+    public void solicitantesObtained(View itemView, ArrayList<Usuario> listaSolicitantes, Anuncio anuncio) {
         Fragment f = getSupportFragmentManager().findFragmentById(R.id.frmContenido);
         if (f instanceof PrincipalFragment)
             ((PrincipalFragment) f).solicitantesObtained(itemView, listaSolicitantes, anuncio);
