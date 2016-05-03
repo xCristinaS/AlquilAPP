@@ -93,15 +93,11 @@ public class InicioActivity extends AppCompatActivity implements InicioActivityO
     }
 
     private void checkIfSavedUser() {
-        String user = preferences.getString(Constantes.KEY_USER, "");
-        String pass = preferences.getString(Constantes.KEY_PASS, "");
-        txtUser.setText(user);
-        txtPass.setText(pass);
-
-        if(!user.isEmpty()){
+        //Coloca el usuario guardado en el txtUser si el usuario activó el switch de recordar la última vez que inicio sesión.
+        txtUser.setText(preferences.getString(Constantes.KEY_USER, ""));
+        //Si ha recordado el usuario dejará activado el swift
+        if(!preferences.getString(Constantes.KEY_PASS, "").isEmpty())
             swRememberMe.setChecked(true);
-            presentador.signInRequested(user, pass);
-        }
     }
 
 
@@ -111,14 +107,13 @@ public class InicioActivity extends AppCompatActivity implements InicioActivityO
 
         if(u != null){
             //Guardará en las preferencias el usuario para la próxima ves que entre.
-            if(swRememberMe.isChecked()){
-                editor.putString(Constantes.KEY_USER, txtUser.getText().toString());
+            editor.putString(Constantes.KEY_USER, txtUser.getText().toString());
+            //Guardará la contraseña dependiendo si quiere que se conecte solo la próxima vez
+            if(swRememberMe.isChecked())
                 editor.putString(Constantes.KEY_PASS, txtPass.getText().toString());
-            }
-            else{
-                editor.putString(Constantes.KEY_USER, "");
+            else
                 editor.putString(Constantes.KEY_PASS, "");
-            }
+
             editor.apply();
             MainActivity.start(this, u);
             finish();
@@ -127,8 +122,15 @@ public class InicioActivity extends AppCompatActivity implements InicioActivityO
             Toast.makeText(this, "Datos Incorrectos", Toast.LENGTH_SHORT).show();
     }
 
+
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    public void onBackPressed() {
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(Constantes.KEY_PASS, "");
+        editor.apply();
+        super.onBackPressed();
     }
+
+    
+
 }

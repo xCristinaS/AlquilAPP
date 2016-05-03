@@ -84,7 +84,7 @@ public class SplashActivity extends AppCompatActivity implements InicioActivityO
         String user = preferences.getString(Constantes.KEY_USER, "");
         String pass = preferences.getString(Constantes.KEY_PASS, "");
 
-        if(!user.isEmpty())
+        if(!user.isEmpty() && !pass.isEmpty())
             mPresenter.signInRequested(user, pass);
     }
 
