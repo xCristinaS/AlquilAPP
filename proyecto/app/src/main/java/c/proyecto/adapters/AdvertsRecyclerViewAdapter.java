@@ -2,10 +2,8 @@ package c.proyecto.adapters;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Point;
-import android.provider.CalendarContract;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -261,17 +259,17 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
                         if (img.equals(Constantes.FOTO_PRINCIPAL)) // Si la key es de la imagen principal, cargo la foto
                             Picasso.with(itemView.getContext()).load(anuncio.getImagenes().get(img)).resize(anchoAproxImgAvatar, imgAvatar.getLayoutParams().height).centerCrop().into(imgAvatar, new ImageLoadedCallback(prbAnuncio));
                 }
-                if(anuncio.isNewUserSubscribed()){
+
+                if(anuncio.isSubsChanged()){
                     imgSuscritos.setColorFilter(itemView.getResources().getColor(R.color.colorAccent));
                     lblSubs.setTextColor(itemView.getResources().getColor(R.color.colorAccent));
                 }
-
 
                 groupSuscritos.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         listenerSubsClick.onSubsItemClick(itemView, anuncio);
-                        anuncio.setNewUserSubscribed(false);
+                        anuncio.setSubsChanged(false);
                         imgSuscritos.clearColorFilter();
                         lblSubs.setTextColor(Color.BLACK);
                     }
@@ -370,7 +368,7 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
                 stop = true;
                 if( aux.getSolicitantes().size() != a.getSolicitantes().size()){
                     presenter.getSolicitantes(null, a); // para actualizar el dialogo de solicitantes.
-                    a.setNewUserSubscribed(true);
+                    a.setSubsChanged(true);
                 }
             }
         if (!stop)

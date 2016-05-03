@@ -3,9 +3,6 @@ package c.proyecto.pojo;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -19,7 +16,7 @@ public class Anuncio implements Parcelable, MyModel {
     private ArrayList<Prestacion> prestaciones;
     private HashMap<String, Boolean> solicitantes;
     private MyLatLng lats;
-    private boolean newUserSubscribed;
+    private boolean subsChanged;
 
     public Anuncio() {
         imagenes = new HashMap<>();
@@ -98,12 +95,12 @@ public class Anuncio implements Parcelable, MyModel {
         this.habitaciones_o_camas = habitaciones_o_camas;
     }
 
-    public boolean isNewUserSubscribed() {
-        return newUserSubscribed;
+    public boolean isSubsChanged() {
+        return subsChanged;
     }
 
-    public void setNewUserSubscribed(boolean newUserSubscribed) {
-        this.newUserSubscribed = newUserSubscribed;
+    public void setSubsChanged(boolean subsChanged) {
+        this.subsChanged = subsChanged;
     }
 
     public int getNumero_banios() {
@@ -178,7 +175,6 @@ public class Anuncio implements Parcelable, MyModel {
         this.lats = lats;
     }
 
-
     @Override
     public int describeContents() {
         return 0;
@@ -202,8 +198,8 @@ public class Anuncio implements Parcelable, MyModel {
         dest.writeSerializable(this.imagenes);
         dest.writeTypedList(prestaciones);
         dest.writeSerializable(this.solicitantes);
-        dest.writeParcelable(this.lats, flags);
-        dest.writeByte(newUserSubscribed ? (byte) 1 : (byte) 0);
+        dest.writeParcelable(this.lats, 0);
+        dest.writeByte(subsChanged ? (byte) 1 : (byte) 0);
     }
 
     protected Anuncio(Parcel in) {
@@ -224,16 +220,14 @@ public class Anuncio implements Parcelable, MyModel {
         this.prestaciones = in.createTypedArrayList(Prestacion.CREATOR);
         this.solicitantes = (HashMap<String, Boolean>) in.readSerializable();
         this.lats = in.readParcelable(MyLatLng.class.getClassLoader());
-        this.newUserSubscribed = in.readByte() != 0;
+        this.subsChanged = in.readByte() != 0;
     }
 
     public static final Creator<Anuncio> CREATOR = new Creator<Anuncio>() {
-        @Override
         public Anuncio createFromParcel(Parcel source) {
             return new Anuncio(source);
         }
 
-        @Override
         public Anuncio[] newArray(int size) {
             return new Anuncio[size];
         }

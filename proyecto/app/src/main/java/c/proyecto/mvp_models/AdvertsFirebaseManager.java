@@ -184,6 +184,7 @@ public class AdvertsFirebaseManager {
     }
 
     public void removeUserSub(final Anuncio a) {
+        a.setSubsChanged(true);
         Firebase mFirebase = new Firebase(URL_ANUNCIOS).child(a.getKey()).child("solicitantes").child(currentUser.getKey());
         mFirebase.setValue(null);
         new Firebase(URL_SOLICITUDES).child(currentUser.getKey()).child(a.getKey()).setValue(null);
@@ -192,6 +193,7 @@ public class AdvertsFirebaseManager {
 
     public void createNewUserSub(Anuncio a) {
         a.getSolicitantes().put(currentUser.getKey(), true);
+        a.setSubsChanged(true);
         Firebase mFirebase = new Firebase(URL_ANUNCIOS).child(a.getKey());
         mFirebase.setValue(a);
         mFirebase = new Firebase(URL_SOLICITUDES).child(currentUser.getKey()).child(a.getKey());
