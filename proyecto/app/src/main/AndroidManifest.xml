@@ -16,9 +16,10 @@
         android:theme="@style/AppTheme">
 
 
-        <activity android:name=".activities.SplashActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="portrait">
+        <activity
+            android:name=".activities.SplashActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -29,33 +30,38 @@
 
         <activity
             android:name=".activities.InicioActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
             android:name=".activities.MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+        
         <activity
             android:name=".activities.RegistroActivity"
             android:label="Registro"
             android:theme="@style/AppTheme.NoActionBar" />
+
         <activity
             android:name=".activities.DetallesAnuncioActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+
         <activity android:name=".activities.EditProfileActivity" />
+
         <activity
             android:name=".activities.CrearAnuncio1Activity"
             android:label="Imagenes" />
         <activity android:name=".activities.CrearAnuncio2Activity" />
+
         <activity
             android:name=".activities.ConversationActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".activities.VerPerfilActivity" />
+
         <activity
             android:name=".activities.LocalizacionActivity"
             android:label="Localización" />
 
-
-
+        <activity android:name=".activities.PreferencesActivity"/>
 
         <meta-data
             android:name="com.google.android.gms.version"
@@ -67,8 +73,6 @@
         <uses-feature
             android:glEsVersion="0x00020000"
             android:required="true" />
-
-
     </application>
 
 </manifest>

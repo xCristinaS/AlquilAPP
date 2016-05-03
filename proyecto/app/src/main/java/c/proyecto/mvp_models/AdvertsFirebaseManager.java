@@ -124,9 +124,7 @@ public class AdvertsFirebaseManager {
             listener = new ChildEventListener() {
                 @Override
                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                    Anuncio a = dataSnapshot.getValue(Anuncio.class);
-                    if (!a.getSolicitantes().containsKey(currentUser.getKey()) && !a.getAnunciante().equals(currentUser.getKey()))
-                        ((MainPresenter) presenter).advertHasBeenObtained(a);
+
                 }
 
                 @Override
@@ -331,6 +329,7 @@ public class AdvertsFirebaseManager {
     public void getLocations(GeoLocation centerPosition, double radius) {
         GeoFire g = new GeoFire(new Firebase(URL_LOCATIONS));
         final Firebase f = new Firebase(URL_ANUNCIOS);
+        detachGeoLocationListener();
         geoQuery = g.queryAtLocation(centerPosition, radius);
         geoQuery.addGeoQueryEventListener(new GeoQueryEventListener() {
             @Override
@@ -373,8 +372,10 @@ public class AdvertsFirebaseManager {
     }
 
     public void detachGeoLocationListener() {
-        if (geoQuery != null)
+        if (geoQuery != null) {
             geoQuery.removeAllListeners();
+            geoQuery = null;
+        }
     }
 
     public void attachFirebaseListeners() {
