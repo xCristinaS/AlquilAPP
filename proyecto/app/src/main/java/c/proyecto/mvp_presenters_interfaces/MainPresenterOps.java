@@ -39,4 +39,5 @@ public interface MainPresenterOps {
     void locationObtained(Anuncio a, GeoLocation location);
     void getAdvertClickedFromMap(String advertKey);
     void advertClickedFromMapObtained(Anuncio a);
+    void updateAdvert(Anuncio anuncio);
 }

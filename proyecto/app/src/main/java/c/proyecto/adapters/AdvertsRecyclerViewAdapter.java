@@ -60,7 +60,7 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
     private static OnSubsIconClick listenerSubsClick;
     private static HuespedesAdapter.OnUserSubClick listenerUserSubClick;
     private View emptyView;
-    private MainPresenter presenter;
+    private static MainPresenter presenter;
     private SparseBooleanArray mSelectedItems = new SparseBooleanArray();
     private boolean multiDeletionModeActivated = false;
     private static Usuario user;
@@ -272,6 +272,7 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
                         anuncio.setSubsChanged(false);
                         imgSuscritos.clearColorFilter();
                         lblSubs.setTextColor(Color.BLACK);
+                        presenter.updateAdvert(anuncio);
                     }
                 });
             }

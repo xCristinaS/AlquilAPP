@@ -206,4 +206,9 @@ public class MainPresenter implements MainPresenterOps, MyPresenter {
         if (activity.get() != null)
             activity.get().advertClickedFromMapObtained(a);
     }
+
+    @Override
+    public void updateAdvert(Anuncio anuncio) {
+        advertsManager.publishNewAdvert(anuncio);
+    }
 }
