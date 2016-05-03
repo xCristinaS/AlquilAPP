@@ -383,7 +383,6 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
         return mDatos.get(position);
     }
 
-
     public void removeFilter() {
         setFiltersApplied(false);
         mDatos.clear();

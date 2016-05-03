@@ -303,10 +303,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
         return super.onOptionsItemSelected(item);
     }
 
-    public void getAnunciosCercanos() {
+    public Location getAnunciosCercanos() {
         Location l = getLastKnownLocation();
         if (l != null)
             mPresenter.getLocations(new GeoLocation(l.getLatitude(), l.getLongitude()), 10);
+        // else, mostrar dialogo para que active la localización
+        return l;
     }
 
     private void confMap() {
@@ -319,12 +321,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
     @Override
     public void onMapReady(final GoogleMap map) {
         mGoogleMap = map;
-        Location l = getLastKnownLocation();
-        if (l != null) {
-            mPresenter.getLocations(new GeoLocation(l.getLatitude(), l.getLongitude()), 10);
+        Location l = getAnunciosCercanos();
+        if (l != null)
             posicionarMapa(l);
-        }// else, mostrar dialogo para que active la localización
-
     }
 
     private void posicionarMapa(Location l) {
