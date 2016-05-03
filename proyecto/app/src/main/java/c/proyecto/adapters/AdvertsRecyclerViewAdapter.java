@@ -2,7 +2,10 @@ package c.proyecto.adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.graphics.Point;
+import android.provider.CalendarContract;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -230,7 +233,7 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
     static class MiAnuncioViewHolder extends RecyclerView.ViewHolder {
 
         private final LinearLayout groupSuscritos;
-        private ImageView imgAvatar;
+        private ImageView imgAvatar, imgSuscritos;
         private ProgressBar prbAnuncio;
         private TextView lblTituloAnuncio, lblLocalizacion, lblSubs;
         private int anchoAproxImgAvatar;
@@ -244,6 +247,7 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
             anchoAproxImgAvatar = getAnchoPantalla(itemView.getContext()) / 2;
             prbAnuncio = (ProgressBar) itemView.findViewById(R.id.prbAnuncio);
             groupSuscritos = (LinearLayout) itemView.findViewById(R.id.groupSuscritos);
+            imgSuscritos = (ImageView) itemView.findViewById(R.id.imgSuscritos);
         }
 
         public void onBind(final Anuncio anuncio) {
@@ -257,11 +261,19 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
                         if (img.equals(Constantes.FOTO_PRINCIPAL)) // Si la key es de la imagen principal, cargo la foto
                             Picasso.with(itemView.getContext()).load(anuncio.getImagenes().get(img)).resize(anchoAproxImgAvatar, imgAvatar.getLayoutParams().height).centerCrop().into(imgAvatar, new ImageLoadedCallback(prbAnuncio));
                 }
+                if(anuncio.isNewUserSubscribed()){
+                    imgSuscritos.setColorFilter(itemView.getResources().getColor(R.color.colorAccent));
+                    lblSubs.setTextColor(itemView.getResources().getColor(R.color.colorAccent));
+                }
+
 
                 groupSuscritos.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         listenerSubsClick.onSubsItemClick(itemView, anuncio);
+                        anuncio.setNewUserSubscribed(false);
+                        imgSuscritos.clearColorFilter();
+                        lblSubs.setTextColor(Color.BLACK);
                     }
                 });
             }
@@ -353,10 +365,13 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
         boolean stop = false;
         for (int i = 0; !stop && i < mDatos.size(); i++)
             if (a.getKey().equals(mDatos.get(i).getKey())) {
-                mDatos.remove(i);
+                Anuncio aux = mDatos.remove(i);
                 mDatos.add(i, a);
                 stop = true;
-                presenter.getSolicitantes(null, a); // para actualizar el dialogo de solicitantes.
+                if( aux.getSolicitantes().size() != a.getSolicitantes().size()){
+                    presenter.getSolicitantes(null, a); // para actualizar el dialogo de solicitantes.
+                    a.setNewUserSubscribed(true);
+                }
             }
         if (!stop)
             mDatos.add(a);

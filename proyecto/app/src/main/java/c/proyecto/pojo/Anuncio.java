@@ -19,6 +19,7 @@ public class Anuncio implements Parcelable, MyModel {
     private ArrayList<Prestacion> prestaciones;
     private HashMap<String, Boolean> solicitantes;
     private MyLatLng lats;
+    private boolean newUserSubscribed;
 
     public Anuncio() {
         imagenes = new HashMap<>();
@@ -97,6 +98,14 @@ public class Anuncio implements Parcelable, MyModel {
         this.habitaciones_o_camas = habitaciones_o_camas;
     }
 
+    public boolean isNewUserSubscribed() {
+        return newUserSubscribed;
+    }
+
+    public void setNewUserSubscribed(boolean newUserSubscribed) {
+        this.newUserSubscribed = newUserSubscribed;
+    }
+
     public int getNumero_banios() {
         return numero_banios;
     }
@@ -169,6 +178,7 @@ public class Anuncio implements Parcelable, MyModel {
         this.lats = lats;
     }
 
+
     @Override
     public int describeContents() {
         return 0;
@@ -193,6 +203,7 @@ public class Anuncio implements Parcelable, MyModel {
         dest.writeTypedList(prestaciones);
         dest.writeSerializable(this.solicitantes);
         dest.writeParcelable(this.lats, flags);
+        dest.writeByte(newUserSubscribed ? (byte) 1 : (byte) 0);
     }
 
     protected Anuncio(Parcel in) {
@@ -213,6 +224,7 @@ public class Anuncio implements Parcelable, MyModel {
         this.prestaciones = in.createTypedArrayList(Prestacion.CREATOR);
         this.solicitantes = (HashMap<String, Boolean>) in.readSerializable();
         this.lats = in.readParcelable(MyLatLng.class.getClassLoader());
+        this.newUserSubscribed = in.readByte() != 0;
     }
 
     public static final Creator<Anuncio> CREATOR = new Creator<Anuncio>() {
