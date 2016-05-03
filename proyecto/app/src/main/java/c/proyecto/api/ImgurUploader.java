@@ -29,15 +29,16 @@ public class ImgurUploader {
             public void onResponse(Call<ImgurResponse> call, Response<ImgurResponse> response) {
                 ImgurResponse respuesta = response.body();
                 //Se añade la urls del bitmap escogido
-                if (model instanceof Anuncio && presenter.get(0) instanceof CrearEditarAnuncioPresenter) {
-                    ((Anuncio) model).getImagenes().put(mainImage? Constantes.FOTO_PRINCIPAL:"foto"+respuesta.getData().getLink().hashCode(), respuesta.getData().getLink());
-                    ((CrearEditarAnuncioPresenter)presenter.get(0)).publishNewAdvert((Anuncio) model);
-                    if (presenter.size() > 1 && presenter.get(1) instanceof AdvertsDetailsPresenter)
-                        ((AdvertsDetailsPresenter) presenter.get(1)).updateAdvert((Anuncio) model);
-                } else if (model instanceof Usuario && presenter.get(0) instanceof ProfilePresenter){
-                    ((Usuario) model).setFoto(respuesta.getData().getLink());
-                    ((ProfilePresenter)presenter.get(0)).updateUserProfile((Usuario) model);
-                }
+                if (respuesta != null)
+                    if (model instanceof Anuncio && presenter.get(0) instanceof CrearEditarAnuncioPresenter) {
+                        ((Anuncio) model).getImagenes().put(mainImage ? Constantes.FOTO_PRINCIPAL : "foto" + respuesta.getData().getLink().hashCode(), respuesta.getData().getLink());
+                        ((CrearEditarAnuncioPresenter) presenter.get(0)).publishNewAdvert((Anuncio) model);
+                        if (presenter.size() > 1 && presenter.get(1) instanceof AdvertsDetailsPresenter)
+                            ((AdvertsDetailsPresenter) presenter.get(1)).updateAdvert((Anuncio) model);
+                    } else if (model instanceof Usuario && presenter.get(0) instanceof ProfilePresenter) {
+                        ((Usuario) model).setFoto(respuesta.getData().getLink());
+                        ((ProfilePresenter) presenter.get(0)).updateUserProfile((Usuario) model);
+                    }
             }
 
             @Override
