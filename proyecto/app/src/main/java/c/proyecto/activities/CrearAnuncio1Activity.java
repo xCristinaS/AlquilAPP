@@ -51,6 +51,7 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
     private File[] mImagenesAnuncio;
     private Anuncio mAnuncio;
     private Usuario user;
+    private boolean imagesModified;
 
     public static void start(Context context, Usuario user) {
         Intent intent = new Intent(context, CrearAnuncio1Activity.class);
@@ -102,9 +103,12 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
         imgSiguiente.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mImagenesAnuncio[0] != null)
-                    CrearAnuncio2Activity.startForResult(CrearAnuncio1Activity.this, mAnuncio, user, RC_CLOSE, mImagenesAnuncio[0], mImagenesAnuncio[1], mImagenesAnuncio[2], mImagenesAnuncio[3], mImagenesAnuncio[4], mImagenesAnuncio[5]);
-                else
+                if (mImagenesAnuncio[0] != null) {
+                    if (imagesModified)
+                        CrearAnuncio2Activity.startForResult(CrearAnuncio1Activity.this, mAnuncio, user, RC_CLOSE, mImagenesAnuncio[0], mImagenesAnuncio[1], mImagenesAnuncio[2], mImagenesAnuncio[3], mImagenesAnuncio[4], mImagenesAnuncio[5]);
+                    else
+                        CrearAnuncio2Activity.startForResult(CrearAnuncio1Activity.this, mAnuncio, user, RC_CLOSE);
+                } else
                     Toast.makeText(CrearAnuncio1Activity.this, "Debe cargar una foto para continuar", Toast.LENGTH_SHORT).show();
             }
         });
@@ -214,8 +218,6 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
                                 break;
                             //Eliminar imagen
                             case 2:
-
-
                                 for (int i = 0; i < imgViews.length; i++)
                                     if (imgViews[i].getId() == imgSeleccionada.getId()) {
                                         //Eliminar imagen del array
@@ -223,6 +225,7 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
                                         //Poner imagen por defecto
                                         imgSeleccionada.setImageDrawable(getResources().getDrawable(R.drawable.sin_imagen));
                                     }
+                                imagesModified = true;
                                 break;
                         }
                     }
@@ -266,9 +269,11 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
                     Uri uriGaleria = data.getData();
                     mPathOriginal = Imagenes.getRealPathFromGallery(this, uriGaleria);
                     new HiloEscalador().execute(imgSeleccionada.getWidth(), imgSeleccionada.getHeight());
+                    imagesModified = true;
                     break;
                 case RC_CAPTURAR_FOTO:
                     new HiloEscalador().execute(imgSeleccionada.getWidth(), imgSeleccionada.getHeight());
+                    imagesModified = true;
                     break;
                 case RC_CLOSE:
                     setResult(RESULT_OK, new Intent().putExtra(EXTRA_ANUNCIO_RESULT, data.getParcelableExtra(CrearAnuncio2Activity.EXTRA_ANUNCIO_RESULT)));

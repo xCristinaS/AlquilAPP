@@ -47,6 +47,7 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
     private static final String EXTRA_IMAGE_3 = "img3";
     private static final String EXTRA_IMAGE_4 = "img4";
     private static final String EXTRA_IMAGE_5 = "img5";
+    private static final String EXTRA_IMAGE_MODIFIED = "imagenes_modificadas";
 
     private EditText txtTituloAnuncio, txtNum, txtPoblacion, txtProvincia, txtCamas, txtToilets, txtTamano, txtDescripcion, txtPrecio, txtDireccion;
     private ImageView imgCasa, imgHabitacion, imgPiso;
@@ -57,7 +58,7 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
     private ArrayList<File> imagenesAnuncio;
     private Anuncio mAnuncio;
     private Usuario user;
-
+    private boolean imagesModified;
 
     public static void startForResult(Activity a, Anuncio anuncio, Usuario user, int requestCode, File img0, File img1, File img2, File img3, File img4, File img5) {
         Intent intent = new Intent(a, CrearAnuncio2Activity.class);
@@ -69,6 +70,14 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
         intent.putExtra(EXTRA_IMAGE_3, img3);
         intent.putExtra(EXTRA_IMAGE_4, img4);
         intent.putExtra(EXTRA_IMAGE_5, img5);
+        intent.putExtra(EXTRA_IMAGE_MODIFIED, true);
+        a.startActivityForResult(intent, requestCode);
+    }
+
+    public static void startForResult(Activity a, Anuncio anuncio, Usuario user, int requestCode) {
+        Intent intent = new Intent(a, CrearAnuncio2Activity.class);
+        intent.putExtra(EXTRA_ANUNCIO, anuncio);
+        intent.putExtra(EXTRA_USUARIO, user);
         a.startActivityForResult(intent, requestCode);
     }
 
@@ -102,6 +111,7 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
         if (img5 != null)
             imagenesAnuncio.add(img5);
 
+        imagesModified = getIntent().getBooleanExtra(EXTRA_IMAGE_MODIFIED, false);
         mAnuncio = getIntent().getParcelableExtra(EXTRA_ANUNCIO);
         user = getIntent().getParcelableExtra(EXTRA_USUARIO);
         mPresenter = CrearEditarAnuncioPresenter.getPresentador(this);
@@ -148,8 +158,6 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
         txtDireccion.setOnClickListener(onClickListener);
         txtProvincia.setOnClickListener(onClickListener);
         txtPoblacion.setOnClickListener(onClickListener);
-
-
 
         confImgTipoVivienda();
         confRecyclerPrestaciones();
@@ -220,7 +228,6 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
         txtTamano.setText(String.valueOf(mAnuncio.getTamanio()));
         txtDescripcion.setText(mAnuncio.getDescripcion());
         txtPrecio.setText(String.valueOf(mAnuncio.getPrecio()));
-
     }
 
 
@@ -281,19 +288,21 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
 
     private void confirmarCambios() {
         if (requiredFieldsFilled()) {
-            if(mAnuncio.getKey() != null){
-                //Se borra las imágenes existentes en Firebase para que no se añadan las nuevas + las antiguas si se está editando.
-                mAnuncio.setImagenes(null);
-                mPresenter.publishNewAdvert(mAnuncio);
-                mAnuncio.setImagenes(new HashMap<String, String>());
-            }
+            if (imagesModified) {
+                if (mAnuncio.getKey() != null) { // si es null, el anuncio se ha creado en ésta actividad y la key se la obtiene cuando se llama al método meterDatosEnAnuncio()
+                    //Se borra las imágenes existentes en Firebase para que no se añadan las nuevas + las antiguas si se está editando.
+                    mAnuncio.setImagenes(null);
+                    mPresenter.publishNewAdvert(mAnuncio);
+                    mAnuncio.setImagenes(new HashMap<String, String>());
+                }
 
-            //Subir las imagenes a la api de imágenes.
-            ArrayList<MyPresenter> presenters = new ArrayList<>();
-            presenters.add(mPresenter);
-            presenters.add(DetallesAnuncioActivity.getmPresenter());
-            for (File f: imagenesAnuncio)
+                //Subir las imagenes a la api de imágenes.
+                ArrayList<MyPresenter> presenters = new ArrayList<>();
+                presenters.add(mPresenter);
+                presenters.add(DetallesAnuncioActivity.getmPresenter());
+                for (File f : imagenesAnuncio)
                     ImgurUploader.subirImagen(f, mAnuncio, presenters, imagenesAnuncio.indexOf(f) == 0);
+            }
             //Guardar todos los editText en el objeto anuncio.
             meterDatosEnAnuncio();
             //Subir el objeto a FireBase.
