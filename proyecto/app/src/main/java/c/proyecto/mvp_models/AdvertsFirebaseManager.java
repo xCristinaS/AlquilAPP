@@ -136,7 +136,7 @@ public class AdvertsFirebaseManager {
                         ((MainPresenter) presenter).subHasBeenModified(a);
                         ((MainPresenter) presenter).removeAdvert(a);
                     } else if (userSubRemoved) {
-                        ((MainPresenter) presenter).advertHasBeenObtained(a);
+                        //((MainPresenter) presenter).advertHasBeenObtained(a);
                         ((MainPresenter) presenter).removeSub(a);
                     } else
                         ((MainPresenter) presenter).adverHasBeenModified(a);
@@ -338,7 +338,7 @@ public class AdvertsFirebaseManager {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         Anuncio a = dataSnapshot.getValue(Anuncio.class);
-                        if (!a.getKey().contains(currentUser.getKey()))
+                        if (!a.getKey().contains(currentUser.getKey()) && !a.getSolicitantes().keySet().contains(currentUser.getKey()))
                             ((MainPresenter) presenter).locationObtained(a, location);
                     }
 
