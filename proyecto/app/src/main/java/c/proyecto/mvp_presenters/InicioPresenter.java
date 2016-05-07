@@ -45,9 +45,9 @@ public class InicioPresenter implements InicioPresenterOps, MyPresenter {
     }
 
     @Override
-    public void onSignInResponsed(Usuario u) {
+    public void onSignInResponsed(Object o) {
         if (activity.get() != null)
-            activity.get().enter(u);
+            activity.get().enter(o);
     }
 
     @Override

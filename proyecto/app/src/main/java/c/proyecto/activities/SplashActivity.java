@@ -16,7 +16,7 @@ import c.proyecto.mvp_presenters.InicioPresenter;
 import c.proyecto.mvp_views_interfaces.InicioActivityOps;
 import c.proyecto.pojo.Usuario;
 
-public class SplashActivity extends AppCompatActivity implements InicioActivityOps, MyInicio{
+public class SplashActivity extends AppCompatActivity implements InicioActivityOps, MyInicio {
 
     private ImageView imgLogo;
     private InicioPresenter mPresenter;
@@ -35,7 +35,6 @@ public class SplashActivity extends AppCompatActivity implements InicioActivityO
         getStoredUser();
         initView();
     }
-
 
 
     private void initView() {
@@ -84,25 +83,26 @@ public class SplashActivity extends AppCompatActivity implements InicioActivityO
         }).start();
     }
 
-    private void getStoredUser(){
+    private void getStoredUser() {
         SharedPreferences preferences = getSharedPreferences(Constantes.NOMBRE_PREFERENCIAS, MODE_PRIVATE);
         String user = preferences.getString(Constantes.KEY_USER, "");
         String pass = preferences.getString(Constantes.KEY_PASS, "");
 
-        if(!user.isEmpty() && !pass.isEmpty())
+        if (!user.isEmpty() && !pass.isEmpty())
             mPresenter.signInRequested(user, pass);
         else
             hiloLanzador.countDown.countDown();
     }
 
     @Override
-    public void enter(Usuario u) {
-        mUser = u;
+    public void enter(Object o) {
+        if (o instanceof Usuario)
+            mUser = (Usuario) o;
         hiloLanzador.countDown.countDown();
     }
 
-    private void conectar(){
-        if(mUser == null)
+    private void conectar() {
+        if (mUser == null)
             InicioActivity.start(this);
         else
             MainActivity.start(this, mUser);
@@ -110,12 +110,12 @@ public class SplashActivity extends AppCompatActivity implements InicioActivityO
     }
 
 
-    class Lanzador implements Runnable{
+    class Lanzador implements Runnable {
 
         private final CountDownLatch countDown;
 
-        public Lanzador(){
-         countDown = new CountDownLatch(2);
+        public Lanzador() {
+            countDown = new CountDownLatch(2);
         }
 
         @Override
