@@ -88,8 +88,31 @@ public class UsersFirebaseManager {
 
             @Override
             public void onAuthenticationError(FirebaseError firebaseError) {
-                if (firebaseError.getCode() == FirebaseError.INVALID_PASSWORD)
-                    ((InicioPresenter) presenter).onSignInResponsed(null);
+                String resp;
+                switch (firebaseError.getCode()){
+                    case FirebaseError.INVALID_PASSWORD:
+                        resp = "Contraseña incorrecta";
+                        break;
+                    case FirebaseError.EMAIL_TAKEN:
+                        resp = "Email ya en uso";
+                        break;
+                    case FirebaseError.INVALID_EMAIL:
+                        resp = "El email epecificado no es válido";
+                        break;
+                    case FirebaseError.NETWORK_ERROR:
+                        resp = "Error de conexión";
+                        break;
+                    case FirebaseError.UNKNOWN_ERROR:
+                        resp = "Error inesperado";
+                        break;
+                    case FirebaseError.USER_DOES_NOT_EXIST:
+                        resp = "La cuenta de usuario no existe";
+                        break;
+                    default:
+                        resp = "";
+                        break;
+                }
+                ((InicioPresenter) presenter).onSignInResponsed(resp);
             }
         });
     }

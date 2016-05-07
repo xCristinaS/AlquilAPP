@@ -32,7 +32,7 @@ public class InicioActivity extends AppCompatActivity implements InicioActivityO
     private InicioPresenter presentador;
     private Button btnIniciar;
 
-    public static void start(Activity a){
+    public static void start(Activity a) {
         Intent intent = new Intent(a, InicioActivity.class);
         a.startActivity(intent);
     }
@@ -100,30 +100,29 @@ public class InicioActivity extends AppCompatActivity implements InicioActivityO
         //Coloca el usuario guardado en el txtUser si el usuario activó el switch de recordar la última vez que inicio sesión.
         txtUser.setText(preferences.getString(Constantes.KEY_USER, ""));
         //Si ha recordado el usuario dejará activado el swift
-        if(!preferences.getString(Constantes.KEY_PASS, "").isEmpty())
+        if (!preferences.getString(Constantes.KEY_PASS, "").isEmpty())
             swRememberMe.setChecked(true);
     }
 
 
     @Override
-    public void enter(Usuario u) {
+    public void enter(Object o) {
         SharedPreferences.Editor editor = preferences.edit();
 
-        if(u != null){
+        if (o instanceof Usuario) {
             //Guardará en las preferencias el usuario para la próxima ves que entre.
             editor.putString(Constantes.KEY_USER, txtUser.getText().toString());
             //Guardará la contraseña dependiendo si quiere que se conecte solo la próxima vez
-            if(swRememberMe.isChecked())
+            if (swRememberMe.isChecked())
                 editor.putString(Constantes.KEY_PASS, txtPass.getText().toString());
             else
                 editor.putString(Constantes.KEY_PASS, "");
 
             editor.apply();
-            MainActivity.start(this, u);
+            MainActivity.start(this, (Usuario) o);
             finish();
-        }
-        else{
-            Toast.makeText(this, "Datos Incorrectos", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, (String) o, Toast.LENGTH_SHORT).show();
             btnIniciar.setEnabled(true);
         }
     }
@@ -137,6 +136,5 @@ public class InicioActivity extends AppCompatActivity implements InicioActivityO
         super.onBackPressed();
     }
 
-    
 
 }
