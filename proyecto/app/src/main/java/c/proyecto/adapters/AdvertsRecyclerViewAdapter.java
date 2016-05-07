@@ -374,7 +374,7 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
                     a.setSubsChanged(true);
                 }
             }
-        if (!stop)
+        if (!stop && adapter_type != ADAPTER_TYPE_ADVS)
             mDatos.add(a);
         notifyDataSetChanged();
     }
