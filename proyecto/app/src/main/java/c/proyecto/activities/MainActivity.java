@@ -4,11 +4,11 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.location.GpsStatus;
 import android.location.Location;
-import android.location.LocationManager;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -94,6 +94,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
     private Location mLastLocation;
     private LocationSettingsRequest.Builder mBuilder;
     private LocationRequest mLocationRequest;
+    private SharedPreferences mSharedPref;
+
 
     public static void start(Activity a, Usuario u) {
         Intent intent = new Intent(a, MainActivity.class);
@@ -111,6 +113,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
         setSupportActionBar(toolbar);
         if (getIntent().hasExtra(ARG_USUARIO))
             mUser = getIntent().getParcelableExtra(ARG_USUARIO);
+        mSharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         initViews();
     }
 
@@ -344,7 +347,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
             return;
         mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         if (mLastLocation != null)
-            mPresenter.getLocations(new GeoLocation(mLastLocation.getLatitude(), mLastLocation.getLongitude()), 10);
+            mPresenter.getLocations(new GeoLocation(mLastLocation.getLatitude(), mLastLocation.getLongitude()), mSharedPref.getInt(getString(R.string.pref_ratio), Constantes.DEFAULT_RATIO_BUSQUEDA));
     }
 
     private void confMap() {
@@ -571,7 +574,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
                     LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, new LocationListener() {
                         @Override
                         public void onLocationChanged(Location location) {
-                            mPresenter.getLocations(new GeoLocation(location.getLatitude(), location.getLongitude()), 10);
+                            mPresenter.getLocations(new GeoLocation(location.getLatitude(), location.getLongitude()), mSharedPref.getInt(getString(R.string.pref_ratio), Constantes.DEFAULT_RATIO_BUSQUEDA));
                             mLastLocation = location;
                             LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
                         }

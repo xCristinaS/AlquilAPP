@@ -21,10 +21,13 @@ public final class Constantes {
     public static final float PORCENTAJE_PANTALLA = 0.65f;
 
     //PREFERENCIAS
+        //Internas
     public static final String NOMBRE_PREFERENCIAS = "Preferencias";
         //Keys
         public static final String KEY_USER = "keyUser";
         public static final String KEY_PASS = "keyPass";
+        //Shared
+        public static final int DEFAULT_RATIO_BUSQUEDA = 10;
 
     //Número de imagenes que contendrá los anuncios
     public static final int NUMERO_IMAGENES_ANUNCIO = 6;

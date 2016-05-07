@@ -17,4 +17,5 @@ public class PreferencesActivity extends AppCompatActivity {
         PreferencesFragment frgPreference = new PreferencesFragment();
         getFragmentManager().beginTransaction().replace(R.id.frmContenido, frgPreference).commit();
     }
+
 }

@@ -60,7 +60,8 @@
             android:name=".activities.LocalizacionActivity"
             android:label="Localización" />
 
-        <activity android:name=".activities.PreferencesActivity"/>
+        <activity android:name=".activities.PreferencesActivity"
+            android:label="Preferencias"/>
 
         <meta-data
             android:name="com.google.android.gms.version"
