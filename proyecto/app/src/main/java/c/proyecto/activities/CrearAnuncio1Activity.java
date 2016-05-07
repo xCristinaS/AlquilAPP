@@ -167,7 +167,6 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
             return params[0];
         }
 

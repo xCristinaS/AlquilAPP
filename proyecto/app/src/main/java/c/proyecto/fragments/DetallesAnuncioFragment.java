@@ -259,7 +259,6 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         rvPrestaciones.setLayoutManager(mLayoutManager);
         rvPrestaciones.setItemAnimator(new DefaultItemAnimator());
-
     }
 
 

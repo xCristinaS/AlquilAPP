@@ -1,6 +1,7 @@
 package c.proyecto.api;
 
 import java.io.File;
+import java.util.LinkedList;
 import java.util.List;
 
 import c.proyecto.Constantes;
@@ -19,8 +20,34 @@ import retrofit2.Response;
 
 
 public class ImgurUploader {
+
+
+    private final LinkedList<File> mImagenes;
+    private final MyModel mModel;
+    private final List<MyPresenter> mPresenters;
+    private boolean mainImg;
+
+    public ImgurUploader(LinkedList<File> imagenes, MyModel model, List<MyPresenter> presenters){
+        mImagenes = imagenes;
+        mModel = model;
+        mPresenters = presenters;
+        mainImg = true;
+    }
+
+    public ImgurUploader(File img, MyModel model, List<MyPresenter> presenters){
+        mImagenes = new LinkedList<>();
+        mImagenes.add(img);
+        mModel = model;
+        mPresenters = presenters;
+    }
+
+    public void upload(){
+        if (mImagenes.size() > 0)
+           subirImagen(mImagenes.getFirst());
+    }
+
     //Sube las imagenes a la Api Imgur y guarda las url que den como resultado en el objeto Anuncio.
-    public static void subirImagen(File file, final MyModel model, final List<MyPresenter> presenter, final boolean mainImage) {
+    private void subirImagen(File file) {
         RequestBody body = RequestBody.create(MediaType.parse("image/*"), file);
 
         Call<ImgurResponse> llamada = ImgurAPI.getMInstance().getService().uploadImage(body);
@@ -30,15 +57,18 @@ public class ImgurUploader {
                 ImgurResponse respuesta = response.body();
                 //Se añade la urls del bitmap escogido
                 if (respuesta != null)
-                    if (model instanceof Anuncio && presenter.get(0) instanceof CrearEditarAnuncioPresenter) {
-                        ((Anuncio) model).getImagenes().put(mainImage ? Constantes.FOTO_PRINCIPAL : "foto" + respuesta.getData().getLink().hashCode(), respuesta.getData().getLink());
-                        ((CrearEditarAnuncioPresenter) presenter.get(0)).publishNewAdvert((Anuncio) model);
-                        if (presenter.size() > 1 && presenter.get(1) instanceof AdvertsDetailsPresenter)
-                            ((AdvertsDetailsPresenter) presenter.get(1)).updateAdvert((Anuncio) model);
-                    } else if (model instanceof Usuario && presenter.get(0) instanceof ProfilePresenter) {
-                        ((Usuario) model).setFoto(respuesta.getData().getLink());
-                        ((ProfilePresenter) presenter.get(0)).updateUserProfile((Usuario) model);
+                    if (mModel instanceof Anuncio && mPresenters.get(0) instanceof CrearEditarAnuncioPresenter) {
+                        ((Anuncio) mModel).getImagenes().put(mainImg ? Constantes.FOTO_PRINCIPAL : "foto" + respuesta.getData().getLink().hashCode(), respuesta.getData().getLink());
+                        ((CrearEditarAnuncioPresenter) mPresenters.get(0)).publishNewAdvert((Anuncio) mModel);
+                        if (mPresenters.size() > 1 && mPresenters.get(1) instanceof AdvertsDetailsPresenter)
+                            ((AdvertsDetailsPresenter) mPresenters.get(1)).updateAdvert((Anuncio) mModel);
+                    } else if (mModel instanceof Usuario && mPresenters.get(0) instanceof ProfilePresenter) {
+                        ((Usuario) mModel).setFoto(respuesta.getData().getLink());
+                        ((ProfilePresenter) mPresenters.get(0)).updateUserProfile((Usuario) mModel);
                     }
+                mainImg = false;
+                mImagenes.removeFirst();
+                upload();
             }
 
             @Override

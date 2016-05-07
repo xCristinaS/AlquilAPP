@@ -21,6 +21,7 @@ import com.google.android.gms.maps.model.LatLng;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 
 import c.proyecto.Constantes;
 import c.proyecto.R;
@@ -55,7 +56,7 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
 
     private PrestacionesAdapter mPrestacionesAdapter;
     private CrearEditarAnuncioPresenter mPresenter;
-    private ArrayList<File> imagenesAnuncio;
+    private LinkedList<File> imagenesAnuncio;
     private Anuncio mAnuncio;
     private Usuario user;
     private boolean imagesModified;
@@ -86,7 +87,7 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_crear_anuncio2);
 
-        imagenesAnuncio = new ArrayList<>();
+        imagenesAnuncio = new LinkedList<>();
         File img0 = (File) getIntent().getExtras().get(EXTRA_IMAGE_0);
         if (img0 != null)
             imagenesAnuncio.add(img0);
@@ -300,8 +301,7 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
                 ArrayList<MyPresenter> presenters = new ArrayList<>();
                 presenters.add(mPresenter);
                 presenters.add(DetallesAnuncioActivity.getmPresenter());
-                for (File f : imagenesAnuncio)
-                    ImgurUploader.subirImagen(f, mAnuncio, presenters, imagenesAnuncio.indexOf(f) == 0);
+                new ImgurUploader(imagenesAnuncio, mAnuncio, presenters).upload();
             }
             //Guardar todos los editText en el objeto anuncio.
             meterDatosEnAnuncio();

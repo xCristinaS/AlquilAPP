@@ -104,7 +104,7 @@ public class EditProfileActivity extends AppCompatActivity {
                 presenters.add(mPresenter);
                 introducirDatosEnUser();
                 if (mFileUserPhoto != null)
-                    ImgurUploader.subirImagen(mFileUserPhoto, mUser, presenters, false);
+                    new ImgurUploader(mFileUserPhoto, mUser, presenters);
                 mPresenter.updateUserProfile(mUser);
                 finish();
             }
