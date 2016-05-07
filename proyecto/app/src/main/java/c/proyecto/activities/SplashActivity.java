@@ -30,9 +30,9 @@ public class SplashActivity extends AppCompatActivity implements InicioActivityO
         setContentView(R.layout.activity_splash);
         mPresenter = InicioPresenter.getPresentador(this);
         mPresenter.setUsersManager(new UsersFirebaseManager(mPresenter));
-        getStoredUser();
         hiloLanzador = new Lanzador();
         new Thread(hiloLanzador).start();
+        getStoredUser();
         initView();
     }
 
@@ -91,6 +91,8 @@ public class SplashActivity extends AppCompatActivity implements InicioActivityO
 
         if(!user.isEmpty() && !pass.isEmpty())
             mPresenter.signInRequested(user, pass);
+        else
+            hiloLanzador.countDown.countDown();
     }
 
     @Override
