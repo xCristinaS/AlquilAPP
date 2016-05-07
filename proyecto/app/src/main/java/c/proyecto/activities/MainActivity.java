@@ -572,6 +572,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
                         @Override
                         public void onLocationChanged(Location location) {
                             mPresenter.getLocations(new GeoLocation(location.getLatitude(), location.getLongitude()), 10);
+                            mLastLocation = location;
                             LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
                         }
                     });
