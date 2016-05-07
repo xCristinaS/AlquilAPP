@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SwitchCompat;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,6 +30,7 @@ public class InicioActivity extends AppCompatActivity implements InicioActivityO
     private SwitchCompat swRememberMe;
     private SharedPreferences preferences;
     private InicioPresenter presentador;
+    private Button btnIniciar;
 
     public static void start(Activity a){
         Intent intent = new Intent(a, InicioActivity.class);
@@ -55,11 +57,13 @@ public class InicioActivity extends AppCompatActivity implements InicioActivityO
         mTPass.expand();
         mTUser.expand();
 
+        btnIniciar = (Button) findViewById(R.id.btnIniciar);
         //Botón Iniciar sesión
-        findViewById(R.id.btnIniciar).setOnClickListener(new View.OnClickListener() {
+        btnIniciar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 presentador.signInRequested(txtUser.getText().toString(), txtPass.getText().toString());
+                btnIniciar.setEnabled(false);
             }
         });
         //Botón Registrarse
@@ -118,8 +122,10 @@ public class InicioActivity extends AppCompatActivity implements InicioActivityO
             MainActivity.start(this, u);
             finish();
         }
-        else
+        else{
             Toast.makeText(this, "Datos Incorrectos", Toast.LENGTH_SHORT).show();
+            btnIniciar.setEnabled(true);
+        }
     }
 
 
