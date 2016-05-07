@@ -356,6 +356,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
     @Override
     public void onMapReady(final GoogleMap map) {
         mGoogleMap = map;
+        getAnunciosCercanos();
         if (mLastLocation != null)
             posicionarMapa(mLastLocation);
     }
