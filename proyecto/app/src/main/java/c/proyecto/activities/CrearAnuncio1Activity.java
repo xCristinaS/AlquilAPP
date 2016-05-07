@@ -24,6 +24,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.Locale;
 
 import c.proyecto.Constantes;
@@ -52,6 +53,7 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
     private Anuncio mAnuncio;
     private Usuario user;
     private boolean imagesModified;
+    private LinkedList<ImagePojo> imagePojoToLoadList;
 
     public static void start(Context context, Usuario user) {
         Intent intent = new Intent(context, CrearAnuncio1Activity.class);
@@ -118,6 +120,7 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
         int contador = 1;
         ImageView[] imgViews = {imgPrincipal, img1, img2, img3, img4, img5};
         ProgressBar[] prbs = {prbPrincipal, prb1, prb2, prb3, prb4, prb5};
+        imagePojoToLoadList = new LinkedList<>();
 
         if (mAnuncio != null)
             if (mAnuncio.getImagenes().size() > 0) {
@@ -127,16 +130,23 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
                     if (keyImg.equals(Constantes.FOTO_PRINCIPAL)) {
                         prbSeleccionado = prbs[0];
                         imgPojo = new ImagePojo(imgViews[0], prbSeleccionado, "foto_piso" + 0 + ".jpg", mAnuncio.getImagenes().get(keyImg), 0);
+                        imagePojoToLoadList.addFirst(imgPojo);
                     } else {
                         prbSeleccionado = prbs[contador];
                         imgPojo = new ImagePojo(imgViews[contador], prbSeleccionado, "foto_piso" + contador + ".jpg", mAnuncio.getImagenes().get(keyImg), contador);
                         contador++;
+                        imagePojoToLoadList.add(imgPojo);
                     }
-                    new ImageDownloader().execute(imgPojo);
                     //Se activa la progresBar para indicar que se está cargando la foto
                     prbSeleccionado.setVisibility(View.VISIBLE);
                 }
             }
+        loadImages1by1();
+    }
+
+    private void loadImages1by1() {
+        if (imagePojoToLoadList.size() > 0)
+            new ImageDownloader().execute(imagePojoToLoadList.getFirst());
     }
 
     class ImageDownloader extends AsyncTask<ImagePojo, Void, ImagePojo> {
@@ -166,6 +176,8 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
             super.onPostExecute(imagePojo);
             Picasso.with(CrearAnuncio1Activity.this).load(imagePojo.getFile()).memoryPolicy(MemoryPolicy.NO_CACHE).fit().centerCrop().into(imagePojo.getImgView());
             imagePojo.getPrb().setVisibility(View.GONE);
+            imagePojoToLoadList.removeFirst();
+            loadImages1by1();
         }
     }
 
