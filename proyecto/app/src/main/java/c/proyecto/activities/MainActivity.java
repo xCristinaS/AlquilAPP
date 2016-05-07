@@ -266,6 +266,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
                 getSupportFragmentManager().beginTransaction().replace(R.id.frmContenido, MessagesFragment.newInstance(false, null), TAG_MESSAGES_FRAGMENT).commit();
                 break;
             case R.id.nav_preferences:
+                startActivity(new Intent(this, PreferencesActivity.class));
                 break;
             case R.id.nav_sign_off:
                 InicioActivity.start(this);
@@ -556,7 +557,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
                 }
             }
         });
-        return;
     }
 
     @Override

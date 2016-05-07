@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:sample="http://schemas.android.com/apk/res-auto">
+    
+    <com.pavelsikun.seekbarpreference.SeekBarPreference
+        android:key="prefRatio"
+        android:title="Distancia de busqueda"
+        android:defaultValue="9"
+        sample:msbp_minValue="1"
+        sample:msbp_maxValue="20"
+        sample:msbp_interval="1"
+        sample:msbp_measurementUnit="km" />
+
+
+</PreferenceScreen>
