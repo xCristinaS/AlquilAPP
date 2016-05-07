@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ImageView;
 
+import java.util.concurrent.CountDownLatch;
+
 import c.proyecto.Constantes;
 import c.proyecto.R;
 import c.proyecto.interfaces.MyInicio;
@@ -18,8 +20,8 @@ public class SplashActivity extends AppCompatActivity implements InicioActivityO
 
     private ImageView imgLogo;
     private InicioPresenter mPresenter;
-    private boolean animationFinished;
     private Usuario mUser;
+    private Lanzador hiloLanzador;
 
 
     @Override
@@ -28,6 +30,9 @@ public class SplashActivity extends AppCompatActivity implements InicioActivityO
         setContentView(R.layout.activity_splash);
         mPresenter = InicioPresenter.getPresentador(this);
         mPresenter.setUsersManager(new UsersFirebaseManager(mPresenter));
+        hiloLanzador = new Lanzador();
+        new Thread(hiloLanzador).start();
+        getStoredUser();
         initView();
     }
 
@@ -39,7 +44,7 @@ public class SplashActivity extends AppCompatActivity implements InicioActivityO
         imgLogo.animate().scaleX(1.3f).scaleY(1.3f).setDuration(1400).setListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {
-                getStoredUser();
+
             }
 
             @Override
@@ -52,7 +57,7 @@ public class SplashActivity extends AppCompatActivity implements InicioActivityO
 
                     @Override
                     public void onAnimationEnd(Animator animation) {
-                        conectar();
+                        hiloLanzador.countDown.countDown();
                     }
 
                     @Override
@@ -86,11 +91,14 @@ public class SplashActivity extends AppCompatActivity implements InicioActivityO
 
         if(!user.isEmpty() && !pass.isEmpty())
             mPresenter.signInRequested(user, pass);
+        else
+            hiloLanzador.countDown.countDown();
     }
 
     @Override
     public void enter(Usuario u) {
         mUser = u;
+        hiloLanzador.countDown.countDown();
     }
 
     private void conectar(){
@@ -99,5 +107,25 @@ public class SplashActivity extends AppCompatActivity implements InicioActivityO
         else
             MainActivity.start(this, mUser);
         finish();
+    }
+
+
+    class Lanzador implements Runnable{
+
+        private final CountDownLatch countDown;
+
+        public Lanzador(){
+         countDown = new CountDownLatch(2);
+        }
+
+        @Override
+        public void run() {
+            try {
+                countDown.await();
+                conectar();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
