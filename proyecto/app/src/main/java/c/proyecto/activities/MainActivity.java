@@ -69,14 +69,14 @@ import c.proyecto.pojo.Prestacion;
 import c.proyecto.pojo.Usuario;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class MainActivity extends AppCompatActivity implements MainActivityOps, AdvertsRecyclerViewAdapter.OnAdapterItemLongClick, AdvertsRecyclerViewAdapter.OnAdapterItemClick, NavigationView.OnNavigationItemSelectedListener, MessagesRecyclerViewAdapter.OnMessagesAdapterItemClick, PrincipalFragment.AllowFilters, FilterDialogFramgent.ApplyFilters, SeleccionPrestacionesDialogFragment.ICallBackOnDismiss, AdvertsRecyclerViewAdapter.OnSubsIconClick, HuespedesAdapter.OnUserSubClick, OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+public class MainActivity extends AppCompatActivity implements MainActivityOps, AdvertsRecyclerViewAdapter.OnAdapterItemLongClick, AdvertsRecyclerViewAdapter.OnAdapterItemClick, NavigationView.OnNavigationItemSelectedListener, MessagesRecyclerViewAdapter.OnMessagesAdapterItemClick, PrincipalFragment.AllowFilters, FilterDialogFramgent.ApplyFilters, SeleccionPrestacionesDialogFragment.ICallBackOnDismiss, AdvertsRecyclerViewAdapter.OnSubsIconClick, HuespedesAdapter.OnUserSubClick, OnMapReadyCallback, GoogleApiClient.OnConnectionFailedListener {
 
     private static final String ARG_USUARIO = "usuario_extra";
     private static final String TAG_PRINCIPAL_FRAGMENT = "principal_fragment";
     private static final String TAG_MESSAGES_FRAGMENT = "messages_fragment";
     private static final String TAG_FILTER_DIALOG_FRAMGENT = "filtros_dialog_fragment";
     private static final String TAG_ABOUT_US = "dialog_fragment_about_us";
-    private static final int RC_REQUEST_LOCATION = 1000;
+
 
     private static MainPresenter mPresenter;
     private Usuario mUser;
@@ -123,7 +123,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
         mFragmentManager = getSupportFragmentManager();
         mFragmentManager.beginTransaction().replace(R.id.frmContenido, new PrincipalFragment(), TAG_PRINCIPAL_FRAGMENT).commit();
         configNavDrawer();
-        configLocation();
     }
 
     private void configNavDrawer() {
@@ -153,22 +152,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
         });
     }
 
-    private void configLocation() {
-        mLocationRequest = LocationRequest.create();
-        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        mLocationRequest.setInterval(30000);
-        mLocationRequest.setFastestInterval(5000);
-        mBuilder = new LocationSettingsRequest.Builder().addLocationRequest(mLocationRequest);
-        mBuilder.setAlwaysShow(true);
 
-        if (mGoogleApiClient == null)
-            mGoogleApiClient = new GoogleApiClient.Builder(this)
-                    .addConnectionCallbacks(this)
-                    .addOnConnectionFailedListener(this)
-                    .addApi(LocationServices.API)
-                    .build();
-        mGoogleApiClient.connect();
-    }
 
     @Override
     public void userAdvertHasBeenModified(Usuario user) {
@@ -527,37 +511,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
     }
 
 
-    @Override
-    public void onConnected(Bundle bundle) {
-        PendingResult<LocationSettingsResult> result = LocationServices.SettingsApi.checkLocationSettings(mGoogleApiClient, mBuilder.build());
 
-        result.setResultCallback(new ResultCallback<LocationSettingsResult>() {
-            @Override
-            public void onResult(LocationSettingsResult result) {
-                final Status status = result.getStatus();
-                switch (status.getStatusCode()) {
-                    case LocationSettingsStatusCodes.SUCCESS:
-                        // All location settings are satisfied. The client can initialize location requests here.
-                        getAnunciosCercanos();
-                        break;
-                    case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
-                        // Location settings are not satisfied. But could be fixed by showing the user
-                        // a dialog.
-                        try {
-                            // Show the dialog by calling startResolutionForResult(), and check the result in onActivityResult().
-                            status.startResolutionForResult(MainActivity.this, MainActivity.RC_REQUEST_LOCATION);
-                        } catch (IntentSender.SendIntentException e) {
-                            // Ignore the error.
-                        }
-                        break;
-                    case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
-                        // Location settings are not satisfied. However, we have no way to fix the settings so we won't show the dialog.
-                        break;
-                }
-            }
-        });
-        return;
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
