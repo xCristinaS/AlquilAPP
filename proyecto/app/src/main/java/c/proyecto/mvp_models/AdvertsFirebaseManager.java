@@ -445,7 +445,7 @@ public class AdvertsFirebaseManager {
     }
 
     public void detachGeolocationMapListener() {
-        if (geoQueryLocations != null){
+        if (geoQueryLocations != null) {
             geoQueryLocations.removeAllListeners();
             geoQueryLocations = null;
         }
@@ -457,7 +457,8 @@ public class AdvertsFirebaseManager {
     }
 
     public void detachFirebaseListeners() {
-        geoQueryAdverts.removeAllListeners();
+        if (geoQueryAdverts != null)
+            geoQueryAdverts.removeAllListeners();
         geoQueryAdverts = null;
         mFirebase.removeEventListener(listener);
         mFirebase = null;
