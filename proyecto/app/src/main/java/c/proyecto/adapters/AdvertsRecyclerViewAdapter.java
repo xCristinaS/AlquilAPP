@@ -62,7 +62,7 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
     private static OnSubsIconClick listenerSubsClick;
     private static HuespedesAdapter.OnUserSubClick listenerUserSubClick;
     private View emptyView;
-    private static MainPresenter presenter;
+    private static MainPresenter mPresenter;
     private SparseBooleanArray mSelectedItems = new SparseBooleanArray();
     private boolean multiDeletionModeActivated = false;
     private static Usuario user;
@@ -72,7 +72,7 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
 
     public AdvertsRecyclerViewAdapter(int adapter_type, MainPresenter presenter, Usuario u) {
         mDatos = new ArrayList<>();
-        this.presenter = presenter;
+        mPresenter = presenter;
         this.adapter_type = adapter_type;
         user = u;
     }
@@ -265,6 +265,9 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
                 if (anuncio.isSubsChanged()) {
                     imgSuscritos.setColorFilter(itemView.getResources().getColor(R.color.colorAccent));
                     lblSubs.setTextColor(itemView.getResources().getColor(R.color.colorAccent));
+                } else {
+                    imgSuscritos.clearColorFilter();
+                    lblSubs.setTextColor(Color.BLACK);
                 }
 
                 groupSuscritos.setOnClickListener(new View.OnClickListener() {
@@ -274,7 +277,7 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
                         anuncio.setSubsChanged(false);
                         imgSuscritos.clearColorFilter();
                         lblSubs.setTextColor(Color.BLACK);
-                        presenter.updateAdvert(anuncio);
+                        mPresenter.updateAdvert(anuncio);
                     }
                 });
             }
@@ -339,9 +342,9 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
 
     private void removeItem(int pos) {
         if (adapter_type == ADAPTER_TYPE_MY_ADVS)
-            presenter.removeUserAdvert(mDatos.get(pos));
+            mPresenter.removeUserAdvert(mDatos.get(pos));
         else
-            presenter.removeUserSub(mDatos.get(pos));
+            mPresenter.removeUserSub(mDatos.get(pos));
         removeItem(mDatos.get(pos));
     }
 
@@ -370,7 +373,7 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
                 mDatos.add(i, a);
                 stop = true;
                 if (aux.getSolicitantes().size() != a.getSolicitantes().size()) {
-                    presenter.getSolicitantes(null, a); // para actualizar el dialogo de solicitantes.
+                    mPresenter.getSolicitantes(null, a); // para actualizar el dialogo de solicitantes.
                     a.setSubsChanged(true);
                 }
             }
