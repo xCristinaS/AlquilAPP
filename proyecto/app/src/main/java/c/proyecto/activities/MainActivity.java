@@ -36,8 +36,6 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResult;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -72,7 +70,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
     private static final String TAG_FILTER_DIALOG_FRAMGENT = "filtros_dialog_fragment";
     private static final String TAG_ABOUT_US = "dialog_fragment_about_us";
 
-
     private static MainPresenter mPresenter;
     private Usuario mUser;
     private DrawerLayout drawer;
@@ -89,7 +86,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
     private LocationSettingsRequest.Builder mBuilder;
     private LocationRequest mLocationRequest;
     private SharedPreferences mSharedPref;
-
 
     public static void start(Activity a, Usuario u) {
         Intent intent = new Intent(a, MainActivity.class);
@@ -112,6 +108,17 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
         initViews();
     }
 
+    private void initViews() {
+        mPresenter = MainPresenter.getPresentador(this);
+        mPresenter.setAdvertsManager(new AdvertsFirebaseManager(mPresenter, mUser));
+        mPresenter.setMessagesManager(new MessagesFirebaseManager(mPresenter, mUser));
+        mPresenter.setUsersManager(new UsersFirebaseManager(mPresenter));
+
+        mFragmentManager = getSupportFragmentManager();
+        mFragmentManager.beginTransaction().replace(R.id.frmContenido, new PrincipalFragment(), TAG_PRINCIPAL_FRAGMENT).commit();
+        configNavDrawer();
+    }
+
     private void configLocation() {
         mLocationRequest = LocationRequest.create();
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
@@ -127,16 +134,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
                     .addApi(LocationServices.API)
                     .build();
         mGoogleApiClient.connect();
-    }
-    private void initViews() {
-        mPresenter = MainPresenter.getPresentador(this);
-        mPresenter.setAdvertsManager(new AdvertsFirebaseManager(mPresenter, mUser));
-        mPresenter.setMessagesManager(new MessagesFirebaseManager(mPresenter, mUser));
-        mPresenter.setUsersManager(new UsersFirebaseManager(mPresenter));
-
-        mFragmentManager = getSupportFragmentManager();
-        mFragmentManager.beginTransaction().replace(R.id.frmContenido, new PrincipalFragment(), TAG_PRINCIPAL_FRAGMENT).commit();
-        configNavDrawer();
     }
 
     private void configNavDrawer() {
@@ -166,7 +163,110 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
         });
     }
 
+    //MENU NAV DRAWER
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.nav_home:
+                //Si el principalFragment no está cargado en el FrameLayout
+                if (!(mFragmentManager.findFragmentById(R.id.frmContenido) instanceof PrincipalFragment)) {
+                    //Si ya existe se carga
+                    if (mFragmentManager.findFragmentByTag(TAG_PRINCIPAL_FRAGMENT) != null)
+                        mFragmentManager.beginTransaction().replace(R.id.frmContenido, mFragmentManager.findFragmentByTag(TAG_PRINCIPAL_FRAGMENT)).commit();
+                    else
+                        mFragmentManager.beginTransaction().replace(R.id.frmContenido, new PrincipalFragment()).commit();
+                }
 
+                break;
+            case R.id.nav_new_adv:
+                //Null = nuevo Anuncio.
+                CrearAnuncio1Activity.start(this, mUser);
+                break;
+            case R.id.nav_edit_profile:
+                EditProfileActivity.start(this, mUser);
+                break;
+            case R.id.nav_messages:
+                mPresenter.requestUserMessages(mUser);
+                getSupportFragmentManager().beginTransaction().replace(R.id.frmContenido, MessagesFragment.newInstance(false, null), TAG_MESSAGES_FRAGMENT).commit();
+                break;
+            case R.id.nav_preferences:
+                startActivity(new Intent(this, PreferencesActivity.class));
+                break;
+            case R.id.nav_sign_off:
+                InicioActivity.start(this);
+                finish();
+                break;
+            case R.id.nav_about_us:
+                new AboutUsDialogFragment().show(getSupportFragmentManager(), TAG_ABOUT_US);
+                break;
+        }
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        showFilterIcon();
+        showMapIcon();
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case android.R.id.home:
+                drawer.openDrawer(GravityCompat.START);
+                return true;
+            case R.id.limpiar:
+                adapter.clearAllSelections();
+                adapter.disableMultiDeletionMode();
+                toolbar.getMenu().findItem(R.id.eliminar).setVisible(false);
+                toolbar.getMenu().findItem(R.id.limpiar).setVisible(false);
+                return true;
+            case R.id.eliminar:
+                adapter.removeSelections();
+                adapter.clearAllSelections();
+                adapter.disableMultiDeletionMode();
+                toolbar.getMenu().findItem(R.id.eliminar).setVisible(false);
+                toolbar.getMenu().findItem(R.id.limpiar).setVisible(false);
+                return true;
+            case R.id.map:
+                if(mLastLocation != null)
+                    MapBrowserActivity.start(this, mLastLocation, mUser);
+                else
+                    Toast.makeText(this, "No es posible encontrar su posición", Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.filters:
+                new FilterDialogFramgent().show(getSupportFragmentManager(), TAG_FILTER_DIALOG_FRAMGENT);
+                return true;
+            case R.id.deshacerFiltro:
+                Fragment f = getSupportFragmentManager().findFragmentById(R.id.frmContenido);
+                if (f instanceof PrincipalFragment)
+                    ((PrincipalFragment) f).removeFilter();
+
+                mPresenter.detachAdvertsListener();
+                mPresenter.attachAdvertsListeners();
+                toolbar.getMenu().findItem(R.id.deshacerFiltro).setVisible(false);
+                getAdvertsNearUser();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void getAdvertsNearUser() {
+        if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+            return;
+        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        if (mLastLocation != null)
+            mPresenter.getAdvertsByLocation(new GeoLocation(mLastLocation.getLatitude(), mLastLocation.getLongitude()), mSharedPref.getInt(getString(R.string.pref_ratio), Constantes.DEFAULT_RATIO_BUSQUEDA));
+    }
 
     @Override
     public void userAdvertHasBeenModified(Usuario user) {
@@ -237,127 +337,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
         sendBroadcast(new Intent(DetallesAnuncioActivity.ACTION_CLOSE_ACTIVITY));
     }
 
-    //MENU NAV DRAWER
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.nav_home:
-                //Si el principalFragment no está cargado en el FrameLayout
-                if (!(mFragmentManager.findFragmentById(R.id.frmContenido) instanceof PrincipalFragment)) {
-                    //Si ya existe se carga
-                    if (mFragmentManager.findFragmentByTag(TAG_PRINCIPAL_FRAGMENT) != null)
-                        mFragmentManager.beginTransaction().replace(R.id.frmContenido, mFragmentManager.findFragmentByTag(TAG_PRINCIPAL_FRAGMENT)).commit();
-                    else
-                        mFragmentManager.beginTransaction().replace(R.id.frmContenido, new PrincipalFragment()).commit();
-                }
-
-                break;
-            case R.id.nav_new_adv:
-                //Null = nuevo Anuncio.
-                CrearAnuncio1Activity.start(this, mUser);
-                break;
-            case R.id.nav_edit_profile:
-                EditProfileActivity.start(this, mUser);
-                break;
-            case R.id.nav_messages:
-                mPresenter.requestUserMessages(mUser);
-                getSupportFragmentManager().beginTransaction().replace(R.id.frmContenido, MessagesFragment.newInstance(false, null), TAG_MESSAGES_FRAGMENT).commit();
-                break;
-            case R.id.nav_preferences:
-                startActivity(new Intent(this, PreferencesActivity.class));
-                break;
-            case R.id.nav_sign_off:
-                InicioActivity.start(this);
-                finish();
-                break;
-            case R.id.nav_about_us:
-                new AboutUsDialogFragment().show(getSupportFragmentManager(), TAG_ABOUT_US);
-                break;
-        }
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }
-
-
     @Override
     public void setAdapterAllowMultiDeletion(AdvertsRecyclerViewAdapter adapter) {
         this.adapter = adapter;
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        showFilterIcon();
-        showMapIcon();
-        return super.onPrepareOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        switch (id) {
-            case android.R.id.home:
-                drawer.openDrawer(GravityCompat.START);
-                return true;
-            case R.id.limpiar:
-                adapter.clearAllSelections();
-                adapter.disableMultiDeletionMode();
-                toolbar.getMenu().findItem(R.id.eliminar).setVisible(false);
-                toolbar.getMenu().findItem(R.id.limpiar).setVisible(false);
-                return true;
-            case R.id.eliminar:
-                adapter.removeSelections();
-                adapter.clearAllSelections();
-                adapter.disableMultiDeletionMode();
-                toolbar.getMenu().findItem(R.id.eliminar).setVisible(false);
-                toolbar.getMenu().findItem(R.id.limpiar).setVisible(false);
-                return true;
-            case R.id.map:
-                if(mLastLocation != null)
-                    MapBrowserActivity.start(this, mLastLocation);
-                else
-                    Toast.makeText(this, "No es posible encontrar su posición", Toast.LENGTH_SHORT).show();
-                return true;
-            case R.id.filters:
-                new FilterDialogFramgent().show(getSupportFragmentManager(), TAG_FILTER_DIALOG_FRAMGENT);
-                return true;
-            case R.id.deshacerFiltro:
-                Fragment f = getSupportFragmentManager().findFragmentById(R.id.frmContenido);
-                if (f instanceof PrincipalFragment)
-                    ((PrincipalFragment) f).removeFilter();
-
-                mPresenter.detachAdvertsListener();
-                mPresenter.attachAdvertsListeners();
-                toolbar.getMenu().findItem(R.id.deshacerFiltro).setVisible(false);
-                getAnunciosCercanos();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    public void getAnunciosCercanos() {
-        if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
-            return;
-        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-        if (mLastLocation != null)
-            mPresenter.getLocations(new GeoLocation(mLastLocation.getLatitude(), mLastLocation.getLongitude()), mSharedPref.getInt(getString(R.string.pref_ratio), Constantes.DEFAULT_RATIO_BUSQUEDA));
-    }
-
-
-
-    @Override
-    public void locationObtained(final Anuncio a, GeoLocation location) {
-        advertHasBeenObtained(a);
-    }
-
-    @Override
-    public void advertClickedFromMapObtained(Anuncio a) {
-        DetallesAnuncioActivity.start(MainActivity.this, a, AdvertsRecyclerViewAdapter.ADAPTER_TYPE_ADVS, mUser);
     }
 
     @Override
@@ -395,24 +377,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
     @Override
     public void onItemClick(Anuncio anuncio, int advertType) {
         DetallesAnuncioActivity.start(this, anuncio, advertType, mUser);
-    }
-
-    @Override
-    public void onBackPressed() {
-        //Si el navDrawer está abierto lo cierra
-        if (drawer.isDrawerOpen(GravityCompat.START))
-            drawer.closeDrawers();
-        else {
-            Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.frmContenido);
-            if (fragment instanceof MessagesFragment) {
-                PrincipalFragment f = (PrincipalFragment) getSupportFragmentManager().findFragmentByTag(TAG_PRINCIPAL_FRAGMENT);
-                if (f != null)
-                    getSupportFragmentManager().beginTransaction().replace(R.id.frmContenido, f).commit();
-                else
-                    getSupportFragmentManager().beginTransaction().replace(R.id.frmContenido, new PrincipalFragment(), TAG_PRINCIPAL_FRAGMENT).commit();
-            } else
-                super.onBackPressed();
-        }
     }
 
     @Override
@@ -460,22 +424,26 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
     }
 
     @Override
-    protected void onDestroy() {
-        mPresenter.detachListeners();
-        super.onDestroy();
-    }
-
-    @Override
     public void onDismiss() {
         ((FilterDialogFramgent) getSupportFragmentManager().findFragmentByTag(TAG_FILTER_DIALOG_FRAMGENT)).updatePrestaciones();
     }
 
-    public Usuario getmUser() {
-        return mUser;
-    }
-
-    public static MainPresenter getmPresenter() {
-        return mPresenter;
+    @Override
+    public void onBackPressed() {
+        //Si el navDrawer está abierto lo cierra
+        if (drawer.isDrawerOpen(GravityCompat.START))
+            drawer.closeDrawers();
+        else {
+            Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.frmContenido);
+            if (fragment instanceof MessagesFragment) {
+                PrincipalFragment f = (PrincipalFragment) getSupportFragmentManager().findFragmentByTag(TAG_PRINCIPAL_FRAGMENT);
+                if (f != null)
+                    getSupportFragmentManager().beginTransaction().replace(R.id.frmContenido, f).commit();
+                else
+                    getSupportFragmentManager().beginTransaction().replace(R.id.frmContenido, new PrincipalFragment(), TAG_PRINCIPAL_FRAGMENT).commit();
+            } else
+                super.onBackPressed();
+        }
     }
 
     @Override
@@ -489,7 +457,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
                 switch (status.getStatusCode()) {
                     case LocationSettingsStatusCodes.SUCCESS:
                         // All location settings are satisfied. The client can initialize location requests here.
-                        getAnunciosCercanos();
+                        getAdvertsNearUser();
                         break;
                     case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
                         // Location settings are not satisfied. But could be fixed by showing the user
@@ -510,18 +478,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
     }
 
     @Override
-    public void onConnectionSuspended(int i) {
-
-    }
-
-    @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
-
-    }
-
-
-
-    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
@@ -533,7 +489,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
                     LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, new LocationListener() {
                         @Override
                         public void onLocationChanged(Location location) {
-                            mPresenter.getLocations(new GeoLocation(location.getLatitude(), location.getLongitude()), mSharedPref.getInt(getString(R.string.pref_ratio), Constantes.DEFAULT_RATIO_BUSQUEDA));
+                            mPresenter.getAdvertsByLocation(new GeoLocation(location.getLatitude(), location.getLongitude()), mSharedPref.getInt(getString(R.string.pref_ratio), Constantes.DEFAULT_RATIO_BUSQUEDA));
                             mLastLocation = location;
                             LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
                         }
@@ -545,12 +501,34 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
         }
     }
 
-
-
     @Override
     protected void onStop() {
         if(mGoogleApiClient != null)
             mGoogleApiClient.disconnect();
         super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        mPresenter.detachListeners();
+        super.onDestroy();
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+
+    }
+
+    public Usuario getmUser() {
+        return mUser;
+    }
+
+    public static MainPresenter getmPresenter() {
+        return mPresenter;
     }
 }

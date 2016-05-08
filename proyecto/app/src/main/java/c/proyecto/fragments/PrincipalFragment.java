@@ -54,12 +54,6 @@ public class PrincipalFragment extends Fragment {
         confViewPager();
     }
 
-    @Override
-    public void onResume() {
-        ((MainActivity)getActivity()).getAnunciosCercanos();
-        super.onResume();
-    }
-
     private void confViewPager() {
         vpAdapter = new SectionsPagerAdapter(getChildFragmentManager());
         viewPager = (ViewPager) getActivity().findViewById(R.id.container);

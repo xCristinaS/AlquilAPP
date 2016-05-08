@@ -34,10 +34,6 @@ public interface MainPresenterOps {
     void attachAdvertsListeners();
     void getSolicitantes(View itemView, Anuncio anuncio);
     void solicitantesObtained(View itemView, ArrayList<Usuario> listaSolicitantes, Anuncio anuncio);
-    void getLocations(GeoLocation centerPosition, double radius);
-    void detachGeoLocationListeners();
-    void locationObtained(Anuncio a, GeoLocation location);
-    void getAdvertClickedFromMap(String advertKey);
-    void advertClickedFromMapObtained(Anuncio a);
+    void getAdvertsByLocation(GeoLocation centerPosition, double radius);
     void updateAdvert(Anuncio anuncio);
 }

@@ -19,18 +19,28 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import c.proyecto.Constantes;
 import c.proyecto.R;
+import c.proyecto.adapters.AdvertsRecyclerViewAdapter;
+import c.proyecto.mvp_models.AdvertsFirebaseManager;
+import c.proyecto.mvp_presenters.MapBrowserPresenter;
+import c.proyecto.mvp_views_interfaces.MapBrowserActivityOps;
 import c.proyecto.pojo.Anuncio;
+import c.proyecto.pojo.Usuario;
 
-public class MapBrowserActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class MapBrowserActivity extends AppCompatActivity implements OnMapReadyCallback, MapBrowserActivityOps {
 
 
     private static final String EXTRA_USER_LOCATION = "userLocation";
+    private static final String EXTRA_USER = "current_user";
+
     private Location mUserPosition;
     private GoogleMap mGoogleMap;
+    private MapBrowserPresenter mPresenter;
+    private Usuario mCurrentUser;
 
-    public static void start(Activity activity, Location userPosition){
+    public static void start(Activity activity, Location userPosition, Usuario currentUser) {
         Intent intent = new Intent(activity, MapBrowserActivity.class);
         intent.putExtra(EXTRA_USER_LOCATION, userPosition);
+        intent.putExtra(EXTRA_USER, currentUser);
         activity.startActivity(intent);
     }
 
@@ -39,12 +49,15 @@ public class MapBrowserActivity extends AppCompatActivity implements OnMapReadyC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map_browser);
         mUserPosition = getIntent().getParcelableExtra(EXTRA_USER_LOCATION);
+        mCurrentUser = getIntent().getParcelableExtra(EXTRA_USER);
+        mPresenter = MapBrowserPresenter.getPresentador(this);
+        mPresenter.setAdvertsManager(new AdvertsFirebaseManager(mPresenter, mCurrentUser));
         confMap();
     }
 
     private void confMap() {
         FragmentManager fm = getSupportFragmentManager();
-        SupportMapFragment mapFragment =  SupportMapFragment.newInstance();
+        SupportMapFragment mapFragment = SupportMapFragment.newInstance();
         mapFragment.getMapAsync(this);
         fm.beginTransaction().replace(R.id.frmMap, mapFragment).commit();
     }
@@ -57,11 +70,11 @@ public class MapBrowserActivity extends AppCompatActivity implements OnMapReadyC
         mGoogleMap.addMarker(new MarkerOptions().position(pos).icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_human_marker)));
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pos, Constantes.ZOOM_ANUNCIO_CON_LOCALIZACION));
         mGoogleMap.getUiSettings().setAllGesturesEnabled(true);
-
+        mPresenter.getLocations(new GeoLocation(pos.latitude, pos.longitude), 10);
     }
 
-   /* @Override
-    public void locationObtained(final Anuncio a, GeoLocation location) {
+    @Override
+    public void advertLocationObtained(Anuncio a, GeoLocation location) {
         int resource = R.drawable.marker_house;
         switch (a.getTipo_vivienda()) {
             case Constantes.CASA:
@@ -75,19 +88,25 @@ public class MapBrowserActivity extends AppCompatActivity implements OnMapReadyC
                 break;
         }
 
-        if (mGoogleMap != null) {
-            Marker marker = mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(location.latitude, location.longitude)).icon(BitmapDescriptorFactory.fromResource(resource)));
-            marker.setTitle(a.getKey());
-            mGoogleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-                @Override
-                public boolean onMarkerClick(Marker marker) {
-                    mPresenter.getAdvertClickedFromMap(marker.getTitle());
-                    return true;
-                }
-            });
-        } else
-            advertHasBeenObtained(a);
-    }*/
+        Marker marker = mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(location.latitude, location.longitude)).icon(BitmapDescriptorFactory.fromResource(resource)));
+        marker.setTitle(a.getKey());
+        mGoogleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                mPresenter.getAdvertClickedFromMap(marker.getTitle());
+                return true;
+            }
+        });
+    }
 
+    @Override
+    public void advertClickedFromMapObtained(Anuncio a) {
+        DetallesAnuncioActivity.start(this, a, AdvertsRecyclerViewAdapter.ADAPTER_TYPE_ADVS, mCurrentUser);
+    }
 
+    @Override
+    protected void onDestroy() {
+        mPresenter.detachGeolocationListener();
+        super.onDestroy();
+    }
 }

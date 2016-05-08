@@ -45,5 +45,4 @@ public class PreferencesFragment extends PreferenceFragment implements SharedPre
         super.onPause();
     }
 
-
 }
