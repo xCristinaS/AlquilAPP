@@ -49,6 +49,7 @@ import c.proyecto.dialog_fragments.AboutUsDialogFragment;
 import c.proyecto.dialog_fragments.FilterDialogFramgent;
 import c.proyecto.dialog_fragments.SeleccionPrestacionesDialogFragment;
 import c.proyecto.fragments.MessagesFragment;
+import c.proyecto.fragments.PreferencesFragment;
 import c.proyecto.fragments.PrincipalFragment;
 import c.proyecto.mvp_models.AdvertsFirebaseManager;
 import c.proyecto.mvp_models.MessagesFirebaseManager;
@@ -64,6 +65,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class MainActivity extends AppCompatActivity implements MainActivityOps, AdvertsRecyclerViewAdapter.OnAdapterItemLongClick, AdvertsRecyclerViewAdapter.OnAdapterItemClick, NavigationView.OnNavigationItemSelectedListener, MessagesRecyclerViewAdapter.OnMessagesAdapterItemClick, PrincipalFragment.AllowFilters, FilterDialogFramgent.ApplyFilters, SeleccionPrestacionesDialogFragment.ICallBackOnDismiss, AdvertsRecyclerViewAdapter.OnSubsIconClick, HuespedesAdapter.OnUserSubClick, GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks {
 
     private static final int RC_REQUEST_LOCATION = 1000;
+    private static final int RC_PREFERENCES = 3213;
     private static final String ARG_USUARIO = "usuario_extra";
     private static final String TAG_PRINCIPAL_FRAGMENT = "principal_fragment";
     private static final String TAG_MESSAGES_FRAGMENT = "messages_fragment";
@@ -190,7 +192,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
                 getSupportFragmentManager().beginTransaction().replace(R.id.frmContenido, MessagesFragment.newInstance(false, null), TAG_MESSAGES_FRAGMENT).commit();
                 break;
             case R.id.nav_preferences:
-                startActivity(new Intent(this, PreferencesActivity.class));
+                startActivityForResult(new Intent(this, PreferencesActivity.class), RC_PREFERENCES);
                 break;
             case R.id.nav_sign_off:
                 InicioActivity.start(this);
@@ -497,6 +499,14 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
                 }
                 else
                     Toast.makeText(this, "Necesita activar Ubicación para poder ver los anuncios cercanos a usted", Toast.LENGTH_LONG).show();
+                break;
+            case RC_PREFERENCES:
+                if(resultCode == RESULT_OK){
+                    ArrayList<Integer> prefCodes = data.getIntegerArrayListExtra(PreferencesActivity.EXTRA_LIST_PREF_CODES);
+
+                    if(prefCodes.contains(PreferencesFragment.RATIO_CODE))
+                        getAdvertsNearUser();
+                }
                 break;
         }
     }
