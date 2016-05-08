@@ -188,4 +188,5 @@ public class MainPresenter implements MainPresenterOps, MyPresenter {
     public void updateAdvert(Anuncio anuncio) {
         advertsManager.publishNewAdvert(anuncio);
     }
+
 }

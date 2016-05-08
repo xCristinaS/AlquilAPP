@@ -88,6 +88,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
     private LocationSettingsRequest.Builder mBuilder;
     private LocationRequest mLocationRequest;
     private SharedPreferences mSharedPref;
+    private LocationListener mLocationListener;
 
     public static void start(Activity a, Usuario u) {
         Intent intent = new Intent(a, MainActivity.class);
@@ -240,7 +241,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
                 toolbar.getMenu().findItem(R.id.limpiar).setVisible(false);
                 return true;
             case R.id.map:
-                if(mLastLocation != null)
+                if (mLastLocation != null)
                     MapBrowserActivity.start(this, mLastLocation, mUser);
                 else
                     Toast.makeText(this, "No es posible encontrar su posición", Toast.LENGTH_SHORT).show();
@@ -265,7 +266,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
     private void getAdvertsNearUser() {
         if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
             return;
-        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        if (mLastLocation == null)
+            mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         if (mLastLocation != null)
             mPresenter.getAdvertsByLocation(new GeoLocation(mLastLocation.getLatitude(), mLastLocation.getLongitude()), mSharedPref.getInt(getString(R.string.pref_ratio), Constantes.DEFAULT_RATIO_BUSQUEDA));
     }
@@ -449,6 +451,37 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
     }
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case RC_REQUEST_LOCATION:
+                if (resultCode == RESULT_OK) {
+                    if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+                        return;
+                    mLocationListener = new LocationListener() {
+                        @Override
+                        public void onLocationChanged(Location location) {
+                            mPresenter.getAdvertsByLocation(new GeoLocation(location.getLatitude(), location.getLongitude()), mSharedPref.getInt(getString(R.string.pref_ratio), Constantes.DEFAULT_RATIO_BUSQUEDA));
+                            mLastLocation = location;
+                        }
+                    };
+                    //Se espera a que haya conseguido la localización tras activar el gps, carga los anuncios y desvincula el listener.
+                    LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, mLocationListener);
+                } else
+                    Toast.makeText(this, "Necesita activar Ubicación para poder ver los anuncios cercanos a usted", Toast.LENGTH_LONG).show();
+                break;
+            case RC_PREFERENCES:
+                if (resultCode == RESULT_OK) {
+                    ArrayList<Integer> prefCodes = data.getIntegerArrayListExtra(PreferencesActivity.EXTRA_LIST_PREF_CODES);
+
+                    if (prefCodes.contains(PreferencesFragment.RATIO_CODE))
+                        getAdvertsNearUser();
+                }
+                break;
+        }
+    }
+
+    @Override
     public void onConnected(Bundle bundle) {
         PendingResult<LocationSettingsResult> result = LocationServices.SettingsApi.checkLocationSettings(mGoogleApiClient, mBuilder.build());
 
@@ -480,41 +513,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode) {
-            case RC_REQUEST_LOCATION:
-                if (resultCode == RESULT_OK) {
-                    if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
-                        return;
-                    //Se espera a que haya conseguido la localización tras activar el gps, carga los anuncios y desvincula el listener.
-                    LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, new LocationListener() {
-                        @Override
-                        public void onLocationChanged(Location location) {
-                            mPresenter.getAdvertsByLocation(new GeoLocation(location.getLatitude(), location.getLongitude()), mSharedPref.getInt(getString(R.string.pref_ratio), Constantes.DEFAULT_RATIO_BUSQUEDA));
-                            mLastLocation = location;
-                            LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
-                        }
-                    });
-                }
-                else
-                    Toast.makeText(this, "Necesita activar Ubicación para poder ver los anuncios cercanos a usted", Toast.LENGTH_LONG).show();
-                break;
-            case RC_PREFERENCES:
-                if(resultCode == RESULT_OK){
-                    ArrayList<Integer> prefCodes = data.getIntegerArrayListExtra(PreferencesActivity.EXTRA_LIST_PREF_CODES);
-
-                    if(prefCodes.contains(PreferencesFragment.RATIO_CODE))
-                        getAdvertsNearUser();
-                }
-                break;
-        }
-    }
-
-    @Override
     protected void onStop() {
-        if(mGoogleApiClient != null)
+        if (mGoogleApiClient != null) {
+            if (mLocationListener != null)
+                LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, mLocationListener);
             mGoogleApiClient.disconnect();
+        }
         super.onStop();
     }
 

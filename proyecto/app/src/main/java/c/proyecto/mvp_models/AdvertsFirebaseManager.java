@@ -351,7 +351,19 @@ public class AdvertsFirebaseManager {
 
                 @Override
                 public void onKeyExited(String key) {
+                    f.child(key).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            Anuncio a = dataSnapshot.getValue(Anuncio.class);
+                            if (!a.getKey().contains(currentUser.getKey()) && !a.getSolicitantes().keySet().contains(currentUser.getKey()))
+                                ((MainPresenter) presenter).removeAdvert(a);
+                        }
 
+                        @Override
+                        public void onCancelled(FirebaseError firebaseError) {
+
+                        }
+                    });
                 }
 
                 @Override

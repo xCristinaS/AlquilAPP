@@ -37,13 +37,14 @@ public class PreferencesFragment extends PreferenceFragment implements SharedPre
         if(key.equals(getString(R.string.pref_ratio)))
             if (!mListaCambios.contains(RATIO_CODE))
                 mListaCambios.add(RATIO_CODE);
-
-
-
     }
 
     private void actualizarSummary(Preference preference){
 
+    }
+
+    public List<Integer> getmListaCambios() {
+        return mListaCambios;
     }
 
     @Override
@@ -52,7 +53,9 @@ public class PreferencesFragment extends PreferenceFragment implements SharedPre
         super.onResume();
     }
 
-    public List<Integer> getmListaCambios() {
-        return mListaCambios;
+    @Override
+    public void onStop() {
+        getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
+        super.onStop();
     }
 }

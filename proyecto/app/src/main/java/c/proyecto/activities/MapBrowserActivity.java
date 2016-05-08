@@ -13,6 +13,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -66,11 +67,17 @@ public class MapBrowserActivity extends AppCompatActivity implements OnMapReadyC
     public void onMapReady(GoogleMap googleMap) {
         LatLng pos = new LatLng(mUserPosition.getLatitude(), mUserPosition.getLongitude());
         mGoogleMap = googleMap;
-
         mGoogleMap.addMarker(new MarkerOptions().position(pos).icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_human_marker)));
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pos, Constantes.ZOOM_ANUNCIO_CON_LOCALIZACION));
+        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pos, Constantes.ZOOM_ANUNCIO_CON_LOCALIZACION));
         mGoogleMap.getUiSettings().setAllGesturesEnabled(true);
         mPresenter.getLocations(new GeoLocation(pos.latitude, pos.longitude), 10);
+        mGoogleMap.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
+            @Override
+            public void onCameraChange(CameraPosition cameraPosition) {
+                mPresenter.getLocations(new GeoLocation(cameraPosition.target.latitude, cameraPosition.target.longitude), 30);
+
+            }
+        });
     }
 
     @Override

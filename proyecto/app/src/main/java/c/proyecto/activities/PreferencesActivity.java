@@ -23,7 +23,7 @@ public class PreferencesActivity extends AppCompatActivity {
         PreferencesFragment frgPreference = new PreferencesFragment();
         getFragmentManager().beginTransaction().replace(R.id.frmContenido, frgPreference).commit();
     }
-    
+
     @Override
     public void onBackPressed() {
         ArrayList<Integer> list = (ArrayList<Integer>) ((PreferencesFragment) getFragmentManager().findFragmentById(R.id.frmContenido)).getmListaCambios();
