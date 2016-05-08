@@ -238,9 +238,7 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
                 defaultSliderView.image(url).setScaleType(BaseSliderView.ScaleType.CenterCrop);
                 slider.addSlider(defaultSliderView);
             }
-        } else
-            slider.addSlider(new DefaultSliderView(getContext()).image(R.drawable.default_user));
-
+        }
 
         //No permite que se pueda pasar de página si no hay mas de una imagen.
         if(lista.size() < 2)
@@ -310,7 +308,7 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
 
         lblNombre.setText(mUserAnunciante.getNombre());
         if (mUserAnunciante.getFoto() != null)
-            Picasso.with(getActivity()).load(mUserAnunciante.getFoto()).fit().centerCrop().error(R.drawable.default_user).into(imgAvatar);
+            Picasso.with(getActivity()).load(mUserAnunciante.getFoto()).error(R.drawable.default_user).fit().centerCrop().into(imgAvatar);
         else
             Picasso.with(getActivity()).load(R.drawable.default_user).fit().centerCrop().into(imgAvatar);
 
