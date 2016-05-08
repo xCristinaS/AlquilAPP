@@ -78,6 +78,7 @@ public class PrincipalFragment extends Fragment {
 
         viewPager.setOffscreenPageLimit(2);
         viewPager.setCurrentItem(1); // el fragmento principal será el de anuncios
+        ((ImageView) tabLayout.getTabAt(1).getCustomView()).setColorFilter(getResources().getColor(R.color.colorAccent));
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
