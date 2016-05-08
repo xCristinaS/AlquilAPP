@@ -99,7 +99,6 @@ public class LocalizacionActivity extends AppCompatActivity implements OnMapRead
         txtDireccion.setAdapter(mAdapter);
         //Click en los items del autocompletado.
         txtDireccion.setOnItemClickListener(mAutocompleteClickListener);
-
     }
 
     @Override

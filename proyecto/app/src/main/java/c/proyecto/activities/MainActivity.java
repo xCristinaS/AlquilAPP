@@ -36,14 +36,8 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResult;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -69,14 +63,15 @@ import c.proyecto.pojo.Prestacion;
 import c.proyecto.pojo.Usuario;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class MainActivity extends AppCompatActivity implements MainActivityOps, AdvertsRecyclerViewAdapter.OnAdapterItemLongClick, AdvertsRecyclerViewAdapter.OnAdapterItemClick, NavigationView.OnNavigationItemSelectedListener, MessagesRecyclerViewAdapter.OnMessagesAdapterItemClick, PrincipalFragment.AllowFilters, FilterDialogFramgent.ApplyFilters, SeleccionPrestacionesDialogFragment.ICallBackOnDismiss, AdvertsRecyclerViewAdapter.OnSubsIconClick, HuespedesAdapter.OnUserSubClick, OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+public class MainActivity extends AppCompatActivity implements MainActivityOps, AdvertsRecyclerViewAdapter.OnAdapterItemLongClick, AdvertsRecyclerViewAdapter.OnAdapterItemClick, NavigationView.OnNavigationItemSelectedListener, MessagesRecyclerViewAdapter.OnMessagesAdapterItemClick, PrincipalFragment.AllowFilters, FilterDialogFramgent.ApplyFilters, SeleccionPrestacionesDialogFragment.ICallBackOnDismiss, AdvertsRecyclerViewAdapter.OnSubsIconClick, HuespedesAdapter.OnUserSubClick, GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks {
 
+    private static final int RC_REQUEST_LOCATION = 1000;
     private static final String ARG_USUARIO = "usuario_extra";
     private static final String TAG_PRINCIPAL_FRAGMENT = "principal_fragment";
     private static final String TAG_MESSAGES_FRAGMENT = "messages_fragment";
     private static final String TAG_FILTER_DIALOG_FRAMGENT = "filtros_dialog_fragment";
     private static final String TAG_ABOUT_US = "dialog_fragment_about_us";
-    private static final int RC_REQUEST_LOCATION = 1000;
+
 
     private static MainPresenter mPresenter;
     private Usuario mUser;
@@ -89,7 +84,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
     private TextView txtUserNavDrawer;
     private CircleImageView navHeader;
     private FragmentManager mFragmentManager;
-    private GoogleMap mGoogleMap;
     private GoogleApiClient mGoogleApiClient;
     private Location mLastLocation;
     private LocationSettingsRequest.Builder mBuilder;
@@ -114,9 +108,26 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
         if (getIntent().hasExtra(ARG_USUARIO))
             mUser = getIntent().getParcelableExtra(ARG_USUARIO);
         mSharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        configLocation();
         initViews();
     }
 
+    private void configLocation() {
+        mLocationRequest = LocationRequest.create();
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        mLocationRequest.setInterval(30000);
+        mLocationRequest.setFastestInterval(5000);
+        mBuilder = new LocationSettingsRequest.Builder().addLocationRequest(mLocationRequest);
+        mBuilder.setAlwaysShow(true);
+
+        if (mGoogleApiClient == null)
+            mGoogleApiClient = new GoogleApiClient.Builder(this)
+                    .addConnectionCallbacks(this)
+                    .addOnConnectionFailedListener(this)
+                    .addApi(LocationServices.API)
+                    .build();
+        mGoogleApiClient.connect();
+    }
     private void initViews() {
         mPresenter = MainPresenter.getPresentador(this);
         mPresenter.setAdvertsManager(new AdvertsFirebaseManager(mPresenter, mUser));
@@ -126,7 +137,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
         mFragmentManager = getSupportFragmentManager();
         mFragmentManager.beginTransaction().replace(R.id.frmContenido, new PrincipalFragment(), TAG_PRINCIPAL_FRAGMENT).commit();
         configNavDrawer();
-        configLocation();
     }
 
     private void configNavDrawer() {
@@ -156,22 +166,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
         });
     }
 
-    private void configLocation() {
-        mLocationRequest = LocationRequest.create();
-        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        mLocationRequest.setInterval(30000);
-        mLocationRequest.setFastestInterval(5000);
-        mBuilder = new LocationSettingsRequest.Builder().addLocationRequest(mLocationRequest);
-        mBuilder.setAlwaysShow(true);
 
-        if (mGoogleApiClient == null)
-            mGoogleApiClient = new GoogleApiClient.Builder(this)
-                    .addConnectionCallbacks(this)
-                    .addOnConnectionFailedListener(this)
-                    .addApi(LocationServices.API)
-                    .build();
-        mGoogleApiClient.connect();
-    }
 
     @Override
     public void userAdvertHasBeenModified(Usuario user) {
@@ -323,7 +318,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
                 toolbar.getMenu().findItem(R.id.limpiar).setVisible(false);
                 return true;
             case R.id.map:
-                confMap();
+                if(mLastLocation != null)
+                    MapBrowserActivity.start(this, mLastLocation);
+                else
+                    Toast.makeText(this, "No es posible encontrar su posición", Toast.LENGTH_SHORT).show();
                 return true;
             case R.id.filters:
                 new FilterDialogFramgent().show(getSupportFragmentManager(), TAG_FILTER_DIALOG_FRAMGENT);
@@ -350,56 +348,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
             mPresenter.getLocations(new GeoLocation(mLastLocation.getLatitude(), mLastLocation.getLongitude()), mSharedPref.getInt(getString(R.string.pref_ratio), Constantes.DEFAULT_RATIO_BUSQUEDA));
     }
 
-    private void confMap() {
-        FragmentManager fm = getSupportFragmentManager();
-        SupportMapFragment mapFragment = SupportMapFragment.newInstance();
-        mapFragment.getMapAsync(this);
-        fm.beginTransaction().replace(R.id.frmContenido, mapFragment).commit();
-    }
-
-    @Override
-    public void onMapReady(final GoogleMap map) {
-        mGoogleMap = map;
-        if (mLastLocation != null)
-            posicionarMapa(mLastLocation);
-    }
-
-    private void posicionarMapa(Location l) {
-        mGoogleMap.clear();
-        mGoogleMap.getUiSettings().setAllGesturesEnabled(true);
-        LatLng lat = new LatLng(l.getLatitude(), l.getLongitude());
-        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(lat, Constantes.ZOOM_ANUNCIO_CON_LOCALIZACION));
-        mGoogleMap.addMarker(new MarkerOptions().position(lat).icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_human_marker)));
-    }
 
 
     @Override
     public void locationObtained(final Anuncio a, GeoLocation location) {
-        int resource = R.drawable.marker_house;
-        switch (a.getTipo_vivienda()) {
-            case Constantes.CASA:
-                resource = R.drawable.marker_house;
-                break;
-            case Constantes.PISO:
-                resource = R.drawable.marker_piso;
-                break;
-            case Constantes.HABITACION:
-                resource = R.drawable.marker_habitacion;
-                break;
-        }
-
-        if (mGoogleMap != null) {
-            Marker marker = mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(location.latitude, location.longitude)).icon(BitmapDescriptorFactory.fromResource(resource)));
-            marker.setTitle(a.getKey());
-            mGoogleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-                @Override
-                public boolean onMarkerClick(Marker marker) {
-                    mPresenter.getAdvertClickedFromMap(marker.getTitle());
-                    return true;
-                }
-            });
-        } else
-            advertHasBeenObtained(a);
+        advertHasBeenObtained(a);
     }
 
     @Override
@@ -451,17 +404,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
             drawer.closeDrawers();
         else {
             Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.frmContenido);
-            if (fragment instanceof MessagesFragment || fragment instanceof SupportMapFragment) {
+            if (fragment instanceof MessagesFragment) {
                 PrincipalFragment f = (PrincipalFragment) getSupportFragmentManager().findFragmentByTag(TAG_PRINCIPAL_FRAGMENT);
                 if (f != null)
                     getSupportFragmentManager().beginTransaction().replace(R.id.frmContenido, f).commit();
                 else
                     getSupportFragmentManager().beginTransaction().replace(R.id.frmContenido, new PrincipalFragment(), TAG_PRINCIPAL_FRAGMENT).commit();
-
-                if (fragment instanceof SupportMapFragment) {
-                    mPresenter.detachGeoLocationListeners();
-                    mGoogleMap = null;
-                }
             } else
                 super.onBackPressed();
         }
@@ -530,7 +478,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
         return mPresenter;
     }
 
-
     @Override
     public void onConnected(Bundle bundle) {
         PendingResult<LocationSettingsResult> result = LocationServices.SettingsApi.checkLocationSettings(mGoogleApiClient, mBuilder.build());
@@ -563,6 +510,18 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
     }
 
     @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+
+    }
+
+
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
@@ -586,15 +545,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
         }
     }
 
-    @Override
-    public void onConnectionSuspended(int i) {
 
-    }
-
-    @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
-
-    }
 
     @Override
     protected void onStop() {
