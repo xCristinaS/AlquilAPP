@@ -28,7 +28,8 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.MainActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:label="Anuncios"/>
         <activity
             android:name=".activities.RegistroActivity"
             android:label="Registro"

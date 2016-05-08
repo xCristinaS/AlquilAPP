@@ -4,6 +4,7 @@ package c.proyecto.fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
@@ -37,7 +38,7 @@ public class PrincipalFragment extends Fragment {
     private static Usuario user;
     private SectionsPagerAdapter vpAdapter;
     private ViewPager viewPager;
-    private SmartTabLayout tabLayout;
+    private TabLayout tabLayout;
     private AllowFilters listener;
 
     @Nullable
@@ -58,8 +59,12 @@ public class PrincipalFragment extends Fragment {
         vpAdapter = new SectionsPagerAdapter(getChildFragmentManager());
         viewPager = (ViewPager) getActivity().findViewById(R.id.container);
         viewPager.setAdapter(vpAdapter);
-        tabLayout = (SmartTabLayout) getActivity().findViewById(R.id.tabs);
-        tabLayout.setViewPager(viewPager);
+        tabLayout = (TabLayout) getActivity().findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(viewPager);
+        tabLayout.getTabAt(0).setIcon(getResources().getDrawable(R.drawable.tab_solicitudes));
+        tabLayout.getTabAt(1).setIcon(getResources().getDrawable(R.drawable.tab_anuncios));
+        tabLayout.getTabAt(2).setIcon(getResources().getDrawable(R.drawable.tab_mis_anuncios));
+
         viewPager.setOffscreenPageLimit(2);
         viewPager.setCurrentItem(1); // el fragmento principal será el de anuncios
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -72,6 +77,17 @@ public class PrincipalFragment extends Fragment {
                 AdvertsRecyclerViewFragment fragmento = (AdvertsRecyclerViewFragment) vpAdapter.getItem(viewPager.getCurrentItem());
                 ((AdvertsRecyclerViewAdapter.OnAdapterItemLongClick) getActivity()).setAdapterAllowMultiDeletion(fragmento.getmAdapter());
                 AdvertsRecyclerViewAdapter adapter = fragmento.getmAdapter();
+                switch (position){
+                    case 0:
+                        getActivity().setTitle("Solicitudes");
+                        break;
+                    case 1:
+                        getActivity().setTitle("Anuncios");
+                        break;
+                    case 2:
+                        getActivity().setTitle("Mis Anuncios");
+                        break;
+                }
                 if (adapter != null && adapter.getAdapter_type() == AdvertsRecyclerViewAdapter.ADAPTER_TYPE_ADVS) {
                     listener.showFilterIcon();
                     listener.showMapIcon();
@@ -208,19 +224,7 @@ public class PrincipalFragment extends Fragment {
             return null;
         }
 
-        //Establece los títulos de los tabs.
-        @Override
-        public CharSequence getPageTitle(int position) {
-            switch (position) {
-                case 0:
-                    return getActivity().getString(R.string.tab_solicitudes);
-                case 1:
-                    return getActivity().getString(R.string.tab_anuncios);
-                case 2:
-                    return getActivity().getString(R.string.tab_mis_anuncios);
-            }
-            return null;
-        }
+
     }
 
     @Override
