@@ -303,7 +303,7 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
 
         //Si no hay ninguna prestación se le cambiará el color al shape del comentario al color del fondo
         if (mAnuncio.getPrestaciones().size() == 0) {
-            rvPrestaciones.getLayoutParams().height = 0;
+            rvPrestaciones.setVisibility(View.GONE);
             shapeComentario.setBackgroundColor(getResources().getColor(android.R.color.white));
         }else
             shapeComentario.setBackgroundColor(getResources().getColor(R.color.colorShape));
@@ -425,10 +425,15 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
         mPrestacionesAdapter.replaceAll(anuncio.getPrestaciones());
         //Si cuando ha terminado de editar el anuncio tiene prestaciones, se mostrará el hueco de prestaciones
         //sino se ocultará
-        if (anuncio.getPrestaciones().size() > 0)
-            rvPrestaciones.getLayoutParams().height = 180;
-        else
-            rvPrestaciones.getLayoutParams().height = 0;
+
+        if (anuncio.getPrestaciones().size() > 0){
+            shapeComentario.setBackgroundColor(getResources().getColor(R.color.colorShape));
+            rvPrestaciones.setVisibility(View.VISIBLE);
+        }
+        else{
+            shapeComentario.setBackgroundColor(getResources().getColor(android.R.color.white));
+            rvPrestaciones.setVisibility(View.GONE);
+        }
     }
 
 
