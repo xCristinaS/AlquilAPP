@@ -15,12 +15,7 @@ import c.proyecto.R;
 public class PreferencesFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener{
 
     public static int RATIO_CODE = 1;
-    private ICambiosRealizados mListener;
     private List<Integer> mListaCambios;
-
-    public interface ICambiosRealizados{
-        void prefChanged(ArrayList<Integer> prefCodes);
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -57,20 +52,7 @@ public class PreferencesFragment extends PreferenceFragment implements SharedPre
         super.onResume();
     }
 
-    @Override
-    public void onPause() {
-        getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
-        mListener.prefChanged((ArrayList<Integer>) mListaCambios);
-        super.onPause();
-    }
-
-
-    @Override
-    public void onDetach() {
-        mListener = null;
-        super.onDetach();
-    }
-    public void setICambiosRealizadosListener(ICambiosRealizados listener){
-        mListener = listener;
+    public List<Integer> getmListaCambios() {
+        return mListaCambios;
     }
 }

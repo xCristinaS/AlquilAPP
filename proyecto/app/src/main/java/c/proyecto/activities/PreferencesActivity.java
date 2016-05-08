@@ -11,7 +11,7 @@ import java.util.List;
 import c.proyecto.R;
 import c.proyecto.fragments.PreferencesFragment;
 
-public class PreferencesActivity extends AppCompatActivity implements PreferencesFragment.ICambiosRealizados{
+public class PreferencesActivity extends AppCompatActivity {
 
     public static final String EXTRA_LIST_PREF_CODES = "prefCodes";
 
@@ -21,19 +21,13 @@ public class PreferencesActivity extends AppCompatActivity implements Preference
         setContentView(R.layout.activity_preferences);
 
         PreferencesFragment frgPreference = new PreferencesFragment();
-        frgPreference.setICambiosRealizadosListener(this);
         getFragmentManager().beginTransaction().replace(R.id.frmContenido, frgPreference).commit();
     }
-
-    @Override
-    public void prefChanged(ArrayList<Integer> prefCodes) {
-        setResult(RESULT_OK, new Intent().putIntegerArrayListExtra(EXTRA_LIST_PREF_CODES, prefCodes));
-        finish();
-    }
-
+    
     @Override
     public void onBackPressed() {
-
+        ArrayList<Integer> list = (ArrayList<Integer>) ((PreferencesFragment) getFragmentManager().findFragmentById(R.id.frmContenido)).getmListaCambios();
+        setResult(RESULT_OK, new Intent().putIntegerArrayListExtra(EXTRA_LIST_PREF_CODES ,list));
         super.onBackPressed();
     }
 }
