@@ -7,7 +7,6 @@ import com.firebase.geofire.GeoLocation;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import c.proyecto.activities.MainActivity;
 import c.proyecto.interfaces.MyPresenter;
@@ -181,34 +180,13 @@ public class MainPresenter implements MainPresenterOps, MyPresenter {
     }
 
     @Override
-    public void getLocations(GeoLocation centerPosition, double radius) {
-        advertsManager.getLocations(centerPosition, radius);
-    }
-
-    @Override
-    public void detachGeoLocationListeners() {
-        advertsManager.detachGeoLocationListener();
-    }
-
-    @Override
-    public void locationObtained(Anuncio a, GeoLocation location) {
-        if (activity.get() != null)
-            activity.get().locationObtained(a, location);
-    }
-
-    @Override
-    public void getAdvertClickedFromMap(String advertKey) {
-        advertsManager.getAdvertClickedFromMap(advertKey);
-    }
-
-    @Override
-    public void advertClickedFromMapObtained(Anuncio a) {
-        if (activity.get() != null)
-            activity.get().advertClickedFromMapObtained(a);
+    public void getAdvertsByLocation(GeoLocation centerPosition, double radius) {
+        advertsManager.getAdvertsByLocation(centerPosition, radius);
     }
 
     @Override
     public void updateAdvert(Anuncio anuncio) {
         advertsManager.publishNewAdvert(anuncio);
     }
+
 }

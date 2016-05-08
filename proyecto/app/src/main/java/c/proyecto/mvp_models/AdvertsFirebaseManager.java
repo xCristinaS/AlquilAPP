@@ -6,7 +6,6 @@ import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
-import com.firebase.client.Query;
 import com.firebase.client.ValueEventListener;
 import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoLocation;
@@ -19,6 +18,7 @@ import java.util.HashMap;
 import c.proyecto.interfaces.MyPresenter;
 import c.proyecto.mvp_presenters.ConversationPresenter;
 import c.proyecto.mvp_presenters.MainPresenter;
+import c.proyecto.mvp_presenters.MapBrowserPresenter;
 import c.proyecto.pojo.Anuncio;
 import c.proyecto.pojo.Prestacion;
 import c.proyecto.pojo.Usuario;
@@ -33,7 +33,7 @@ public class AdvertsFirebaseManager {
     private static boolean userSubRemoved = false;
     private static Firebase mFirebase;
     private static ChildEventListener listener;
-    private static GeoQuery geoQuery;
+    private static GeoQuery geoQueryAdverts, geoQueryLocations;
 
     private Usuario currentUser;
     private MyPresenter presenter;
@@ -221,7 +221,7 @@ public class AdvertsFirebaseManager {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Anuncio a = dataSnapshot.getValue(Anuncio.class);
-                ((MainPresenter) presenter).advertClickedFromMapObtained(a);
+                ((MapBrowserPresenter) presenter).advertClickedFromMapObtained(a);
             }
 
             @Override
@@ -326,55 +326,121 @@ public class AdvertsFirebaseManager {
         return r;
     }
 
-    public void getLocations(GeoLocation centerPosition, double radius) {
-        GeoFire g = new GeoFire(new Firebase(URL_LOCATIONS));
-        final Firebase f = new Firebase(URL_ANUNCIOS);
-        detachGeoLocationListener();
-        geoQuery = g.queryAtLocation(centerPosition, radius);
-        geoQuery.addGeoQueryEventListener(new GeoQueryEventListener() {
-            @Override
-            public void onKeyEntered(String key, final GeoLocation location) {
-                f.child(key).addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        Anuncio a = dataSnapshot.getValue(Anuncio.class);
-                        if (!a.getKey().contains(currentUser.getKey()) && !a.getSolicitantes().keySet().contains(currentUser.getKey()))
-                            ((MainPresenter) presenter).locationObtained(a, location);
-                    }
+    public void getAdvertsByLocation(GeoLocation centerPosition, double radius) {
+        if (geoQueryAdverts == null) {
+            GeoFire g = new GeoFire(new Firebase(URL_LOCATIONS));
+            final Firebase f = new Firebase(URL_ANUNCIOS);
+            geoQueryAdverts = g.queryAtLocation(centerPosition, radius);
+            geoQueryAdverts.addGeoQueryEventListener(new GeoQueryEventListener() {
+                @Override
+                public void onKeyEntered(String key, final GeoLocation location) {
+                    f.child(key).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            Anuncio a = dataSnapshot.getValue(Anuncio.class);
+                            if (!a.getKey().contains(currentUser.getKey()) && !a.getSolicitantes().keySet().contains(currentUser.getKey()))
+                                ((MainPresenter) presenter).advertHasBeenObtained(a);
+                        }
 
-                    @Override
-                    public void onCancelled(FirebaseError firebaseError) {
+                        @Override
+                        public void onCancelled(FirebaseError firebaseError) {
 
-                    }
-                });
-            }
+                        }
+                    });
+                }
 
-            @Override
-            public void onKeyExited(String key) {
+                @Override
+                public void onKeyExited(String key) {
+                    f.child(key).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            Anuncio a = dataSnapshot.getValue(Anuncio.class);
+                            if (!a.getKey().contains(currentUser.getKey()) && !a.getSolicitantes().keySet().contains(currentUser.getKey()))
+                                ((MainPresenter) presenter).removeAdvert(a);
+                        }
 
-            }
+                        @Override
+                        public void onCancelled(FirebaseError firebaseError) {
 
-            @Override
-            public void onKeyMoved(String key, GeoLocation location) {
+                        }
+                    });
+                }
 
-            }
+                @Override
+                public void onKeyMoved(String key, GeoLocation location) {
 
-            @Override
-            public void onGeoQueryReady() {
+                }
 
-            }
+                @Override
+                public void onGeoQueryReady() {
 
-            @Override
-            public void onGeoQueryError(FirebaseError error) {
+                }
 
-            }
-        });
+                @Override
+                public void onGeoQueryError(FirebaseError error) {
+
+                }
+            });
+        } else {
+            geoQueryAdverts.setCenter(centerPosition);
+            geoQueryAdverts.setRadius(radius);
+        }
     }
 
-    public void detachGeoLocationListener() {
-        if (geoQuery != null) {
-            geoQuery.removeAllListeners();
-            geoQuery = null;
+
+    public void getLocations(GeoLocation centerPosition, double radius) {
+        if (geoQueryLocations == null) {
+            GeoFire g = new GeoFire(new Firebase(URL_LOCATIONS));
+            final Firebase f = new Firebase(URL_ANUNCIOS);
+            geoQueryLocations = g.queryAtLocation(centerPosition, radius);
+            geoQueryLocations.addGeoQueryEventListener(new GeoQueryEventListener() {
+                @Override
+                public void onKeyEntered(String key, final GeoLocation location) {
+                    f.child(key).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            Anuncio a = dataSnapshot.getValue(Anuncio.class);
+                            if (!a.getKey().contains(currentUser.getKey()) && !a.getSolicitantes().keySet().contains(currentUser.getKey()))
+                                ((MapBrowserPresenter) presenter).advertLocationObtained(a, location);
+                        }
+
+                        @Override
+                        public void onCancelled(FirebaseError firebaseError) {
+
+                        }
+                    });
+                }
+
+                @Override
+                public void onKeyExited(String key) {
+
+                }
+
+                @Override
+                public void onKeyMoved(String key, GeoLocation location) {
+
+                }
+
+                @Override
+                public void onGeoQueryReady() {
+
+                }
+
+                @Override
+                public void onGeoQueryError(FirebaseError error) {
+
+                }
+            });
+        } else {
+            geoQueryLocations.setCenter(centerPosition);
+            geoQueryLocations.setRadius(radius);
+        }
+    }
+
+    public void detachGeolocationMapListener() {
+        if (geoQueryLocations != null){
+            geoQueryLocations.removeAllListeners();
+            geoQueryLocations = null;
         }
     }
 
@@ -384,6 +450,8 @@ public class AdvertsFirebaseManager {
     }
 
     public void detachFirebaseListeners() {
+        geoQueryAdverts.removeAllListeners();
+        geoQueryAdverts = null;
         mFirebase.removeEventListener(listener);
         mFirebase = null;
         listener = null;
