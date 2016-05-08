@@ -11,6 +11,8 @@ import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoLocation;
 import com.firebase.geofire.GeoQuery;
 import com.firebase.geofire.GeoQueryEventListener;
+import com.firebase.geofire.util.Constants;
+import com.firebase.geofire.util.GeoUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,6 +39,8 @@ public class AdvertsFirebaseManager {
 
     private Usuario currentUser;
     private MyPresenter presenter;
+    private double mRadius;
+    private GeoLocation mUserLocation;
 
     public AdvertsFirebaseManager(MyPresenter presenter, Usuario currentUser) {
         this.presenter = presenter;
@@ -136,8 +140,9 @@ public class AdvertsFirebaseManager {
                         ((MainPresenter) presenter).subHasBeenModified(a);
                         ((MainPresenter) presenter).removeAdvert(a);
                     } else if (userSubRemoved) {
-                        //((MainPresenter) presenter).advertHasBeenObtained(a);
                         ((MainPresenter) presenter).removeSub(a);
+                        if (GeoUtils.distance(new GeoLocation(a.getLats().getLatitude(), a.getLats().getLongitude()), mUserLocation) <= mRadius)
+                            ((MainPresenter) presenter).advertHasBeenObtained(a);
                     } else
                         ((MainPresenter) presenter).adverHasBeenModified(a);
 
@@ -327,13 +332,15 @@ public class AdvertsFirebaseManager {
     }
 
     public void getAdvertsByLocation(GeoLocation centerPosition, double radius) {
+        mUserLocation = centerPosition;
+        mRadius = radius * 1000;
         if (geoQueryAdverts == null) {
             GeoFire g = new GeoFire(new Firebase(URL_LOCATIONS));
             final Firebase f = new Firebase(URL_ANUNCIOS);
             geoQueryAdverts = g.queryAtLocation(centerPosition, radius);
             geoQueryAdverts.addGeoQueryEventListener(new GeoQueryEventListener() {
                 @Override
-                public void onKeyEntered(String key, final GeoLocation location) {
+                public void onKeyEntered(String key, GeoLocation location) {
                     f.child(key).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
