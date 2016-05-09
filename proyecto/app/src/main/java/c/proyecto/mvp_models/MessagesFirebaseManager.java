@@ -387,7 +387,7 @@ public class MessagesFirebaseManager {
     }
 
     public void getMessageIfConverExist(final Anuncio anuncio) {
-        Firebase f = new Firebase(URL_CONVERSACIONES).child(currentUser.getKey()).child(anuncio.getAnunciante() + "_" + anuncio.getTitulo().trim());
+        Firebase f = new Firebase(URL_CONVERSACIONES).child(currentUser.getKey()).child(anuncio.getAnunciante().trim() + "_" + anuncio.getTitulo().trim());
         f.limitToLast(1).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -473,7 +473,6 @@ public class MessagesFirebaseManager {
             f.removeEventListener(listenersInternosConvers.get(f));
 
         listenersInternosConvers.clear();
-        listenersInternosConvers = null;
     }
 
     public void detachMessagesListeners() {
@@ -493,12 +492,10 @@ public class MessagesFirebaseManager {
             f.removeEventListener(listenerInternosMessages.get(f));
 
         listenerInternosMessages.clear();
-        listenerInternosMessages = null;
 
         for (Query f : listenersInternosMessagesSinResp.keySet())
             f.removeEventListener(listenersInternosMessagesSinResp.get(f));
 
         listenersInternosMessagesSinResp.clear();
-        listenersInternosMessagesSinResp = null;
     }
 }
