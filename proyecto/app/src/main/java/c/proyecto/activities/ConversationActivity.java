@@ -141,7 +141,13 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
     @Override
     public void advertObtained(Anuncio a) {
         if (a != null)
-            DetallesAnuncioActivity.start(this, a, AdvertsRecyclerViewAdapter.ADAPTER_TYPE_ADVS, user);
+            if (!a.getAnunciante().equals(user.getKey())) {
+                if (a.getSolicitantes().containsKey(user.getKey()))
+                    DetallesAnuncioActivity.start(this, a, AdvertsRecyclerViewAdapter.ADAPTER_TYPE_SUBS, user);
+                else
+                    DetallesAnuncioActivity.start(this, a, AdvertsRecyclerViewAdapter.ADAPTER_TYPE_ADVS, user);
+            } else
+                DetallesAnuncioActivity.start(this, a, AdvertsRecyclerViewAdapter.ADAPTER_TYPE_MY_ADVS, user);
     }
 
     @Override
