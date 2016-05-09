@@ -125,7 +125,7 @@
                 android:id="@+id/imgHabitos"
                 android:layout_width="65dp"
                 android:layout_height="65dp"
-                android:src="@drawable/ic_nav_preferences"
+                android:src="@drawable/habitos"
                 android:layout_marginRight="30dp"/>
             <ImageView
                 android:id="@+id/imgGenero"
