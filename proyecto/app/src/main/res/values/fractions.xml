@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Crear Anuncio 1-->
+    <fraction name="views_margin">2.5%</fraction>
+    <fraction name="imgSecundariasHeightPercent">20%</fraction>
+    <fraction name="imgSecundariasWidthPercent">30%</fraction>
+</resources>
