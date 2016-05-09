@@ -222,18 +222,19 @@ public class AdvertsFirebaseManager {
     }
 
     public void getAdvertClickedFromMap(String advertKey) {
-        new Firebase(URL_ANUNCIOS).child(advertKey).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Anuncio a = dataSnapshot.getValue(Anuncio.class);
-                ((MapBrowserPresenter) presenter).advertClickedFromMapObtained(a);
-            }
+        if (advertKey.contains("_"))
+            new Firebase(URL_ANUNCIOS).child(advertKey).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    Anuncio a = dataSnapshot.getValue(Anuncio.class);
+                    ((MapBrowserPresenter) presenter).advertClickedFromMapObtained(a);
+                }
 
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
+                @Override
+                public void onCancelled(FirebaseError firebaseError) {
 
-            }
-        });
+                }
+            });
     }
 
     public void filterRequest(final String[] tipoVivienda, final int minPrice, final int maxPrice, final int minSize, final int maxSize, final ArrayList<Prestacion> prestaciones, final String provincia, final String poblacion) {

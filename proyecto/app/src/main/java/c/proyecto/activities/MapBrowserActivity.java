@@ -99,7 +99,8 @@ public class MapBrowserActivity extends AppCompatActivity implements OnMapReadyC
         mGoogleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
-                mPresenter.getAdvertClickedFromMap(marker.getTitle());
+                if (marker.getTitle() != null) // si el titulo del marker es diferente de null, se ha hecho click sobre un anuncio y no sobre el marker de la posición del usuario. 
+                    mPresenter.getAdvertClickedFromMap(marker.getTitle());
                 return true;
             }
         });
