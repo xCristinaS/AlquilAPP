@@ -18,7 +18,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -230,17 +229,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
                 drawer.openDrawer(GravityCompat.START);
                 return true;
             case R.id.limpiar:
-                adapter.clearAllSelections();
-                adapter.disableMultiDeletionMode();
-                toolbar.getMenu().findItem(R.id.eliminar).setVisible(false);
-                toolbar.getMenu().findItem(R.id.limpiar).setVisible(false);
+                desactivarMultiseleccion();
                 return true;
             case R.id.eliminar:
                 adapter.removeSelections();
-                adapter.clearAllSelections();
-                adapter.disableMultiDeletionMode();
-                toolbar.getMenu().findItem(R.id.eliminar).setVisible(false);
-                toolbar.getMenu().findItem(R.id.limpiar).setVisible(false);
+                desactivarMultiseleccion();
                 return true;
             case R.id.map:
                 if (mLastLocation != null)
@@ -375,6 +368,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
 
     @Override
     public void desactivarMultiseleccion() {
+        if (adapter != null) {
+            adapter.clearAllSelections();
+            adapter.disableMultiDeletionMode();
+        }
         toolbar.getMenu().findItem(R.id.eliminar).setVisible(false);
         toolbar.getMenu().findItem(R.id.limpiar).setVisible(false);
     }
@@ -438,6 +435,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
         //Si el navDrawer está abierto lo cierra
         if (drawer.isDrawerOpen(GravityCompat.START))
             drawer.closeDrawers();
+        else if (toolbar.getMenu().findItem(R.id.eliminar).isVisible()) 
+            desactivarMultiseleccion();
         else {
             Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.frmContenido);
             if (fragment instanceof MessagesFragment) {

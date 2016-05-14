@@ -363,7 +363,7 @@ public class AdvertsFirebaseManager {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             Anuncio a = dataSnapshot.getValue(Anuncio.class);
-                            if (!a.getKey().contains(currentUser.getKey()) && !a.getSolicitantes().keySet().contains(currentUser.getKey()))
+                            if (a != null && !a.getKey().contains(currentUser.getKey()) && !a.getSolicitantes().keySet().contains(currentUser.getKey()))
                                 ((MainPresenter) presenter).removeAdvert(a);
                         }
 
