@@ -57,7 +57,9 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
         receiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                showAdvertHasBeenRemovedDialog();
+                Anuncio a = intent.getParcelableExtra(MainActivity.EXTRA_ANUNCIO_ELIMINADO);
+                if (anuncio.getKey().equals(a.getKey()))
+                    showAdvertHasBeenRemovedDialog();
             }
         };
 

@@ -71,6 +71,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
     private static final String TAG_MESSAGES_FRAGMENT = "messages_fragment";
     private static final String TAG_FILTER_DIALOG_FRAMGENT = "filtros_dialog_fragment";
     private static final String TAG_ABOUT_US = "dialog_fragment_about_us";
+    public static final String EXTRA_ANUNCIO_ELIMINADO = "anuncio_eliminado_ext";
 
     private static MainPresenter mPresenter;
     private Usuario mUser;
@@ -331,8 +332,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
     }
 
     @Override
-    public void sendAdvertHasBeenRemovedBroadcast() {
-        sendBroadcast(new Intent(DetallesAnuncioActivity.ACTION_CLOSE_ACTIVITY));
+    public void sendAdvertHasBeenRemovedBroadcast(Anuncio anuncio) {
+        sendBroadcast(new Intent(DetallesAnuncioActivity.ACTION_CLOSE_ACTIVITY).putExtra(EXTRA_ANUNCIO_ELIMINADO, anuncio));
     }
 
     @Override

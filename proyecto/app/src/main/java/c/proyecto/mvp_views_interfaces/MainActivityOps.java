@@ -20,7 +20,7 @@ public interface MainActivityOps {
     void userMessageHasBeenObtained(MessagePojo m);
     void userAdvertHasBeenModified(Usuario user);
     void removeAdvert(Anuncio a);
-    void sendAdvertHasBeenRemovedBroadcast();
+    void sendAdvertHasBeenRemovedBroadcast(Anuncio anuncio);
     void filteredAdvertsObtained(ArrayList<Anuncio> filteredAdverts);
     void solicitantesObtained(View itemView, ArrayList<Usuario> listaSolicitantes, Anuncio anuncio);
 }

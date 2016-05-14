@@ -141,9 +141,9 @@ public class MainPresenter implements MainPresenterOps, MyPresenter {
     }
 
     @Override
-    public void sendAdvertHasBeenRemovedBroadcast() {
+    public void sendAdvertHasBeenRemovedBroadcast(Anuncio anuncio) {
         if (activity.get() != null)
-            activity.get().sendAdvertHasBeenRemovedBroadcast();
+            activity.get().sendAdvertHasBeenRemovedBroadcast(anuncio);
     }
 
     @Override

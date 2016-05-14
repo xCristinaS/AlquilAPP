@@ -157,7 +157,7 @@ public class AdvertsFirebaseManager {
                     else
                         ((MainPresenter) presenter).removeAdvert(a);
 
-                    ((MainPresenter) presenter).sendAdvertHasBeenRemovedBroadcast();
+                    ((MainPresenter) presenter).sendAdvertHasBeenRemovedBroadcast(a);
                 }
 
                 @Override
