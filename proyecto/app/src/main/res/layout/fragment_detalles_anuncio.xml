@@ -12,7 +12,7 @@
             android:layout_width="match_parent"
             android:layout_height="200dp" />
 
-        <!-- Degradado negro + flecha blanca-->
+        <!-- Degradado negro-->
         <ImageView
             android:id="@+id/degraded"
             android:layout_width="match_parent"
@@ -20,6 +20,15 @@
             android:layout_alignBottom="@id/groupImagenes"
             android:scaleType="centerCrop"
             android:src="@drawable/degradado_negro" />
+
+        <!-- Triangulo -->
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignBottom="@id/groupImagenes"
+            android:layout_centerHorizontal="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/triangulo" />
 
         <RelativeLayout
             android:id="@+id/groupAvatar"

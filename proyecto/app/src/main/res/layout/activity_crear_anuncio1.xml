@@ -5,7 +5,8 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".activities.CrearAnuncio1Activity"
-    android:background="@color/colorPrimaryDark">
+    android:background="@color/colorPrimaryDark"
+    android:clipToPadding="false">
 
     <!-- Imagen 1 -->
     <ImageView
@@ -200,11 +201,14 @@
 
 
 <RelativeLayout
+    android:id="@+id/groupSiguiente"
     android:layout_width="match_parent"
     android:layout_height="0dp"
     app:layout_heightPercent="26%"
     android:layout_alignParentBottom="true"
     android:background="@color/colorPrimary"
+    app:elevation="30dp"
+
     >
     <ImageView
         android:id="@+id/imgSiguiente"
@@ -231,6 +235,14 @@
         android:layout_marginRight="16dp"
         android:layout_marginEnd="16dp"/>
 </RelativeLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_heightPercent="3%"
+        android:src="@drawable/degradado_negro"
+        android:scaleType="centerCrop"
+        android:layout_above="@id/groupSiguiente"/>
 
 
 </android.support.percent.PercentRelativeLayout>
