@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.percent.PercentRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="c.proyecto.activities.EditProfileActivity"
@@ -9,18 +10,20 @@
     <android.support.v7.widget.CardView
         android:id="@+id/cvUser"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_height="0dp"
+        app:layout_heightPercent="22%"
+        app:layout_marginTopPercent="4%"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
         >
-        <RelativeLayout
+        <android.support.percent.PercentRelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <ImageView
                 android:id="@+id/slider"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="0dp"
+                app:layout_widthPercent="31.5%"
+                android:layout_height="match_parent"
                 android:scaleType="centerCrop"
                 android:src="@drawable/default_user" />
 
@@ -28,8 +31,9 @@
                 android:id="@+id/txtNombre"
                 android:hint="Nombre"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="7dp"
+                android:layout_height="0dp"
+                app:layout_heightPercent="40%"
+                app:layout_marginTopPercent="10%"
                 android:layout_toRightOf="@id/slider"
                 android:layout_marginRight="@dimen/activity_horizontal_margin"
                 android:layout_marginLeft="@dimen/activity_horizontal_margin"
@@ -40,26 +44,30 @@
                 android:id="@+id/txtApellidos"
                 android:hint="Apellidos"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
+                app:layout_heightPercent="40%"
                 android:layout_toRightOf="@id/slider"
+                android:layout_toEndOf="@id/slider"
                 android:layout_marginRight="@dimen/activity_horizontal_margin"
                 android:layout_marginLeft="@dimen/activity_horizontal_margin"
                 android:layout_below="@id/txtNombre"
                 android:maxLines="1"
                 android:inputType="text"/>
-        </RelativeLayout>
+        </android.support.percent.PercentRelativeLayout>
+
     </android.support.v7.widget.CardView>
 
     <android.support.v7.widget.CardView
         android:id="@+id/cvDatos"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_height="0dp"
+        app:layout_heightPercent="42%"
+        app:layout_marginTopPercent="4%"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:layout_below="@id/cvUser"
         >
-        <RelativeLayout
+        <android.support.percent.PercentRelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
@@ -71,7 +79,8 @@
                 android:id="@+id/txtFechaNac"
                 android:hint="Fecha de nacimiento"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
+                app:layout_heightPercent="24%"
                 android:inputType="none"
                 android:maxLines="1"
                 android:focusable="false"/>
@@ -81,7 +90,8 @@
                 android:id="@+id/txtNacionalidad"
                 android:hint="Nacionalidad"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
+                app:layout_heightPercent="24%"
                 android:layout_below="@id/txtFechaNac"
                 android:inputType="none"
                 android:maxLines="1"
@@ -91,7 +101,8 @@
                 android:id="@+id/txtProfesion"
                 android:hint="Profesión"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
+                app:layout_heightPercent="24%"
                 android:layout_below="@id/txtNacionalidad"
                 android:maxLines="1"
                 android:inputType="text"/>
@@ -101,55 +112,61 @@
                 android:id="@+id/txtComentDesc"
                 android:hint="Comentario descriptivo"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
+                app:layout_heightPercent="24%"
                 android:layout_below="@id/txtProfesion"
                 android:maxLines="1"/>
 
-        </RelativeLayout>
+        </android.support.percent.PercentRelativeLayout>
     </android.support.v7.widget.CardView>
 
     <android.support.v7.widget.CardView
         android:id="@+id/cvHabitos"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        app:layout_widthPercent="42.4%"
+        android:layout_height="0dp"
+        app:layout_heightPercent="15%"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_below="@id/cvDatos"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
+        app:layout_marginTopPercent="4%"
         >
-        <RelativeLayout
+        <android.support.percent.PercentRelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="5dp"
             >
             <ImageView
                 android:id="@+id/imgHabitos"
-                android:layout_width="65dp"
-                android:layout_height="65dp"
-                android:src="@drawable/habitos"
-                android:layout_marginRight="30dp"/>
+                android:layout_width="0dp"
+                app:layout_widthPercent="50%"
+                android:layout_height="match_parent"
+                android:src="@drawable/habitos"/>
             <ImageView
                 android:id="@+id/imgGenero"
-                android:layout_width="65dp"
-                android:layout_height="65dp"
+                android:layout_width="0dp"
+                app:layout_widthPercent="50%"
+                android:layout_height="match_parent"
                 android:src="@drawable/ic_action_user"
                 android:layout_toRightOf="@id/imgHabitos"/>
 
 
-        </RelativeLayout>
+        </android.support.percent.PercentRelativeLayout>
     </android.support.v7.widget.CardView>
 
 
     <Button
         android:id="@+id/btnConfirmar"
         android:layout_width="wrap_content"
+        app:layout_widthPercent="30%"
         android:layout_height="wrap_content"
+        app:layout_heightPercent="10%"
+        app:layout_marginBottomPercent="3%"
         android:layout_alignBottom="@id/cvHabitos"
         android:layout_alignParentRight="true"
-        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:layout_alignParentEnd="true"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
         android:text="Confirmar"
         android:background="@color/colorAccent"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
         />
-</RelativeLayout>
+</android.support.percent.PercentRelativeLayout>
