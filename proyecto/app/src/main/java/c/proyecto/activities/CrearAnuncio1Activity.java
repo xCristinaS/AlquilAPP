@@ -5,14 +5,18 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Point;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
+import android.support.percent.PercentLayoutHelper;
+import android.support.percent.PercentRelativeLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -185,11 +189,17 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
     }
 
     private int getImageViewHeight(ImageView img) {
-        return img.getLayoutParams().height;
+        Point sizes = new Point();
+        getWindowManager().getDefaultDisplay().getSize(sizes);
+
+        return (int) (((PercentRelativeLayout.LayoutParams)img.getLayoutParams()).getPercentLayoutInfo().heightPercent * sizes.y);
     }
 
     private int getImageViewWidth(ImageView img) {
-        return img.getLayoutParams().width;
+        Point sizes = new Point();
+        getWindowManager().getDefaultDisplay().getSize(sizes);
+
+        return (int) (((PercentRelativeLayout.LayoutParams)img.getLayoutParams()).getPercentLayoutInfo().widthPercent * sizes.x);
     }
 
 
@@ -199,7 +209,6 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
             public void onClick(View v) {
                 int idArrayOpciones = R.array.chooseImageWithoutRemoveListItem;
                 final ImageView[] imgViews = {imgPrincipal, img1, img2, img3, img4, img5};
-
                 //Comprobar si existe contiene alguna imagen el imageView para mostrar o no la opción de eliminar.
                 for (int i = 0; i < imgViews.length; i++)
                     if (imgViews[i].getId() == img.getId())
