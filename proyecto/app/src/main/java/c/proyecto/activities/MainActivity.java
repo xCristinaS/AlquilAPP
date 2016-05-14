@@ -163,6 +163,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
             @Override
             public void onClick(View v) {
                 VerPerfilActivity.start(MainActivity.this, mUser);
+                drawer.closeDrawer(GravityCompat.START);
             }
         });
     }
