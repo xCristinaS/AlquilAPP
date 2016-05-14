@@ -128,6 +128,9 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
             recuperarAnuncio();
         }
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back_arrow);
+
     }
 
     private void initViews() {
@@ -277,9 +280,12 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
         switch (id) {
             case R.id.aceptar:
                 confirmarCambios();
-                return true;
+                break;
+            case android.R.id.home:
+                onBackPressed();
+                break;
         }
-        return super.onOptionsItemSelected(item);
+        return true;
     }
 
     private void confirmarCambios() {

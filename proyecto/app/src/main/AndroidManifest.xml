@@ -47,7 +47,8 @@
             android:label="Crear Anuncio" />
 
         <activity android:name=".activities.CrearAnuncio2Activity"
-            android:label="Crear Anuncio"/>
+            android:label="Crear Anuncio"
+            />
 
         <activity
             android:name=".activities.ConversationActivity"
