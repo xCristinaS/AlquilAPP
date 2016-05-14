@@ -3,12 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="c.proyecto.activities.CrearAnuncio2Activity">
+    tools:context="c.proyecto.activities.CrearAnuncio2Activity"
+    >
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingTop="16dp">
 
         <RelativeLayout
             android:id="@+id/groupLocalizacion"
@@ -213,23 +214,6 @@
                 android:maxLines="1"
                 android:hint="Precio"
                 android:inputType="numberDecimal"/>
-
-        </RelativeLayout>
-
-        <!-- HUESPEDES -->
-
-        <RelativeLayout
-            android:id="@+id/groupHuespedes"
-            android:layout_width="match_parent"
-            android:layout_height="90dp"
-            android:layout_below="@id/groupDescripcion"
-            android:layout_marginTop="8dp"
-            android:background="@color/colorShape">
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/rvHuespedes"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
 
         </RelativeLayout>
 

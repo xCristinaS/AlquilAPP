@@ -200,7 +200,7 @@
 
 
 
-<RelativeLayout
+<android.support.percent.PercentRelativeLayout
     android:id="@+id/groupSiguiente"
     android:layout_width="match_parent"
     android:layout_height="0dp"
@@ -210,31 +210,43 @@
     app:elevation="30dp"
 
     >
+    <TextView
+        android:layout_width="0dp"
+        app:layout_widthPercent="70%"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="24dp"
+        android:textSize="16sp"
+        android:textColor="@android:color/white"
+
+        android:text="Capta la atención de tus clientes con las mejores fotos."/>
     <ImageView
         android:id="@+id/imgSiguiente"
         android:src="@drawable/flecha"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         app:layout_marginRightPercent="@fraction/views_margin"
         app:layout_marginEndPercent="@fraction/views_margin"
-        android:layout_marginBottom="10dp"/>
+        android:layout_marginBottom="10dp"
+        />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Siguiente"
         android:textStyle="bold"
-        android:textSize="19sp"
+        android:textSize="16sp"
+        android:textColor="@android:color/white"
         android:layout_alignBottom="@id/imgSiguiente"
-        android:layout_marginBottom="15dp"
+        android:layout_marginBottom="11dp"
         android:layout_toLeftOf="@id/imgSiguiente"
         android:layout_toStartOf="@id/imgSiguiente"
-        android:layout_marginRight="16dp"
-        android:layout_marginEnd="16dp"/>
-</RelativeLayout>
+        android:layout_marginRight="3dp"
+        android:layout_marginEnd="3dp"/>
+</android.support.percent.PercentRelativeLayout>
 
     <ImageView
         android:layout_width="match_parent"

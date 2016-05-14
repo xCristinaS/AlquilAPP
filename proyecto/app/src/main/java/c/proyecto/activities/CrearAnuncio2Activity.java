@@ -144,7 +144,6 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
         txtTamano = (EditText) findViewById(R.id.txtTamano);
         txtDescripcion = (EditText) findViewById(R.id.txtDescripcion);
         txtPrecio = (EditText) findViewById(R.id.txtPrecio);
-        rvHuespedes = (RecyclerView) findViewById(R.id.rvHuespedes);
 
         View.OnClickListener onClickListener = new View.OnClickListener() {
             @Override
@@ -162,8 +161,6 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
 
         confImgTipoVivienda();
         confRecyclerPrestaciones();
-        confRecyclerHuespedes();
-
     }
 
 
@@ -203,9 +200,6 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
         rvPrestaciones.setItemAnimator(new DefaultItemAnimator());
     }
 
-    private void confRecyclerHuespedes() {
-        rvHuespedes.setHasFixedSize(true);
-    }
 
     private void recuperarAnuncio() {
         txtTituloAnuncio.setText(mAnuncio.getTitulo());
