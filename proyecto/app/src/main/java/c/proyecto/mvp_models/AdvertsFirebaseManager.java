@@ -458,11 +458,15 @@ public class AdvertsFirebaseManager {
     }
 
     public void detachFirebaseListeners() {
-        if (geoQueryAdverts != null)
-            geoQueryAdverts.removeAllListeners();
-        geoQueryAdverts = null;
         mFirebase.removeEventListener(listener);
         mFirebase = null;
         listener = null;
+        detachGeoAdvertsLocationListener();
+    }
+
+    public void detachGeoAdvertsLocationListener(){
+        if (geoQueryAdverts != null)
+            geoQueryAdverts.removeAllListeners();
+        geoQueryAdverts = null;
     }
 }

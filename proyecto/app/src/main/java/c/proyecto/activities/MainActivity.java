@@ -264,7 +264,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
         return super.onOptionsItemSelected(item);
     }
 
-    private void getAdvertsNearUser() {
+    public void getAdvertsNearUser() {
         if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
             return;
         if (mLastLocation == null)

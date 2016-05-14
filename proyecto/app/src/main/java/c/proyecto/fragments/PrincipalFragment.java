@@ -92,6 +92,8 @@ public class PrincipalFragment extends Fragment {
             }
         });
         mPresenter.initializeFirebaseListeners(user);
+        mPresenter.detachGeoAdvertsLocationListener();
+        ((MainActivity)getActivity()).getAdvertsNearUser();
     }
 
     public void addAdvertToAdapter(Anuncio a) {

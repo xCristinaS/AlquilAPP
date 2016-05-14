@@ -189,4 +189,9 @@ public class MainPresenter implements MainPresenterOps, MyPresenter {
         advertsManager.publishNewAdvert(anuncio);
     }
 
+    @Override
+    public void detachGeoAdvertsLocationListener(){
+        advertsManager.detachGeoAdvertsLocationListener();
+    }
+
 }
