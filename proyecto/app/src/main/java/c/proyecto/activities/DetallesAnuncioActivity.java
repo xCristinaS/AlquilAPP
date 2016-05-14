@@ -24,9 +24,6 @@ import c.proyecto.pojo.MessagePojo;
 
 public class DetallesAnuncioActivity extends AppCompatActivity implements AdvertsDetailsActivityOps, DetallesAnuncioFragment.IDetallesAnuncioFragmentListener, DetallesAnuncioFragment.OnDetallesAnuncioFragmentClic {
 
-
-    public static final String ACTION_CLOSE_ACTIVITY = "c.proyecto.activities.DetallesAnuncioActivity.CLOSE_ACTIVITY";
-
     private static final String EXTRA_ANUNCIO = "anuncio";
     private static final String EXTRA_ADVERT_TYPE = "advert_type";
     private static final String EXTRA_USER = "user";
@@ -143,7 +140,7 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
     @Override
     protected void onResume() {
         super.onResume();
-        IntentFilter filtro = new IntentFilter(ACTION_CLOSE_ACTIVITY);
+        IntentFilter filtro = new IntentFilter(MainActivity.ACTION_ANUNCIO_ELIMINADO);
         registerReceiver(receiver, filtro);
     }
 

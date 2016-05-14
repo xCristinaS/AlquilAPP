@@ -64,6 +64,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainActivity extends AppCompatActivity implements MainActivityOps, AdvertsRecyclerViewAdapter.OnAdapterItemLongClick, AdvertsRecyclerViewAdapter.OnAdapterItemClick, NavigationView.OnNavigationItemSelectedListener, MessagesRecyclerViewAdapter.OnMessagesAdapterItemClick, PrincipalFragment.AllowFilters, FilterDialogFramgent.ApplyFilters, SeleccionPrestacionesDialogFragment.ICallBackOnDismiss, AdvertsRecyclerViewAdapter.OnSubsIconClick, HuespedesAdapter.OnUserSubClick, GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks {
 
+    public static final String ACTION_ANUNCIO_ELIMINADO = "c.proyecto.activities.DetallesAnuncioActivity.ACTION_ANUNCIO_ELIMINADO";
     private static final int RC_REQUEST_LOCATION = 1000;
     private static final int RC_PREFERENCES = 3213;
     private static final String ARG_USUARIO = "usuario_extra";
@@ -333,7 +334,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
 
     @Override
     public void sendAdvertHasBeenRemovedBroadcast(Anuncio anuncio) {
-        sendBroadcast(new Intent(DetallesAnuncioActivity.ACTION_CLOSE_ACTIVITY).putExtra(EXTRA_ANUNCIO_ELIMINADO, anuncio));
+        sendBroadcast(new Intent(ACTION_ANUNCIO_ELIMINADO).putExtra(EXTRA_ANUNCIO_ELIMINADO, anuncio));
     }
 
     @Override

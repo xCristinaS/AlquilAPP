@@ -1,7 +1,10 @@
 package c.proyecto.activities;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.location.Location;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
@@ -17,6 +20,8 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.util.ArrayList;
 
 import c.proyecto.Constantes;
 import c.proyecto.R;
@@ -37,6 +42,8 @@ public class MapBrowserActivity extends AppCompatActivity implements OnMapReadyC
     private GoogleMap mGoogleMap;
     private MapBrowserPresenter mPresenter;
     private Usuario mCurrentUser;
+    private BroadcastReceiver receiver;
+    private ArrayList<Marker> markersList;
 
     public static void start(Activity activity, Location userPosition, Usuario currentUser) {
         Intent intent = new Intent(activity, MapBrowserActivity.class);
@@ -49,11 +56,24 @@ public class MapBrowserActivity extends AppCompatActivity implements OnMapReadyC
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map_browser);
+        markersList = new ArrayList<>();
         mUserPosition = getIntent().getParcelableExtra(EXTRA_USER_LOCATION);
         mCurrentUser = getIntent().getParcelableExtra(EXTRA_USER);
         mPresenter = MapBrowserPresenter.getPresentador(this);
         mPresenter.setAdvertsManager(new AdvertsFirebaseManager(mPresenter, mCurrentUser));
         confMap();
+
+        receiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                Anuncio a = intent.getParcelableExtra(MainActivity.EXTRA_ANUNCIO_ELIMINADO);
+                for (Marker m: markersList)
+                    if (m.getTitle().equals(a.getKey())) {
+                        m.remove();
+                        markersList.remove(m);
+                    }
+            }
+        };
     }
 
     private void confMap() {
@@ -96,6 +116,7 @@ public class MapBrowserActivity extends AppCompatActivity implements OnMapReadyC
 
         Marker marker = mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(location.latitude, location.longitude)).icon(BitmapDescriptorFactory.fromResource(resource)));
         marker.setTitle(a.getKey());
+        markersList.add(marker);
         mGoogleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
@@ -109,6 +130,19 @@ public class MapBrowserActivity extends AppCompatActivity implements OnMapReadyC
     @Override
     public void advertClickedFromMapObtained(Anuncio a) {
         DetallesAnuncioActivity.start(this, a, AdvertsRecyclerViewAdapter.ADAPTER_TYPE_ADVS, mCurrentUser);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        IntentFilter filtro = new IntentFilter(MainActivity.ACTION_ANUNCIO_ELIMINADO);
+        registerReceiver(receiver, filtro);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(receiver);
     }
 
     @Override
