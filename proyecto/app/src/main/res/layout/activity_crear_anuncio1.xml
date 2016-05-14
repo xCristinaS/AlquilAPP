@@ -21,8 +21,20 @@
         app:layout_marginStartPercent="@fraction/views_margin"
         app:layout_marginBottomPercent="@fraction/views_margin"
         app:layout_marginTopPercent="3.5%"
-        android:src="@drawable/sin_imagen"
-        android:scaleType="centerCrop"/>
+        android:scaleType="centerCrop"
+        android:src="@drawable/sin_imagen"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/sombra_hueco_imagen"
+        android:layout_alignBottom="@id/img1"
+        android:layout_alignTop="@id/img1"
+        android:layout_alignLeft="@id/img1"
+        android:layout_alignStart="@id/img1"
+        android:layout_alignRight="@id/img1"
+        android:layout_alignEnd="@id/img1"
+        android:scaleType="fitXY"/>
 
     <ProgressBar
         android:id="@+id/prb1"
@@ -57,6 +69,18 @@
         android:src="@drawable/sin_imagen"
         android:scaleType="centerCrop"
         />
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/sombra_hueco_imagen_x2"
+        android:layout_alignBottom="@id/imgPrincipal"
+        android:layout_alignTop="@id/imgPrincipal"
+        android:layout_alignLeft="@id/imgPrincipal"
+        android:layout_alignStart="@id/imgPrincipal"
+        android:layout_alignRight="@id/imgPrincipal"
+        android:layout_alignEnd="@id/imgPrincipal"
+        android:scaleType="fitXY"
+        />
 
     <ProgressBar
         android:id="@+id/prbPrincipal"
@@ -87,9 +111,22 @@
         app:layout_marginStartPercent="@fraction/views_margin"
         app:layout_marginBottomPercent="@fraction/views_margin"
 
-        android:layout_below="@id/img1"
         android:scaleType="centerCrop"
+        android:layout_below="@id/img1"
         android:src="@drawable/sin_imagen"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/sombra_hueco_imagen"
+        android:layout_alignBottom="@id/img2"
+        android:layout_alignTop="@id/img2"
+        android:layout_alignLeft="@id/img2"
+        android:layout_alignStart="@id/img2"
+        android:layout_alignRight="@id/img2"
+        android:layout_alignEnd="@id/img2"
+        android:scaleType="fitXY"/>
+
     <ProgressBar
         android:id="@+id/prb2"
         android:layout_width="match_parent"
@@ -117,9 +154,21 @@
         app:layout_marginLeftPercent="@fraction/views_margin"
         app:layout_marginStartPercent="@fraction/views_margin"
 
-        android:layout_below="@id/img2"
         android:scaleType="centerCrop"
+        android:layout_below="@id/img2"
         android:src="@drawable/sin_imagen"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/sombra_hueco_imagen"
+        android:layout_alignBottom="@id/img3"
+        android:layout_alignTop="@id/img3"
+        android:layout_alignLeft="@id/img3"
+        android:layout_alignStart="@id/img3"
+        android:layout_alignRight="@id/img3"
+        android:layout_alignEnd="@id/img3"
+        android:scaleType="fitXY"/>
 
     <ProgressBar
         android:id="@+id/prb3"
@@ -153,6 +202,18 @@
         android:scaleType="centerCrop"
         android:src="@drawable/sin_imagen"/>
 
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/sombra_hueco_imagen"
+        android:layout_alignBottom="@id/img4"
+        android:layout_alignTop="@id/img4"
+        android:layout_alignLeft="@id/img4"
+        android:layout_alignStart="@id/img4"
+        android:layout_alignRight="@id/img4"
+        android:layout_alignEnd="@id/img4"
+        android:scaleType="fitXY"/>
+
     <ProgressBar
         android:id="@+id/prb4"
         android:layout_width="match_parent"
@@ -183,6 +244,19 @@
 
         android:scaleType="centerCrop"
         android:src="@drawable/sin_imagen"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/sombra_hueco_imagen"
+        android:layout_alignBottom="@id/img5"
+        android:layout_alignTop="@id/img5"
+        android:layout_alignLeft="@id/img5"
+        android:layout_alignStart="@id/img5"
+        android:layout_alignRight="@id/img5"
+        android:layout_alignEnd="@id/img5"
+        android:scaleType="fitXY"/>
+
     <ProgressBar
         android:id="@+id/prb5"
         android:layout_width="match_parent"
@@ -214,7 +288,8 @@
         android:layout_width="0dp"
         app:layout_widthPercent="70%"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
         android:layout_marginTop="24dp"
         android:textSize="16sp"
         android:textColor="@android:color/white"
