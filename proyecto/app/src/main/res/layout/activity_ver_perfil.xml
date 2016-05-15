@@ -103,7 +103,7 @@
             android:layout_below="@id/groupDescripcion"
             android:layout_marginLeft="25dp"
             android:layout_marginStart="25dp"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="14dp"
             android:maxLines="1"
             android:text="Alejandro Torres Gómez"
             android:textStyle="bold" />
@@ -136,7 +136,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/lblNacionalidad"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="14dp"
             android:background="@color/colorShape"
             android:paddingTop="10dp"
             android:paddingBottom="10dp">

@@ -94,6 +94,8 @@ public class VerPerfilActivity extends AppCompatActivity {
         mMessage = m;
         if( m != null)
             mMenu.findItem(R.id.nav_send_message).setIcon(R.drawable.ic_chat);
+
+        mMenu.findItem(R.id.nav_send_message).setVisible(true);
     }
 
 
@@ -165,11 +167,9 @@ public class VerPerfilActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_ver_perfil, menu);
         mMenu = menu;
-        
-        if (mAnuncio != null){
-            menu.findItem(R.id.nav_send_message).setVisible(true);
+
+        if (mAnuncio != null)
             mPresenter.getMessageIfConverExist(mAnuncio, mUser.getKey());
-        }
 
         return super.onCreateOptionsMenu(menu);
     }
