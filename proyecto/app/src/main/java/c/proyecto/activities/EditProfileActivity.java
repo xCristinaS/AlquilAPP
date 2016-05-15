@@ -8,7 +8,6 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.provider.MediaStore;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -38,14 +37,14 @@ import c.proyecto.R;
 import c.proyecto.api.ImgurUploader;
 import c.proyecto.dialog_fragments.CaracteristicasUsuarioDialogFragment;
 import c.proyecto.dialog_fragments.DescripcionDialogFragment;
+import c.proyecto.dialog_fragments.NacionalidadesDialogFragment;
 import c.proyecto.interfaces.MyPresenter;
 import c.proyecto.mvp_models.UsersFirebaseManager;
-import c.proyecto.pojo.MessagePojo;
 import c.proyecto.pojo.Usuario;
 import c.proyecto.mvp_presenters.ProfilePresenter;
 import c.proyecto.utils.Imagenes;
 
-public class EditProfileActivity extends AppCompatActivity {
+public class EditProfileActivity extends AppCompatActivity implements NacionalidadesDialogFragment.IonNacionalidadClicked{
 
 
     private static final int RC_ABRIR_GALERIA = 274;
@@ -54,6 +53,7 @@ public class EditProfileActivity extends AppCompatActivity {
     private static final String ARG_USUARIO = "args_user";
     private static final String TAG_DIALOG_HABITOS = "DialogHabitos";
     private static final String TAG_DIALOG_DESCRIPCION = "DialogDescripcion";
+    private static final String TAG_DIALOG_NACIONALIDADES = "DialogNacionalidades";
 
     private EditText txtNombre, txtApellidos, txtFechaNac, txtNacionalidad, txtProfesion, txtComentDesc;
     private ImageView imgFoto, imgCaracteristicas, imgGenero;
@@ -231,16 +231,11 @@ public class EditProfileActivity extends AppCompatActivity {
     }
 
     private void showNationalitiesDialog() {
-        AlertDialog.Builder b = new AlertDialog.Builder(EditProfileActivity.this);
-        b.setTitle("Nacionalidades");
-        b.setItems(mNationalities, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                txtNacionalidad.setText(mNationalities[which]);
-            }
-        });
-        b.setIcon(R.drawable.ic_flag);
-        b.create().show();
+        NacionalidadesDialogFragment.newInstance(mNationalities).show(getSupportFragmentManager(), TAG_DIALOG_NACIONALIDADES);
+    }
+    @Override
+    public void onNacionalidadClicked(String nacionalidad) {
+        txtNacionalidad.setText(nacionalidad);
     }
 
     private void showImageDialogList(final ImageView img) {
@@ -314,6 +309,8 @@ public class EditProfileActivity extends AppCompatActivity {
                     break;
             }
     }
+
+
 
     class HiloEscalador extends AsyncTask<Integer, Void, Bitmap> {
 
