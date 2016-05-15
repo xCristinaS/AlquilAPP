@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import c.proyecto.Constantes;
 import c.proyecto.interfaces.MyPresenter;
 import c.proyecto.mvp_presenters.AdvertsDetailsPresenter;
 import c.proyecto.mvp_presenters.ConversationPresenter;
@@ -24,9 +25,6 @@ import c.proyecto.pojo.Usuario;
 
 public class MessagesFirebaseManager {
 
-    private static final String URL_CONVERSACIONES = "https://proyectofinaldam.firebaseio.com/conversaciones/";
-    private static final String URL_MSG_SIN_RESP = "https://proyectofinaldam.firebaseio.com/mensajesEnviadosSinRespuesta/";
-    private static final String URL_USERS = "https://proyectofinaldam.firebaseio.com/usuarios/";
     private static final int MESSAGES_LIMIT_CONVER = 20;
 
     private static Firebase mFirebaseReceivedMessages, mFirebaseConversations, mFirebaseMessagesWithoutAnswer;
@@ -48,7 +46,7 @@ public class MessagesFirebaseManager {
     public void initializeMessagesListeners() {
         // El listener se inicializa al entrar en la actividad de mensajes. El listener permanecerá a la escucha hasta que se cierre sesión. Entonces:
         if (mFirebaseReceivedMessages == null)
-            mFirebaseReceivedMessages = new Firebase(URL_CONVERSACIONES).child(currentUser.getKey()); // conversaciones/keyUser --> para leer todos los mensajer que ha recibido el usuario
+            mFirebaseReceivedMessages = new Firebase(Constantes.URL_CONVERSACIONES).child(currentUser.getKey()); // conversaciones/keyUser --> para leer todos los mensajer que ha recibido el usuario
         if (mListenerReceivedMessages == null)
             mListenerReceivedMessages = new ChildEventListener() {
                 @Override
@@ -64,7 +62,7 @@ public class MessagesFirebaseManager {
                     checkOnFirstMessageResponse(currentUser.getKey(), emisorKey, emisor_titleAdvert); // compruebo si el mensaje que estoy leyendo es un mensaje recibido en respuesta a una conversación iniciada por el usuario
 
                     mensaje.setTituloAnuncio(titulo);
-                    new Firebase(URL_USERS).child(emisorKey).addListenerForSingleValueEvent(new ValueEventListener() {
+                    new Firebase(Constantes.URL_USERS).child(emisorKey).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             Usuario emisor = dataSnapshot.getValue(Usuario.class);
@@ -76,7 +74,7 @@ public class MessagesFirebaseManager {
 
                             // este listener es el que estará a la escucha por si se recibe un nuevo mensaje en una conversación ya existente. El primer listener estará a la escucha y obtendrá los
                             // nuevos mensajes recibidos, éste en cambio obtendra los mensajes recibidos sobre una conversación existente, para mantener el adaptador en la vista de mensajes actualizado
-                            Query fInterno = new Firebase(URL_CONVERSACIONES).child(currentUser.getKey()).child(emisor_titleAdvert).limitToLast(1);
+                            Query fInterno = new Firebase(Constantes.URL_CONVERSACIONES).child(currentUser.getKey()).child(emisor_titleAdvert).limitToLast(1);
                             ChildEventListener listenerInterno = new ChildEventListener() {
                                 @Override
                                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -144,14 +142,14 @@ public class MessagesFirebaseManager {
     // compruebo si el mensaje que he recibido es un mensaje en respuesta a una conversación iniciada por el usuario. Si es así, elimino el mensaje de la lista de mensajes enviados sin respuesta.
     private void checkOnFirstMessageResponse(final String userKey, final String emisorKey, final String emisor_titleAdvert) {
         final String title = emisor_titleAdvert.substring(emisor_titleAdvert.indexOf("_") + 1, emisor_titleAdvert.length());
-        new Firebase(URL_MSG_SIN_RESP).child(userKey).child(emisorKey).child(title).addListenerForSingleValueEvent(new ValueEventListener() {
+        new Firebase(Constantes.URL_MSG_SIN_RESP).child(userKey).child(emisorKey).child(title).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 HashMap map = dataSnapshot.getValue(HashMap.class);
                 if (map != null) {
                     String msgPreviamenteEnviado = (String) map.keySet().iterator().next();
                     if ((userKey + "_" + title).equals(msgPreviamenteEnviado))
-                        new Firebase(URL_MSG_SIN_RESP).child(userKey).child(emisorKey).child(title).setValue(null);
+                        new Firebase(Constantes.URL_MSG_SIN_RESP).child(userKey).child(emisorKey).child(title).setValue(null);
                 }
             }
 
@@ -174,18 +172,18 @@ public class MessagesFirebaseManager {
 
     private void getUserMessagesSendedWithoutAnswer() {
         // Obtengo los mensajes que el usuario ha enviado y que aún no tienen respuesta
-        new Firebase(URL_MSG_SIN_RESP).child(currentUser.getKey()).addListenerForSingleValueEvent(new ValueEventListener() {
+        new Firebase(Constantes.URL_MSG_SIN_RESP).child(currentUser.getKey()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot data : dataSnapshot.getChildren()) {
                     final String keyReceptor = data.getKey(); // obtengo el receptor
                     // voy a la rama de mensajes que le he enviado a ese receptor
-                    new Firebase(URL_MSG_SIN_RESP).child(currentUser.getKey()).child(keyReceptor).addListenerForSingleValueEvent(new ValueEventListener() {
+                    new Firebase(Constantes.URL_MSG_SIN_RESP).child(currentUser.getKey()).child(keyReceptor).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             for (DataSnapshot data2 : dataSnapshot.getChildren())
                                 // leo los anuncios sobre los que le he enviado el mensaje a ese receptor
-                                new Firebase(URL_MSG_SIN_RESP).child(currentUser.getKey()).child(keyReceptor).child(data2.getKey()).addListenerForSingleValueEvent(new ValueEventListener() {
+                                new Firebase(Constantes.URL_MSG_SIN_RESP).child(currentUser.getKey()).child(keyReceptor).child(data2.getKey()).addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(DataSnapshot dataSnapshot) {
                                         HashMap map = dataSnapshot.getValue(HashMap.class);
@@ -196,7 +194,7 @@ public class MessagesFirebaseManager {
                                         // me voy a la rama de mensajes del receptor y obtengo el último mensaje que le envío el usuario
                                         // este listener sirve para mantener actualizado el adaptador. Es decir, si el usuario envía un nuevo mensaje y el receptor sigue sin responder que aparezca ese último
                                         // mensaje enviado
-                                        Query fInterno = new Firebase(URL_CONVERSACIONES).child(keyReceptor).child(msgEnviado).limitToLast(1);
+                                        Query fInterno = new Firebase(Constantes.URL_CONVERSACIONES).child(keyReceptor).child(msgEnviado).limitToLast(1);
                                         ChildEventListener listenerInterno = new ChildEventListener() {
                                             @Override
                                             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -207,7 +205,7 @@ public class MessagesFirebaseManager {
                                                 mensaje.setKey(dataSnapshot.getKey());
                                                 mensaje.setEmisor(currentUser);
                                                 mensaje.setTituloAnuncio(tituloAnuncio);
-                                                new Firebase(URL_USERS).child(keyReceptor).addListenerForSingleValueEvent(new ValueEventListener() {
+                                                new Firebase(Constantes.URL_USERS).child(keyReceptor).addListenerForSingleValueEvent(new ValueEventListener() {
                                                     @Override
                                                     public void onDataChange(DataSnapshot dataSnapshot) {
                                                         Usuario receptor = dataSnapshot.getValue(Usuario.class);
@@ -278,9 +276,9 @@ public class MessagesFirebaseManager {
             mFirebaseConversations.limitToLast(MESSAGES_LIMIT_CONVER).removeEventListener(mListenerConversation);
         nodoAsunto = m.getEmisor().getKey() + "_" + m.getTituloAnuncio().trim().replace(" ", "_");
         if (m instanceof MessagePojoWithoutAnswer)
-            mFirebaseConversations = new Firebase(URL_CONVERSACIONES).child(m.getKeyReceptor()).child(nodoAsunto);
+            mFirebaseConversations = new Firebase(Constantes.URL_CONVERSACIONES).child(m.getKeyReceptor()).child(nodoAsunto);
         else
-            mFirebaseConversations = new Firebase(URL_CONVERSACIONES).child(currentUser.getKey()).child(nodoAsunto);
+            mFirebaseConversations = new Firebase(Constantes.URL_CONVERSACIONES).child(currentUser.getKey()).child(nodoAsunto);
 
         mListenerConversation = new ChildEventListener() {
             @Override
@@ -306,7 +304,7 @@ public class MessagesFirebaseManager {
                 nodoAsunto2 = nodoAsunto2.substring(0, nodoAsunto2.length());
 
                 if (listenersInternosConvers.size() == 0) {
-                    Query fInterno = new Firebase(URL_CONVERSACIONES).child(m.getEmisor().getKey()).child(nodoAsunto2);
+                    Query fInterno = new Firebase(Constantes.URL_CONVERSACIONES).child(m.getEmisor().getKey()).child(nodoAsunto2);
                     ChildEventListener listenerInterno = new ChildEventListener() {
                         @Override
                         public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -372,22 +370,24 @@ public class MessagesFirebaseManager {
     public void sendMessage(MessagePojo m, String keyReceptor, boolean isFirstMessageSended) {
         String nodoAsunto = m.getEmisor().getKey() + "_" + m.getTituloAnuncio().trim().replace(" ", "_");
         nodoAsunto = nodoAsunto.substring(0, nodoAsunto.length());
-        new Firebase(URL_CONVERSACIONES).child(keyReceptor).child(nodoAsunto).push().setValue(new Message(m.getFecha(), m.getContenido()));
+        new Firebase(Constantes.URL_CONVERSACIONES).child(keyReceptor).child(nodoAsunto).push().setValue(new Message(m.getFecha(), m.getContenido()));
         if (isFirstMessageSended) {
             Map<String, Boolean> map = new HashMap();
             map.put(nodoAsunto, true);
-            new Firebase(URL_MSG_SIN_RESP).child(m.getEmisor().getKey()).child(keyReceptor).child(m.getTituloAnuncio().replace(" ", "_")).setValue(map);
+            new Firebase(Constantes.URL_MSG_SIN_RESP).child(m.getEmisor().getKey()).child(keyReceptor).child(m.getTituloAnuncio().replace(" ", "_")).setValue(map);
         }
+
+        new Firebase(Constantes.URL_NOTIFICACIONES).child(keyReceptor).child(Constantes.CHILD_MENSAJES).child(nodoAsunto).setValue(new Message(m.getFecha(), m.getContenido()));
     }
 
     public void removeMessage(MessagePojo m) {
         String nodoAsunto = m.getEmisor().getKey() + "_" + m.getTituloAnuncio().replace(" ", "_");
         nodoAsunto = nodoAsunto.substring(0, nodoAsunto.length());
-        new Firebase(URL_CONVERSACIONES).child(m.getKeyReceptor()).child(nodoAsunto).child(m.getKey()).setValue(null);
+        new Firebase(Constantes.URL_CONVERSACIONES).child(m.getKeyReceptor()).child(nodoAsunto).child(m.getKey()).setValue(null);
     }
 
     public void getMessageIfConverExist(final Anuncio anuncio) {
-        Firebase f = new Firebase(URL_CONVERSACIONES).child(currentUser.getKey()).child(anuncio.getAnunciante().trim() + "_" + anuncio.getTitulo().trim());
+        Firebase f = new Firebase(Constantes.URL_CONVERSACIONES).child(currentUser.getKey()).child(anuncio.getAnunciante().trim() + "_" + anuncio.getTitulo().trim());
         f.limitToLast(1).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -401,7 +401,7 @@ public class MessagesFirebaseManager {
                     m.setFecha(new Date(mAux.getFecha()));
                     m.setContenido(mAux.getContenido());
 
-                    new Firebase(URL_USERS).child(anuncio.getAnunciante()).addListenerForSingleValueEvent(new ValueEventListener() {
+                    new Firebase(Constantes.URL_USERS).child(anuncio.getAnunciante()).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             m.setEmisor(dataSnapshot.getValue(Usuario.class));
@@ -425,7 +425,7 @@ public class MessagesFirebaseManager {
     }
 
     public void getMessageIfConverExist(final Anuncio anuncio, final String keySolicitante) {
-        Firebase f = new Firebase(URL_CONVERSACIONES).child(currentUser.getKey()).child(keySolicitante + "_" + anuncio.getTitulo().trim());
+        Firebase f = new Firebase(Constantes.URL_CONVERSACIONES).child(currentUser.getKey()).child(keySolicitante + "_" + anuncio.getTitulo().trim());
         f.limitToLast(1).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -439,7 +439,7 @@ public class MessagesFirebaseManager {
                     m.setFecha(new Date(mAux.getFecha()));
                     m.setContenido(mAux.getContenido());
 
-                    new Firebase(URL_USERS).child(keySolicitante).addListenerForSingleValueEvent(new ValueEventListener() {
+                    new Firebase(Constantes.URL_USERS).child(keySolicitante).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             m.setEmisor(dataSnapshot.getValue(Usuario.class));

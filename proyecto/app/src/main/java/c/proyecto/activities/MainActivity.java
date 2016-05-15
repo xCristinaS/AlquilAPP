@@ -56,6 +56,7 @@ import c.proyecto.mvp_models.MessagesFirebaseManager;
 import c.proyecto.mvp_models.UsersFirebaseManager;
 import c.proyecto.mvp_presenters.MainPresenter;
 import c.proyecto.mvp_views_interfaces.MainActivityOps;
+import c.proyecto.notificaciones.NotificationService;
 import c.proyecto.pojo.Anuncio;
 import c.proyecto.pojo.MessagePojo;
 import c.proyecto.pojo.Prestacion;
@@ -111,6 +112,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
         mSharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         configLocation();
         initViews();
+        // Si la app se inicializa por primera vez, lanza el servicio
+        //if (!mSharedPref.getBoolean(Constantes.KEY_APP_INITIALIZED, false)){
+            mSharedPref.edit().putBoolean(Constantes.KEY_APP_INITIALIZED, true);
+            startService(new Intent(this, NotificationService.class).putExtra(NotificationService.EXTRA_USUARIO, mUser));
+        //}
     }
 
     private void initViews() {

@@ -26,6 +26,7 @@ public final class Constantes {
         //Keys
         public static final String KEY_USER = "keyUser";
         public static final String KEY_PASS = "keyPass";
+        public static final String KEY_APP_INITIALIZED = "keyAppInitialized";
         //Shared
         public static final int DEFAULT_RATIO_BUSQUEDA = 10;
 
@@ -51,6 +52,12 @@ public final class Constantes {
     public static final long DELAY_TIME = 8000;
     public static final long DURATION = 8000;
 
+    // FIREBASE
+    public static final String URL_NOTIFICACIONES = "https://proyectofinaldam.firebaseio.com/notificaciones/";
+    public static final String URL_CONVERSACIONES = "https://proyectofinaldam.firebaseio.com/conversaciones/";
+    public static final String URL_MSG_SIN_RESP = "https://proyectofinaldam.firebaseio.com/mensajesEnviadosSinRespuesta/";
+    public static final String URL_USERS = "https://proyectofinaldam.firebaseio.com/usuarios/";
 
+    public static final String CHILD_MENSAJES = "mensajes";
 }
 

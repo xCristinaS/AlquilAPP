@@ -65,6 +65,15 @@
             android:required="true" />
 
         <activity android:name=".activities.MapBrowserActivity"/>
+
+        <service android:name=".notificaciones.NotificationService"/>
+
+        <receiver android:name=".notificaciones.NotificationStaticReceiver">
+            <intent-filter android:priority="2">
+                <action android:name="c.proyecto.notificaciones.ACTION_SEND_NOTIFICATION"/>
+            </intent-filter>
+        </receiver>
+
     </application>
 
 </manifest>
