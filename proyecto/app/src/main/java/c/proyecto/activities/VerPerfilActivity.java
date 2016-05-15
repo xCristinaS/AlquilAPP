@@ -11,6 +11,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -33,12 +34,12 @@ public class VerPerfilActivity extends AppCompatActivity {
     private static final String EXTRA_ANUNCIO = "extra_anuncio";
     private static final String EXTRA_CURRENT_USER = "current_user";
 
-    private RecyclerView rvDescripcion;
     private TextView lblNombre, lblNacionalidad, lblDescripcionNoDisponible, lblDescripcion, lblProfesion;
     private ImageView imgFoto, imgDescripcion1, imgDescripcion2, imgDescripcion3, imgMessage;
     private Usuario mUser, currentUser;
     private Anuncio mAnuncio;
     private ProfilePresenter mPresenter;
+    private RelativeLayout groupDescripcion;
 
     public static void start(Activity activity, Usuario user){
         Intent intent = new Intent(activity, VerPerfilActivity.class);
@@ -79,6 +80,7 @@ public class VerPerfilActivity extends AppCompatActivity {
         imgDescripcion1 = (ImageView) findViewById(R.id.imgDescripcion1);
         imgDescripcion2 = (ImageView) findViewById(R.id.imgDescripcion2);
         imgDescripcion3 = (ImageView) findViewById(R.id.imgDescripcion3);
+        groupDescripcion = (RelativeLayout) findViewById(R.id.groupDescripcion);
 
         if (mAnuncio != null){
             imgMessage = (ImageView) findViewById(R.id.imgMessage);
@@ -162,6 +164,7 @@ public class VerPerfilActivity extends AppCompatActivity {
                 imgDescripcion2.setImageResource(getResources().getIdentifier(items.get(1), "drawable", getPackageName()));
                 imgDescripcion3.setImageResource(getResources().getIdentifier(items.get(2), "drawable", getPackageName()));
             }
-        }
+        }else
+            groupDescripcion.setVisibility(View.GONE);
     }
 }

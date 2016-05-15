@@ -13,7 +13,7 @@
             android:layout_height="215dp"
             android:scaleType="centerCrop" />
 
-        <!-- Degradado negro + flecha blanca-->
+        <!-- Degradado negro -->
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -21,53 +21,62 @@
             android:scaleType="centerCrop"
             android:src="@drawable/degradado_negro" />
 
+        <!-- Este grupo desaparecerá se volverá invisible cuando no tenga Descripciones seleccionadas -->
         <RelativeLayout
             android:id="@+id/groupDescripcion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/slider"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="40dp"
-            android:layout_marginRight="40dp"
             android:layout_marginTop="10dp">
 
-            <ImageView
-                android:id="@+id/imgDescripcion1"
-                android:layout_width="35dp"
-                android:layout_height="35dp" />
+            <RelativeLayout
+                android:id="@+id/groupItemsDescripcion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
 
-            <ImageView
-                android:id="@+id/imgDescripcion2"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:layout_centerHorizontal="true" />
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp">
 
-            <ImageView
-                android:id="@+id/imgDescripcion3"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true" />
+                <ImageView
+                    android:id="@+id/imgDescripcion1"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp" />
 
+                <ImageView
+                    android:id="@+id/imgDescripcion2"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_centerHorizontal="true" />
+
+                <ImageView
+                    android:id="@+id/imgDescripcion3"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true" />
+
+            </RelativeLayout>
+
+
+            <View
+                android:id="@+id/divider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@id/groupItemsDescripcion"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:background="@android:color/darker_gray" />
         </RelativeLayout>
 
-
-        <View
-            android:id="@+id/divider"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_below="@id/groupDescripcion"
-            android:layout_marginEnd="@dimen/activity_horizontal_margin"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:layout_marginStart="@dimen/activity_horizontal_margin"
-            android:background="@android:color/darker_gray" />
 
         <TextView
             android:id="@+id/lblNombre"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/divider"
+            android:layout_below="@id/groupDescripcion"
             android:layout_marginLeft="25dp"
             android:layout_marginStart="25dp"
             android:layout_marginTop="12dp"
@@ -76,14 +85,14 @@
 
         <ImageView
             android:id="@+id/imgMessage"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
             android:layout_below="@id/divider"
             android:layout_marginRight="24dp"
-            android:visibility="invisible"
-            android:src="@drawable/ic_nav_messages" />
+            android:src="@drawable/ic_nav_messages"
+            android:visibility="invisible" />
 
         <TextView
             android:id="@+id/lblNacionalidad"
