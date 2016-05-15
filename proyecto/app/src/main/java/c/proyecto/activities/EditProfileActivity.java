@@ -152,8 +152,7 @@ public class EditProfileActivity extends AppCompatActivity implements Nacionalid
                 e.printStackTrace();
             }
         }
-        if (!TextUtils.isEmpty(txtComentDesc.getText()))
-            mUser.setComentario_desc(txtComentDesc.getText().toString());
+        mUser.setComentario_desc(txtComentDesc.getText().toString());
         if (!TextUtils.isEmpty(txtProfesion.getText()))
             mUser.setProfesion(txtProfesion.getText().toString());
         if (!TextUtils.isEmpty(txtNacionalidad.getText()))

@@ -53,6 +53,7 @@
         <activity
             android:name=".activities.ConversationActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+
         <activity android:name=".activities.VerPerfilActivity"
             android:label="Perfil"/>
 

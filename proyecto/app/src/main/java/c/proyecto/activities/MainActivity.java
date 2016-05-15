@@ -209,7 +209,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu);
+        getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
@@ -227,36 +227,36 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
             case android.R.id.home:
                 drawer.openDrawer(GravityCompat.START);
                 return true;
-            case R.id.limpiar:
+            case R.id.nav_limpiar:
                 adapter.clearAllSelections();
                 adapter.disableMultiDeletionMode();
-                toolbar.getMenu().findItem(R.id.eliminar).setVisible(false);
-                toolbar.getMenu().findItem(R.id.limpiar).setVisible(false);
+                toolbar.getMenu().findItem(R.id.nav_eliminar).setVisible(false);
+                toolbar.getMenu().findItem(R.id.nav_limpiar).setVisible(false);
                 return true;
-            case R.id.eliminar:
+            case R.id.nav_eliminar:
                 adapter.removeSelections();
                 adapter.clearAllSelections();
                 adapter.disableMultiDeletionMode();
-                toolbar.getMenu().findItem(R.id.eliminar).setVisible(false);
-                toolbar.getMenu().findItem(R.id.limpiar).setVisible(false);
+                toolbar.getMenu().findItem(R.id.nav_eliminar).setVisible(false);
+                toolbar.getMenu().findItem(R.id.nav_limpiar).setVisible(false);
                 return true;
-            case R.id.map:
+            case R.id.nav_map:
                 if (mLastLocation != null)
                     MapBrowserActivity.start(this, mLastLocation, mUser);
                 else
                     Toast.makeText(this, "No es posible encontrar su posición", Toast.LENGTH_SHORT).show();
                 return true;
-            case R.id.filters:
+            case R.id.nav_filters:
                 new FilterDialogFramgent().show(getSupportFragmentManager(), TAG_FILTER_DIALOG_FRAMGENT);
                 return true;
-            case R.id.deshacerFiltro:
+            case R.id.nav_deshacer_filtro:
                 Fragment f = getSupportFragmentManager().findFragmentById(R.id.frmContenido);
                 if (f instanceof PrincipalFragment)
                     ((PrincipalFragment) f).removeFilter();
 
                 mPresenter.detachAdvertsListener();
                 mPresenter.attachAdvertsListeners();
-                toolbar.getMenu().findItem(R.id.deshacerFiltro).setVisible(false);
+                toolbar.getMenu().findItem(R.id.nav_deshacer_filtro).setVisible(false);
                 getAdvertsNearUser();
                 return true;
         }
@@ -347,34 +347,34 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
 
     @Override
     public void showFilterIcon() {
-        toolbar.getMenu().findItem(R.id.filters).setVisible(true);
+        toolbar.getMenu().findItem(R.id.nav_filters).setVisible(true);
     }
 
     @Override
     public void hideFilterIcon() {
-        toolbar.getMenu().findItem(R.id.filters).setVisible(false);
+        toolbar.getMenu().findItem(R.id.nav_filters).setVisible(false);
     }
 
     @Override
     public void showMapIcon() {
-        toolbar.getMenu().findItem(R.id.map).setVisible(true);
+        toolbar.getMenu().findItem(R.id.nav_map).setVisible(true);
     }
 
     @Override
     public void hideMapIcon() {
-        toolbar.getMenu().findItem(R.id.map).setVisible(false);
+        toolbar.getMenu().findItem(R.id.nav_map).setVisible(false);
     }
 
     @Override
     public void onItemLongClick() {
-        toolbar.getMenu().findItem(R.id.eliminar).setVisible(true);
-        toolbar.getMenu().findItem(R.id.limpiar).setVisible(true);
+        toolbar.getMenu().findItem(R.id.nav_eliminar).setVisible(true);
+        toolbar.getMenu().findItem(R.id.nav_limpiar).setVisible(true);
     }
 
     @Override
     public void desactivarMultiseleccion() {
-        toolbar.getMenu().findItem(R.id.eliminar).setVisible(false);
-        toolbar.getMenu().findItem(R.id.limpiar).setVisible(false);
+        toolbar.getMenu().findItem(R.id.nav_eliminar).setVisible(false);
+        toolbar.getMenu().findItem(R.id.nav_limpiar).setVisible(false);
     }
 
     @Override
@@ -398,7 +398,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
         Fragment f = getSupportFragmentManager().findFragmentById(R.id.frmContenido);
         if (f instanceof PrincipalFragment)
             ((PrincipalFragment) f).loadFilteredAdverts(filteredAdverts);
-        toolbar.getMenu().findItem(R.id.deshacerFiltro).setVisible(true);
+        toolbar.getMenu().findItem(R.id.nav_deshacer_filtro).setVisible(true);
     }
 
     @Override

@@ -19,6 +19,7 @@ public class Usuario implements Parcelable, MyModel {
     public Usuario() {
         itemsHabitos = new ArrayList<>();
         idDrawItemsDescriptivos = new ArrayList<>();
+        comentario_desc = "";
     }
 
     public Usuario(String email, String nombre, String apellidos, String key) {

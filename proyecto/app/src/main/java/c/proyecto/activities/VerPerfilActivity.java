@@ -7,7 +7,10 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -35,11 +38,13 @@ public class VerPerfilActivity extends AppCompatActivity {
     private static final String EXTRA_CURRENT_USER = "current_user";
 
     private TextView lblNombre, lblNacionalidad, lblDescripcionNoDisponible, lblDescripcion, lblProfesion;
-    private ImageView imgFoto, imgDescripcion1, imgDescripcion2, imgDescripcion3, imgMessage;
+    private ImageView imgFoto, imgDescripcion1, imgDescripcion2, imgDescripcion3;
     private Usuario mUser, currentUser;
     private Anuncio mAnuncio;
     private ProfilePresenter mPresenter;
     private RelativeLayout groupDescripcion;
+    private MessagePojo mMessage;
+    private Menu mMenu;
 
     public static void start(Activity activity, Usuario user) {
         Intent intent = new Intent(activity, VerPerfilActivity.class);
@@ -68,6 +73,8 @@ public class VerPerfilActivity extends AppCompatActivity {
         mPresenter.setMessagesManager(new MessagesFirebaseManager(mPresenter, currentUser));
         initView();
         recuperarDatos();
+
+
     }
 
     private void initView() {
@@ -81,32 +88,14 @@ public class VerPerfilActivity extends AppCompatActivity {
         imgDescripcion2 = (ImageView) findViewById(R.id.imgDescripcion2);
         imgDescripcion3 = (ImageView) findViewById(R.id.imgDescripcion3);
         groupDescripcion = (RelativeLayout) findViewById(R.id.groupDescripcion);
-
-        if (mAnuncio != null) {
-            imgMessage = (ImageView) findViewById(R.id.imgMessage);
-            mPresenter.getMessageIfConverExist(mAnuncio, mUser.getKey());
-        }
     }
 
     public void messageIfConverExistObtained(final MessagePojo m) {
-        if (m == null)
-            imgMessage.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    showSenMessageDialog();
-                }
-            });
-        else {
-            imgMessage.setImageResource(R.drawable.ic_chat);
-            imgMessage.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    ConversationActivity.start(VerPerfilActivity.this, m, currentUser);
-                }
-            });
-        }
-        imgMessage.setVisibility(View.VISIBLE);
+        mMessage = m;
+        if( m != null)
+            mMenu.findItem(R.id.nav_send_message).setIcon(R.drawable.ic_chat);
     }
+
 
     private void showSenMessageDialog() {
         final EditText txtMensaje;
@@ -132,9 +121,9 @@ public class VerPerfilActivity extends AppCompatActivity {
         Picasso.with(this).load(mUser.getFoto()).fit().centerCrop().error(R.drawable.default_user).into(imgFoto);
         cargarBarritas();
         cargarItemsDescriptivos();
-        lblNombre.setText(mUser.getNombre());
+        lblNombre.setText(mUser.getNombre() + " " + mUser.getApellidos());
         lblNacionalidad.setText(mUser.getNacionalidad());
-        if (mUser.getComentario_desc() == null)
+        if (mUser.getComentario_desc().isEmpty())
             lblDescripcionNoDisponible.setVisibility(View.VISIBLE);
         else
             lblDescripcion.setText(mUser.getComentario_desc());
@@ -171,4 +160,32 @@ public class VerPerfilActivity extends AppCompatActivity {
         } else
             groupDescripcion.setVisibility(View.GONE);
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_ver_perfil, menu);
+        mMenu = menu;
+        
+        if (mAnuncio != null){
+            menu.findItem(R.id.nav_send_message).setVisible(true);
+            mPresenter.getMessageIfConverExist(mAnuncio, mUser.getKey());
+        }
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.nav_send_message:
+
+                if (mMessage == null)
+                    showSenMessageDialog();
+                else
+                    ConversationActivity.start(VerPerfilActivity.this, mMessage, currentUser);
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 }

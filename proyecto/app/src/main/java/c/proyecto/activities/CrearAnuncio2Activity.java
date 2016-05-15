@@ -270,7 +270,7 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        menu.findItem(R.id.aceptar).setVisible(true);
+        menu.findItem(R.id.nav_aceptar).setVisible(true);
         return super.onPrepareOptionsMenu(menu);
     }
 
@@ -278,7 +278,7 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         switch (id) {
-            case R.id.aceptar:
+            case R.id.nav_aceptar:
                 confirmarCambios();
                 break;
             case android.R.id.home:

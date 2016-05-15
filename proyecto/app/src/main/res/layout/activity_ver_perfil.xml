@@ -3,6 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -96,25 +98,16 @@
 
         <TextView
             android:id="@+id/lblNombre"
-            android:layout_width="wrap_content"
+            android:layout_width="240dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/groupDescripcion"
             android:layout_marginLeft="25dp"
             android:layout_marginStart="25dp"
             android:layout_marginTop="12dp"
+            android:maxLines="1"
             android:text="Alejandro Torres Gómez"
             android:textStyle="bold" />
 
-        <ImageView
-            android:id="@+id/imgMessage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_below="@id/groupDescripcion"
-            android:layout_marginRight="24dp"
-            android:src="@drawable/ic_nav_messages"
-            android:visibility="gone" />
 
         <TextView
             android:id="@+id/lblNacionalidad"
@@ -128,8 +121,9 @@
 
         <TextView
             android:id="@+id/lblProfesion"
-            android:layout_width="wrap_content"
+            android:layout_width="170dp"
             android:layout_height="wrap_content"
+            android:gravity="right"
             android:layout_alignBaseline="@id/lblNacionalidad"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
@@ -140,27 +134,32 @@
         <RelativeLayout
             android:id="@+id/shapeDescripción"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="wrap_content"
             android:layout_below="@id/lblNacionalidad"
             android:layout_marginTop="12dp"
-            android:background="@color/colorShape">
+            android:background="@color/colorShape"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp">
+
             <!-- Cuando el anuncio no contiene descripción -->
             <TextView
                 android:id="@+id/lblDescripcionNoDisponible"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="Descripción no disponible"
+                android:text="Sin comentario"
                 android:visibility="gone" />
 
             <TextView
                 android:id="@+id/lblDescripcion"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
-                android:layout_marginTop="10dp"
-                android:maxLines="5" />
+                android:gravity="start"
+                android:maxLines="5"
+                android:textSize="15sp"/>
         </RelativeLayout>
 
 
