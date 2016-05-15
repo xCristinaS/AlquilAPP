@@ -26,4 +26,8 @@
     <dimen name="font_medium">16sp</dimen>
     <dimen name="font_small">14sp</dimen>
     <dimen name="font_xsmall">12sp</dimen>
+
+    <!-- DialogFragment Características -->
+    <dimen name="widthDialogFragmentCaracterísticas">300dp</dimen>
+    <dimen name="heightDialogFragmentCaracterísticas">200dp</dimen>
 </resources>
