@@ -126,7 +126,11 @@ public class DescripcionDialogFragment extends AppCompatDialogFragment {
                         pos = 2;
                         break;
                 }
-                mUser.getIdDrawItemsDescriptivos().set(pos, getResources().getResourceEntryName(drawToTint));
+                if(pos+1 <= mUser.getIdDrawItemsDescriptivos().size())
+                    mUser.getIdDrawItemsDescriptivos().set(pos, getResources().getResourceEntryName(drawToTint));
+                else
+                    mUser.getIdDrawItemsDescriptivos().add(getResources().getResourceEntryName(drawToTint));
+
             }
             
         });

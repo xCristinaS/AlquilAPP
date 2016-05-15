@@ -29,7 +29,7 @@
             android:layout_below="@id/slider"
             android:layout_marginTop="10dp">
 
-            <RelativeLayout
+            <LinearLayout
                 android:id="@+id/groupItemsDescripcion"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -38,25 +38,47 @@
                 android:layout_marginLeft="40dp"
                 android:layout_marginRight="40dp">
 
-                <ImageView
-                    android:id="@+id/imgDescripcion1"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp" />
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
 
-                <ImageView
-                    android:id="@+id/imgDescripcion2"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    android:layout_centerHorizontal="true" />
+                    <ImageView
+                        android:id="@+id/imgDescripcion1"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_centerInParent="true"/>
+                </RelativeLayout>
+                <!-- Dispone de mas Weight que sus hermanos para crear más espacio cuando están visibles los 3-->
+                <RelativeLayout
+                    android:id="@+id/containerDescripcion2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="10">
 
-                <ImageView
-                    android:id="@+id/imgDescripcion3"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true" />
+                    <ImageView
+                        android:id="@+id/imgDescripcion2"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_centerInParent="true"
+                        />
+                </RelativeLayout>
 
-            </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/containerDescripcion3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <ImageView
+                        android:id="@+id/imgDescripcion3"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_centerInParent="true"
+                        />
+                </RelativeLayout>
+
+            </LinearLayout>
 
 
             <View
@@ -89,10 +111,10 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_below="@id/divider"
+            android:layout_below="@id/groupDescripcion"
             android:layout_marginRight="24dp"
             android:src="@drawable/ic_nav_messages"
-            android:visibility="invisible" />
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/lblNacionalidad"

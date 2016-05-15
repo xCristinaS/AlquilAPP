@@ -41,14 +41,14 @@ public class VerPerfilActivity extends AppCompatActivity {
     private ProfilePresenter mPresenter;
     private RelativeLayout groupDescripcion;
 
-    public static void start(Activity activity, Usuario user){
+    public static void start(Activity activity, Usuario user) {
         Intent intent = new Intent(activity, VerPerfilActivity.class);
         intent.putExtra(EXTRA_USER, user);
 
         activity.startActivity(intent);
     }
 
-    public static void start(Activity activity, Usuario user, Anuncio anuncio, Usuario currentUser){
+    public static void start(Activity activity, Usuario user, Anuncio anuncio, Usuario currentUser) {
         Intent intent = new Intent(activity, VerPerfilActivity.class);
         intent.putExtra(EXTRA_USER, user);
         intent.putExtra(EXTRA_ANUNCIO, anuncio);
@@ -82,7 +82,7 @@ public class VerPerfilActivity extends AppCompatActivity {
         imgDescripcion3 = (ImageView) findViewById(R.id.imgDescripcion3);
         groupDescripcion = (RelativeLayout) findViewById(R.id.groupDescripcion);
 
-        if (mAnuncio != null){
+        if (mAnuncio != null) {
             imgMessage = (ImageView) findViewById(R.id.imgMessage);
             mPresenter.getMessageIfConverExist(mAnuncio, mUser.getKey());
         }
@@ -108,7 +108,7 @@ public class VerPerfilActivity extends AppCompatActivity {
         imgMessage.setVisibility(View.VISIBLE);
     }
 
-    private void showSenMessageDialog(){
+    private void showSenMessageDialog() {
         final EditText txtMensaje;
         final AlertDialog dialog = new AlertDialog.Builder(this).create();
         View dialogView = View.inflate(this, R.layout.dialog_fragment_send_message, null);
@@ -134,12 +134,12 @@ public class VerPerfilActivity extends AppCompatActivity {
         cargarItemsDescriptivos();
         lblNombre.setText(mUser.getNombre());
         lblNacionalidad.setText(mUser.getNacionalidad());
-        if(mUser.getComentario_desc() == null)
+        if (mUser.getComentario_desc() == null)
             lblDescripcionNoDisponible.setVisibility(View.VISIBLE);
         else
             lblDescripcion.setText(mUser.getComentario_desc());
 
-        if(mUser.getProfesion() != null)
+        if (mUser.getProfesion() != null)
             lblProfesion.setText(mUser.getProfesion());
 
     }
@@ -151,20 +151,24 @@ public class VerPerfilActivity extends AppCompatActivity {
 
     private void cargarItemsDescriptivos() {
         ArrayList<String> items = mUser.getIdDrawItemsDescriptivos();
+        RelativeLayout containerDescripcion2 = (RelativeLayout) findViewById(R.id.containerDescripcion2);
+        RelativeLayout containerDescripcion3 = (RelativeLayout) findViewById(R.id.containerDescripcion3);
 
-        if(items.size() > 0){
-            if(items.size() == 1)
+        if (items.size() > 0) {
+            if (items.size() == 1) {
                 imgDescripcion1.setImageResource(getResources().getIdentifier(items.get(0), "drawable", getPackageName()));
-            else if(items.size() == 2){
+                containerDescripcion2.setVisibility(View.GONE);
+                containerDescripcion3.setVisibility(View.GONE);
+            } else if (items.size() == 2) {
                 imgDescripcion1.setImageResource(getResources().getIdentifier(items.get(0), "drawable", getPackageName()));
-                imgDescripcion2.setImageResource(getResources().getIdentifier(items.get(1), "drawable", getPackageName()));
-            }
-            else{
+                imgDescripcion3.setImageResource(getResources().getIdentifier(items.get(1), "drawable", getPackageName()));
+                containerDescripcion2.setVisibility(View.GONE);
+            } else {
                 imgDescripcion1.setImageResource(getResources().getIdentifier(items.get(0), "drawable", getPackageName()));
                 imgDescripcion2.setImageResource(getResources().getIdentifier(items.get(1), "drawable", getPackageName()));
                 imgDescripcion3.setImageResource(getResources().getIdentifier(items.get(2), "drawable", getPackageName()));
             }
-        }else
+        } else
             groupDescripcion.setVisibility(View.GONE);
     }
 }
