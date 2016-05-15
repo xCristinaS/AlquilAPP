@@ -161,11 +161,10 @@
         android:layout_height="wrap_content"
         app:layout_heightPercent="10%"
         app:layout_marginBottomPercent="3%"
+        app:layout_marginRightPercent="11%"
         android:layout_alignBottom="@id/cvHabitos"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:layout_marginEnd="@dimen/activity_horizontal_margin"
         android:text="Confirmar"
         android:background="@color/colorAccent"
         />
