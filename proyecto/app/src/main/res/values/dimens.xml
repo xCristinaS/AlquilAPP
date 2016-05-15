@@ -30,4 +30,7 @@
     <!-- DialogFragment Características -->
     <dimen name="widthDialogFragmentCaracterísticas">300dp</dimen>
     <dimen name="heightDialogFragmentCaracterísticas">200dp</dimen>
+
+    <!-- DialogFragment Descripción -->
+    <dimen name="marginTopItemsDescripcion">23dp</dimen>
 </resources>
