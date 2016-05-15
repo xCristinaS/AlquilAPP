@@ -2,8 +2,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:title="@string/menu_item_aceptar_localizacion"
-        android:id="@+id/aceptar"
+        android:id="@+id/nav_aceptar"
         app:showAsAction="ifRoom"
-        android:icon="@drawable/ic_action_ok" />
+        android:icon="@drawable/ic_action_ok"
+        android:title="" />
 </menu>

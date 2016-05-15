@@ -2,14 +2,19 @@ package c.proyecto.fragments;
 
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.ColorFilter;
+import android.graphics.ColorMatrixColorFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.ogaclejapan.smarttablayout.SmartTabLayout;
 
@@ -37,7 +42,7 @@ public class PrincipalFragment extends Fragment {
     private static Usuario user;
     private SectionsPagerAdapter vpAdapter;
     private ViewPager viewPager;
-    private SmartTabLayout tabLayout;
+    private TabLayout tabLayout;
     private AllowFilters listener;
 
     @Nullable
@@ -58,10 +63,22 @@ public class PrincipalFragment extends Fragment {
         vpAdapter = new SectionsPagerAdapter(getChildFragmentManager());
         viewPager = (ViewPager) getActivity().findViewById(R.id.container);
         viewPager.setAdapter(vpAdapter);
-        tabLayout = (SmartTabLayout) getActivity().findViewById(R.id.tabs);
-        tabLayout.setViewPager(viewPager);
+        tabLayout = (TabLayout) getActivity().findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(viewPager);
+        ImageView customImg = (ImageView) getActivity().getLayoutInflater().inflate(R.layout.tab_custom, null);
+        ImageView customImg2 = (ImageView) getActivity().getLayoutInflater().inflate(R.layout.tab_custom, null);
+        ImageView customImg3 = (ImageView) getActivity().getLayoutInflater().inflate(R.layout.tab_custom, null);
+
+        customImg.setImageResource(R.drawable.tab_solicitudes);
+        tabLayout.getTabAt(0).setCustomView(customImg);
+        customImg2.setImageResource(R.drawable.tab_anuncios);
+        tabLayout.getTabAt(1).setCustomView(customImg2);
+        customImg3.setImageResource(R.drawable.tab_mis_anuncios);
+        tabLayout.getTabAt(2).setCustomView(customImg3);
+
         viewPager.setOffscreenPageLimit(2);
         viewPager.setCurrentItem(1); // el fragmento principal será el de anuncios
+        ((ImageView) tabLayout.getTabAt(1).getCustomView()).setColorFilter(getResources().getColor(R.color.colorAccent));
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -72,6 +89,30 @@ public class PrincipalFragment extends Fragment {
                 AdvertsRecyclerViewFragment fragmento = (AdvertsRecyclerViewFragment) vpAdapter.getItem(viewPager.getCurrentItem());
                 ((AdvertsRecyclerViewAdapter.OnAdapterItemLongClick) getActivity()).setAdapterAllowMultiDeletion(fragmento.getmAdapter());
                 AdvertsRecyclerViewAdapter adapter = fragmento.getmAdapter();
+                ImageView tab0 = (ImageView) tabLayout.getTabAt(0).getCustomView();
+                ImageView tab1 = (ImageView) tabLayout.getTabAt(1).getCustomView();
+                ImageView tab2 = (ImageView) tabLayout.getTabAt(2).getCustomView();
+
+                switch (position){
+                    case 0:
+                        getActivity().setTitle("Solicitudes");
+                        tab1.clearColorFilter();
+                        tab2.clearColorFilter();
+                        ((ImageView) tabLayout.getTabAt(0).getCustomView()).setColorFilter(getResources().getColor(R.color.colorAccent));
+                        break;
+                    case 1:
+                        getActivity().setTitle("Anuncios");
+                        tab0.clearColorFilter();
+                        tab2.clearColorFilter();
+                        ((ImageView) tabLayout.getTabAt(1).getCustomView()).setColorFilter(getResources().getColor(R.color.colorAccent));
+                        break;
+                    case 2:
+                        getActivity().setTitle("Mis Anuncios");
+                        tab0.clearColorFilter();
+                        tab1.clearColorFilter();
+                        ((ImageView) tabLayout.getTabAt(2).getCustomView()).setColorFilter(getResources().getColor(R.color.colorAccent));
+                        break;
+                }
                 if (adapter != null && adapter.getAdapter_type() == AdvertsRecyclerViewAdapter.ADAPTER_TYPE_ADVS) {
                     listener.showFilterIcon();
                     listener.showMapIcon();
@@ -210,19 +251,7 @@ public class PrincipalFragment extends Fragment {
             return null;
         }
 
-        //Establece los títulos de los tabs.
-        @Override
-        public CharSequence getPageTitle(int position) {
-            switch (position) {
-                case 0:
-                    return getActivity().getString(R.string.tab_solicitudes);
-                case 1:
-                    return getActivity().getString(R.string.tab_anuncios);
-                case 2:
-                    return getActivity().getString(R.string.tab_mis_anuncios);
-            }
-            return null;
-        }
+
     }
 
     @Override

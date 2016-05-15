@@ -40,7 +40,7 @@ public class DescripcionDialogFragment extends AppCompatDialogFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view =  inflater.inflate(R.layout.dialog_fragment_descripcion, container, false);
+        View view = inflater.inflate(R.layout.dialog_fragment_descripcion, container, false);
 
         mUser = (Usuario) getArguments().get(ARG_USER);
         initViews(view);
@@ -57,65 +57,82 @@ public class DescripcionDialogFragment extends AppCompatDialogFragment {
         imgFumador = (ImageView) view.findViewById(R.id.imgFumador);
         imgNoFumador = (ImageView) view.findViewById(R.id.imgNoFumador);
 
-        onClickImages(imgMasculino, R.drawable.genero_masculino, R.drawable.genero_femenino);
-        onClickImages(imgFemenino, R.drawable.genero_femenino, R.drawable.genero_masculino);
-        onClickImages(imgEstudiante, R.drawable.estudiante, R.drawable.trabajador);
-        onClickImages(imgTrabajador, R.drawable.trabajador, R.drawable.estudiante);
-        onClickImages(imgFumador, R.drawable.fumador, R.drawable.no_fumador);
-        onClickImages(imgNoFumador, R.drawable.no_fumador, R.drawable.fumador);
+        onClickImages(imgMasculino, R.drawable.genero_masculino);
+        onClickImages(imgFemenino, R.drawable.genero_femenino);
+        onClickImages(imgEstudiante, R.drawable.estudiante);
+        onClickImages(imgTrabajador, R.drawable.trabajador);
+        onClickImages(imgFumador, R.drawable.fumador);
+        onClickImages(imgNoFumador, R.drawable.no_fumador);
 
     }
 
     private void recuperarDatos() {
         ArrayList<String> ids = mUser.getIdDrawItemsDescriptivos();
 
-        if(ids.contains(getResources().getResourceEntryName(R.drawable.genero_masculino)))
+        if (ids.contains(getResources().getResourceEntryName(R.drawable.genero_masculino)))
             tintImageView(imgMasculino);
-        else if(ids.contains(getResources().getResourceEntryName(R.drawable.genero_femenino)))
+        else if (ids.contains(getResources().getResourceEntryName(R.drawable.genero_femenino)))
             tintImageView(imgFemenino);
 
-        if(ids.contains(getResources().getResourceEntryName(R.drawable.estudiante)))
+        if (ids.contains(getResources().getResourceEntryName(R.drawable.estudiante)))
             tintImageView(imgEstudiante);
-        else if(ids.contains(getResources().getResourceEntryName(R.drawable.trabajador)))
+        else if (ids.contains(getResources().getResourceEntryName(R.drawable.trabajador)))
             tintImageView(imgTrabajador);
 
-        if(ids.contains(getResources().getResourceEntryName(R.drawable.fumador)))
+        if (ids.contains(getResources().getResourceEntryName(R.drawable.fumador)))
             tintImageView(imgFumador);
-        else if(ids.contains(getResources().getResourceEntryName(R.drawable.no_fumador)))
+        else if (ids.contains(getResources().getResourceEntryName(R.drawable.no_fumador)))
             tintImageView(imgNoFumador);
 
     }
-    private void tintImageView(ImageView img){
+
+    private void tintImageView(ImageView img) {
         img.setColorFilter(getResources().getColor(R.color.colorAccent));
 
-        if(img.equals(imgMasculino))
+        if (img.equals(imgMasculino))
             imgFemenino.clearColorFilter();
-        else if( img.equals(imgFemenino))
+        else if (img.equals(imgFemenino))
             imgMasculino.clearColorFilter();
-        else if(img.equals(imgEstudiante))
+        else if (img.equals(imgEstudiante))
             imgTrabajador.clearColorFilter();
-        else if(img.equals(imgTrabajador))
+        else if (img.equals(imgTrabajador))
             imgEstudiante.clearColorFilter();
-        else if(img.equals(imgFumador))
+        else if (img.equals(imgFumador))
             imgNoFumador.clearColorFilter();
-        else if(img.equals(imgNoFumador))
+        else if (img.equals(imgNoFumador))
             imgFumador.clearColorFilter();
 
     }
 
-    private void onClickImages(final ImageView imgOnClick, final int drawToTint, final int drawToClearTint){
+    private void onClickImages(final ImageView imgOnClick, final int drawToTint) {
+        //Cuando haces CLICK en un Item ya seleccionado se raya en la base de datos.
         imgOnClick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                int pos = 0;
                 tintImageView(imgOnClick);
-                //Si no contiene el drawable a tintar se tinta
-                if(!mUser.getIdDrawItemsDescriptivos().contains(drawToTint)){
-                    mUser.getIdDrawItemsDescriptivos().add(getResources().getResourceEntryName(drawToTint));
-                    //Si el drawable contrario está tintado, se borrará del arrayList para que no aparezca tintado.
-                    if(mUser.getIdDrawItemsDescriptivos().contains(getResources().getResourceEntryName(drawToClearTint)))
-                        mUser.getIdDrawItemsDescriptivos().remove(mUser.getIdDrawItemsDescriptivos().indexOf(getResources().getResourceEntryName(drawToClearTint)));
+                //Reemplaza
+                switch (drawToTint) {
+                    case R.drawable.genero_masculino:
+                    case R.drawable.genero_femenino:
+                        pos = 0;
+                        break;
+                    case R.drawable.estudiante:
+                    case R.drawable.trabajador:
+                        pos = 1;
+                        break;
+                    case R.drawable.fumador:
+                    case R.drawable.no_fumador:
+                        pos = 2;
+                        break;
                 }
+                if(pos+1 <= mUser.getIdDrawItemsDescriptivos().size())
+                    mUser.getIdDrawItemsDescriptivos().set(pos, getResources().getResourceEntryName(drawToTint));
+                else
+                    mUser.getIdDrawItemsDescriptivos().add(getResources().getResourceEntryName(drawToTint));
+
             }
+            
         });
     }
 

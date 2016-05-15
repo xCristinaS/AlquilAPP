@@ -1,25 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.percent.PercentRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="20dp"
-    android:paddingRight="20dp"
-    android:paddingTop="20dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".activities.CrearAnuncio1Activity"
-    android:background="@color/colorFondoAplicacion">
+    android:background="@color/colorPrimaryDark"
+    android:clipToPadding="false">
+
+    <!-- Imagen 1 -->
+    <ImageView
+        android:id="@+id/img1"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_widthPercent="@fraction/imgSecundariasWidthPercent"
+        app:layout_heightPercent="@fraction/imgSecundariasHeightPercent"
+        app:layout_marginRightPercent="@fraction/views_margin"
+        app:layout_marginLeftPercent="@fraction/views_margin"
+        app:layout_marginEndPercent="@fraction/views_margin"
+        app:layout_marginStartPercent="@fraction/views_margin"
+        app:layout_marginBottomPercent="@fraction/views_margin"
+        app:layout_marginTopPercent="3.5%"
+        android:scaleType="centerCrop"
+        android:src="@drawable/sin_imagen"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/sombra_hueco_imagen"
+        android:layout_alignBottom="@id/img1"
+        android:layout_alignTop="@id/img1"
+        android:layout_alignLeft="@id/img1"
+        android:layout_alignStart="@id/img1"
+        android:layout_alignRight="@id/img1"
+        android:layout_alignEnd="@id/img1"
+        android:scaleType="fitXY"/>
+
+    <ProgressBar
+        android:id="@+id/prb1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:max="10"
+        android:visibility="gone"
+        android:layout_alignLeft="@id/img1"
+        android:layout_alignStart="@id/img1"
+        android:layout_alignRight="@id/img1"
+        android:layout_alignEnd="@id/img1"
+        android:layout_alignTop="@id/img1"
+        android:layout_alignBottom="@id/img1"
+        />
 
     <!-- Imagen Principal -->
 
     <ImageView
         android:id="@+id/imgPrincipal"
-        android:layout_width="220dp"
-        android:layout_height="220dp"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_widthPercent="62.5%"
+        app:layout_heightPercent="42.45%"
+        app:layout_marginRightPercent="@fraction/views_margin"
+        app:layout_marginEndPercent="@fraction/views_margin"
+        app:layout_marginBottomPercent="@fraction/views_margin"
+        app:layout_marginTopPercent="3.5%"
+
+        android:layout_toRightOf="@id/img1"
+        android:layout_toEndOf="@id/img1"
         android:src="@drawable/sin_imagen"
         android:scaleType="centerCrop"
+        />
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/sombra_hueco_imagen_x2"
+        android:layout_alignBottom="@id/imgPrincipal"
+        android:layout_alignTop="@id/imgPrincipal"
+        android:layout_alignLeft="@id/imgPrincipal"
+        android:layout_alignStart="@id/imgPrincipal"
+        android:layout_alignRight="@id/imgPrincipal"
+        android:layout_alignEnd="@id/imgPrincipal"
+        android:scaleType="fitXY"
         />
 
     <ProgressBar
@@ -37,43 +97,36 @@
         android:layout_alignBottom="@id/imgPrincipal"
         />
 
-    <!-- Imagen 1 -->
-    <ImageView
-        android:id="@+id/img1"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_toLeftOf="@id/imgPrincipal"
-        android:layout_toStartOf="@id/imgPrincipal"
-        android:layout_marginRight="16dp"
-        android:src="@drawable/sin_imagen"
-        android:scaleType="centerCrop"/>
 
-    <ProgressBar
-        android:id="@+id/prb1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:indeterminate="true"
-        android:max="10"
-        android:visibility="gone"
-        android:layout_alignLeft="@id/img1"
-        android:layout_alignStart="@id/img1"
-        android:layout_alignRight="@id/img1"
-        android:layout_alignEnd="@id/img1"
-        android:layout_alignTop="@id/img1"
-        android:layout_alignBottom="@id/img1"
-        />
     <!-- Imagen 2 -->
     <ImageView
         android:id="@+id/img2"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="20dp"
-        android:layout_below="@id/img1"
-        android:layout_toLeftOf="@id/imgPrincipal"
-        android:layout_toStartOf="@id/imgPrincipal"
-        android:layout_marginRight="16dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_widthPercent="@fraction/imgSecundariasWidthPercent"
+        app:layout_heightPercent="@fraction/imgSecundariasHeightPercent"
+        app:layout_marginRightPercent="@fraction/views_margin"
+        app:layout_marginLeftPercent="@fraction/views_margin"
+        app:layout_marginEndPercent="@fraction/views_margin"
+        app:layout_marginStartPercent="@fraction/views_margin"
+        app:layout_marginBottomPercent="@fraction/views_margin"
+
         android:scaleType="centerCrop"
+        android:layout_below="@id/img1"
         android:src="@drawable/sin_imagen"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/sombra_hueco_imagen"
+        android:layout_alignBottom="@id/img2"
+        android:layout_alignTop="@id/img2"
+        android:layout_alignLeft="@id/img2"
+        android:layout_alignStart="@id/img2"
+        android:layout_alignRight="@id/img2"
+        android:layout_alignEnd="@id/img2"
+        android:scaleType="fitXY"/>
+
     <ProgressBar
         android:id="@+id/prb2"
         android:layout_width="match_parent"
@@ -88,73 +141,34 @@
         android:layout_alignTop="@id/img2"
         android:layout_alignBottom="@id/img2"
         />
-    <!-- Imagen 5 -->
-    <ImageView
-        android:id="@+id/img5"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="20dp"
-        android:layout_below="@id/imgPrincipal"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:scaleType="centerCrop"
-        android:src="@drawable/sin_imagen"/>
-    <ProgressBar
-        android:id="@+id/prb5"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:indeterminate="true"
-        android:max="10"
-        android:visibility="gone"
-        android:layout_alignLeft="@id/img5"
-        android:layout_alignStart="@id/img5"
-        android:layout_alignRight="@id/img5"
-        android:layout_alignEnd="@id/img5"
-        android:layout_alignTop="@id/img5"
-        android:layout_alignBottom="@id/img5"
-        />
-
-    <!-- Imagen 4 -->
-
-    <ImageView
-        android:id="@+id/img4"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="20dp"
-        android:layout_below="@id/imgPrincipal"
-        android:layout_toLeftOf="@id/img5"
-        android:layout_toStartOf="@id/img5"
-        android:layout_marginRight="18dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/sin_imagen"/>
-
-    <ProgressBar
-        android:id="@+id/prb4"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:indeterminate="true"
-        android:max="10"
-        android:visibility="gone"
-        android:layout_alignLeft="@id/img4"
-        android:layout_alignStart="@id/img4"
-        android:layout_alignRight="@id/img4"
-        android:layout_alignEnd="@id/img4"
-        android:layout_alignTop="@id/img4"
-        android:layout_alignBottom="@id/img4"
-        />
     <!-- Imagen 3 -->
 
     <ImageView
         android:id="@+id/img3"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="20dp"
-        android:layout_below="@id/imgPrincipal"
-        android:layout_toLeftOf="@id/img4"
-        android:layout_toStartOf="@id/img4"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_widthPercent="@fraction/imgSecundariasWidthPercent"
+        app:layout_heightPercent="@fraction/imgSecundariasHeightPercent"
+        app:layout_marginRightPercent="@fraction/views_margin"
+        app:layout_marginEndPercent="@fraction/views_margin"
+        app:layout_marginLeftPercent="@fraction/views_margin"
+        app:layout_marginStartPercent="@fraction/views_margin"
+
         android:scaleType="centerCrop"
-        android:layout_marginRight="18dp"
+        android:layout_below="@id/img2"
         android:src="@drawable/sin_imagen"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/sombra_hueco_imagen"
+        android:layout_alignBottom="@id/img3"
+        android:layout_alignTop="@id/img3"
+        android:layout_alignLeft="@id/img3"
+        android:layout_alignStart="@id/img3"
+        android:layout_alignRight="@id/img3"
+        android:layout_alignEnd="@id/img3"
+        android:scaleType="fitXY"/>
 
     <ProgressBar
         android:id="@+id/prb3"
@@ -171,27 +185,151 @@
         android:layout_alignBottom="@id/img3"
         />
 
+    <!-- Imagen 4 -->
+
+    <ImageView
+        android:id="@+id/img4"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_widthPercent="@fraction/imgSecundariasWidthPercent"
+        app:layout_heightPercent="@fraction/imgSecundariasHeightPercent"
+        app:layout_marginRightPercent="@fraction/views_margin"
+        app:layout_marginEndPercent="@fraction/views_margin"
+        android:layout_below="@id/imgPrincipal"
+        android:layout_toRightOf="@id/img3"
+        android:layout_toEndOf="@id/img3"
+
+        android:scaleType="centerCrop"
+        android:src="@drawable/sin_imagen"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/sombra_hueco_imagen"
+        android:layout_alignBottom="@id/img4"
+        android:layout_alignTop="@id/img4"
+        android:layout_alignLeft="@id/img4"
+        android:layout_alignStart="@id/img4"
+        android:layout_alignRight="@id/img4"
+        android:layout_alignEnd="@id/img4"
+        android:scaleType="fitXY"/>
+
+    <ProgressBar
+        android:id="@+id/prb4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:max="10"
+        android:visibility="gone"
+        android:layout_alignLeft="@id/img4"
+        android:layout_alignStart="@id/img4"
+        android:layout_alignRight="@id/img4"
+        android:layout_alignEnd="@id/img4"
+        android:layout_alignTop="@id/img4"
+        android:layout_alignBottom="@id/img4"
+        />
+
+    <!-- Imagen 5 -->
+    <ImageView
+        android:id="@+id/img5"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_widthPercent="@fraction/imgSecundariasWidthPercent"
+        app:layout_heightPercent="@fraction/imgSecundariasHeightPercent"
+        android:layout_below="@id/imgPrincipal"
+        app:layout_marginRightPercent="@fraction/views_margin"
+        app:layout_marginEndPercent="@fraction/views_margin"
+        android:layout_toRightOf="@id/img4"
+        android:layout_toEndOf="@id/img4"
+
+        android:scaleType="centerCrop"
+        android:src="@drawable/sin_imagen"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/sombra_hueco_imagen"
+        android:layout_alignBottom="@id/img5"
+        android:layout_alignTop="@id/img5"
+        android:layout_alignLeft="@id/img5"
+        android:layout_alignStart="@id/img5"
+        android:layout_alignRight="@id/img5"
+        android:layout_alignEnd="@id/img5"
+        android:scaleType="fitXY"/>
+
+    <ProgressBar
+        android:id="@+id/prb5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:max="10"
+        android:visibility="gone"
+        android:layout_alignLeft="@id/img5"
+        android:layout_alignStart="@id/img5"
+        android:layout_alignRight="@id/img5"
+        android:layout_alignEnd="@id/img5"
+        android:layout_alignTop="@id/img5"
+        android:layout_alignBottom="@id/img5"
+        />
+
+
+
+<android.support.percent.PercentRelativeLayout
+    android:id="@+id/groupSiguiente"
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    app:layout_heightPercent="26%"
+    android:layout_alignParentBottom="true"
+    android:background="@color/colorPrimary"
+    app:elevation="30dp"
+
+    >
+    <TextView
+        android:layout_width="0dp"
+        app:layout_widthPercent="70%"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="24dp"
+        android:textSize="16sp"
+        android:textColor="@android:color/white"
+
+        android:text="Capta la atención de tus clientes con las mejores fotos."/>
     <ImageView
         android:id="@+id/imgSiguiente"
         android:src="@drawable/flecha"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="10dp"/>
+        app:layout_marginRightPercent="@fraction/views_margin"
+        app:layout_marginEndPercent="@fraction/views_margin"
+        android:layout_marginBottom="10dp"
+        />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Siguiente"
         android:textStyle="bold"
-        android:textSize="19sp"
+        android:textSize="16sp"
+        android:textColor="@android:color/white"
         android:layout_alignBottom="@id/imgSiguiente"
-        android:layout_marginBottom="15dp"
+        android:layout_marginBottom="11dp"
         android:layout_toLeftOf="@id/imgSiguiente"
         android:layout_toStartOf="@id/imgSiguiente"
-        android:layout_marginRight="16dp"
-        android:layout_marginEnd="16dp"/>
+        android:layout_marginRight="3dp"
+        android:layout_marginEnd="3dp"/>
+</android.support.percent.PercentRelativeLayout>
 
-</RelativeLayout>
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_heightPercent="3%"
+        android:src="@drawable/degradado_negro"
+        android:scaleType="centerCrop"
+        android:layout_above="@id/groupSiguiente"/>
+
+
+</android.support.percent.PercentRelativeLayout>

@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -20,16 +21,16 @@ import c.proyecto.pojo.Usuario;
 public class CaracteristicasUsuarioDialogFragment extends AppCompatDialogFragment {
 
     private static final String ARG_USER = "user";
-    private static final String ARG_MOVIBLE = "editable";
+    private static final String ARG_IS_DIALOG = "isDialog";
     private SeekBar skOrdenado, skFiestero, skSociable, skActivo;
     private TextView lblNumOrdenado, lblNumFiestero, lblNumSociable, lblNumActivo;
     private Usuario mUser;
 
-    public static CaracteristicasUsuarioDialogFragment newInstance(Usuario user, boolean editable) {
+    public static CaracteristicasUsuarioDialogFragment newInstance(Usuario user, boolean isDialog) {
 
         Bundle args = new Bundle();
         args.putParcelable(ARG_USER, user);
-        args.putBoolean(ARG_MOVIBLE, editable);
+        args.putBoolean(ARG_IS_DIALOG, isDialog);
 
         CaracteristicasUsuarioDialogFragment fragment = new CaracteristicasUsuarioDialogFragment();
         fragment.setArguments(args);
@@ -44,7 +45,8 @@ public class CaracteristicasUsuarioDialogFragment extends AppCompatDialogFragmen
         initViews(view);
         mUser = (Usuario) getArguments().get(ARG_USER);
         recuperarDatos();
-
+        if(getArguments().getBoolean(ARG_IS_DIALOG))
+            view.setLayoutParams(new RelativeLayout.LayoutParams(getResources().getDimensionPixelOffset(R.dimen.widthDialogFragmentCaracterísticas), getResources().getDimensionPixelOffset(R.dimen.heightDialogFragmentCaracterísticas)));
         return view;
     }
 
@@ -92,7 +94,7 @@ public class CaracteristicasUsuarioDialogFragment extends AppCompatDialogFragmen
         });
 
         //Permite mover o no la SeekBar dependiendo de como se haya llamado a este fragmento.
-        if(!getArguments().getBoolean(ARG_MOVIBLE))
+        if(!getArguments().getBoolean(ARG_IS_DIALOG))
             sk.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {

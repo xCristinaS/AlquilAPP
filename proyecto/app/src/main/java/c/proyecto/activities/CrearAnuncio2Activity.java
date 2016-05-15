@@ -127,6 +127,10 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
             initViews();
             recuperarAnuncio();
         }
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back_arrow);
+
     }
 
     private void initViews() {
@@ -144,7 +148,6 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
         txtTamano = (EditText) findViewById(R.id.txtTamano);
         txtDescripcion = (EditText) findViewById(R.id.txtDescripcion);
         txtPrecio = (EditText) findViewById(R.id.txtPrecio);
-        rvHuespedes = (RecyclerView) findViewById(R.id.rvHuespedes);
 
         View.OnClickListener onClickListener = new View.OnClickListener() {
             @Override
@@ -162,8 +165,6 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
 
         confImgTipoVivienda();
         confRecyclerPrestaciones();
-        confRecyclerHuespedes();
-
     }
 
 
@@ -203,9 +204,6 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
         rvPrestaciones.setItemAnimator(new DefaultItemAnimator());
     }
 
-    private void confRecyclerHuespedes() {
-        rvHuespedes.setHasFixedSize(true);
-    }
 
     private void recuperarAnuncio() {
         txtTituloAnuncio.setText(mAnuncio.getTitulo());
@@ -272,7 +270,7 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        menu.findItem(R.id.aceptar).setVisible(true);
+        menu.findItem(R.id.nav_aceptar).setVisible(true);
         return super.onPrepareOptionsMenu(menu);
     }
 
@@ -280,11 +278,14 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         switch (id) {
-            case R.id.aceptar:
+            case R.id.nav_aceptar:
                 confirmarCambios();
-                return true;
+                break;
+            case android.R.id.home:
+                onBackPressed();
+                break;
         }
-        return super.onOptionsItemSelected(item);
+        return true;
     }
 
     private void confirmarCambios() {

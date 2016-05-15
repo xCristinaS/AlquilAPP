@@ -27,11 +27,9 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
 import java.util.Locale;
@@ -187,7 +185,7 @@ public class LocalizacionActivity extends AppCompatActivity implements OnMapRead
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_localizacion, menu);
-        menu.findItem(R.id.aceptar).setVisible(mSelectorMode);
+        menu.findItem(R.id.nav_aceptar).setVisible(mSelectorMode);
         return true;
     }
 
@@ -195,7 +193,7 @@ public class LocalizacionActivity extends AppCompatActivity implements OnMapRead
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
-            case R.id.aceptar:
+            case R.id.nav_aceptar:
                 confirmarCambios();
                 break;
         }

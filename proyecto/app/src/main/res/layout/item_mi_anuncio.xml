@@ -66,7 +66,8 @@
                 android:id="@+id/groupSuscritos"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignBottom="@id/groupTitulo"
+                android:layout_centerVertical="true"
+                android:paddingTop="10dp"
                 android:layout_toEndOf="@id/groupTitulo"
                 android:layout_toRightOf="@id/groupTitulo"
                 android:orientation="vertical">
