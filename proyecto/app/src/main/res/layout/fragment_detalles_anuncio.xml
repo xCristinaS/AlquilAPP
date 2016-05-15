@@ -233,7 +233,7 @@
             android:layout_below="@id/groupImagenes"
             android:layout_marginRight="25dp"
             android:layout_marginTop="72dp"
-            android:src="@drawable/ic_nav_messages"
+            android:src="@drawable/ic_message_black"
             />
 
         <!-- Btn Subscribirse -->
