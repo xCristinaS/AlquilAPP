@@ -125,6 +125,7 @@
                     android:layout_centerVertical="true"
                     android:layout_toRightOf="@id/imgCamas"
                     android:layout_toEndOf="@id/imgCamas"
+                    android:paddingBottom="12dp"
                     android:paddingLeft="10dp"
                     android:textStyle="bold"
 
@@ -162,6 +163,7 @@
                     android:layout_toRightOf="@id/imgToilet"
                     android:layout_toEndOf="@id/imgToilet"
                     android:layout_centerVertical="true"
+                    android:paddingBottom="12dp"
                     android:paddingLeft="10dp"
                     android:text="0"
                     android:textStyle="bold" />
