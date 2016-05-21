@@ -116,7 +116,7 @@ public class LocalizacionActivity extends AppCompatActivity implements OnMapRead
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(count > 0)
+                if (!s.toString().isEmpty())
                     imgLimpiarTexto.setVisibility(View.VISIBLE);
                 else
                     imgLimpiarTexto.setVisibility(View.GONE);
@@ -125,6 +125,13 @@ public class LocalizacionActivity extends AppCompatActivity implements OnMapRead
             @Override
             public void afterTextChanged(Editable s) {
 
+            }
+        });
+        imgLimpiarTexto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                txtDireccion.setText("");
+                imgLimpiarTexto.setVisibility(View.GONE);
             }
         });
     }
