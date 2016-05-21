@@ -289,6 +289,8 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
     }
 
     private void bindData() {
+        String formatPrecio ="%.2f";
+
         //Se infla un slider cada vez que se actualiza las imagenes
         //Se coloca la View inflada a modo de FrameLayout en el RelativeLayout
         RelativeLayout r = (RelativeLayout) View.inflate(getContext(), R.layout.slider, null);
@@ -312,7 +314,10 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
         else
             Picasso.with(getActivity()).load(R.drawable.default_user).fit().centerCrop().into(imgAvatar);
 
-        lblPrecio.setText(String.format("%.2f %s/%s", mAnuncio.getPrecio(), Constantes.MONEDA, Constantes.MENSUAL));
+        //Si el precio no tiene decimales, el número será mostrado sin 0  Ej: 10.00 -> 10
+        if(mAnuncio.getPrecio() % 1 == 0)
+            formatPrecio = "%.0f";
+        lblPrecio.setText(String.format(formatPrecio +" %s/%s", mAnuncio.getPrecio(), Constantes.MONEDA, Constantes.MENSUAL));
         lblTamano.setText(mAnuncio.getTamanio() + Constantes.UNIDAD);
 
         switch (mAnuncio.getTipo_vivienda()) {

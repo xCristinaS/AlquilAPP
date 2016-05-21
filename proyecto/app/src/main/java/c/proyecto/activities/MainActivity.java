@@ -515,19 +515,15 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
         });
     }
 
+
     @Override
-    protected void onStop() {
+    protected void onDestroy() {
+        mPresenter.detachListeners();
         if (mGoogleApiClient != null) {
             if (mLocationListener != null)
                 LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, mLocationListener);
             mGoogleApiClient.disconnect();
         }
-        super.onStop();
-    }
-
-    @Override
-    protected void onDestroy() {
-        mPresenter.detachListeners();
         super.onDestroy();
     }
 
