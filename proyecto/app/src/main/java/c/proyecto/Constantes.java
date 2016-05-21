@@ -26,7 +26,8 @@ public final class Constantes {
         //Keys
         public static final String KEY_USER = "keyUser";
         public static final String KEY_PASS = "keyPass";
-        public static final String KEY_APP_INITIALIZED = "keyAppInitialized";
+        public static final String KEY_APP_INITIALIZED = "app_initialized";
+        public static final String KEY_CURRENT_USER_KEY = "key_current_user";
         //Shared
         public static final int DEFAULT_RATIO_BUSQUEDA = 10;
 

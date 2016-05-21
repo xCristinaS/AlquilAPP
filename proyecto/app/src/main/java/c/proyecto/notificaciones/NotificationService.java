@@ -5,10 +5,13 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.IBinder;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v7.app.NotificationCompat;
+import android.util.Log;
 
 import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
@@ -19,17 +22,18 @@ import com.firebase.client.ValueEventListener;
 import c.proyecto.Constantes;
 import c.proyecto.R;
 import c.proyecto.activities.MainActivity;
+import c.proyecto.activities.SplashActivity;
 import c.proyecto.pojo.Message;
 import c.proyecto.pojo.Usuario;
 
 public class NotificationService extends Service {
 
-    public static final String EXTRA_USUARIO = "EXTRA_USER";
     private static final int ABRIR_NAV = 999;
     private static final int NC_TAREA = 888;
 
-    private Usuario currentUser;
     private NotificationManager mGestor;
+    private Firebase fNotification;
+    private ChildEventListener listenerMensajes;
 
     @Override
     public void onCreate() {
@@ -38,14 +42,14 @@ public class NotificationService extends Service {
 
     @Override
     public void onDestroy() {
+        Log.d("SERVICIO_DESTRUIDO", "DESTRUIDO");
         super.onDestroy();
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        currentUser = intent.getParcelableExtra(EXTRA_USUARIO);
-        new Thread(new NotificationListeners()).start();
-        return START_NOT_STICKY; // se reinicia automáticamente.
+        initializeFirebaseListeners();
+        return START_STICKY;
     }
 
     @Nullable
@@ -54,39 +58,11 @@ public class NotificationService extends Service {
         return null;
     }
 
-    private void notifyNewMessageReceived(String nombreEmisor, String contenido){
-        mGestor = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        NotificationCompat.Builder b = new NotificationCompat.Builder(getApplicationContext());
-        b.setSmallIcon(R.drawable.ic_chat); // Icono pequeño.
-        b.setLargeIcon(((BitmapDrawable) getResources().getDrawable(R.drawable.ic_chat)).getBitmap()); // Icono grande.
-        b.setContentTitle(nombreEmisor); // Título (1ª línea).
-        b.setContentText(contenido); // Texto (2º línea).
-        b.setContentInfo("3"); // Info adicional (nº total tareas pendientes).
-        b.setTicker("Has recibido un mensaje");  // Ticker.
-        b.setAutoCancel(true); // para que se elimine al pinchar sobre la notificacion.
-        // Para meterle la acción.
-        Intent mIntent = new Intent(getApplicationContext(), MainActivity.class);
-        b.setContentIntent(PendingIntent.getActivity(this, ABRIR_NAV, mIntent, PendingIntent.FLAG_UPDATE_CURRENT));
-        mGestor.notify(NC_TAREA, b.build());
-    }
+    private void initializeFirebaseListeners() {
+        SharedPreferences pref = getSharedPreferences(Constantes.NOMBRE_PREFERENCIAS, MODE_PRIVATE);
+        final String keyUser = pref.getString(Constantes.KEY_CURRENT_USER_KEY, "");
 
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    private class NotificationListeners implements Runnable {
-
-        private Firebase fNotification;
-        private ChildEventListener listenerMensajes;
-
-        public NotificationListeners() {
-            initializeFirebaseListeners();
-        }
-
-        @Override
-        public void run() {
-
-        }
-
-        private void initializeFirebaseListeners() {
+        if (!keyUser.equals("")) {
             fNotification = new Firebase(Constantes.URL_NOTIFICACIONES);
 
             listenerMensajes = new ChildEventListener() {
@@ -100,12 +76,12 @@ public class NotificationService extends Service {
                             Usuario u = dataSnapshot.getValue(Usuario.class);
                             final String nombreEmisor = u.getNombre() + " " + u.getApellidos();
 
-                            new Firebase(Constantes.URL_NOTIFICACIONES).child(currentUser.getKey()).child(Constantes.CHILD_MENSAJES).child(keyMessage).addListenerForSingleValueEvent(new ValueEventListener() {
+                            new Firebase(Constantes.URL_NOTIFICACIONES).child(keyUser).child(Constantes.CHILD_MENSAJES).child(keyMessage).addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
                                     String contenido = dataSnapshot.getValue(Message.class).getContenido();
                                     notifyNewMessageReceived(nombreEmisor, contenido);
-                                    new Firebase(Constantes.URL_NOTIFICACIONES).child(currentUser.getKey()).child(Constantes.CHILD_MENSAJES).child(keyMessage).setValue(null);
+                                    new Firebase(Constantes.URL_NOTIFICACIONES).child(keyUser).child(Constantes.CHILD_MENSAJES).child(keyMessage).setValue(null);
                                 }
 
                                 @Override
@@ -143,11 +119,27 @@ public class NotificationService extends Service {
                 }
             };
 
-            fNotification.child(currentUser.getKey()).child(Constantes.CHILD_MENSAJES).addChildEventListener(listenerMensajes);
+            fNotification.child(keyUser).child(Constantes.CHILD_MENSAJES).addChildEventListener(listenerMensajes);
         }
+    }
 
-        public void detachListeners() {
+    public void detachListeners() {
 
-        }
+    }
+
+    private void notifyNewMessageReceived(String nombreEmisor, String contenido) {
+        mGestor = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationCompat.Builder b = new NotificationCompat.Builder(getApplicationContext());
+        b.setSmallIcon(R.drawable.ic_chat); // Icono pequeño.
+        b.setLargeIcon(((BitmapDrawable) getResources().getDrawable(R.drawable.ic_chat)).getBitmap()); // Icono grande.
+        b.setContentTitle(nombreEmisor); // Título (1ª línea).
+        b.setContentText(contenido); // Texto (2º línea).
+        b.setContentInfo("3"); // Info adicional (nº total tareas pendientes).
+        b.setTicker("Has recibido un mensaje");  // Ticker.
+        b.setAutoCancel(true); // para que se elimine al pinchar sobre la notificacion.
+        // Para meterle la acción.
+        Intent mIntent = new Intent(getApplicationContext(), SplashActivity.class);
+        b.setContentIntent(PendingIntent.getActivity(this, ABRIR_NAV, mIntent, PendingIntent.FLAG_UPDATE_CURRENT));
+        mGestor.notify(NC_TAREA, b.build());
     }
 }

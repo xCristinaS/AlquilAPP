@@ -109,14 +109,15 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
         setSupportActionBar(toolbar);
         if (getIntent().hasExtra(ARG_USUARIO))
             mUser = getIntent().getParcelableExtra(ARG_USUARIO);
-        mSharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        mSharedPref = getSharedPreferences(Constantes.NOMBRE_PREFERENCIAS, MODE_PRIVATE);
         configLocation();
         initViews();
         // Si la app se inicializa por primera vez, lanza el servicio
-        //if (!mSharedPref.getBoolean(Constantes.KEY_APP_INITIALIZED, false)){
-            mSharedPref.edit().putBoolean(Constantes.KEY_APP_INITIALIZED, true);
-            startService(new Intent(this, NotificationService.class).putExtra(NotificationService.EXTRA_USUARIO, mUser));
-        //}
+        mSharedPref.edit().putString(Constantes.KEY_CURRENT_USER_KEY, mUser.getKey()).apply();
+        if (!mSharedPref.getBoolean(Constantes.KEY_APP_INITIALIZED, false)){
+            mSharedPref.edit().putBoolean(Constantes.KEY_APP_INITIALIZED, true).apply();
+            getApplicationContext().startService(new Intent(this, NotificationService.class));
+        }
     }
 
     private void initViews() {
