@@ -312,7 +312,7 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
         else
             Picasso.with(getActivity()).load(R.drawable.default_user).fit().centerCrop().into(imgAvatar);
 
-        lblPrecio.setText(String.format("%.2f%s", mAnuncio.getPrecio(), Constantes.MONEDA));
+        lblPrecio.setText(String.format("%.2f%s/%s", mAnuncio.getPrecio(), Constantes.MONEDA, Constantes.MENSUAL));
         lblTamano.setText(mAnuncio.getTamanio() + Constantes.UNIDAD);
 
         switch (mAnuncio.getTipo_vivienda()) {

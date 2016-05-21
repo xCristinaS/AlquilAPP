@@ -9,6 +9,7 @@ import com.google.android.gms.maps.model.LatLngBounds;
 public final class Constantes {
     public static final String MONEDA = "€";
     public static final String UNIDAD = "m²";
+    public static final String MENSUAL = "mes";
     public static final String FOTO_PRINCIPAL = "principal";
 
     //TIPO VIVIENDA
@@ -50,6 +51,7 @@ public final class Constantes {
     //IMAGE SLIDER
     public static final long DELAY_TIME = 8000;
     public static final long DURATION = 8000;
+
 
 
 }

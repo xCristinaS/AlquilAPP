@@ -13,7 +13,8 @@ import c.proyecto.interfaces.MyModel;
 public class Anuncio implements Parcelable, MyModel {
 
     private String key, titulo, tipo_vivienda, anunciante, direccion, poblacion, provincia, descripcion, numero;
-    private int habitaciones_o_camas, numero_banios, tamanio, precio;
+    private int habitaciones_o_camas, numero_banios, tamanio;
+    private double precio;
     private HashMap<String, String> imagenes;
     private ArrayList<Prestacion> prestaciones;
     private HashMap<String, Boolean> solicitantes;
@@ -153,11 +154,11 @@ public class Anuncio implements Parcelable, MyModel {
         this.solicitantes = solicitantes;
     }
 
-    public float getPrecio() {
+    public double getPrecio() {
         return precio;
     }
 
-    public void setPrecio(int precio) {
+    public void setPrecio(double precio) {
         this.precio = precio;
     }
 
@@ -176,6 +177,7 @@ public class Anuncio implements Parcelable, MyModel {
     public void setLats(MyLatLng lats) {
         this.lats = lats;
     }
+
 
     @Override
     public int describeContents() {
@@ -196,11 +198,11 @@ public class Anuncio implements Parcelable, MyModel {
         dest.writeInt(this.habitaciones_o_camas);
         dest.writeInt(this.numero_banios);
         dest.writeInt(this.tamanio);
-        dest.writeInt(this.precio);
+        dest.writeDouble(this.precio);
         dest.writeSerializable(this.imagenes);
         dest.writeTypedList(prestaciones);
         dest.writeSerializable(this.solicitantes);
-        dest.writeParcelable(this.lats, 0);
+        dest.writeParcelable(this.lats, flags);
         dest.writeByte(subsChanged ? (byte) 1 : (byte) 0);
     }
 
@@ -217,7 +219,7 @@ public class Anuncio implements Parcelable, MyModel {
         this.habitaciones_o_camas = in.readInt();
         this.numero_banios = in.readInt();
         this.tamanio = in.readInt();
-        this.precio = in.readInt();
+        this.precio = in.readDouble();
         this.imagenes = (HashMap<String, String>) in.readSerializable();
         this.prestaciones = in.createTypedArrayList(Prestacion.CREATOR);
         this.solicitantes = (HashMap<String, Boolean>) in.readSerializable();
@@ -226,10 +228,12 @@ public class Anuncio implements Parcelable, MyModel {
     }
 
     public static final Creator<Anuncio> CREATOR = new Creator<Anuncio>() {
+        @Override
         public Anuncio createFromParcel(Parcel source) {
             return new Anuncio(source);
         }
 
+        @Override
         public Anuncio[] newArray(int size) {
             return new Anuncio[size];
         }

@@ -155,7 +155,6 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:gravity="start"
-                android:maxLines="5"
                 android:textSize="15sp"/>
         </RelativeLayout>
 

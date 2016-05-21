@@ -328,7 +328,7 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
         mAnuncio.setPoblacion(txtPoblacion.getText().toString());
         mAnuncio.setProvincia(txtProvincia.getText().toString());
         mAnuncio.setNumero(txtNum.getText().toString());
-        mAnuncio.setPrecio(Float.valueOf(txtPrecio.getText().toString()).intValue());
+        mAnuncio.setPrecio(Double.valueOf(txtPrecio.getText().toString()));
         mAnuncio.setDireccion(txtDireccion.getText().toString());
         mAnuncio.setAnunciante(user.getKey());
         mAnuncio.setKey(mAnuncio.generateKey());
