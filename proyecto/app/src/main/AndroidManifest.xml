@@ -58,6 +58,7 @@
 
         <activity
             android:name=".activities.LocalizacionActivity"
+            android:theme="@style/AppTheme.NoActionBar"
             android:label="Localización" />
 
         <activity android:name=".activities.PreferencesActivity"

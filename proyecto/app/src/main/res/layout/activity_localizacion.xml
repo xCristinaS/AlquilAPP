@@ -5,14 +5,43 @@
     android:orientation="vertical"
     >
 
-    <android.support.v7.widget.AppCompatAutoCompleteTextView
-        android:id="@+id/txtDireccion"
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="text"
-        android:maxLines="1"
-        android:hint="¿Donde se encuentra tu piso?"
-        android:gravity="center"/>
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+            <android.support.v7.widget.AppCompatAutoCompleteTextView
+                android:id="@+id/txtDireccion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="49"
+                android:layout_gravity="center_vertical"
+                android:inputType="text"
+                android:maxLines="1"
+                android:theme="@style/subrayadoBlanco"
+                android:hint="Buscar"
+                android:textColorHint="@android:color/white"
+                android:textColor="@android:color/white"
+                android:gravity="start"/>
+
+            <ImageView
+                android:id="@+id/imgLimpiarTexto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/ic_action_clear"
+                android:visibility="gone"
+                android:layout_weight="3"/>
+        </LinearLayout>
+
+
+    </android.support.v7.widget.Toolbar>
+
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">

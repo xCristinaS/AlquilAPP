@@ -7,6 +7,9 @@ import android.location.Geocoder;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -45,12 +48,14 @@ public class LocalizacionActivity extends AppCompatActivity implements OnMapRead
     private static final String EXTRA_SELECTOR_MODE = "ExtraEditable";
     public static final int RC_ADDRESS = 233;
     private AutoCompleteTextView txtDireccion;
-    private ImageView imgLocIcon;
+    private Toolbar toolbar;
+    private ImageView imgLocIcon, imgLimpiarTexto;
     private GoogleApiClient mGoogleApiClient;
     private GooglePlacesAutocompleteAdapter mAdapter;
     private GoogleMap mGoogleMap;
     private LatLng oldLat;
     private boolean mSelectorMode;
+
 
     public static void startForResult(Activity activity, LatLng latLng){
         Intent intent = new Intent(activity, LocalizacionActivity.class);
@@ -73,9 +78,13 @@ public class LocalizacionActivity extends AppCompatActivity implements OnMapRead
         setContentView(R.layout.activity_localizacion);
         oldLat = getIntent().getParcelableExtra(EXTRA_ANUNCIO);
         mSelectorMode = getIntent().getBooleanExtra(EXTRA_SELECTOR_MODE, true);
-
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        if(mSelectorMode)
+            toolbar.setTitle("");
+        setSupportActionBar(toolbar);
         confMap();
         confAutoCompletado();
+
     }
 
     private void confMap() {
@@ -87,7 +96,8 @@ public class LocalizacionActivity extends AppCompatActivity implements OnMapRead
     }
 
     private void confAutoCompletado() {
-        txtDireccion = (AutoCompleteTextView) findViewById(R.id.txtDireccion);
+        txtDireccion = (AutoCompleteTextView) toolbar.findViewById(R.id.txtDireccion);
+        imgLimpiarTexto = (ImageView) toolbar.findViewById(R.id.imgLimpiarTexto);
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .enableAutoManage(this, 0 /* clientId */, this)
                 .addApi(Places.GEO_DATA_API)
@@ -97,6 +107,26 @@ public class LocalizacionActivity extends AppCompatActivity implements OnMapRead
         txtDireccion.setAdapter(mAdapter);
         //Click en los items del autocompletado.
         txtDireccion.setOnItemClickListener(mAutocompleteClickListener);
+
+        txtDireccion.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(count > 0)
+                    imgLimpiarTexto.setVisibility(View.VISIBLE);
+                else
+                    imgLimpiarTexto.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
     }
 
     @Override

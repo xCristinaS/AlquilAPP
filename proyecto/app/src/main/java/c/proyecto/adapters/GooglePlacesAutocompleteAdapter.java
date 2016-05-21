@@ -33,7 +33,7 @@ import java.util.concurrent.TimeUnit;
  * Adapter that handles Autocomplete requests from the Places Geo Data API.
  * {@link AutocompletePrediction} results from the API are frozen and stored directly in this
  * adapter. (See {@link AutocompletePrediction#freeze()}.)
- * <p>
+ * <p/>
  * Note that this adapter requires a valid {@link com.google.android.gms.common.api.GoogleApiClient}.
  * The API client must be maintained in the encapsulating Activity, including all lifecycle and
  * connection states. The API client must be connected with the {@link Places#GEO_DATA_API} API.
@@ -73,6 +73,7 @@ public class GooglePlacesAutocompleteAdapter extends ArrayAdapter<AutocompletePr
         mGoogleApiClient = googleApiClient;
         mBounds = bounds;
         mPlaceFilter = filter;
+        mResultList = new ArrayList<>();
     }
 
     /**
@@ -95,7 +96,10 @@ public class GooglePlacesAutocompleteAdapter extends ArrayAdapter<AutocompletePr
      */
     @Override
     public AutocompletePrediction getItem(int position) {
-        return mResultList.get(position);
+        if (mResultList.size() > 0)
+            return mResultList.get(position);
+        else
+            return null;
     }
 
     @Override
@@ -128,8 +132,13 @@ public class GooglePlacesAutocompleteAdapter extends ArrayAdapter<AutocompletePr
                 // Skip the autocomplete query if no constraints are given.
                 if (constraint != null) {
                     // Query the autocomplete API for the (constraint) search string.
-                    mResultList = getAutocomplete(constraint);
-                    if (mResultList != null) {
+                    ArrayList<AutocompletePrediction> a = getAutocomplete(constraint);
+
+                    if (a != null) {
+                        mResultList.clear();
+                        mResultList.addAll(a);
+                        notifyDataSetChanged();
+
                         // The API successfully returned results.
                         results.values = mResultList;
                         results.count = mResultList.size();
@@ -182,7 +191,7 @@ public class GooglePlacesAutocompleteAdapter extends ArrayAdapter<AutocompletePr
             // Submit the query to the autocomplete API and retrieve a PendingResult that will
             // contain the results when the query completes.
             PendingResult<AutocompletePredictionBuffer> results =
-                    Places.GeoDataApi.getAutocompletePredictions(mGoogleApiClient, constraint.toString(),   mBounds, mPlaceFilter);
+                    Places.GeoDataApi.getAutocompletePredictions(mGoogleApiClient, constraint.toString(), mBounds, mPlaceFilter);
 
             // This method should have been called off the menu_main UI thread. Block and wait for at most 60s
             // for a result from the API.
