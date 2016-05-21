@@ -4,8 +4,13 @@ import android.animation.Animator;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ImageView;
 
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.RemoteMessage;
+
+import java.util.HashMap;
 import java.util.concurrent.CountDownLatch;
 
 import c.proyecto.Constantes;

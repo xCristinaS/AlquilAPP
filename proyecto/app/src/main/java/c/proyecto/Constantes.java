@@ -50,7 +50,5 @@ public final class Constantes {
     //IMAGE SLIDER
     public static final long DELAY_TIME = 8000;
     public static final long DURATION = 8000;
-
-
 }
 
