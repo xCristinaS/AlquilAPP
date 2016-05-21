@@ -187,36 +187,12 @@
             android:layout_toRightOf="@id/groupAvatar" />
         <!-- Precio -->
         <TextView
-            android:id="@+id/lblTituloPrecio"
+            android:id="@+id/lblTituloTamano"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignTop="@id/groupAvatar"
             android:layout_below="@id/groupImagenes"
             android:layout_marginLeft="15dp"
-            android:layout_toEndOf="@id/dividerAvatar"
-            android:layout_toRightOf="@id/dividerAvatar"
-            android:text="Precio"
-            android:textSize="16sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/lblPrecio"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@id/lblTituloPrecio"
-            android:layout_alignStart="@id/lblTituloPrecio"
-            android:layout_below="@id/lblTituloPrecio"
-            android:layout_marginTop="2dp"
-            android:maxLength="19"
-            android:maxLines="1" />
-        <!-- Tamaño -->
-        <TextView
-            android:id="@+id/lblTituloTamano"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/lblPrecio"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="5dp"
             android:layout_toEndOf="@id/dividerAvatar"
             android:layout_toRightOf="@id/dividerAvatar"
             android:text="Tamaño"
@@ -230,6 +206,30 @@
             android:layout_alignLeft="@id/lblTituloTamano"
             android:layout_alignStart="@id/lblTituloTamano"
             android:layout_below="@id/lblTituloTamano"
+            android:layout_marginTop="2dp"
+            android:maxLength="19"
+            android:maxLines="1" />
+        <!-- Tamaño -->
+        <TextView
+            android:id="@+id/lblTituloPrecio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/lblTamano"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="5dp"
+            android:layout_toEndOf="@id/dividerAvatar"
+            android:layout_toRightOf="@id/dividerAvatar"
+            android:text="Precio"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/lblPrecio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/lblTituloPrecio"
+            android:layout_alignStart="@id/lblTituloPrecio"
+            android:layout_below="@id/lblTituloPrecio"
             android:layout_marginTop="2dp"
             android:maxLength="19"
             android:maxLines="1" />
