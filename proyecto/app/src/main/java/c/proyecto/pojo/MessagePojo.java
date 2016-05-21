@@ -5,9 +5,7 @@ import android.os.Parcelable;
 
 import java.util.Date;
 
-import c.proyecto.interfaces.IMessageAdapter;
-
-public class MessagePojo implements Parcelable, IMessageAdapter {
+public class MessagePojo implements Parcelable {
 
     public static final int TIPO_ENVIADO = 2;
     public static final int TIPO_RECIBIDO = 4;
@@ -27,7 +25,6 @@ public class MessagePojo implements Parcelable, IMessageAdapter {
         this.contenido = contenido;
     }
 
-    @Override
     public int getType(String keyCurrentUser){
         if (emisor.getKey().equals(keyCurrentUser))
             return TIPO_ENVIADO;

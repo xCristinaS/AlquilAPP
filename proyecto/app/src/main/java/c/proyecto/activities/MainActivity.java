@@ -91,6 +91,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
     private LocationRequest mLocationRequest;
     private SharedPreferences mSharedPref;
     private LocationListener mLocationListener;
+    private boolean multiselectionActivated;
 
     public static void start(Activity a, Usuario u) {
         Intent intent = new Intent(a, MainActivity.class);
@@ -192,6 +193,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
                 EditProfileActivity.start(this, mUser);
                 break;
             case R.id.nav_messages:
+                if (multiselectionActivated)
+                    desactivarMultiseleccion();
+                hideFilterIcon();
+                hideMapIcon();
                 mPresenter.requestUserMessages(mUser);
                 getSupportFragmentManager().beginTransaction().replace(R.id.frmContenido, MessagesFragment.newInstance(false, null), TAG_MESSAGES_FRAGMENT).commit();
                 break;
@@ -364,8 +369,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
 
     @Override
     public void onItemLongClick() {
-        toolbar.getMenu().findItem(R.id.nav_eliminar).setVisible(true);
-        toolbar.getMenu().findItem(R.id.nav_limpiar).setVisible(true);
+        showMultiselectionIcons();
     }
 
     @Override
@@ -374,9 +378,19 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
             adapter.clearAllSelections();
             adapter.disableMultiDeletionMode();
         }
+        hideMultiselectionIcons();
+    }
+
+    private void hideMultiselectionIcons(){
+        multiselectionActivated = false;
         toolbar.getMenu().findItem(R.id.nav_eliminar).setVisible(false);
         toolbar.getMenu().findItem(R.id.nav_limpiar).setVisible(false);
+    }
 
+    private void showMultiselectionIcons(){
+        multiselectionActivated = true;
+        toolbar.getMenu().findItem(R.id.nav_eliminar).setVisible(true);
+        toolbar.getMenu().findItem(R.id.nav_limpiar).setVisible(true);
     }
 
     @Override
@@ -448,6 +462,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
                     getSupportFragmentManager().beginTransaction().replace(R.id.frmContenido, f).commit();
                 else
                     getSupportFragmentManager().beginTransaction().replace(R.id.frmContenido, new PrincipalFragment(), TAG_PRINCIPAL_FRAGMENT).commit();
+
+                showFilterIcon();
+                showMapIcon();
             } else
                 super.onBackPressed();
         }

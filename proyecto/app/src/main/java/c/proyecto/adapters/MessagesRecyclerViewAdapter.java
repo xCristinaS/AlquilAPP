@@ -1,11 +1,9 @@
 package c.proyecto.adapters;
 
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -13,15 +11,13 @@ import com.squareup.picasso.Picasso;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
 import c.proyecto.R;
-import c.proyecto.interfaces.IMessageAdapter;
-import c.proyecto.pojo.MessageAdapterHeader;
+import c.proyecto.pojo.Message;
 import c.proyecto.pojo.MessagePojo;
 import c.proyecto.pojo.MessagePojoWithoutAnswer;
 import c.proyecto.pojo.Usuario;
@@ -40,23 +36,16 @@ public class MessagesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
         void removeMessage(MessagePojo m);
     }
 
-    private List<IMessageAdapter> mDatos;
+    private List<MessagePojo> mDatos;
     private OnMessagesAdapterItemClick listenerItemClick;
     private ConversationManager listenerConverManager;
     private boolean isAConversation;
     private String mKeyCurrentUser;
-    private MessageAdapterHeader cabeceraMensajesRecibidos, cabeceraMensajesSinRespuesta;
     private ComparatorMessages messagesComp = new ComparatorMessages();
 
     public MessagesRecyclerViewAdapter(boolean isAConversation, String keyCurrentUser) {
         mDatos = new ArrayList<>();
         mKeyCurrentUser = keyCurrentUser;
-        if (!isAConversation) {
-            cabeceraMensajesRecibidos = new MessageAdapterHeader("Mensajes recibidos");
-            mDatos.add(cabeceraMensajesRecibidos);
-            cabeceraMensajesSinRespuesta = new MessageAdapterHeader("Mensajes enviados, sin respuesta");
-            mDatos.add(cabeceraMensajesSinRespuesta);
-        }
         this.isAConversation = isAConversation;
     }
 
@@ -71,13 +60,8 @@ public class MessagesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
         RecyclerView.ViewHolder viewHolder;
 
         if (!isAConversation) {
-            if (viewType == MessageAdapterHeader.TIPO_CABECERA) {
-                anuncioView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_cabecera_message, parent, false);
-                viewHolder = new HeaderViewHolder(anuncioView);
-            } else {
-                anuncioView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_message, parent, false);
-                viewHolder = new MessagesViewHolder(anuncioView);
-            }
+            anuncioView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_message, parent, false);
+            viewHolder = new MessagesViewHolder(anuncioView);
         } else {
             if (viewType == MessagePojo.TIPO_RECIBIDO) {
                 anuncioView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_received_message, parent, false);
@@ -95,8 +79,6 @@ public class MessagesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
         if (!isAConversation) {
             if (holder instanceof MessagesViewHolder)
                 ((MessagesViewHolder) holder).onBind((MessagePojo) mDatos.get(position));
-            else
-                ((HeaderViewHolder) holder).onBind((MessageAdapterHeader) mDatos.get(position));
         } else if (mDatos.get(position) instanceof MessagePojo)
             ((ChatViewHolder) holder).onBind((MessagePojo) mDatos.get(position));
     }
@@ -114,7 +96,7 @@ public class MessagesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
         this.listenerConverManager = listenerConverManager;
     }
 
-    public List<IMessageAdapter> getmDatos() {
+    public List<MessagePojo> getmDatos() {
         return mDatos;
     }
 
@@ -211,54 +193,6 @@ public class MessagesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
         }
     }
 
-    class HeaderViewHolder extends RecyclerView.ViewHolder {
-
-        private final TextView lblTipoMessage;
-
-        public HeaderViewHolder(View itemView) {
-            super(itemView);
-            lblTipoMessage = (TextView) itemView.findViewById(R.id.lblTipoMessage);
-        }
-
-        public void onBind(final MessageAdapterHeader tipo) {
-            lblTipoMessage.setText(tipo.getName());
-
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    toggleMessages(tipo);
-                }
-            });
-        }
-    }
-
-
-    private void toggleMessages(MessageAdapterHeader tipo) {
-        int posicion = mDatos.indexOf(tipo);
-        if (tipo.getHiddenChildren() == null) {
-            int desde = posicion + 1;
-            int cuantos = 0;
-            ArrayList<MessagePojo> hijosOcultos = new ArrayList<>();
-            while (desde < mDatos.size() && mDatos.get(desde) instanceof MessagePojo) {
-                hijosOcultos.add((MessagePojo) mDatos.get(desde));
-                mDatos.remove(desde);
-                cuantos++;
-            }
-            tipo.setHiddenChildren(hijosOcultos);
-            notifyItemRangeRemoved(desde, cuantos);
-            //viewHolder.imgIndicador.setImageResource(R.drawable.ic_arrow_drop_down);
-        } else {
-            int indice = posicion + 1;
-            for (MessagePojo m : tipo.getHiddenChildren()) {
-                mDatos.add(indice, m);
-                indice++;
-            }
-            notifyItemRangeInserted(posicion + 1, indice - posicion - 1);
-            tipo.setHiddenChildren(null);
-            //viewHolder.imgIndicador.setImageResource(R.drawable.ic_arrow_drop_up);
-        }
-    }
-
     //Manejo del Adaptador
     public void addItem(MessagePojo m) {
         boolean opHecha = false;
@@ -272,20 +206,18 @@ public class MessagesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
                         opHecha = true; // paro de recorrer la lista
                     }
 
-
-        if (m instanceof MessagePojoWithoutAnswer) // si el mensaje que me llega es un mensaje sin respuesta
-            mDatos.add(mDatos.indexOf(cabeceraMensajesSinRespuesta) + 1, m); // lo agrego detrás de la cabecera de mensajes sin respuesta
-        else // en caso contrario
-            mDatos.add(mDatos.indexOf(cabeceraMensajesRecibidos) + 1, m); // lo agrego detrás de la cabecera de mensajes recibidos
+        mDatos.add(0, m); // lo agrego detrás de la cabecera de mensajes sin respuesta
 
         if (isAConversation && mDatos.size() == LIMIT_MESSAGES) { // si estoy en conversación activity y he el adaptador contiene tantos elementos como indica el límite
             listenerConverManager.removeMessage((MessagePojo) mDatos.remove(0)); // borro el primer mensaje que recibí de la bdd
             mDatos.remove(0); // lo borro del adaptador
             notifyItemRemoved(0); // notifico
         }
-        orderData(); // ORDENAR LOS MENSAJES DEL ADAPTADOR
+        Collections.sort(mDatos, messagesComp);
+        notifyDataSetChanged();
+        //orderData(); // ORDENAR LOS MENSAJES DEL ADAPTADOR
     }
-
+/*
     private void orderData() {
         if (!isAConversation) { // si no estoy en conversationActivity, los mensajes deben aparecer en orden de más reciente a más antiguos, para ello:
             List<MessagePojo> aux = new ArrayList<>(), aux2 = new ArrayList<>(); // creo dos listas auxiliares. La primera para ordenar los mensajes recibidos. La segunda para ordenar los mensajes enviados sin respuesta
@@ -320,6 +252,7 @@ public class MessagesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
         }
         notifyDataSetChanged();
     }
+    */
 
     public void removeItem(MessagePojo m) {
         int position = mDatos.indexOf(m);
