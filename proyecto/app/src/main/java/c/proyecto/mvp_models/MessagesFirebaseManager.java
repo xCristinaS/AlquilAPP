@@ -67,12 +67,11 @@ public class MessagesFirebaseManager {
                     new Firebase(URL_USERS).child(emisorKey).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
-                            Usuario emisor = dataSnapshot.getValue(Usuario.class);
+                            final Usuario emisor = dataSnapshot.getValue(Usuario.class);
                             mensaje.setEmisor(emisor); // asigno el emisor obtenido al mensaje que será devuelto al adaptador
                             mensaje.setKeyReceptor(currentUser.getKey()); // asigno al receptor
 
                             // obtengo el último mensaje de la conversación, para mostrar el último en la actividad de mensajes
-
 
                             // este listener es el que estará a la escucha por si se recibe un nuevo mensaje en una conversación ya existente. El primer listener estará a la escucha y obtendrá los
                             // nuevos mensajes recibidos, éste en cambio obtendra los mensajes recibidos sobre una conversación existente, para mantener el adaptador en la vista de mensajes actualizado
@@ -80,11 +79,50 @@ public class MessagesFirebaseManager {
                             ChildEventListener listenerInterno = new ChildEventListener() {
                                 @Override
                                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                                    Message m = dataSnapshot.getValue(Message.class);
+                                    final Message m = dataSnapshot.getValue(Message.class);
                                     mensaje.setContenido(m.getContenido());
                                     mensaje.setFecha(new Date(m.getFecha()));
                                     mensaje.setKey(dataSnapshot.getKey());
                                     ((MainPresenter) presenter).userMessageHasBeenObtained(mensaje);
+
+                                    String currentUser_titleAdvert = currentUser.getKey() +  "_" + mensaje.getTituloAnuncio().trim().replace(" ", "_");
+                                    Query fInternoAux = new Firebase(URL_CONVERSACIONES).child(emisor.getKey()).child(currentUser_titleAdvert).limitToLast(1);
+                                    ChildEventListener listenerInternoAux = new ChildEventListener() {
+                                        @Override
+                                        public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                                            Message m2 = dataSnapshot.getValue(Message.class);
+                                            Date fechaMensajeRecibido = new Date(m.getFecha()), fechaMensajeEnviado = new Date(m2.getFecha());
+                                            if (fechaMensajeEnviado.after(fechaMensajeRecibido)) {
+                                                mensaje.setContenido(m2.getContenido());
+                                                mensaje.setFecha(new Date(m2.getFecha()));
+                                                mensaje.setKey(dataSnapshot.getKey());
+                                                ((MainPresenter) presenter).userMessageHasBeenObtained(mensaje);
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                                        }
+
+                                        @Override
+                                        public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                                        }
+
+                                        @Override
+                                        public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                                        }
+
+                                        @Override
+                                        public void onCancelled(FirebaseError firebaseError) {
+
+                                        }
+                                    };
+
+                                    fInternoAux.addChildEventListener(listenerInternoAux);
+                                    listenerInternosMessages.put(fInternoAux, listenerInternoAux);
                                 }
 
                                 @Override

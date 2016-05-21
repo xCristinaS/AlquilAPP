@@ -200,12 +200,12 @@ public class MessagesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
         if (!isAConversation) // si no estoy en conversationActivity y recibo un nuevo mensaje
             for (int i = 0; !opHecha && i < mDatos.size(); i++) // recorro los mensajes que tengo en mDatos
                 // si el emisor del mensaje que tengo es el mismo que el emisor del mensaje que me viene, y el titulo del anuncio es el mismo en el mensaje que tengo y en el que me viene
-                if (mDatos.get(i).getEmisor().getKey().equals(m.getEmisor().getKey()) && mDatos.get(i).getTituloAnuncio().equals(m.getTituloAnuncio())) {
+                if ((mDatos.get(i).getEmisor().getKey().equals(m.getEmisor().getKey()) || mDatos.get(i) instanceof MessagePojoWithoutAnswer) && mDatos.get(i).getTituloAnuncio().trim().equals(m.getTituloAnuncio().trim())) {
                     mDatos.remove(mDatos.get(i)); // borro ese mensaje
                     opHecha = true; // paro de recorrer la lista
                 }
 
-        mDatos.add(0, m); // lo agrego detrás de la cabecera de mensajes sin respuesta
+        mDatos.add(0, m);
 
         if (isAConversation && mDatos.size() == LIMIT_MESSAGES) { // si estoy en conversación activity y he el adaptador contiene tantos elementos como indica el límite
             listenerConverManager.removeMessage(mDatos.remove(mDatos.size() - 1)); // borro el primer mensaje que recibí de la bdd
