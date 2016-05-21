@@ -13,6 +13,7 @@ import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 
@@ -86,6 +87,7 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_crear_anuncio2);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
         imagenesAnuncio = new LinkedList<>();
         File img0 = (File) getIntent().getExtras().get(EXTRA_IMAGE_0);
