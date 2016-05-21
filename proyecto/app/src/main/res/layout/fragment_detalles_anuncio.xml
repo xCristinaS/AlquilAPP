@@ -95,7 +95,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_weight="33"
+                android:layout_weight="27"
                 android:orientation="horizontal">
 
 
@@ -121,7 +121,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:text="0"
+                    android:text="10"
                     android:layout_centerVertical="true"
                     android:layout_toRightOf="@id/imgCamas"
                     android:layout_toEndOf="@id/imgCamas"
