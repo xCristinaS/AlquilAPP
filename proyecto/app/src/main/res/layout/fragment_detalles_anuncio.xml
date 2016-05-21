@@ -52,6 +52,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/imgAvatar"
                 android:layout_centerHorizontal="true"
+                android:layout_marginTop="2dp"
                 android:maxLines="2"
                 android:textAlignment="center"
                 android:textStyle="bold" />
@@ -59,57 +60,19 @@
         </RelativeLayout>
 
         <!-- Shape rectangulo -->
-        <RelativeLayout
+        <LinearLayout
             android:id="@+id/shapeRectangulo"
             android:layout_width="match_parent"
             android:layout_height="90dp"
             android:layout_below="@id/groupAvatar"
-            android:background="@color/colorShape">
+            android:background="@color/colorShape"
+            android:orientation="horizontal">
 
             <LinearLayout
-                android:id="@+id/groupCamas"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_marginLeft="50dp"
-                android:layout_marginTop="20dp"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:id="@+id/imgCamas"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_gravity="center"
-                    android:src="@drawable/cama" />
-
-                <TextView
-                    android:id="@+id/lblCamas"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="Camas" />
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/lblNumCamas"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="6dp"
-                android:layout_marginTop="30dp"
-                android:layout_toEndOf="@id/groupCamas"
-                android:layout_toRightOf="@id/groupCamas"
-                android:text="0"
-                android:textStyle="bold"
-
-                />
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
-                android:layout_marginTop="20dp"
-                android:layout_toLeftOf="@id/groupCamas"
-                android:layout_toStartOf="@id/groupCamas"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="33"
                 android:orientation="vertical">
 
                 <ImageView
@@ -127,42 +90,88 @@
                     android:text="Habitación" />
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/groupHuespedes"
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:id="@+id/groupCamas"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="64dp"
-                android:layout_marginTop="20dp"
-                android:layout_toEndOf="@id/groupCamas"
-                android:layout_toRightOf="@id/groupCamas"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="27"
+                android:orientation="horizontal">
+
+
+                <ImageView
+                    android:id="@+id/imgCamas"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/cama" />
+
+                <TextView
+                    android:id="@+id/lblCamas"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@id/imgCamas"
+                    android:text="Camas" />
+
+
+                <TextView
+                    android:id="@+id/lblNumCamas"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="10"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@id/imgCamas"
+                    android:layout_toEndOf="@id/imgCamas"
+                    android:paddingBottom="12dp"
+                    android:paddingLeft="10dp"
+                    android:textStyle="bold"
+
+                    />
+
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/groupToilets"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="33"
                 android:orientation="vertical">
 
                 <ImageView
                     android:id="@+id/imgToilet"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:layout_gravity="center"
+                    android:layout_centerHorizontal="true"
                     android:src="@drawable/ic_toilet" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@id/imgToilet"
                     android:text="Baños" />
-            </LinearLayout>
 
-            <TextView
-                android:id="@+id/lblNumToilets"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="30dp"
-                android:layout_toEndOf="@id/groupHuespedes"
-                android:layout_toRightOf="@id/groupHuespedes"
-                android:text="0"
-                android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/lblNumToilets"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/imgToilet"
+                    android:layout_toEndOf="@id/imgToilet"
+                    android:layout_centerVertical="true"
+                    android:paddingBottom="12dp"
+                    android:paddingLeft="10dp"
+                    android:text="0"
+                    android:textStyle="bold" />
+            </RelativeLayout>
 
-        </RelativeLayout>
+
+
+        </LinearLayout>
 
         <!-- Divider -->
         <View
@@ -178,7 +187,7 @@
             android:layout_toRightOf="@id/groupAvatar" />
         <!-- Precio -->
         <TextView
-            android:id="@+id/lblTituloPrecio"
+            android:id="@+id/lblTituloTamano"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignTop="@id/groupAvatar"
@@ -186,30 +195,7 @@
             android:layout_marginLeft="15dp"
             android:layout_toEndOf="@id/dividerAvatar"
             android:layout_toRightOf="@id/dividerAvatar"
-            android:text="Precio:"
-            android:textSize="16sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/lblPrecio"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@id/lblTituloPrecio"
-            android:layout_marginLeft="10dp"
-            android:layout_toEndOf="@id/lblTituloPrecio"
-            android:layout_toRightOf="@id/lblTituloPrecio"
-            android:text="223€" />
-        <!-- Tamaño -->
-        <TextView
-            android:id="@+id/lblTituloTamano"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/lblTituloPrecio"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="10dp"
-            android:layout_toEndOf="@id/dividerAvatar"
-            android:layout_toRightOf="@id/dividerAvatar"
-            android:text="Tamaño:"
+            android:text="Tamaño"
             android:textSize="16sp"
             android:textStyle="bold" />
 
@@ -217,11 +203,36 @@
             android:id="@+id/lblTamano"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBaseline="@id/lblTituloTamano"
-            android:layout_marginLeft="10dp"
-            android:layout_toEndOf="@id/lblTituloTamano"
-            android:layout_toRightOf="@id/lblTituloTamano"
-            android:text="15m2" />
+            android:layout_alignLeft="@id/lblTituloTamano"
+            android:layout_alignStart="@id/lblTituloTamano"
+            android:layout_below="@id/lblTituloTamano"
+            android:layout_marginTop="2dp"
+            android:maxLength="19"
+            android:maxLines="1" />
+        <!-- Tamaño -->
+        <TextView
+            android:id="@+id/lblTituloPrecio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/lblTamano"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="5dp"
+            android:layout_toEndOf="@id/dividerAvatar"
+            android:layout_toRightOf="@id/dividerAvatar"
+            android:text="Precio"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/lblPrecio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/lblTituloPrecio"
+            android:layout_alignStart="@id/lblTituloPrecio"
+            android:layout_below="@id/lblTituloPrecio"
+            android:layout_marginTop="2dp"
+            android:maxLength="19"
+            android:maxLines="1" />
 
         <!-- Icono de Mensaje -->
         <ImageView
@@ -233,8 +244,7 @@
             android:layout_below="@id/groupImagenes"
             android:layout_marginRight="25dp"
             android:layout_marginTop="72dp"
-            android:src="@drawable/ic_nav_messages"
-            />
+            android:src="@drawable/ic_message_black" />
 
         <!-- Btn Subscribirse -->
         <ImageView
@@ -291,9 +301,11 @@
                 android:id="@+id/lblDescripcion"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
-                android:maxLines="5" />
+                android:gravity="start"
+                android:textSize="15sp" />
         </RelativeLayout>
 
         <!-- Mapa Google -->

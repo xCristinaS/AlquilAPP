@@ -9,6 +9,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 
 import c.proyecto.R;
 import c.proyecto.adapters.AdvertsRecyclerViewAdapter;
@@ -48,8 +51,6 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detalles_anuncio);
         currentUser = getIntent().getParcelableExtra(EXTRA_USER);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
         receiver = new BroadcastReceiver() {
             @Override
@@ -67,6 +68,8 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
         mPresenter.setMessagesManager(new MessagesFirebaseManager(mPresenter, currentUser));
         mPresenter.setUsersManager(new UsersFirebaseManager(mPresenter));
         mPresenter.getMessageIfConverExist(anuncio);
+
+
     }
 
     private void showAdvertHasBeenRemovedDialog() {

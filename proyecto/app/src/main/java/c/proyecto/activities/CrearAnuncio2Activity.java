@@ -13,6 +13,7 @@ import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 
@@ -86,6 +87,7 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_crear_anuncio2);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
         imagenesAnuncio = new LinkedList<>();
         File img0 = (File) getIntent().getExtras().get(EXTRA_IMAGE_0);
@@ -326,7 +328,7 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
         mAnuncio.setPoblacion(txtPoblacion.getText().toString());
         mAnuncio.setProvincia(txtProvincia.getText().toString());
         mAnuncio.setNumero(txtNum.getText().toString());
-        mAnuncio.setPrecio(Float.valueOf(txtPrecio.getText().toString()).intValue());
+        mAnuncio.setPrecio(Double.valueOf(txtPrecio.getText().toString()));
         mAnuncio.setDireccion(txtDireccion.getText().toString());
         mAnuncio.setAnunciante(user.getKey());
         mAnuncio.setKey(mAnuncio.generateKey());

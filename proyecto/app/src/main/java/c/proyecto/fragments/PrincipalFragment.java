@@ -95,7 +95,7 @@ public class PrincipalFragment extends Fragment {
 
                 switch (position){
                     case 0:
-                        getActivity().setTitle("Solicitudes");
+                        getActivity().setTitle("Suscripciones");
                         tab1.clearColorFilter();
                         tab2.clearColorFilter();
                         ((ImageView) tabLayout.getTabAt(0).getCustomView()).setColorFilter(getResources().getColor(R.color.colorAccent));
