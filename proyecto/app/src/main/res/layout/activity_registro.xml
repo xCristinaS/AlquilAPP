@@ -51,6 +51,7 @@
                 android:background="@android:color/transparent"
                 android:hint="Usuario"
                 android:maxLines="1"
+                android:inputType="text"
                 android:textColor="#333"
                 android:textColorHint="#666"
                 android:textSize="15sp" />
@@ -128,6 +129,7 @@
                 android:background="@android:color/transparent"
                 android:hint="Nombre"
                 android:maxLines="1"
+                android:inputType="text"
                 android:textColor="#333"
                 android:textColorHint="#666"
                 android:textSize="15sp" />
@@ -152,6 +154,7 @@
                 android:background="@android:color/transparent"
                 android:hint="Apellidos"
                 android:maxLines="1"
+                android:inputType="text"
                 android:textColor="#333"
                 android:textColorHint="#666"
                 android:textSize="15sp" />
@@ -173,7 +176,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignBaseline="@id/btnRegistrarse"
                 android:text="CANCELAR"
-                app:layout_marginLeftPercent="25%" />
+                app:layout_marginLeftPercent="24%" />
 
             <Button
                 android:id="@+id/btnRegistrarse"
