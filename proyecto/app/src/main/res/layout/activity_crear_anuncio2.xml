@@ -121,7 +121,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/txtDireccion"
-                android:maxLines="1"
                 android:inputType="none"
                 android:focusable="false"
                 android:hint="Población" />

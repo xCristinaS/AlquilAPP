@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.squareup.picasso.MemoryPolicy;
@@ -50,6 +51,7 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
     private static final int RC_CAPTURAR_FOTO = 455;
     public static final int RC_EDITAR_ANUNCIO = 231;
 
+    private TextView lblSiguiente;
     private ImageView imgSiguiente, imgPrincipal, img1, img2, img3, img4, img5, imgSeleccionada;
     private ProgressBar prbPrincipal, prb1, prb2, prb3, prb4, prb5;
     private String mPathOriginal;
@@ -58,6 +60,7 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
     private Usuario user;
     private boolean imagesModified;
     private LinkedList<ImagePojo> imagePojoToLoadList;
+
 
     public static void start(Context context, Usuario user) {
         Intent intent = new Intent(context, CrearAnuncio1Activity.class);
@@ -84,6 +87,8 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
     }
 
     private void initViews() {
+        lblSiguiente = (TextView) findViewById(R.id.lblSiguiente);
+        imgSiguiente = (ImageView) findViewById(R.id.imgSiguiente);
         imgPrincipal = (ImageView) findViewById(R.id.imgPrincipal);
         img1 = (ImageView) findViewById(R.id.img1);
         img2 = (ImageView) findViewById(R.id.img2);
@@ -104,9 +109,7 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
         showImageDialogList(img4);
         showImageDialogList(img5);
 
-
-        imgSiguiente = (ImageView) findViewById(R.id.imgSiguiente);
-        imgSiguiente.setOnClickListener(new View.OnClickListener() {
+        View.OnClickListener siguienteOnClick = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (mImagenesAnuncio[0] != null) {
@@ -117,7 +120,12 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
                 } else
                     Toast.makeText(CrearAnuncio1Activity.this, "Debe cargar una foto para continuar", Toast.LENGTH_SHORT).show();
             }
-        });
+        };
+
+
+        imgSiguiente.setOnClickListener(siguienteOnClick);
+        lblSiguiente.setOnClickListener(siguienteOnClick);
+
     }
 
     private void recuperarImagenes() {
