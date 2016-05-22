@@ -183,7 +183,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
                     else
                         mFragmentManager.beginTransaction().replace(R.id.frmContenido, new PrincipalFragment()).commit();
                 }
-
                 break;
             case R.id.nav_new_adv:
                 //Null = nuevo Anuncio.
@@ -197,6 +196,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
                     desactivarMultiseleccion();
                 hideFilterIcon();
                 hideMapIcon();
+                toolbar.getMenu().findItem(R.id.nav_deshacer_filtro).setVisible(false);
                 mPresenter.requestUserMessages(mUser);
                 getSupportFragmentManager().beginTransaction().replace(R.id.frmContenido, MessagesFragment.newInstance(false, null), TAG_MESSAGES_FRAGMENT).commit();
                 break;
@@ -402,6 +402,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
     public void userMessageHasBeenObtained(MessagePojo m) {
         if (getSupportFragmentManager().findFragmentById(R.id.frmContenido) instanceof MessagesFragment)
             ((MessagesFragment) getSupportFragmentManager().findFragmentById(R.id.frmContenido)).getmAdapter().addItem(m);
+    }
+
+    @Override
+    public void messagesListHasBeenObtained(ArrayList<MessagePojo> messagesList) {
+        if (getSupportFragmentManager().findFragmentById(R.id.frmContenido) instanceof MessagesFragment)
+            ((MessagesFragment) getSupportFragmentManager().findFragmentById(R.id.frmContenido)).getmAdapter().addAll(messagesList);
     }
 
     @Override

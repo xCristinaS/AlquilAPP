@@ -158,8 +158,6 @@ public class MessagesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
                     listenerItemClick.onItemClick((MessagePojo) mDatos.get(mDatos.indexOf(m)));
                 }
             });
-
-
         }
     }
 
@@ -215,6 +213,12 @@ public class MessagesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
             notifyItemRemoved(mDatos.size() - 1); // notifico
         }
         Collections.sort(mDatos, messagesComp);
+        notifyDataSetChanged();
+    }
+
+    public void addAll(ArrayList<MessagePojo> messagesList) {
+        Collections.sort(messagesList, messagesComp);
+        mDatos.addAll(messagesList);
         notifyDataSetChanged();
     }
 
