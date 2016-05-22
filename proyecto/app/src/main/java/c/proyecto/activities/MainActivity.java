@@ -114,10 +114,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
         initViews();
         // Si la app se inicializa por primera vez, lanza el servicio
         mSharedPref.edit().putString(Constantes.KEY_CURRENT_USER_KEY, mUser.getKey()).apply();
-        if (!mSharedPref.getBoolean(Constantes.KEY_APP_INITIALIZED, false)){
-            mSharedPref.edit().putBoolean(Constantes.KEY_APP_INITIALIZED, true).apply();
-            getApplicationContext().startService(new Intent(this, NotificationService.class));
-        }
+        getApplicationContext().startService(new Intent(this, NotificationService.class));
     }
 
     private void initViews() {
@@ -444,7 +441,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
         //Si el navDrawer está abierto lo cierra
         if (drawer.isDrawerOpen(GravityCompat.START))
             drawer.closeDrawers();
-        else if (toolbar.getMenu().findItem(R.id.eliminar).isVisible()) 
+        else if (toolbar.getMenu().findItem(R.id.eliminar).isVisible())
             desactivarMultiseleccion();
         else {
             Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.frmContenido);

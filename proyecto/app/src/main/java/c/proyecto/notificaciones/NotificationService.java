@@ -41,12 +41,6 @@ public class NotificationService extends Service {
     }
 
     @Override
-    public void onDestroy() {
-        Log.d("SERVICIO_DESTRUIDO", "DESTRUIDO");
-        super.onDestroy();
-    }
-
-    @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         initializeFirebaseListeners();
         return START_STICKY;
@@ -123,10 +117,6 @@ public class NotificationService extends Service {
         }
     }
 
-    public void detachListeners() {
-
-    }
-
     private void notifyNewMessageReceived(String nombreEmisor, String contenido) {
         mGestor = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         NotificationCompat.Builder b = new NotificationCompat.Builder(getApplicationContext());
@@ -134,7 +124,7 @@ public class NotificationService extends Service {
         b.setLargeIcon(((BitmapDrawable) getResources().getDrawable(R.drawable.ic_chat)).getBitmap()); // Icono grande.
         b.setContentTitle(nombreEmisor); // Título (1ª línea).
         b.setContentText(contenido); // Texto (2º línea).
-        b.setContentInfo("3"); // Info adicional (nº total tareas pendientes).
+        //b.setContentInfo("3"); // Info adicional (nº total tareas pendientes).
         b.setTicker("Has recibido un mensaje");  // Ticker.
         b.setAutoCancel(true); // para que se elimine al pinchar sobre la notificacion.
         // Para meterle la acción.
