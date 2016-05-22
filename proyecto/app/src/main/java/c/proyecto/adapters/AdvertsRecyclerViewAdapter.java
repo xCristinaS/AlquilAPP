@@ -277,7 +277,7 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
                     lblSubs.setTextColor(itemView.getResources().getColor(R.color.colorAccent));
                 } else {
                     imgSuscritos.clearColorFilter();
-                    lblSubs.setTextColor(Color.BLACK);
+                    lblSubs.setTextColor(itemView.getResources().getColor(R.color.colorGrayLightText));
                 }
 
                 groupSuscritos.setOnClickListener(new View.OnClickListener() {

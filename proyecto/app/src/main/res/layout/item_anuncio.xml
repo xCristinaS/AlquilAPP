@@ -62,8 +62,8 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:gravity="end"
-                    android:text="200€"
-                    android:textSize="17sp"
+                    android:text="0€"
+                    android:textSize="15.5sp"
                     android:textStyle="bold" />
 
 
