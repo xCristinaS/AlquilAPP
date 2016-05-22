@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import c.proyecto.R;
 import c.proyecto.adapters.AdvertsRecyclerViewAdapter;
@@ -37,6 +38,7 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
     private Usuario currentUser;
     private BroadcastReceiver receiver;
     private MessagePojo messagePojoAux;
+    private Toolbar toolbar;
 
     public static void start(Context context, Anuncio anuncio, int advertType, Usuario u) {
         Intent intent = new Intent(context, DetallesAnuncioActivity.class);
@@ -51,6 +53,7 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detalles_anuncio);
         currentUser = getIntent().getParcelableExtra(EXTRA_USER);
+
 
         receiver = new BroadcastReceiver() {
             @Override
@@ -69,6 +72,17 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
         mPresenter.setUsersManager(new UsersFirebaseManager(mPresenter));
         mPresenter.getMessageIfConverExist(anuncio);
 
+        configToolbar();
+
+    }
+
+    private void configToolbar() {
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        ((TextView) toolbar.findViewById(R.id.lblTituloAnuncio)).setText(anuncio.getTitulo());
+        ((TextView) toolbar.findViewById(R.id.lblLocalizacion)).setText(anuncio.getPoblacion());
+        ((TextView) toolbar.findViewById(R.id.lblDireccion)).setText(anuncio.getDireccion() + " " + anuncio.getNumero());
 
     }
 
