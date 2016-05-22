@@ -57,6 +57,7 @@ public class DescripcionDialogFragment extends AppCompatDialogFragment {
         imgFumador = (ImageView) view.findViewById(R.id.imgFumador);
         imgNoFumador = (ImageView) view.findViewById(R.id.imgNoFumador);
 
+
         onClickImages(imgMasculino, R.drawable.genero_masculino);
         onClickImages(imgFemenino, R.drawable.genero_femenino);
         onClickImages(imgEstudiante, R.drawable.estudiante);
