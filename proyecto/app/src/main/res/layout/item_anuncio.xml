@@ -52,7 +52,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
+                android:layout_marginTop="2dp"
                 android:layout_below="@id/lblTituloAnuncio">
                 <TextView
                     android:id="@+id/lblPrecio"
@@ -70,6 +70,8 @@
                 <TextView
                     android:id="@+id/lblLocalizacion"
                     style="@style/LabelContent"
+                    android:maxLines="3"
+                    android:ellipsize="end"
                     android:layout_toLeftOf="@id/lblPrecio"
                     android:layout_toStartOf="@id/lblPrecio"
                     android:layout_centerVertical="true"
