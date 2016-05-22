@@ -158,6 +158,8 @@ public class MessagesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
                     listenerItemClick.onItemClick((MessagePojo) mDatos.get(mDatos.indexOf(m)));
                 }
             });
+
+
         }
     }
 

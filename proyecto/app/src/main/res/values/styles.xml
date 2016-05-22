@@ -24,16 +24,7 @@
         <item name="android:layout_height">match_parent</item>
         <item name="android:background">@android:color/black</item>
     </style>
-
-    <!-- Linea separador Horizontal -->
-    <style name="horizontalDivider">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">1dp</item>
-        <item name="android:background">@android:color/black</item>
-
-    </style>
-
-
+    
     <style name="LabelTitle">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
