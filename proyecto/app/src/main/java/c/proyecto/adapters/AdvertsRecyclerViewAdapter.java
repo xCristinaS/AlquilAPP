@@ -199,13 +199,15 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
         return adapter_type;
     }
 
-    //VIEWHOLDERS
+
+    /////////////////////////////////////////////    VIEWHOLDERS    //////////////////////////////////////////////
     static class AnuncioViewHolder extends RecyclerView.ViewHolder {
 
         private ImageView imgAvatar;
         private ProgressBar prbAnuncio;
-        private TextView lblTituloAnuncio, lblLocalizacion;
+        private TextView lblTituloAnuncio, lblLocalizacion, lblPrecio;
         private int anchoAproxImgAvatar;
+        private String formatPrecio;
 
         public AnuncioViewHolder(final View itemView) {
             super(itemView);
@@ -213,14 +215,22 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
             lblLocalizacion = (TextView) itemView.findViewById(R.id.lblLocalizacion);
             imgAvatar = (ImageView) itemView.findViewById(R.id.imgAvatar);
             prbAnuncio = (ProgressBar) itemView.findViewById(R.id.prbAnuncio);
+            lblPrecio = (TextView) itemView.findViewById(R.id.lblPrecio);
             anchoAproxImgAvatar = getAnchoPantalla(itemView.getContext()) / 2;
         }
 
         public void onBind(final Anuncio anuncio) {
+            formatPrecio = "%.2f";
             if (anuncio != null) {
                 prbAnuncio.setVisibility(View.VISIBLE);
                 lblTituloAnuncio.setText(anuncio.getTitulo());
                 lblLocalizacion.setText(anuncio.getPoblacion());
+
+                //Si el precio no tiene decimales, el número será mostrado sin 0  Ej: 10.00 -> 10
+                if(anuncio.getPrecio() % 1 == 0)
+                    formatPrecio = "%.0f";
+                lblPrecio.setText(String.format(formatPrecio + "%s", anuncio.getPrecio(), Constantes.MONEDA));
+
                 if (anuncio.getImagenes().size() > 0) {
                     for (String img : anuncio.getImagenes().keySet())
                         if (img.equals(Constantes.FOTO_PRINCIPAL)) // Si la key es de la imagen principal, cargo la foto
