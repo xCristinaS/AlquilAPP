@@ -14,4 +14,6 @@
     <color name="colorGrayLightText">#9B9B9B</color>
 
     <color name="colorBlanco">#ffffff</color>
+
+    <color name="colorDivider">#EEEEEE</color>
 </resources>

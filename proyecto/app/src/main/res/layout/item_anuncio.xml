@@ -41,25 +41,45 @@
             android:layout_height="wrap_content"
             android:background="@color/backgroundController">
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:background="@drawable/item_background_selector"
-                android:orientation="vertical"
                 android:padding="@dimen/margin_medium">
+
+                
+                <TextView
+                    android:id="@+id/lblPrecio"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:gravity="end"
+                    android:text="200€"/>
+
+
 
                 <TextView
                     android:id="@+id/lblTituloAnuncio"
                     style="@style/LabelTitle"
+                    android:layout_marginRight="65dp"
                     android:text="Title" />
 
                 <TextView
                     android:id="@+id/lblLocalizacion"
                     style="@style/LabelContent"
+                    android:layout_marginRight="65dp"
+                    android:layout_below="@id/lblTituloAnuncio"
                     android:text="Subtitle" />
 
-            </LinearLayout>
+
+
+
+            </RelativeLayout>
         </RelativeLayout>
     </LinearLayout>
 </android.support.v7.widget.CardView>
