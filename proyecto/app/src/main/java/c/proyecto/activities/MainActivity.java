@@ -405,9 +405,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
     }
 
     @Override
-    public void messagesListHasBeenObtained(ArrayList<MessagePojo> messagesList) {
+    public void allMessagesObtained() {
         if (getSupportFragmentManager().findFragmentById(R.id.frmContenido) instanceof MessagesFragment)
-            ((MessagesFragment) getSupportFragmentManager().findFragmentById(R.id.frmContenido)).getmAdapter().addAll(messagesList);
+            ((MessagesFragment) getSupportFragmentManager().findFragmentById(R.id.frmContenido)).getmAdapter().allMessagesObtained();
     }
 
     @Override

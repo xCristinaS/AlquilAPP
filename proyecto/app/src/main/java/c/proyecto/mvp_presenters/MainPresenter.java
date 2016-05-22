@@ -195,8 +195,8 @@ public class MainPresenter implements MainPresenterOps, MyPresenter {
     }
 
     @Override
-    public void messagesListHasBeenObtained(ArrayList<MessagePojo> messagesList){
+    public void allMessagesObtained() {
         if (activity.get() != null)
-            activity.get().messagesListHasBeenObtained(messagesList);
+            activity.get().allMessagesObtained();
     }
 }

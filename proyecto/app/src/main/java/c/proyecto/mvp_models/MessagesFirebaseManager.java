@@ -7,9 +7,9 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
 import com.firebase.client.ValueEventListener;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import c.proyecto.interfaces.MyPresenter;
@@ -38,7 +38,7 @@ public class MessagesFirebaseManager {
     private MyPresenter presenter;
     private Usuario currentUser;
     private static String lastEmisor_titleAdvert, lastMessageWithoutAnswerSended;
-    private static ArrayList<MessagePojo> messagesList = new ArrayList<>(), messagesWithoutAnswerList;
+    private boolean messagesWithoutAnswerConsulted, receivedMessagesConsulted;
 
     public MessagesFirebaseManager(MyPresenter presenter, Usuario currentUser) {
         this.presenter = presenter;
@@ -99,16 +99,13 @@ public class MessagesFirebaseManager {
                                                 mensaje.setContenido(m2.getContenido());
                                                 mensaje.setFecha(new Date(m2.getFecha()));
                                                 mensaje.setKey(dataSnapshot.getKey());
+                                                ((MainPresenter) presenter).userMessageHasBeenObtained(mensaje);
 
-                                                if (lastEmisor_titleAdvert != null){
-                                                    messagesList.add(mensaje);
+                                                if (lastEmisor_titleAdvert != null)
                                                     if (lastEmisor_titleAdvert.equals(emisor_titleAdvert)) {
-                                                        //((MainPresenter) presenter).messagesListHasBeenObtained(messagesList);
-                                                        lastEmisor_titleAdvert = null;
+                                                        receivedMessagesConsulted = true;
+                                                        checkIfAllMessagesObtained();
                                                     }
-                                                } else {
-                                                    ((MainPresenter) presenter).userMessageHasBeenObtained(mensaje);
-                                                }
                                             }
                                         }
 
@@ -188,7 +185,7 @@ public class MessagesFirebaseManager {
 
                 }
             };
-        mFirebaseReceivedMessages.addChildEventListener(mListenerReceivedMessages);
+        //mFirebaseReceivedMessages.addChildEventListener(mListenerReceivedMessages);
     }
 
     // compruebo si el mensaje que he recibido es un mensaje en respuesta a una conversación iniciada por el usuario. Si es así, elimino el mensaje de la lista de mensajes enviados sin respuesta.
@@ -221,8 +218,9 @@ public class MessagesFirebaseManager {
         new Firebase(URL_CONVERSACIONES).child(currentUser.getKey()).limitToLast(1).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                lastEmisor_titleAdvert = dataSnapshot.getChildren().iterator().next().getKey(); // para obtener el último mensaje y devolver la lista de mensajes en lugar de devolverlos de 1 en 1
-                messagesList.clear();
+                if (dataSnapshot.getChildren() != null && dataSnapshot.getChildren().iterator().hasNext()) {
+                    lastEmisor_titleAdvert = dataSnapshot.getChildren().iterator().next().getKey(); // para obtener el último mensaje y devolver la lista de mensajes en lugar de devolverlos de 1 en 1
+                }
             }
 
             @Override
@@ -230,16 +228,36 @@ public class MessagesFirebaseManager {
 
             }
         });
+
+        if (lastEmisor_titleAdvert == null)
+            receivedMessagesConsulted = true;
+
         mFirebaseReceivedMessages.removeEventListener(mListenerReceivedMessages);
         mFirebaseReceivedMessages.addChildEventListener(mListenerReceivedMessages);
     }
 
     private void getUserMessagesSendedWithoutAnswer() {
-        new Firebase(URL_MSG_SIN_RESP).child(currentUser.getKey()).limitToLast(1).addListenerForSingleValueEvent(new ValueEventListener() {
+        new Firebase(URL_MSG_SIN_RESP).child(currentUser.getKey()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                HashMap<String, Boolean> map = dataSnapshot.getChildren().iterator().next().getChildren().iterator().next().getValue(HashMap.class);
-                lastMessageWithoutAnswerSended = map.entrySet().iterator().next().getKey();
+                DataSnapshot d = null;
+                if (dataSnapshot.getChildren() != null) {
+                    Iterator it = dataSnapshot.getChildren().iterator();
+                    while (it.hasNext())
+                        d = (DataSnapshot) it.next();
+                }
+
+                HashMap<String, Boolean> map = null;
+                if (d != null && d.getChildren() != null) {
+                    for (DataSnapshot d2 : d.getChildren())
+                        map = d2.getValue(HashMap.class);
+                }
+
+                if (map != null)
+                    lastMessageWithoutAnswerSended = map.entrySet().iterator().next().getKey();
+
+                if (lastMessageWithoutAnswerSended == null)
+                    messagesWithoutAnswerConsulted = true;
             }
 
             @Override
@@ -290,11 +308,11 @@ public class MessagesFirebaseManager {
                                                         Usuario receptor = dataSnapshot.getValue(Usuario.class);
                                                         mensaje.setReceptor(receptor);
                                                         mensaje.setKeyReceptor(receptor.getKey());
-                                                        messagesList.add(mensaje);
-                                                        if (lastMessageWithoutAnswerSended.equals(msgEnviado)){
-                                                            ((MainPresenter) presenter).messagesListHasBeenObtained(messagesList);
+                                                        ((MainPresenter) presenter).userMessageHasBeenObtained(mensaje);
+                                                        if (lastMessageWithoutAnswerSended != null && lastMessageWithoutAnswerSended.equals(msgEnviado)) {
+                                                            messagesWithoutAnswerConsulted = true;
+                                                            checkIfAllMessagesObtained();
                                                         }
-                                                        //((MainPresenter) presenter).userMessageHasBeenObtained(mensaje);
                                                     }
 
                                                     @Override
@@ -350,6 +368,21 @@ public class MessagesFirebaseManager {
 
             }
         });
+    }
+
+    private void checkIfAllMessagesObtained() {
+        if (messagesWithoutAnswerConsulted && receivedMessagesConsulted)
+            if (presenter instanceof MainPresenter) {
+                ((MainPresenter) presenter).allMessagesObtained();
+                resetMessagesControlValues();
+            }
+    }
+
+    private void resetMessagesControlValues() {
+        messagesWithoutAnswerConsulted = false;
+        receivedMessagesConsulted = false;
+        lastEmisor_titleAdvert = null;
+        lastMessageWithoutAnswerSended = null;
     }
 
     // obtengo la conversación entera sobre un anuncio concreto

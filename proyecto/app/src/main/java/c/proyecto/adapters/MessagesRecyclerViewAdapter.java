@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -39,7 +40,8 @@ public class MessagesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
     private List<MessagePojo> mDatos;
     private OnMessagesAdapterItemClick listenerItemClick;
     private ConversationManager listenerConverManager;
-    private boolean isAConversation;
+    private boolean isAConversation, allMessagesObtained;
+
     private String mKeyCurrentUser;
     private ComparatorMessages messagesComp = new ComparatorMessages();
 
@@ -78,9 +80,9 @@ public class MessagesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         if (!isAConversation) {
             if (holder instanceof MessagesViewHolder)
-                ((MessagesViewHolder) holder).onBind((MessagePojo) mDatos.get(position));
-        } else if (mDatos.get(position) instanceof MessagePojo)
-            ((ChatViewHolder) holder).onBind((MessagePojo) mDatos.get(position));
+                ((MessagesViewHolder) holder).onBind(mDatos.get(position));
+        } else
+            ((ChatViewHolder) holder).onBind(mDatos.get(position));
     }
 
     @Override
@@ -155,7 +157,7 @@ public class MessagesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listenerItemClick.onItemClick((MessagePojo) mDatos.get(mDatos.indexOf(m)));
+                    listenerItemClick.onItemClick(mDatos.get(mDatos.indexOf(m)));
                 }
             });
         }
@@ -213,6 +215,14 @@ public class MessagesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
             notifyItemRemoved(mDatos.size() - 1); // notifico
         }
         Collections.sort(mDatos, messagesComp);
+
+        if (isAConversation || (!isAConversation && allMessagesObtained))
+            notifyDataSetChanged();
+    }
+
+
+    public void allMessagesObtained() {
+        allMessagesObtained = true;
         notifyDataSetChanged();
     }
 
@@ -226,5 +236,10 @@ public class MessagesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
         int position = mDatos.indexOf(m);
         mDatos.remove(m);
         notifyItemRemoved(position);
+    }
+
+    public void setAllMessagesObtained(boolean allMessagesObtained) {
+        this.allMessagesObtained = allMessagesObtained;
+        mDatos.clear();
     }
 }

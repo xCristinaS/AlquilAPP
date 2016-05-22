@@ -37,5 +37,5 @@ public interface MainPresenterOps {
     void getAdvertsByLocation(GeoLocation centerPosition, double radius);
     void updateAdvert(Anuncio anuncio);
     void detachGeoAdvertsLocationListener();
-    void messagesListHasBeenObtained(ArrayList<MessagePojo> messagesList);
+    void allMessagesObtained();
 }
