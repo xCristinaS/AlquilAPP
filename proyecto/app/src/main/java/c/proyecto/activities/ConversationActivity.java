@@ -108,14 +108,8 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
 
     private void confToolbar() {
         final Usuario usuarioAux;
-        String tituloAnuncio = mensaje.getTituloAnuncio();
-        if (tituloAnuncio.length() > Constantes.LENGTH_TITULO_ANUNCIO_CONVERSATION_ACTIVITY) {
-            tituloAnuncio = mensaje.getTituloAnuncio().substring(0, Constantes.LENGTH_TITULO_ANUNCIO_CONVERSATION_ACTIVITY);
-            tituloAnuncio = tituloAnuncio.trim();
-            tituloAnuncio += "...";
-        }
 
-        lblTituloAnuncio.setText(tituloAnuncio);
+        lblTituloAnuncio.setText(mensaje.getTituloAnuncio());
         if (mensaje instanceof MessagePojoWithoutAnswer)
             usuarioAux = ((MessagePojoWithoutAnswer) mensaje).getReceptor();
         else

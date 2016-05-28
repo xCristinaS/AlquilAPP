@@ -29,7 +29,7 @@
 
             <TextView
                 android:id="@+id/lblNombreContacto"
-                android:layout_width="wrap_content"
+                android:layout_width="280dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="12dp"
                 android:layout_marginTop="4dp"
@@ -37,12 +37,14 @@
                 android:layout_toRightOf="@id/imgContacto"
                 android:text="Alejandro Torres"
                 android:textColor="@android:color/white"
+                android:maxLines="1"
+                android:ellipsize="end"
                 android:textSize="17sp"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/lblTituloAnuncio"
-                android:layout_width="wrap_content"
+                android:layout_width="260dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/lblNombreContacto"
                 android:layout_marginLeft="12dp"
@@ -52,7 +54,8 @@
                 android:textColor="@android:color/white"
                 android:textSize="16sp"
                 android:textStyle="italic"
-                android:maxLines="1"/>
+                android:maxLines="1"
+                android:ellipsize="end"/>
         </RelativeLayout>
 
 
