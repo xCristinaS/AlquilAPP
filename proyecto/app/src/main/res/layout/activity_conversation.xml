@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="c.proyecto.activities.ConversationActivity">
+    tools:context="c.proyecto.activities.ConversationActivity"
+    android:background="#f2efef">
 
 
     <android.support.v7.widget.Toolbar
@@ -20,6 +21,8 @@
                 android:id="@+id/imgContacto"
                 android:layout_width="43dp"
                 android:layout_height="43dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
                 android:layout_centerVertical="true"
                 android:scaleType="centerCrop"
                 android:src="@drawable/default_user" />
@@ -28,7 +31,7 @@
                 android:id="@+id/lblNombreContacto"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="12dp"
                 android:layout_marginTop="4dp"
                 android:layout_toEndOf="@id/imgContacto"
                 android:layout_toRightOf="@id/imgContacto"
@@ -42,7 +45,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/lblNombreContacto"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="12dp"
                 android:layout_toEndOf="@id/imgContacto"
                 android:layout_toRightOf="@id/imgContacto"
                 android:text="Anuncio 01"
@@ -56,32 +59,41 @@
     </android.support.v7.widget.Toolbar>
 
 
-    <EditText
-        android:id="@+id/txtMensaje"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/groupEscribirMensaje"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_toLeftOf="@+id/imgEnviar"
-        android:hint="Escriba aquí"
-        android:maxLines="1" />
+        android:orientation="horizontal"
+        android:background="@android:color/white"
+        android:paddingLeft="7dp"
+        >
+        <EditText
+            android:id="@+id/txtMensaje"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="95"
+            android:hint="Escribir mensaje"
+            android:layout_gravity="center_vertical"
+            android:maxLines="1" />
+        <ImageView
+            android:id="@+id/imgEnviar"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="5"
+            android:src="@drawable/ic_action_send" />
+    </LinearLayout>
+
 
     <FrameLayout
         android:id="@+id/frmContenido"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/txtMensaje"
+        android:layout_above="@id/groupEscribirMensaje"
         android:layout_below="@id/toolbar" />
 
-    <ImageView
-        android:id="@+id/imgEnviar"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_below="@id/frmContenido"
-        android:src="@drawable/ic_action_send" />
+
 
 
 </RelativeLayout>
