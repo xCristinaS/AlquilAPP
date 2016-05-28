@@ -182,6 +182,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
                         mFragmentManager.beginTransaction().replace(R.id.frmContenido, mFragmentManager.findFragmentByTag(TAG_PRINCIPAL_FRAGMENT)).commit();
                     else
                         mFragmentManager.beginTransaction().replace(R.id.frmContenido, new PrincipalFragment()).commit();
+                    toolbar.setTitle("Anuncios");
                 }
                 break;
             case R.id.nav_new_adv:
@@ -198,7 +199,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
                 hideMapIcon();
                 toolbar.getMenu().findItem(R.id.nav_deshacer_filtro).setVisible(false);
                 mPresenter.requestUserMessages(mUser);
+
                 getSupportFragmentManager().beginTransaction().replace(R.id.frmContenido, MessagesFragment.newInstance(false, null), TAG_MESSAGES_FRAGMENT).commit();
+                toolbar.setTitle("Mensajes");
                 break;
             case R.id.nav_preferences:
                 startActivityForResult(new Intent(this, PreferencesActivity.class), RC_PREFERENCES);
@@ -341,6 +344,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
     public void sendAdvertHasBeenRemovedBroadcast(Anuncio anuncio) {
         sendBroadcast(new Intent(ACTION_ANUNCIO_ELIMINADO).putExtra(EXTRA_ANUNCIO_ELIMINADO, anuncio));
     }
+
+
 
     @Override
     public void setAdapterAllowMultiDeletion(AdvertsRecyclerViewAdapter adapter) {
