@@ -89,27 +89,27 @@ public class SeleccionPrestacionesDialogFragment extends AppCompatDialogFragment
         Resources res = getResources();
 
         for (Prestacion p : mPrestaciones)
-            if (p.getNameDrawable().equals(res.getResourceEntryName(R.drawable.apto_mascotas)))
+            if (p.getNameDrawable().equals(res.getResourceEntryName(R.drawable.prest_apto_mascotas)))
                 cbAptoMascotas.setChecked(true);
-            else if (p.getNameDrawable().equals(res.getResourceEntryName(R.drawable.aire_acondicionado)))
+            else if (p.getNameDrawable().equals(res.getResourceEntryName(R.drawable.prest_aire_acondicionado)))
                 cbAireAcondicionado.setChecked(true);
-            else if (p.getNameDrawable().equals(res.getResourceEntryName(R.drawable.ascensor)))
+            else if (p.getNameDrawable().equals(res.getResourceEntryName(R.drawable.prest_ascensor)))
                 cbAscensor.setChecked(true);
-            else if (p.getNameDrawable().equals(res.getResourceEntryName(R.drawable.calefaccion)))
+            else if (p.getNameDrawable().equals(res.getResourceEntryName(R.drawable.prest_calefaccion)))
                 cbCalefaccion.setChecked(true);
-            else if (p.getNameDrawable().equals(res.getResourceEntryName(R.drawable.lavadora)))
+            else if (p.getNameDrawable().equals(res.getResourceEntryName(R.drawable.prest_lavadora)))
                 cbLavadora.setChecked(true);
-            else if (p.getNameDrawable().equals(res.getResourceEntryName(R.drawable.parking)))
+            else if (p.getNameDrawable().equals(res.getResourceEntryName(R.drawable.prest_parking)))
                 cbParking.setChecked(true);
-            else if (p.getNameDrawable().equals(res.getResourceEntryName(R.drawable.prohibido_fumar)))
+            else if (p.getNameDrawable().equals(res.getResourceEntryName(R.drawable.prest_prohibido_fumar)))
                 cbProhibidoFumar.setChecked(true);
-            else if (p.getNameDrawable().equals(res.getResourceEntryName(R.drawable.secadora)))
+            else if (p.getNameDrawable().equals(res.getResourceEntryName(R.drawable.prest_secadora)))
                 cbSecadora.setChecked(true);
-            else if (p.getNameDrawable().equals(res.getResourceEntryName(R.drawable.tren)))
+            else if (p.getNameDrawable().equals(res.getResourceEntryName(R.drawable.prest_tren)))
                 cbTren.setChecked(true);
-            else if (p.getNameDrawable().equals(res.getResourceEntryName(R.drawable.tv)))
+            else if (p.getNameDrawable().equals(res.getResourceEntryName(R.drawable.prest_tv)))
                 cbTv.setChecked(true);
-            else if (p.getNameDrawable().equals(res.getResourceEntryName(R.drawable.internet)))
+            else if (p.getNameDrawable().equals(res.getResourceEntryName(R.drawable.prest_internet)))
                 cbInternet.setChecked(true);
     }
 
@@ -125,27 +125,27 @@ public class SeleccionPrestacionesDialogFragment extends AppCompatDialogFragment
         mPrestaciones.clear();
 
         if (cbAptoMascotas.isChecked())
-            mPrestaciones.add(new Prestacion(res.getResourceEntryName(R.drawable.apto_mascotas), getContext().getString(R.string.aptoMascotas)));
+            mPrestaciones.add(new Prestacion(res.getResourceEntryName(R.drawable.prest_apto_mascotas), getContext().getString(R.string.aptoMascotas)));
         if (cbAireAcondicionado.isChecked())
-            mPrestaciones.add(new Prestacion(res.getResourceEntryName(R.drawable.aire_acondicionado), getContext().getString(R.string.aireAcondicionado)));
+            mPrestaciones.add(new Prestacion(res.getResourceEntryName(R.drawable.prest_aire_acondicionado), getContext().getString(R.string.aireAcondicionado)));
         if (cbAscensor.isChecked())
-            mPrestaciones.add(new Prestacion(res.getResourceEntryName(R.drawable.ascensor), getContext().getString(R.string.ascensor)));
+            mPrestaciones.add(new Prestacion(res.getResourceEntryName(R.drawable.prest_ascensor), getContext().getString(R.string.ascensor)));
         if (cbCalefaccion.isChecked())
-            mPrestaciones.add(new Prestacion(res.getResourceEntryName(R.drawable.calefaccion), getContext().getString(R.string.calefaccion)));
+            mPrestaciones.add(new Prestacion(res.getResourceEntryName(R.drawable.prest_calefaccion), getContext().getString(R.string.calefaccion)));
         if (cbLavadora.isChecked())
-            mPrestaciones.add(new Prestacion(res.getResourceEntryName(R.drawable.lavadora), getContext().getString(R.string.lavadora)));
+            mPrestaciones.add(new Prestacion(res.getResourceEntryName(R.drawable.prest_lavadora), getContext().getString(R.string.lavadora)));
         if (cbParking.isChecked())
-            mPrestaciones.add(new Prestacion(res.getResourceEntryName(R.drawable.parking), getContext().getString(R.string.parking)));
+            mPrestaciones.add(new Prestacion(res.getResourceEntryName(R.drawable.prest_parking), getContext().getString(R.string.parking)));
         if (cbProhibidoFumar.isChecked())
-            mPrestaciones.add(new Prestacion(res.getResourceEntryName(R.drawable.prohibido_fumar), getContext().getString(R.string.prohibidoFumar)));
+            mPrestaciones.add(new Prestacion(res.getResourceEntryName(R.drawable.prest_prohibido_fumar), getContext().getString(R.string.prohibidoFumar)));
         if (cbSecadora.isChecked())
-            mPrestaciones.add(new Prestacion(res.getResourceEntryName(R.drawable.secadora), getContext().getString(R.string.secadora)));
+            mPrestaciones.add(new Prestacion(res.getResourceEntryName(R.drawable.prest_secadora), getContext().getString(R.string.secadora)));
         if (cbTren.isChecked())
-            mPrestaciones.add(new Prestacion(res.getResourceEntryName(R.drawable.tren), getContext().getString(R.string.trenCercano)));
+            mPrestaciones.add(new Prestacion(res.getResourceEntryName(R.drawable.prest_tren), getContext().getString(R.string.trenCercano)));
         if (cbTv.isChecked())
-            mPrestaciones.add(new Prestacion(res.getResourceEntryName(R.drawable.tv), getContext().getString(R.string.television)));
+            mPrestaciones.add(new Prestacion(res.getResourceEntryName(R.drawable.prest_tv), getContext().getString(R.string.television)));
         if (cbInternet.isChecked())
-            mPrestaciones.add(new Prestacion(res.getResourceEntryName(R.drawable.internet), getContext().getString(R.string.internet)));
+            mPrestaciones.add(new Prestacion(res.getResourceEntryName(R.drawable.prest_internet), getContext().getString(R.string.internet)));
     }
 
     @Override

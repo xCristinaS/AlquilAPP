@@ -46,7 +46,6 @@ import c.proyecto.activities.VerPerfilActivity;
 import c.proyecto.adapters.AdvertsRecyclerViewAdapter;
 import c.proyecto.adapters.PrestacionesAdapter;
 import c.proyecto.adapters.PrestacionesDetalladasAdapter;
-import c.proyecto.mvp_presenters.ConversationPresenter;
 import c.proyecto.pojo.Anuncio;
 import c.proyecto.pojo.Usuario;
 import c.proyecto.pojo.MessagePojo;
@@ -322,18 +321,18 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
 
         switch (mAnuncio.getTipo_vivienda()) {
             case Constantes.HABITACION:
-                imgTipoVivienda.setImageResource(R.drawable.habitacion);
+                imgTipoVivienda.setImageResource(R.drawable.tipo_habitacion);
                 imgCamas.setImageResource(R.drawable.cama);
                 lblCamas.setText(Constantes.CAMAS);
                 break;
             case Constantes.CASA:
-                imgTipoVivienda.setImageResource(R.drawable.casa);
-                imgCamas.setImageResource(R.drawable.habitacion);
+                imgTipoVivienda.setImageResource(R.drawable.tipo_casa);
+                imgCamas.setImageResource(R.drawable.tipo_habitacion);
                 lblCamas.setText(Constantes.HABITACION);
                 break;
             case Constantes.PISO:
-                imgTipoVivienda.setImageResource(R.drawable.piso);
-                imgCamas.setImageResource(R.drawable.habitacion);
+                imgTipoVivienda.setImageResource(R.drawable.tipo_piso);
+                imgCamas.setImageResource(R.drawable.tipo_habitacion);
                 lblCamas.setText(Constantes.HABITACION);
                 break;
         }

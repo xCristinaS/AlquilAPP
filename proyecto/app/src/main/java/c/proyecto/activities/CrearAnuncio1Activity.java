@@ -322,7 +322,7 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
         protected void onPostExecute(Bitmap bitmap) {
             imgSeleccionada.setImageBitmap(bitmap);
             //Guarda la imagen capturada o seleccionada en un array de bitmap para cuando
-            //termine de editar o crear el anuncio las suba a internet y no antes.
+            //termine de editar o crear el anuncio las suba a prest_internet y no antes.
             guardarBitmapEnArray(bitmap, imgSeleccionada.getId());
         }
     }

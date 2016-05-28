@@ -1,22 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content" android:layout_height="wrap_content">
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content" android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_marginTop="15dp"
+    android:layout_marginBottom="15dp"
+    android:layout_marginLeft="16dp">
+
     <ImageView
         android:id="@+id/imgPrestacion"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="16dp"
-        android:src="@drawable/parking"
+        android:src="@drawable/prest_parking"
         />
     <TextView
         android:id="@+id/lblNombre"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textStyle="bold"
-        android:layout_toRightOf="@id/imgPrestacion"
-        android:layout_toEndOf="@id/imgPrestacion"
-        android:layout_marginTop="28dp"
+        android:layout_gravity="center_vertical"
         android:layout_marginLeft="10dp"
         android:text="Parking"/>
-</RelativeLayout>
+</LinearLayout>

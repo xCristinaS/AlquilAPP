@@ -20,7 +20,7 @@
                 android:id="@+id/imgAptoMascotas"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:src="@drawable/apto_mascotas"/>
+                android:src="@drawable/prest_apto_mascotas"/>
             <TextView
                 android:id="@+id/lblAptoMascotas"
                 android:layout_width="wrap_content"
@@ -55,7 +55,7 @@
                 android:id="@+id/imgAireAcondicionado"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:src="@drawable/aire_acondicionado"/>
+                android:src="@drawable/prest_aire_acondicionado"/>
             <TextView
                 android:id="@+id/lblAireAcondicionado"
                 android:layout_width="wrap_content"
@@ -89,7 +89,7 @@
                 android:id="@+id/imgAscensor"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:src="@drawable/ascensor"/>
+                android:src="@drawable/prest_ascensor"/>
             <TextView
                 android:id="@+id/lblAscensor"
                 android:layout_width="wrap_content"
@@ -123,7 +123,7 @@
                 android:id="@+id/imgCalefaccion"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:src="@drawable/calefaccion"/>
+                android:src="@drawable/prest_calefaccion"/>
             <TextView
                 android:id="@+id/lblCalefaccion"
                 android:layout_width="wrap_content"
@@ -157,7 +157,7 @@
                 android:id="@+id/imgLavadora"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:src="@drawable/lavadora"/>
+                android:src="@drawable/prest_lavadora"/>
             <TextView
                 android:id="@+id/lblLavadora"
                 android:layout_width="wrap_content"
@@ -191,7 +191,7 @@
                 android:id="@+id/imgParking"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:src="@drawable/parking"/>
+                android:src="@drawable/prest_parking"/>
             <TextView
                 android:id="@+id/lblParking"
                 android:layout_width="wrap_content"
@@ -226,7 +226,7 @@
                 android:id="@+id/imgProhibidoFumar"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:src="@drawable/prohibido_fumar"/>
+                android:src="@drawable/prest_prohibido_fumar"/>
             <TextView
                 android:id="@+id/lblProhibidoFumar"
                 android:layout_width="wrap_content"
@@ -260,7 +260,7 @@
                 android:id="@+id/imgSecadora"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:src="@drawable/secadora"/>
+                android:src="@drawable/prest_secadora"/>
             <TextView
                 android:id="@+id/lblSecadora"
                 android:layout_width="wrap_content"
@@ -294,7 +294,7 @@
                 android:id="@+id/imgTren"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:src="@drawable/tren"/>
+                android:src="@drawable/prest_tren"/>
             <TextView
                 android:id="@+id/lblTren"
                 android:layout_width="wrap_content"
@@ -327,7 +327,7 @@
                 android:id="@+id/imgTv"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:src="@drawable/tv"/>
+                android:src="@drawable/prest_tv"/>
             <TextView
                 android:id="@+id/lblTv"
                 android:layout_width="wrap_content"
@@ -361,7 +361,7 @@
                 android:id="@+id/imgInternet"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:src="@drawable/internet"/>
+                android:src="@drawable/prest_internet"/>
             <TextView
                 android:id="@+id/lblInternet"
                 android:layout_width="wrap_content"

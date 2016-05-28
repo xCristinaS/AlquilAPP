@@ -20,7 +20,7 @@
                 android:layout_below="@id/txtTituloAnuncio"
                 android:layout_marginLeft="25dp"
                 android:layout_marginTop="20dp"
-                android:src="@drawable/casa" />
+                android:src="@drawable/tipo_casa" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -40,7 +40,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="20dp"
-                android:src="@drawable/habitacion" />
+                android:src="@drawable/tipo_habitacion" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -62,7 +62,7 @@
                 android:layout_below="@id/txtTituloAnuncio"
                 android:layout_marginRight="25dp"
                 android:layout_marginTop="20dp"
-                android:src="@drawable/piso" />
+                android:src="@drawable/tipo_piso" />
 
             <TextView
                 android:layout_width="wrap_content"

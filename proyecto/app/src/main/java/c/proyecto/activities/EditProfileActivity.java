@@ -322,7 +322,7 @@ public class EditProfileActivity extends AppCompatActivity implements Nacionalid
         protected void onPostExecute(Bitmap bitmap) {
             imgFoto.setImageBitmap(bitmap);
             //Guarda la imagen capturada o seleccionada en un array de bitmap para cuando
-            //termine de editar o crear el anuncio las suba a internet y no antes.
+            //termine de editar o crear el anuncio las suba a prest_internet y no antes.
             mFileUserPhoto = Imagenes.crearArchivoFoto(EditProfileActivity.this, "foto_user.jpeg", false);
             Imagenes.guardarBitmapEnArchivo(bitmap, mFileUserPhoto);
         }
