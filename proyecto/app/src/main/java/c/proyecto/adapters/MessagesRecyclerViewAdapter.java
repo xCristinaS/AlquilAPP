@@ -37,7 +37,7 @@ public class MessagesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
         void removeMessage(MessagePojo m);
     }
 
-    private List<MessagePojo> mDatos;
+    private List<MessagePojo> mDatos, messagesConver;
     private OnMessagesAdapterItemClick listenerItemClick;
     private ConversationManager listenerConverManager;
     private boolean isAConversation, allMessagesObtained;
@@ -47,6 +47,7 @@ public class MessagesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
 
     public MessagesRecyclerViewAdapter(boolean isAConversation, String keyCurrentUser) {
         mDatos = new ArrayList<>();
+        messagesConver = new ArrayList<>();
         mKeyCurrentUser = keyCurrentUser;
         this.isAConversation = isAConversation;
     }
@@ -167,7 +168,6 @@ public class MessagesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
 
         private TextView lblMessage, lblDate;
 
-
         public ChatViewHolder(View itemView) {
             super(itemView);
             lblMessage = (TextView) itemView.findViewById(R.id.lblMessage);
@@ -207,21 +207,32 @@ public class MessagesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
                     opHecha = true; // paro de recorrer la lista
                 }
 
-        mDatos.add(0, m);
+        if (!isAConversation || isAConversation && allMessagesObtained)
+            mDatos.add(0, m);
+        else if (isAConversation && !allMessagesObtained)
+            messagesConver.add(0, m);
 
-        if (isAConversation && mDatos.size() == LIMIT_MESSAGES) { // si estoy en conversación activity y he el adaptador contiene tantos elementos como indica el límite
-            listenerConverManager.removeMessage(mDatos.remove(mDatos.size() - 1)); // borro el primer mensaje que recibí de la bdd
-            mDatos.remove(mDatos.size() - 1); // lo borro del adaptador
-            notifyItemRemoved(mDatos.size() - 1); // notifico
-        }
+        if (isAConversation)
+            if (allMessagesObtained && mDatos.size() == LIMIT_MESSAGES) { // si estoy en conversación activity y he el adaptador contiene tantos elementos como indica el límite
+                listenerConverManager.removeMessage(mDatos.remove(mDatos.size() - 1)); // borro el primer mensaje que recibí de la bdd
+                mDatos.remove(mDatos.size() - 1); // lo borro del adaptador
+            } else if (!allMessagesObtained && messagesConver.size() == LIMIT_MESSAGES) {
+                listenerConverManager.removeMessage(messagesConver.remove(messagesConver.size() - 1)); // borro el primer mensaje que recibí de la bdd
+                messagesConver.remove(messagesConver.size() - 1); // lo borro del adaptador
+            }
+
         Collections.sort(mDatos, messagesComp);
 
-        if (isAConversation || (!isAConversation && allMessagesObtained))
+        if (allMessagesObtained)
             notifyDataSetChanged();
     }
 
 
     public void allMessagesObtained() {
+        if (isAConversation) {
+            mDatos.addAll(messagesConver);
+            Collections.sort(mDatos, messagesComp);
+        }
         allMessagesObtained = true;
         notifyDataSetChanged();
     }

@@ -60,9 +60,10 @@ public class MessagesFragment extends Fragment {
             mAdapter.setListenerItemClick(listenerItemClick);
         if (listenerConverManager != null)
             mAdapter.setListenerConverManager(listenerConverManager);
-        if (isAConversation)
+        if (isAConversation) {
             mLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, true);
-        else{
+            mAdapter.setAllMessagesObtained(false);
+        } else{
             rvMessages.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL_LIST));
             mLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         }

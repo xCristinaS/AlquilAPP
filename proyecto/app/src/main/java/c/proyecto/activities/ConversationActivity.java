@@ -1,14 +1,12 @@
 package c.proyecto.activities;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.design.widget.AppBarLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
@@ -19,26 +17,25 @@ import com.squareup.picasso.Picasso;
 
 import java.util.Date;
 
-import c.proyecto.Constantes;
 import c.proyecto.R;
 import c.proyecto.adapters.AdvertsRecyclerViewAdapter;
 import c.proyecto.adapters.MessagesRecyclerViewAdapter;
 import c.proyecto.fragments.MessagesFragment;
 import c.proyecto.mvp_models.AdvertsFirebaseManager;
 import c.proyecto.mvp_models.MessagesFirebaseManager;
-import c.proyecto.mvp_models.UsersFirebaseManager;
+import c.proyecto.mvp_presenters.ConversationPresenter;
 import c.proyecto.mvp_views_interfaces.ConversationActivityOps;
 import c.proyecto.pojo.Anuncio;
-import c.proyecto.pojo.Usuario;
 import c.proyecto.pojo.MessagePojo;
 import c.proyecto.pojo.MessagePojoWithoutAnswer;
-import c.proyecto.mvp_presenters.ConversationPresenter;
+import c.proyecto.pojo.Usuario;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ConversationActivity extends AppCompatActivity implements ConversationActivityOps, MessagesRecyclerViewAdapter.ConversationManager {
 
     private static final String EXTRA_MENSAJE = "mensaje_extra";
     private static final String EXTRA_USER = "user_extra";
+    private static final String TAG_FR_MSG = "fragmento_mensajes";
 
     private MessagePojo mensaje;
     private ImageView imgEnviar;
@@ -48,6 +45,7 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
     private ConversationPresenter mPresenter;
     private Usuario user;
     private Toolbar toolbar;
+    private FragmentManager mFragmentManager;
 
 
     public static void start(Context c, MessagePojo mensaje, Usuario user) {
@@ -67,6 +65,7 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
+        mFragmentManager = getSupportFragmentManager();
         //Cierra el teclado
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         initViews();
@@ -82,7 +81,8 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
 
         if (mensaje != null) {
             mPresenter.userConversationRequested(mensaje);
-            getSupportFragmentManager().beginTransaction().replace(R.id.frmContenido, MessagesFragment.newInstance(true, mensaje.getKeyReceptor())).commit();
+            MessagesFragment f = MessagesFragment.newInstance(true, mensaje.getKeyReceptor());
+            mFragmentManager.beginTransaction().replace(R.id.frmContenido, f, TAG_FR_MSG).commit();
         }
 
         imgEnviar = (ImageView) findViewById(R.id.imgEnviar);
@@ -149,8 +149,8 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
 
     @Override
     public void messageHasBeenObtained(MessagePojo m) {
-        if (getSupportFragmentManager().findFragmentById(R.id.frmContenido) instanceof MessagesFragment)
-            ((MessagesFragment) getSupportFragmentManager().findFragmentById(R.id.frmContenido)).addItem(m);
+        if (mFragmentManager.findFragmentById(R.id.frmContenido) instanceof MessagesFragment)
+            ((MessagesFragment) mFragmentManager.findFragmentById(R.id.frmContenido)).addItem(m);
     }
 
 
@@ -163,5 +163,10 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
     protected void onDestroy() {
         mPresenter.detachFirebaseListeners();
         super.onDestroy();
+    }
+
+    public void allMessagesObtained() {
+        if (mFragmentManager.findFragmentById(R.id.frmContenido) instanceof MessagesFragment)
+            ((MessagesFragment) mFragmentManager.findFragmentById(R.id.frmContenido)).getmAdapter().allMessagesObtained();
     }
 }
