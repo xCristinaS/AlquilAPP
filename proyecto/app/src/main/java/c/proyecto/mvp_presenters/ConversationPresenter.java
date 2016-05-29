@@ -77,4 +77,10 @@ public class ConversationPresenter implements ConversationPresenterOps, MyPresen
         if (activity.get() != null)
             activity.get().advertObtained(a);
     }
+
+    @Override
+    public void allMessagesObtained() {
+        if (activity.get() != null)
+            activity.get().allMessagesObtained();
+    }
 }

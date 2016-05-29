@@ -15,4 +15,5 @@ public interface ConversationPresenterOps {
     void removeMessage(MessagePojo m);
     void getAdvertFromTitle(String tituloAnuncio);
     void advertObtained(Anuncio a);
+    void allMessagesObtained();
 }

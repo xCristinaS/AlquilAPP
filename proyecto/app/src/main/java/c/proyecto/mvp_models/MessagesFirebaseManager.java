@@ -88,8 +88,28 @@ public class MessagesFirebaseManager {
                                     mensaje.setKey(dataSnapshot.getKey());
                                     ((MainPresenter) presenter).userMessageHasBeenObtained(mensaje);
 
-                                    String currentUser_titleAdvert = currentUser.getKey() + "_" + mensaje.getTituloAnuncio().trim().replace(" ", "_");
+                                    final String currentUser_titleAdvert = currentUser.getKey() + "_" + mensaje.getTituloAnuncio().trim().replace(" ", "_");
                                     Query fInternoAux = new Firebase(URL_CONVERSACIONES).child(emisor.getKey()).child(currentUser_titleAdvert).limitToLast(1);
+
+                                    fInternoAux.addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(DataSnapshot dataSnapshot) {
+                                            if (lastEmisor_titleAdvert != null) {
+                                                String titlePart = lastEmisor_titleAdvert.substring(lastEmisor_titleAdvert.indexOf("_"), lastEmisor_titleAdvert.length());
+                                                if (currentUser_titleAdvert.contains(titlePart))
+                                                    if (dataSnapshot.getValue() == null) {
+                                                        receivedMessagesConsulted = true;
+                                                        checkIfAllMessagesObtained();
+                                                    }
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onCancelled(FirebaseError firebaseError) {
+
+                                        }
+                                    });
+
                                     ChildEventListener listenerInternoAux = new ChildEventListener() {
                                         @Override
                                         public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -419,8 +439,28 @@ public class MessagesFirebaseManager {
                 String nodoAsunto2 = currentUser.getKey() + "_" + m.getTituloAnuncio().trim().replace(" ", "_");
                 nodoAsunto2 = nodoAsunto2.substring(0, nodoAsunto2.length());
 
-                if (listenersInternosConvers.size() == 0) {
+                if (m instanceof MessagePojoWithoutAnswer && mensaje.getKey().equals(m.getKey())) {
+                    if (presenter instanceof ConversationPresenter)
+                        ((ConversationPresenter) presenter).allMessagesObtained();
+                } else
+                    checkIfUserAnswer(m.getEmisor().getKey(), nodoAsunto2);
+
+                if (!(m instanceof MessagePojoWithoutAnswer) && listenersInternosConvers.size() == 0) {
                     Query fInterno = new Firebase(URL_CONVERSACIONES).child(m.getEmisor().getKey()).child(nodoAsunto2);
+                    final String[] keyLastMessage = new String[1];
+                    fInterno.limitToLast(1).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.getChildren() != null && dataSnapshot.getChildren().iterator().hasNext())
+                                keyLastMessage[0] = dataSnapshot.getChildren().iterator().next().getKey();
+                        }
+
+                        @Override
+                        public void onCancelled(FirebaseError firebaseError) {
+
+                        }
+                    });
+
                     ChildEventListener listenerInterno = new ChildEventListener() {
                         @Override
                         public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -433,6 +473,10 @@ public class MessagesFirebaseManager {
                             mensaje.setFecha(new Date(mAux.getFecha()));
                             mensaje.setContenido(mAux.getContenido());
                             ((ConversationPresenter) presenter).messageHasBeenObtained(mensaje);
+
+                            if (mensaje.getKey().equals(keyLastMessage[0]))
+                                if (presenter instanceof ConversationPresenter)
+                                    ((ConversationPresenter) presenter).allMessagesObtained();
                         }
 
                         @Override
@@ -481,6 +525,21 @@ public class MessagesFirebaseManager {
             }
         };
         mFirebaseConversations.limitToLast(MESSAGES_LIMIT_CONVER).addChildEventListener(mListenerConversation);
+    }
+
+    private void checkIfUserAnswer(String emisorKey, String nodoAsunto2) {
+        new Firebase(URL_CONVERSACIONES).child(emisorKey).child(nodoAsunto2).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getValue() == null && presenter instanceof ConversationPresenter)
+                    ((ConversationPresenter) presenter).allMessagesObtained();
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
     }
 
     public void sendMessage(MessagePojo m, String keyReceptor, boolean isFirstMessageSended) {
