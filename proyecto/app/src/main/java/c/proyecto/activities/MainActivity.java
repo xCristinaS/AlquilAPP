@@ -183,6 +183,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
                     else
                         mFragmentManager.beginTransaction().replace(R.id.frmContenido, new PrincipalFragment()).commit();
                     toolbar.setTitle("Anuncios");
+                    showFilterIcon();
+                    showMapIcon();
                 }
                 break;
             case R.id.nav_new_adv:
