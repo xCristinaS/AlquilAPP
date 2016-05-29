@@ -3,7 +3,8 @@
     android:orientation="horizontal" android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginLeft="16dp"
-    android:layout_marginTop="10dp">
+    android:layout_marginTop="7dp"
+    android:layout_marginBottom="7dp">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/imgHuesped"
@@ -15,7 +16,6 @@
         android:id="@+id/lblNombre"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Alejandro Torres Gómez"
         android:layout_gravity="center_vertical"
         android:textStyle="bold"
         android:textSize="16sp"
