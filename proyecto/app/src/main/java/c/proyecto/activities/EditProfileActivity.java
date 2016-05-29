@@ -4,14 +4,17 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -43,13 +46,14 @@ import c.proyecto.mvp_models.UsersFirebaseManager;
 import c.proyecto.pojo.Usuario;
 import c.proyecto.mvp_presenters.ProfilePresenter;
 import c.proyecto.utils.Imagenes;
+import c.proyecto.utils.UtilMethods;
 
-public class EditProfileActivity extends AppCompatActivity implements NacionalidadesDialogFragment.IonNacionalidadClicked{
+public class EditProfileActivity extends AppCompatActivity implements NacionalidadesDialogFragment.IonNacionalidadClicked {
 
 
     private static final int RC_ABRIR_GALERIA = 274;
     private static final int RC_CAPTURAR_FOTO = 433;
-    
+
     private static final String ARG_USUARIO = "args_user";
     private static final String TAG_DIALOG_HABITOS = "DialogHabitos";
     private static final String TAG_DIALOG_DESCRIPCION = "DialogDescripcion";
@@ -63,6 +67,7 @@ public class EditProfileActivity extends AppCompatActivity implements Nacionalid
     private String[] mNationalities;
     private String mPathOriginal;
     private File mFileUserPhoto;
+    private boolean mPermisoEscrituraAceptado;
 
     public static void start(Activity a, Usuario u) {
         Intent intent = new Intent(a, EditProfileActivity.class);
@@ -94,8 +99,10 @@ public class EditProfileActivity extends AppCompatActivity implements Nacionalid
         imgCaracteristicas = (ImageView) findViewById(R.id.imgHabitos);
         imgGenero = (ImageView) findViewById(R.id.imgGenero);
         btnConfirmar = (Button) findViewById(R.id.btnConfirmar);
+        mPermisoEscrituraAceptado = true;
 
         showImageDialogList(imgFoto);
+
 
         btnConfirmar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -176,7 +183,8 @@ public class EditProfileActivity extends AppCompatActivity implements Nacionalid
     private void showCaracteristicasDialog() {
         CaracteristicasUsuarioDialogFragment.newInstance(mUser, true).show(getSupportFragmentManager(), TAG_DIALOG_HABITOS);
     }
-    private void showDescripcionDialog(){
+
+    private void showDescripcionDialog() {
         DescripcionDialogFragment.newInstance(mUser).show(getSupportFragmentManager(), TAG_DIALOG_DESCRIPCION);
     }
 
@@ -232,39 +240,53 @@ public class EditProfileActivity extends AppCompatActivity implements Nacionalid
     private void showNationalitiesDialog() {
         NacionalidadesDialogFragment.newInstance(mNationalities).show(getSupportFragmentManager(), TAG_DIALOG_NACIONALIDADES);
     }
+
     @Override
     public void onNacionalidadClicked(String nacionalidad) {
         txtNacionalidad.setText(nacionalidad);
     }
 
     private void showImageDialogList(final ImageView img) {
+
+
         img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder dialog = new AlertDialog.Builder(EditProfileActivity.this);
-                dialog.setTitle("Seleccione una de las opciones");
-                dialog.setItems(R.array.chooseImageWithoutRemoveListItem, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        //Se guarda cual fue el ultimo ImageView seleccionado
-                        switch (which) {
-                            //Galería
-                            case 0:
-                                openGallery();
-                                break;
-                            //Cámara
-                            case 1:
-                                if (Imagenes.hayCamara(EditProfileActivity.this))
-                                    takePhoto();
-                                else
-                                    Toast.makeText(EditProfileActivity.this, "Este dispositivo no dispone de cámara", Toast.LENGTH_SHORT).show();
-                                break;
-                        }
-                    }
-                });
-                dialog.create().show();
+                //Pedirá los permisos de escritura y lectura en ejecución (API >23)
+                if (Build.VERSION.SDK_INT >= 23)
+                    //Si no se han aceptado los permisos no mostrará el diálogo y cancelará el método
+                    if (!UtilMethods.isStoragePermissionGranted(EditProfileActivity.this) || !mPermisoEscrituraAceptado )
+                        return;
+
+                        AlertDialog.Builder dialog = new AlertDialog.Builder(EditProfileActivity.this);
+                        dialog.setTitle("Seleccione una de las opciones");
+                        dialog.setItems(R.array.chooseImageWithoutRemoveListItem, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                                //Se guarda cual fue el ultimo ImageView seleccionado
+                                switch (which) {
+                                    //Galería
+                                    case 0:
+                                        openGallery();
+                                        break;
+                                    //Cámara
+                                    case 1:
+                                        if (Imagenes.hayCamara(EditProfileActivity.this))
+                                            takePhoto();
+                                        else
+                                            Toast.makeText(EditProfileActivity.this, "Este dispositivo no dispone de cámara", Toast.LENGTH_SHORT).show();
+                                        break;
+                                }
+                            }
+                        });
+                        dialog.create().show();
+
             }
+
         });
+
+
     }
 
     private void takePhoto() {
@@ -310,7 +332,6 @@ public class EditProfileActivity extends AppCompatActivity implements Nacionalid
     }
 
 
-
     class HiloEscalador extends AsyncTask<Integer, Void, Bitmap> {
 
         @Override
@@ -326,5 +347,24 @@ public class EditProfileActivity extends AppCompatActivity implements Nacionalid
             mFileUserPhoto = Imagenes.crearArchivoFoto(EditProfileActivity.this, "foto_user.jpeg", false);
             Imagenes.guardarBitmapEnArchivo(bitmap, mFileUserPhoto);
         }
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case UtilMethods.TAG_WRITE_STORAGE_PERMISION:
+                //Si acepta los permisos se volverá a llamar al onClick de imgFoto
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                    mPermisoEscrituraAceptado = true;
+                    imgFoto.callOnClick();
+                }
+                else
+                    mPermisoEscrituraAceptado = false;
+                break;
+        }
+
+
     }
 }
