@@ -194,4 +194,9 @@ public class MainPresenter implements MainPresenterOps, MyPresenter {
         advertsManager.detachGeoAdvertsLocationListener();
     }
 
+    @Override
+    public void allMessagesObtained() {
+        if (activity.get() != null)
+            activity.get().allMessagesObtained();
+    }
 }

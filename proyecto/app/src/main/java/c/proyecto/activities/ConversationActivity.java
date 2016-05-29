@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -66,6 +67,8 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
+        //Cierra el teclado
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         initViews();
     }
 
@@ -105,14 +108,8 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
 
     private void confToolbar() {
         final Usuario usuarioAux;
-        String tituloAnuncio = mensaje.getTituloAnuncio();
-        if (tituloAnuncio.length() > Constantes.LENGTH_TITULO_ANUNCIO_CONVERSATION_ACTIVITY) {
-            tituloAnuncio = mensaje.getTituloAnuncio().substring(0, Constantes.LENGTH_TITULO_ANUNCIO_CONVERSATION_ACTIVITY);
-            tituloAnuncio = tituloAnuncio.trim();
-            tituloAnuncio += "...";
-        }
 
-        lblTituloAnuncio.setText(tituloAnuncio);
+        lblTituloAnuncio.setText(mensaje.getTituloAnuncio());
         if (mensaje instanceof MessagePojoWithoutAnswer)
             usuarioAux = ((MessagePojoWithoutAnswer) mensaje).getReceptor();
         else

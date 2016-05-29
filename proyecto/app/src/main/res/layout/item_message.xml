@@ -1,55 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="wrap_content"
-    android:layout_marginTop="10dp"
-    android:layout_marginBottom="10dp">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="10dp"
+    android:layout_marginTop="10dp">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/imgEmisor"
-        android:layout_height="55dp"
         android:layout_width="55dp"
-        android:src="@drawable/default_user"
+        android:layout_height="55dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"/>
+        android:layout_marginRight="8dp"
+        android:src="@drawable/default_user" />
 
-    <TextView
-        android:id="@+id/lblNombreEmisor"
-        android:layout_toRightOf="@id/imgEmisor"
-        android:layout_toEndOf="@id/imgEmisor"
-        android:text="Nombre emisor"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <RelativeLayout
+        android:id="@+id/groupMensaje"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
         android:layout_alignTop="@id/imgEmisor"
-        android:textStyle="bold"/>
-
-    <TextView
-        android:id="@+id/lblFecha"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_width="wrap_content"
-        android:text="Fecha"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@id/lblNombreEmisor"
-        android:layout_marginRight="16dp"/>
-
-    <TextView
-        android:id="@+id/lblTituloAnuncio"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toEndOf="@id/imgEmisor"
-        android:layout_toRightOf="@id/imgEmisor"
-        android:layout_centerVertical="true"
-        android:text="Titulo anuncio"
-        android:layout_marginTop="4dp"/>
-
-    <TextView
-        android:id="@+id/lblMessage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Contenido mensaje"
-        android:layout_toRightOf="@id/imgEmisor"
-        android:layout_toEndOf="@id/imgEmisor"
         android:layout_alignBottom="@id/imgEmisor"
-        android:layout_marginTop="4dp"
-        android:maxLines="1"/>
+        android:layout_toEndOf="@id/imgEmisor"
+        android:layout_toRightOf="@id/imgEmisor"
+
+        android:layout_marginRight="16dp">
+
+        <TextView
+            android:id="@+id/lblFecha"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:text="Fecha" />
+
+        <TextView
+            android:id="@+id/lblNombreEmisor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
+
+            android:layout_toLeftOf="@id/lblFecha"
+            android:layout_toStartOf="@id/lblFecha"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="Nombre emisor"
+            android:textStyle="bold" />
+
+
+        <TextView
+            android:id="@+id/lblTituloAnuncio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="60dp"
+            android:layout_marginRight="60dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="Titulo anuncio"
+            android:textStyle="italic" />
+
+
+        <TextView
+            android:id="@+id/lblMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="60dp"
+            android:layout_marginRight="60dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="Contenido mensaje" />
+
+    </RelativeLayout>
+
 </RelativeLayout>

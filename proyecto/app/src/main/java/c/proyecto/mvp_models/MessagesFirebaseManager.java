@@ -9,6 +9,7 @@ import com.firebase.client.ValueEventListener;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import c.proyecto.interfaces.MyPresenter;
@@ -36,6 +37,8 @@ public class MessagesFirebaseManager {
 
     private MyPresenter presenter;
     private Usuario currentUser;
+    private static String lastEmisor_titleAdvert, lastMessageWithoutAnswerSended;
+    private boolean messagesWithoutAnswerConsulted, receivedMessagesConsulted;
 
     public MessagesFirebaseManager(MyPresenter presenter, Usuario currentUser) {
         this.presenter = presenter;
@@ -53,8 +56,8 @@ public class MessagesFirebaseManager {
             mListenerReceivedMessages = new ChildEventListener() {
                 @Override
                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                    final MessagePojo mensaje = new MessagePojo(); // creo el mensajePojo que será agregado al adaptador del recyclerView de mensajes
                     final String emisor_titleAdvert = dataSnapshot.getKey(); // obtengo la key del nodo, que contiene el id de quien mandó el mensaje y el titulo del anuncio sobre el que habló
+                    final MessagePojo mensaje = new MessagePojo(); // creo el mensajePojo que será agregado al adaptador del recyclerView de mensajes
                     String[] campos = emisor_titleAdvert.split("_"); // separo la cadena en campos
                     final String emisorKey = campos[0]; // la key del emisor es el campo 0
                     String titulo = "";
@@ -85,7 +88,7 @@ public class MessagesFirebaseManager {
                                     mensaje.setKey(dataSnapshot.getKey());
                                     ((MainPresenter) presenter).userMessageHasBeenObtained(mensaje);
 
-                                    String currentUser_titleAdvert = currentUser.getKey() +  "_" + mensaje.getTituloAnuncio().trim().replace(" ", "_");
+                                    String currentUser_titleAdvert = currentUser.getKey() + "_" + mensaje.getTituloAnuncio().trim().replace(" ", "_");
                                     Query fInternoAux = new Firebase(URL_CONVERSACIONES).child(emisor.getKey()).child(currentUser_titleAdvert).limitToLast(1);
                                     ChildEventListener listenerInternoAux = new ChildEventListener() {
                                         @Override
@@ -97,6 +100,12 @@ public class MessagesFirebaseManager {
                                                 mensaje.setFecha(new Date(m2.getFecha()));
                                                 mensaje.setKey(dataSnapshot.getKey());
                                                 ((MainPresenter) presenter).userMessageHasBeenObtained(mensaje);
+
+                                                if (lastEmisor_titleAdvert != null)
+                                                    if (lastEmisor_titleAdvert.equals(emisor_titleAdvert)) {
+                                                        receivedMessagesConsulted = true;
+                                                        checkIfAllMessagesObtained();
+                                                    }
                                             }
                                         }
 
@@ -176,7 +185,7 @@ public class MessagesFirebaseManager {
 
                 }
             };
-        mFirebaseReceivedMessages.addChildEventListener(mListenerReceivedMessages);
+        //mFirebaseReceivedMessages.addChildEventListener(mListenerReceivedMessages);
     }
 
     // compruebo si el mensaje que he recibido es un mensaje en respuesta a una conversación iniciada por el usuario. Si es así, elimino el mensaje de la lista de mensajes enviados sin respuesta.
@@ -206,11 +215,57 @@ public class MessagesFirebaseManager {
     }
 
     private void getUserMessagesReceived() {
+        new Firebase(URL_CONVERSACIONES).child(currentUser.getKey()).limitToLast(1).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getChildren() != null && dataSnapshot.getChildren().iterator().hasNext()) {
+                    lastEmisor_titleAdvert = dataSnapshot.getChildren().iterator().next().getKey(); // para obtener el último mensaje y devolver la lista de mensajes en lugar de devolverlos de 1 en 1
+                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+
+        if (lastEmisor_titleAdvert == null)
+            receivedMessagesConsulted = true;
+
         mFirebaseReceivedMessages.removeEventListener(mListenerReceivedMessages);
         mFirebaseReceivedMessages.addChildEventListener(mListenerReceivedMessages);
     }
 
     private void getUserMessagesSendedWithoutAnswer() {
+        new Firebase(URL_MSG_SIN_RESP).child(currentUser.getKey()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                DataSnapshot d = null;
+                if (dataSnapshot.getChildren() != null) {
+                    Iterator it = dataSnapshot.getChildren().iterator();
+                    while (it.hasNext())
+                        d = (DataSnapshot) it.next();
+                }
+
+                HashMap<String, Boolean> map = null;
+                if (d != null && d.getChildren() != null) {
+                    for (DataSnapshot d2 : d.getChildren())
+                        map = d2.getValue(HashMap.class);
+                }
+
+                if (map != null)
+                    lastMessageWithoutAnswerSended = map.entrySet().iterator().next().getKey();
+
+                if (lastMessageWithoutAnswerSended == null)
+                    messagesWithoutAnswerConsulted = true;
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+
         // Obtengo los mensajes que el usuario ha enviado y que aún no tienen respuesta
         new Firebase(URL_MSG_SIN_RESP).child(currentUser.getKey()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -227,13 +282,15 @@ public class MessagesFirebaseManager {
                                     @Override
                                     public void onDataChange(DataSnapshot dataSnapshot) {
                                         HashMap map = dataSnapshot.getValue(HashMap.class);
-                                        String msgEnviado = (String) map.keySet().iterator().next();
+                                        final String msgEnviado = (String) map.keySet().iterator().next();
                                         // obtengo la referencia del mensaje que tiene que tener el receptor. Es decir, la referencia del mensaje que le envió en usuario
                                         final String tituloAnuncio = dataSnapshot.getKey().trim().replace("_", " ");
 
                                         // me voy a la rama de mensajes del receptor y obtengo el último mensaje que le envío el usuario
                                         // este listener sirve para mantener actualizado el adaptador. Es decir, si el usuario envía un nuevo mensaje y el receptor sigue sin responder que aparezca ese último
                                         // mensaje enviado
+
+                                        // si msg enviado = lastMessageWithoutAnswerSended
                                         Query fInterno = new Firebase(URL_CONVERSACIONES).child(keyReceptor).child(msgEnviado).limitToLast(1);
                                         ChildEventListener listenerInterno = new ChildEventListener() {
                                             @Override
@@ -252,6 +309,10 @@ public class MessagesFirebaseManager {
                                                         mensaje.setReceptor(receptor);
                                                         mensaje.setKeyReceptor(receptor.getKey());
                                                         ((MainPresenter) presenter).userMessageHasBeenObtained(mensaje);
+                                                        if (lastMessageWithoutAnswerSended != null && lastMessageWithoutAnswerSended.equals(msgEnviado)) {
+                                                            messagesWithoutAnswerConsulted = true;
+                                                            checkIfAllMessagesObtained();
+                                                        }
                                                     }
 
                                                     @Override
@@ -307,6 +368,21 @@ public class MessagesFirebaseManager {
 
             }
         });
+    }
+
+    private void checkIfAllMessagesObtained() {
+        if (messagesWithoutAnswerConsulted && receivedMessagesConsulted)
+            if (presenter instanceof MainPresenter) {
+                ((MainPresenter) presenter).allMessagesObtained();
+                resetMessagesControlValues();
+            }
+    }
+
+    private void resetMessagesControlValues() {
+        messagesWithoutAnswerConsulted = false;
+        receivedMessagesConsulted = false;
+        lastEmisor_titleAdvert = null;
+        lastMessageWithoutAnswerSended = null;
     }
 
     // obtengo la conversación entera sobre un anuncio concreto

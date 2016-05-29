@@ -5,13 +5,23 @@
     android:layout_height="wrap_content"
     >
 
-    <android.support.v7.widget.CardView
+    <com.daasuu.bl.BubbleLayout
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/cvItemMessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:cardBackgroundColor="@android:color/holo_purple"
-        app:cardCornerRadius="10dp">
+        android:layout_marginTop="6dp"
+        android:layout_marginBottom="6dp"
+        android:layout_marginLeft="3dp"
+        android:layout_marginStart="3dp"
+        app:bl_bubbleColor="@android:color/holo_purple"
+        app:bl_arrowDirection="left"
+        app:bl_arrowHeight="8dp"
+        app:bl_arrowPosition="16dp"
+        app:bl_arrowWidth="8dp"
+        app:bl_cornersRadius="6dp"
+        app:bl_strokeWidth="0.5dp"
+        >
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -42,6 +52,6 @@
                 android:text="23:02" />
 
         </LinearLayout>
-    </android.support.v7.widget.CardView>
+    </com.daasuu.bl.BubbleLayout>
 
 </RelativeLayout>

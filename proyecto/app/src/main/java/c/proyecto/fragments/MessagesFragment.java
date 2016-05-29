@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import c.proyecto.R;
 import c.proyecto.adapters.MessagesRecyclerViewAdapter;
 import c.proyecto.pojo.MessagePojo;
+import c.proyecto.utils.DividerItemDecoration;
 
 public class MessagesFragment extends Fragment {
 
@@ -61,8 +62,10 @@ public class MessagesFragment extends Fragment {
             mAdapter.setListenerConverManager(listenerConverManager);
         if (isAConversation)
             mLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, true);
-        else
+        else{
+            rvMessages.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL_LIST));
             mLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        }
 
         rvMessages.setAdapter(mAdapter);
         rvMessages.setLayoutManager(mLayoutManager);
