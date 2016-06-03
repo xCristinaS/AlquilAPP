@@ -4,10 +4,12 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
@@ -39,6 +41,7 @@ import c.proyecto.pojo.Anuncio;
 import c.proyecto.pojo.Usuario;
 
 import c.proyecto.utils.Imagenes;
+import c.proyecto.utils.UtilMethods;
 
 public class CrearAnuncio1Activity extends AppCompatActivity {
 
@@ -60,6 +63,7 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
     private Usuario user;
     private boolean imagesModified;
     private LinkedList<ImagePojo> imagePojoToLoadList;
+    private boolean mPermisoEscrituraAceptado;
 
 
     public static void start(Context context, Usuario user) {
@@ -217,6 +221,16 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
             public void onClick(View v) {
                 int idArrayOpciones = R.array.chooseImageWithoutRemoveListItem;
                 final ImageView[] imgViews = {imgPrincipal, img1, img2, img3, img4, img5};
+
+                imgSeleccionada = img;
+
+                //Pedirá los permisos de escritura y lectura en ejecución (API >23)
+                if (Build.VERSION.SDK_INT >= 23)
+                    //Si no se han aceptado los permisos no mostrará el diálogo y saldrá del método
+                    if (!UtilMethods.isStoragePermissionGranted(CrearAnuncio1Activity.this) || !mPermisoEscrituraAceptado )
+                        return;
+
+
                 //Comprobar si existe contiene alguna imagen el imageView para mostrar o no la opción de eliminar.
                 for (int i = 0; i < imgViews.length; i++)
                     if (imgViews[i].getId() == img.getId())
@@ -231,7 +245,6 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         //Se guarda cual fue el último ImageView seleccionado
-                        imgSeleccionada = img;
                         switch (which) {
                             //Galería
                             case 0:
@@ -358,4 +371,23 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
         }
         return null;
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case UtilMethods.TAG_WRITE_STORAGE_PERMISION:
+                //Si acepta los permisos se volverá a llamar al onClick de imgFoto
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                    mPermisoEscrituraAceptado = true;
+                    imgSeleccionada.callOnClick();
+                }
+                else
+                    mPermisoEscrituraAceptado = false;
+                break;
+        }
+
+
+    }
+
 }
