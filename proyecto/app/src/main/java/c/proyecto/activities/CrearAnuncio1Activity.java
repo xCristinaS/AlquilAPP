@@ -86,6 +86,7 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
         mAnuncio = getIntent().getParcelableExtra(EXTRA_ANUNCIO);
         user = getIntent().getParcelableExtra(EXTRA_USUARIO);
         mImagenesAnuncio = new File[Constantes.NUMERO_IMAGENES_ANUNCIO];
+        mPermisoEscrituraAceptado = true;
         initViews();
         recuperarImagenes();
     }
@@ -231,7 +232,7 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
                         return;
 
 
-                //Comprobar si existe contiene alguna imagen el imageView para mostrar o no la opción de eliminar.
+                //Comprobar si contiene alguna imagen el imageView para mostrar o no la opción de eliminar.
                 for (int i = 0; i < imgViews.length; i++)
                     if (imgViews[i].getId() == img.getId())
                         //Si existe alguna imagen en ese ImageView
