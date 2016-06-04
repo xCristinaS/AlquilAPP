@@ -17,6 +17,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -47,6 +48,7 @@ public class LocalizacionActivity extends AppCompatActivity implements OnMapRead
     public static final String EXTRA_ADDRESS = "ExtraAddress";
     private static final String EXTRA_SELECTOR_MODE = "ExtraEditable";
     public static final int RC_ADDRESS = 233;
+    private TextView lblTitle;
     private AutoCompleteTextView txtDireccion;
     private Toolbar toolbar;
     private ImageView imgLocIcon, imgLimpiarTexto;
@@ -79,8 +81,9 @@ public class LocalizacionActivity extends AppCompatActivity implements OnMapRead
         oldLat = getIntent().getParcelableExtra(EXTRA_ANUNCIO);
         mSelectorMode = getIntent().getBooleanExtra(EXTRA_SELECTOR_MODE, true);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        if(mSelectorMode)
-            toolbar.setTitle("");
+        lblTitle = (TextView) toolbar.findViewById(R.id.lblTitle);
+        if(!mSelectorMode)
+            lblTitle.setText("Localización");
         setSupportActionBar(toolbar);
         confMap();
         confAutoCompletado();
