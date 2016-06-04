@@ -97,6 +97,8 @@ public class MapBrowserActivity extends AppCompatActivity implements OnMapReadyC
                 mPresenter.getLocations(new GeoLocation(cameraPosition.target.latitude, cameraPosition.target.longitude), cameraPosition.zoom);
             }
         });
+        mGoogleMap.getUiSettings().setRotateGesturesEnabled(false);
+        mGoogleMap.getUiSettings().setTiltGesturesEnabled(false);
     }
 
     @Override

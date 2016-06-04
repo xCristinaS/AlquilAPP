@@ -139,6 +139,9 @@ public class LocalizacionActivity extends AppCompatActivity implements OnMapRead
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mGoogleMap = googleMap;
+        googleMap.getUiSettings().setRotateGesturesEnabled(false);
+        googleMap.getUiSettings().setTiltGesturesEnabled(false);
+
         //Si se entra con un objeto que ya contiene una posición, se cargará esta.
         if(oldLat != null)
             mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(oldLat, Constantes.ZOOM_ANUNCIO_CON_LOCALIZACION));
