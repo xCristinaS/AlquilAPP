@@ -87,18 +87,18 @@ public class MapBrowserActivity extends AppCompatActivity implements OnMapReadyC
     public void onMapReady(GoogleMap googleMap) {
         LatLng pos = new LatLng(mUserPosition.getLatitude(), mUserPosition.getLongitude());
         mGoogleMap = googleMap;
-        mGoogleMap.addMarker(new MarkerOptions().position(pos).icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_human_marker)));
+        mGoogleMap.getUiSettings().setRotateGesturesEnabled(false);
+        mGoogleMap.getUiSettings().setTiltGesturesEnabled(false);
         mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pos, Constantes.ZOOM_ANUNCIO_CON_LOCALIZACION));
-        mGoogleMap.getUiSettings().setAllGesturesEnabled(true);
+
         mPresenter.getLocations(new GeoLocation(pos.latitude, pos.longitude), 10);
+        mGoogleMap.addMarker(new MarkerOptions().position(pos).icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_human_marker)));
         mGoogleMap.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
             @Override
             public void onCameraChange(CameraPosition cameraPosition) {
                 mPresenter.getLocations(new GeoLocation(cameraPosition.target.latitude, cameraPosition.target.longitude), cameraPosition.zoom);
             }
         });
-        mGoogleMap.getUiSettings().setRotateGesturesEnabled(false);
-        mGoogleMap.getUiSettings().setTiltGesturesEnabled(false);
     }
 
     @Override
