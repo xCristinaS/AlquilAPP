@@ -294,7 +294,6 @@ public class EditProfileActivity extends AppCompatActivity implements Nacionalid
 
         //Si hay alguna actividad que sepa realizar la acción
         if (i.resolveActivity(getPackageManager()) != null) {
-            String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
 
             File photoFile = Imagenes.crearArchivoFoto(this, "cameraPhoto.jpeg", false);
             if (photoFile != null) {
