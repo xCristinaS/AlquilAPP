@@ -98,6 +98,7 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
                 finish();
             }
         });
+        dialog.setCanceledOnTouchOutside(false);
         dialog.show();
     }
 

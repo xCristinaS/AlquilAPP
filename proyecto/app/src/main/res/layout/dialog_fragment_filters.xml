@@ -171,6 +171,8 @@
                 android:hint="Provincia"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
                 android:inputType="text"
                 android:maxLines="1" />
 
@@ -181,6 +183,8 @@
                 android:layout_below="@id/txtProvincia"
                 android:gravity="center"
                 android:layout_marginBottom="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
                 android:hint="Población"
                 android:inputType="text"
                 android:maxLines="1" />
