@@ -125,7 +125,8 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:layout_below="@id/btnIniciar"
-            android:layout_marginTop="15dp"
+            android:padding="5dp"
+            android:layout_marginTop="10dp"
             android:text="¿Nuevo Aquí? Registrate"
             android:textSize="15sp"/>
     </RelativeLayout>
