@@ -64,6 +64,9 @@
         <activity android:name=".activities.PreferencesActivity"
             android:label="Preferencias"/>
 
+        <activity android:name=".activities.MapBrowserActivity"
+            android:label="Localizador"/>
+
 
         <meta-data
             android:name="com.google.android.gms.version"
@@ -76,7 +79,7 @@
             android:glEsVersion="0x00020000"
             android:required="true" />
 
-        <activity android:name=".activities.MapBrowserActivity"/>
+
     </application>
 
 </manifest>
