@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.InputFilter;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -150,6 +151,8 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
         txtTamano = (EditText) findViewById(R.id.txtTamano);
         txtDescripcion = (EditText) findViewById(R.id.txtDescripcion);
         txtPrecio = (EditText) findViewById(R.id.txtPrecio);
+        //Max lenght de título anuncio
+        txtTituloAnuncio.setFilters(new InputFilter[]{new InputFilter.LengthFilter(Constantes.MAX_LENGHT_TITULO_ANUNCIO)});
 
         View.OnClickListener onClickListener = new View.OnClickListener() {
             @Override

@@ -36,9 +36,6 @@ public final class Constantes {
     //Número por el que se divide/multiplica los SeekBar de las características.
     public static final int MULTIPLICADOR_SEEK_BAR = 10;
 
-    //Longitud del título del anuncio en ConversationActivity
-    public static final int LENGTH_TITULO_ANUNCIO_CONVERSATION_ACTIVITY = 25;
-
     //MAPS
     public static final LatLngBounds BOUNDS_GREATER_SYDNEY = new LatLngBounds( new LatLng(-34.041458, 150.790100), new LatLng(-33.682247, 151.383362));
         //Zoom LocalizacionActivity cuando se abre el mapa con un anuncio que ya contiene una localización.
@@ -52,6 +49,7 @@ public final class Constantes {
     public static final long DELAY_TIME = 8000;
     public static final long DURATION = 8000;
 
+    public static final int MAX_LENGHT_TITULO_ANUNCIO = 60;
 
 
 }
