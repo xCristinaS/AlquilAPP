@@ -68,8 +68,10 @@ public class UsersFirebaseManager {
                             if (u.getKey().equals(authData.getUid())) {
                                 stop = true;
                                 if (u.getFoto() == null) {
-                                    u.setFoto((String) authData.getProviderData().get("profileImageURL"));
-                                    updateUserProfile(u);
+                                    if (authData.getProviderData().get("profileImageURL") != null) {
+                                        u.setFoto((String) authData.getProviderData().get("profileImageURL"));
+                                        updateUserProfile(u);
+                                    }
                                 }
                                 ((InicioPresenter) presenter).onSignInResponsed(u);
                             }
