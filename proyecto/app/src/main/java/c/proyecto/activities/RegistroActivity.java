@@ -73,8 +73,10 @@ public class RegistroActivity extends AppCompatActivity implements RegistroActiv
         btnRegistrarse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!areFieldsEmpty())
+                if (!areFieldsEmpty()){
+                    btnRegistrarse.setEnabled(false);
                     existUser();
+                }
             }
 
         });
@@ -126,10 +128,14 @@ public class RegistroActivity extends AppCompatActivity implements RegistroActiv
         if(!exist){
             if(comprobarPass()){
                 presentador.register(txtUser.getText().toString(), txtPass.getText().toString(), txtNombre.getText().toString(), txtApellidos.getText().toString());
-            }else
+            }else{
                 txtRepeatPass.setError("Las contraseñas no son iguales");
-        }else
+                btnRegistrarse.setEnabled(true);
+            }
+        }else{
             txtUser.setError("Este usuario ya existe");
+            btnRegistrarse.setEnabled(true);
+        }
     }
 
     @Override
