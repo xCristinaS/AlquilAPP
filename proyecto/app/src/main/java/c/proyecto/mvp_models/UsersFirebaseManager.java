@@ -41,7 +41,7 @@ public class UsersFirebaseManager {
                 Firebase mFirebase = new Firebase(Constantes.URL_USERS + key + "/");
                 Usuario u = new Usuario(email, nombre, apellidos, key);
                 mFirebase.setValue(u);
-                ((RegistroPresenter) presenter).userHasBeenCreated(u);
+                signIn(email, contra);
             }
 
             @Override
@@ -73,7 +73,10 @@ public class UsersFirebaseManager {
                                         updateUserProfile(u);
                                     }
                                 }
-                                ((InicioPresenter) presenter).onSignInResponsed(u);
+                                if (presenter instanceof InicioPresenter)
+                                    ((InicioPresenter) presenter).onSignInResponsed(u);
+                                else
+                                    ((RegistroPresenter) presenter).userHasBeenCreated(u);
                             }
                         }
                     }
