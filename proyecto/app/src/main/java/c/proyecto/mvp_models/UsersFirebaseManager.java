@@ -13,9 +13,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import c.proyecto.Constantes;
 import c.proyecto.interfaces.MyPresenter;
 import c.proyecto.mvp_presenters.AdvertsDetailsPresenter;
-import c.proyecto.mvp_presenters.ConversationPresenter;
 import c.proyecto.mvp_presenters.InicioPresenter;
 import c.proyecto.mvp_presenters.MainPresenter;
 import c.proyecto.mvp_presenters.RegistroPresenter;
@@ -23,9 +23,6 @@ import c.proyecto.pojo.Anuncio;
 import c.proyecto.pojo.Usuario;
 
 public class UsersFirebaseManager {
-
-    private static final String URL_USERS = "https://proyectofinaldam.firebaseio.com/usuarios/";
-    private static final String URL_MAIN_FIREBASE = "https://proyectofinaldam.firebaseio.com";
 
     private MyPresenter presenter;
     private static Firebase mFirebase;
@@ -36,12 +33,12 @@ public class UsersFirebaseManager {
     }
 
     public void createNewUser(final String email, final String contra, final String nombre, final String apellidos) {
-        Firebase ref = new Firebase(URL_MAIN_FIREBASE);
+        Firebase ref = new Firebase(Constantes.URL_MAIN_FIREBASE);
         ref.createUser(email, contra, new Firebase.ValueResultHandler<Map<String, Object>>() {
             @Override
             public void onSuccess(Map<String, Object> result) {
                 String key = (String) result.get("uid");
-                Firebase mFirebase = new Firebase(URL_USERS + key + "/");
+                Firebase mFirebase = new Firebase(Constantes.URL_USERS + key + "/");
                 Usuario u = new Usuario(email, nombre, apellidos, key);
                 mFirebase.setValue(u);
                 ((RegistroPresenter) presenter).userHasBeenCreated(u);
@@ -55,11 +52,11 @@ public class UsersFirebaseManager {
     }
 
     public void signIn(final String email, final String contra) {
-        Firebase ref = new Firebase(URL_MAIN_FIREBASE);
+        Firebase ref = new Firebase(Constantes.URL_MAIN_FIREBASE);
         ref.authWithPassword(email, contra, new Firebase.AuthResultHandler() {
             @Override
             public void onAuthenticated(final AuthData authData) {
-                Firebase firebase = new Firebase(URL_USERS);
+                Firebase firebase = new Firebase(Constantes.URL_USERS);
                 firebase.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -118,7 +115,7 @@ public class UsersFirebaseManager {
     }
 
     public void signInWithTwitter(final String email, final String contra) {
-        Firebase ref = new Firebase(URL_MAIN_FIREBASE);
+        Firebase ref = new Firebase(Constantes.URL_MAIN_FIREBASE);
         Map<String, String> options = new HashMap<String, String>();
         options.put("oauth_token", "3131343071-q9oM9NEb6NX1HZs7FEuxda6cmvgBMSvtxdZCFKh");
         options.put("oauth_token_secret", "mO4pPS4S9LoW0fcwAp1Jw19sPq2L1SMdhINgbShpInYnY");
@@ -144,7 +141,7 @@ public class UsersFirebaseManager {
         if (listener != null)
             mFirebase.removeEventListener(listener);
         if (mFirebase == null)
-            mFirebase = new Firebase(URL_USERS + usuario.getKey());
+            mFirebase = new Firebase(Constantes.URL_USERS + usuario.getKey());
         if (listener == null)
             listener = new ValueEventListener() {
                 @Override
@@ -162,7 +159,7 @@ public class UsersFirebaseManager {
 
     //Comprueba si existe algún usuario con este usuario.
     public void amIRegistrered(final String user) {
-        Firebase firebase = new Firebase(URL_USERS);
+        Firebase firebase = new Firebase(Constantes.URL_USERS);
 
         firebase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -186,7 +183,7 @@ public class UsersFirebaseManager {
     }
 
     public void getAdvertPublisher(String anunciante) {
-        Firebase mFirebase = new Firebase(URL_USERS).child(anunciante);
+        Firebase mFirebase = new Firebase(Constantes.URL_USERS).child(anunciante);
         mFirebase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -202,13 +199,13 @@ public class UsersFirebaseManager {
     }
 
     public void updateUserProfile(Usuario u) {
-        Firebase mFirebase = new Firebase(URL_USERS + u.getKey() + "/");
+        Firebase mFirebase = new Firebase(Constantes.URL_USERS + u.getKey() + "/");
         mFirebase.setValue(u);
     }
 
 
     public void getSolicitantes(final View itemView, final Anuncio anuncio) {
-        Firebase f = new Firebase(URL_USERS);
+        Firebase f = new Firebase(Constantes.URL_USERS);
         final HashMap<String, Boolean> solicitantes = anuncio.getSolicitantes();
         final ArrayList<Usuario> listaSolicitantes = new ArrayList<>();
         final Iterator it = solicitantes.keySet().iterator();

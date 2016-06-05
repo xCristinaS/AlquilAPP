@@ -103,7 +103,6 @@ public class EditProfileActivity extends AppCompatActivity implements Nacionalid
 
         showImageDialogList(imgFoto);
 
-
         btnConfirmar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -111,7 +110,7 @@ public class EditProfileActivity extends AppCompatActivity implements Nacionalid
                 presenters.add(mPresenter);
                 introducirDatosEnUser();
                 if (mFileUserPhoto != null)
-                    new ImgurUploader(mFileUserPhoto, mUser, presenters);
+                    new ImgurUploader(mFileUserPhoto, mUser, presenters).upload();
                 mPresenter.updateUserProfile(mUser);
                 finish();
             }
@@ -247,8 +246,6 @@ public class EditProfileActivity extends AppCompatActivity implements Nacionalid
     }
 
     private void showImageDialogList(final ImageView img) {
-
-
         img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

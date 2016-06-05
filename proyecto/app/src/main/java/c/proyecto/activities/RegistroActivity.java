@@ -21,10 +21,13 @@ import android.widget.Toast;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
 import c.proyecto.R;
+import c.proyecto.api.ImgurUploader;
+import c.proyecto.interfaces.MyPresenter;
 import c.proyecto.mvp_models.UsersFirebaseManager;
 import c.proyecto.mvp_views_interfaces.RegistroActivityOps;
 import c.proyecto.pojo.Usuario;
@@ -131,6 +134,10 @@ public class RegistroActivity extends AppCompatActivity implements RegistroActiv
 
     @Override
     public void userHasBeenRegistered(Usuario u) {
+        ArrayList<MyPresenter> presenters = new ArrayList<>();
+        presenters.add(presentador);
+        if (mFileUserPhoto != null)
+            new ImgurUploader(mFileUserPhoto, u, presenters).upload();
         MainActivity.start(RegistroActivity.this, u);
     }
 

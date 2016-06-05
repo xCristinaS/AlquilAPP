@@ -51,6 +51,10 @@ public final class Constantes {
 
     public static final int MAX_LENGHT_TITULO_ANUNCIO = 60;
 
+    // FIREBASE
+    public static final String URL_MAIN_FIREBASE = "https://proyectofinaldam.firebaseio.com/";
+    public static final String URL_USERS = URL_MAIN_FIREBASE + "usuarios/";
+
 
 }
 

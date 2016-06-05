@@ -1,5 +1,7 @@
 package c.proyecto.api;
 
+import com.firebase.client.Firebase;
+
 import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
@@ -7,6 +9,7 @@ import java.util.List;
 import c.proyecto.Constantes;
 import c.proyecto.interfaces.MyModel;
 import c.proyecto.interfaces.MyPresenter;
+import c.proyecto.mvp_presenters.RegistroPresenter;
 import c.proyecto.pojo.Anuncio;
 import c.proyecto.pojo.Usuario;
 import c.proyecto.mvp_presenters.AdvertsDetailsPresenter;
@@ -65,6 +68,10 @@ public class ImgurUploader {
                     } else if (mModel instanceof Usuario && mPresenters.get(0) instanceof ProfilePresenter) {
                         ((Usuario) mModel).setFoto(respuesta.getData().getLink());
                         ((ProfilePresenter) mPresenters.get(0)).updateUserProfile((Usuario) mModel);
+                    } else if (mModel instanceof Usuario && mPresenters.get(0) instanceof RegistroPresenter){
+                        ((Usuario) mModel).setFoto(respuesta.getData().getLink());
+                        Firebase mFirebase = new Firebase(Constantes.URL_USERS + ((Usuario) mModel).getKey() + "/");
+                        mFirebase.setValue(mModel);
                     }
                 mainImg = false;
                 mImagenes.removeFirst();
