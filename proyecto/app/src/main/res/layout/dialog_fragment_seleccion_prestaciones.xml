@@ -29,6 +29,7 @@
                 android:layout_toRightOf="@id/imgAptoMascotas"
                 android:layout_toEndOf="@id/imgAptoMascotas"
                 android:layout_centerVertical="true"
+                android:textSize="14dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginLeft="10dp"
                 />
@@ -63,6 +64,7 @@
                 android:text="Aire Acondicionado"
                 android:layout_toRightOf="@id/imgAireAcondicionado"
                 android:layout_toEndOf="@id/imgAireAcondicionado"
+                android:textSize="14dp"
                 android:layout_centerVertical="true"
                 android:layout_marginTop="10dp"
                 android:layout_marginLeft="10dp"
@@ -98,6 +100,7 @@
                 android:layout_toRightOf="@id/imgAscensor"
                 android:layout_toEndOf="@id/imgAscensor"
                 android:layout_centerVertical="true"
+                android:textSize="14dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginLeft="10dp"
                 />
@@ -128,6 +131,7 @@
                 android:id="@+id/lblCalefaccion"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textSize="14dp"
                 android:text="Calefacción"
                 android:layout_toRightOf="@id/imgCalefaccion"
                 android:layout_toEndOf="@id/imgCalefaccion"
@@ -162,6 +166,7 @@
                 android:id="@+id/lblLavadora"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textSize="14dp"
                 android:text="Lavadora"
                 android:layout_toRightOf="@id/imgLavadora"
                 android:layout_toEndOf="@id/imgLavadora"
@@ -198,6 +203,7 @@
                 android:layout_height="wrap_content"
                 android:text="Parking"
                 android:layout_toRightOf="@id/imgParking"
+                android:textSize="14dp"
                 android:layout_toEndOf="@id/imgParking"
                 android:layout_centerVertical="true"
                 android:layout_marginTop="10dp"
@@ -235,6 +241,7 @@
                 android:layout_toRightOf="@id/imgProhibidoFumar"
                 android:layout_toEndOf="@id/imgProhibidoFumar"
                 android:layout_centerVertical="true"
+                android:textSize="14dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginLeft="10dp"
                 />
@@ -269,6 +276,7 @@
                 android:layout_toRightOf="@id/imgSecadora"
                 android:layout_toEndOf="@id/imgSecadora"
                 android:layout_centerVertical="true"
+                android:textSize="14dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginLeft="10dp"
                 />
@@ -303,6 +311,7 @@
                 android:layout_toRightOf="@id/imgTren"
                 android:layout_toEndOf="@id/imgTren"
                 android:layout_centerVertical="true"
+                android:textSize="14dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginLeft="10dp"
                 />
@@ -336,6 +345,7 @@
                 android:layout_toRightOf="@id/imgTv"
                 android:layout_toEndOf="@id/imgTv"
                 android:layout_centerVertical="true"
+                android:textSize="14dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginLeft="10dp"
                 />
@@ -370,6 +380,7 @@
                 android:layout_toRightOf="@id/imgInternet"
                 android:layout_toEndOf="@id/imgInternet"
                 android:layout_centerVertical="true"
+                android:textSize="14dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginLeft="10dp"
                 />
