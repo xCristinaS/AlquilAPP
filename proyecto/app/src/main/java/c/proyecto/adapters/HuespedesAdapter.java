@@ -69,8 +69,8 @@ public class HuespedesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             imgHuesped = (ImageView) itemView.findViewById(R.id.imgHuesped);
             lblNombre = (TextView) itemView.findViewById(R.id.lblNombre);
         }
-        public void onBind(final Usuario user){
-            Picasso.with(itemView.getContext()).load(user.getFoto()).error(R.drawable.default_user).into(imgHuesped);
+        public void onBind(final Usuario user) {
+            Picasso.with(itemView.getContext()).load(user.getFoto()).fit().error(R.drawable.default_user).into(imgHuesped);
             lblNombre.setText(user.getNombre() + " " + user.getApellidos());
 
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -81,4 +81,6 @@ public class HuespedesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             });
         }
     }
+
+
 }

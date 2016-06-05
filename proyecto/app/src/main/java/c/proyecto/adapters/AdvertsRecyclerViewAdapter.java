@@ -65,16 +65,14 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
     private static MainPresenter mPresenter;
     private SparseBooleanArray mSelectedItems = new SparseBooleanArray();
     private boolean multiDeletionModeActivated = false;
-    private static Usuario user;
     private boolean filtersApplied;
-    private RecyclerView rvSolicitantesDialog;
+    private RecyclerView rvSolicitantes;
     private AlertDialog solicitantesDialog;
 
     public AdvertsRecyclerViewAdapter(int adapter_type, MainPresenter presenter, Usuario u) {
         mDatos = new ArrayList<>();
         mPresenter = presenter;
         this.adapter_type = adapter_type;
-        user = u;
     }
 
     @Override
@@ -303,18 +301,41 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
 
     private void showSolicitantesDialog(View itemView, ArrayList<Usuario> listaSolicitantes, Anuncio anuncio) {
         solicitantesDialog = new AlertDialog.Builder(itemView.getContext()).create();
-        View dialogView = View.inflate(itemView.getContext(), R.layout.dialog_prestaciones_detalladas, null);
+        View dialogView = View.inflate(itemView.getContext(), R.layout.dialog_solicitantes, null);
         solicitantesDialog.setView(dialogView);
         solicitantesDialog.setCanceledOnTouchOutside(true);
         solicitantesDialog.setTitle("Solicitantes");
 
-        rvSolicitantesDialog = (RecyclerView) dialogView.findViewById(R.id.rvPrestaciones);
-        rvSolicitantesDialog.setAdapter(new HuespedesAdapter(listaSolicitantes, anuncio));
-        ((HuespedesAdapter) rvSolicitantesDialog.getAdapter()).setListener(listenerUserSubClick);
-        LinearLayoutManager mLayoutManager = new LinearLayoutManager(itemView.getContext(), LinearLayoutManager.VERTICAL, false);
-        rvSolicitantesDialog.setLayoutManager(mLayoutManager);
-        rvSolicitantesDialog.setItemAnimator(new DefaultItemAnimator());
+        rvSolicitantes = (RecyclerView) dialogView.findViewById(R.id.rvSolicitantes);
+        rvSolicitantes.setAdapter(new HuespedesAdapter(listaSolicitantes, anuncio));
+        ((HuespedesAdapter) rvSolicitantes.getAdapter()).setListener(listenerUserSubClick);
+        final LinearLayoutManager mLayoutManager = new LinearLayoutManager(itemView.getContext(), LinearLayoutManager.VERTICAL, false);
+        rvSolicitantes.setLayoutManager(mLayoutManager);
+        rvSolicitantes.setItemAnimator(new DefaultItemAnimator());
+        rvSolicitantes.setOverScrollMode(View.OVER_SCROLL_NEVER);
 
+        //Comprueba que el último item añadido no se muestre en pantalla, por lo tanto activará el scroll.
+        //Para NotifyDataSetChange, porque cada vez que se actualiza la lista se borran todos y se vuelven a introducir.
+        rvSolicitantes.addOnChildAttachStateChangeListener(new RecyclerView.OnChildAttachStateChangeListener() {
+            int mUltimoItem = -2;
+            @Override
+            public void onChildViewAttachedToWindow(View view) {
+                int ultimoItemVisible = mLayoutManager.findLastCompletelyVisibleItemPosition();
+
+                if(ultimoItemVisible > mUltimoItem){
+                    mUltimoItem = ultimoItemVisible;
+                    rvSolicitantes.setOverScrollMode(View.OVER_SCROLL_NEVER);
+                }
+                else
+                    rvSolicitantes.setOverScrollMode(View.OVER_SCROLL_ALWAYS);
+            }
+
+            @Override
+            public void onChildViewDetachedFromWindow(View view) {
+                mUltimoItem = -2;
+            }
+
+        });
         solicitantesDialog.show();
         Point boundsScreen = new Point();
         ((WindowManager) itemView.getContext().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getSize(boundsScreen);
@@ -324,8 +345,8 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
 
 
     private void updateSolicitantesDialog(ArrayList<Usuario> listaSolicitantes) {
-        if (rvSolicitantesDialog != null)
-            ((HuespedesAdapter) rvSolicitantesDialog.getAdapter()).updateData(listaSolicitantes);
+        if (rvSolicitantes != null)
+            ((HuespedesAdapter) rvSolicitantes.getAdapter()).updateData(listaSolicitantes);
     }
 
     //Manejo del Adaptador
