@@ -24,4 +24,5 @@ public interface MainActivityOps {
     void filteredAdvertsObtained(ArrayList<Anuncio> filteredAdverts);
     void solicitantesObtained(View itemView, ArrayList<Usuario> listaSolicitantes, Anuncio anuncio);
     void allMessagesObtained();
+    void sendAdvertHasBeenModifiedBroadcast(Anuncio a);
 }

@@ -2,6 +2,7 @@ package c.proyecto.activities;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
@@ -73,6 +74,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
     private static final String TAG_FILTER_DIALOG_FRAMGENT = "filtros_dialog_fragment";
     private static final String TAG_ABOUT_US = "dialog_fragment_about_us";
     public static final String EXTRA_ANUNCIO_ELIMINADO = "anuncio_eliminado_ext";
+    public static final String ACTION_ANUNCIO_MODIFICADO = "anuncio_modificado_ext";
 
     private static MainPresenter mPresenter;
     private Usuario mUser;
@@ -347,7 +349,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
         sendBroadcast(new Intent(ACTION_ANUNCIO_ELIMINADO).putExtra(EXTRA_ANUNCIO_ELIMINADO, anuncio));
     }
 
-
+    @Override
+    public void sendAdvertHasBeenModifiedBroadcast(Anuncio a) {
+        sendBroadcast(new Intent(ACTION_ANUNCIO_MODIFICADO).putExtra(EXTRA_ANUNCIO_ELIMINADO, a));
+    }
 
     @Override
     public void setAdapterAllowMultiDeletion(AdvertsRecyclerViewAdapter adapter) {
