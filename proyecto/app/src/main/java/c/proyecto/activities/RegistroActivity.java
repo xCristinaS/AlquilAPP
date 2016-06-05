@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
+import c.proyecto.Constantes;
 import c.proyecto.R;
 import c.proyecto.api.ImgurUploader;
 import c.proyecto.interfaces.MyPresenter;
@@ -127,6 +128,8 @@ public class RegistroActivity extends AppCompatActivity implements RegistroActiv
     public void createUser(boolean exist) {
         if(!exist){
             if(comprobarPass()){
+                //Guarda el usuario registrado
+                getSharedPreferences(Constantes.NOMBRE_PREFERENCIAS, MODE_PRIVATE).edit().putString(Constantes.KEY_USER, txtUser.getText().toString()).apply();
                 presentador.register(txtUser.getText().toString(), txtPass.getText().toString(), txtNombre.getText().toString(), txtApellidos.getText().toString());
             }else{
                 txtRepeatPass.setError("Las contraseñas no son iguales");

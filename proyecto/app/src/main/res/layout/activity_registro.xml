@@ -54,7 +54,7 @@
                 android:background="@android:color/transparent"
                 android:hint="Email"
                 android:maxLines="1"
-                android:inputType="text"
+                android:inputType="textEmailAddress"
                 android:textColor="#333"
                 android:textColorHint="#666"
                 android:textSize="15sp" />
