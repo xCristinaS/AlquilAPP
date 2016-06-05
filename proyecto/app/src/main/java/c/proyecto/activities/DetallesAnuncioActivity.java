@@ -65,8 +65,10 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
             @Override
             public void onReceive(Context context, Intent intent) {
                 Anuncio a = intent.getParcelableExtra(MainActivity.EXTRA_ANUNCIO_ELIMINADO);
-                if (anuncio.getKey().equals(a.getKey()))
+                if (anuncio.getKey().equals(a.getKey())) {
                     anuncio = a;
+                    updateAdvert(anuncio);
+                }
             }
         };
 
