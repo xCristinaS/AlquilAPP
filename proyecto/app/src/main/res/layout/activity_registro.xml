@@ -51,7 +51,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:background="@android:color/transparent"
-                android:hint="Usuario"
+                android:hint="Email"
                 android:maxLines="1"
                 android:inputType="text"
                 android:textColor="#333"
