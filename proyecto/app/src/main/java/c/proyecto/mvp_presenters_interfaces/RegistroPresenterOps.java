@@ -6,5 +6,5 @@ public interface RegistroPresenterOps {
     void register(String user, String pass, String nombre, String apellidos);
     void checkUser(String user);
     void onCheckUserExist(boolean exist);
-    void userHasBeenCreated(Usuario u);
+    void userHasBeenCreated(Object o);
 }

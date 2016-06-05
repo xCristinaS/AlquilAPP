@@ -5,5 +5,5 @@ import c.proyecto.pojo.Usuario;
 
 public interface RegistroActivityOps {
     void createUser(boolean exist);
-    void userHasBeenRegistered(Usuario u);
+    void userHasBeenRegistered(Object o);
 }

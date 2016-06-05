@@ -50,7 +50,7 @@ public class RegistroPresenter implements RegistroPresenterOps, MyPresenter {
     }
 
     @Override
-    public void userHasBeenCreated(Usuario u) {
+    public void userHasBeenCreated(Object u) {
         if (activity.get() != null)
             activity.get().userHasBeenRegistered(u);
     }

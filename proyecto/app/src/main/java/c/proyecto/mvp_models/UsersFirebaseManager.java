@@ -46,7 +46,7 @@ public class UsersFirebaseManager {
 
             @Override
             public void onError(FirebaseError firebaseError) {
-                // there was an error
+                checkError(firebaseError);
             }
         });
     }
@@ -85,33 +85,40 @@ public class UsersFirebaseManager {
 
             @Override
             public void onAuthenticationError(FirebaseError firebaseError) {
-                String resp;
-                switch (firebaseError.getCode()){
-                    case FirebaseError.INVALID_PASSWORD:
-                        resp = "Contraseña incorrecta";
-                        break;
-                    case FirebaseError.EMAIL_TAKEN:
-                        resp = "Email ya en uso";
-                        break;
-                    case FirebaseError.INVALID_EMAIL:
-                        resp = "El email epecificado no es válido";
-                        break;
-                    case FirebaseError.NETWORK_ERROR:
-                        resp = "Error de conexión";
-                        break;
-                    case FirebaseError.UNKNOWN_ERROR:
-                        resp = "Error inesperado";
-                        break;
-                    case FirebaseError.USER_DOES_NOT_EXIST:
-                        resp = "La cuenta de usuario no existe";
-                        break;
-                    default:
-                        resp = "";
-                        break;
-                }
-                ((InicioPresenter) presenter).onSignInResponsed(resp);
+                checkError(firebaseError);
             }
         });
+    }
+
+    private void checkError(FirebaseError error) {
+        String resp;
+        switch (error.getCode()) {
+            case FirebaseError.INVALID_PASSWORD:
+                resp = "Contraseña incorrecta";
+                break;
+            case FirebaseError.EMAIL_TAKEN:
+                resp = "Email ya en uso";
+                break;
+            case FirebaseError.INVALID_EMAIL:
+                resp = "El email epecificado no es válido";
+                break;
+            case FirebaseError.NETWORK_ERROR:
+                resp = "Error de conexión";
+                break;
+            case FirebaseError.UNKNOWN_ERROR:
+                resp = "Error inesperado";
+                break;
+            case FirebaseError.USER_DOES_NOT_EXIST:
+                resp = "La cuenta de usuario no existe";
+                break;
+            default:
+                resp = "";
+                break;
+        }
+        if (presenter instanceof InicioPresenter)
+            ((InicioPresenter) presenter).onSignInResponsed(resp);
+        else
+            ((RegistroPresenter) presenter).userHasBeenCreated(resp);
     }
 
     public void signInWithTwitter(final String email, final String contra) {
@@ -210,15 +217,15 @@ public class UsersFirebaseManager {
         final ArrayList<Usuario> listaSolicitantes = new ArrayList<>();
         final Iterator it = solicitantes.keySet().iterator();
         String solicitanteKey;
-        for (int i = 0; i < solicitantes.size(); i++){
+        for (int i = 0; i < solicitantes.size(); i++) {
             solicitanteKey = (String) it.next();
             final int iAux = i;
             f.child(solicitanteKey).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     listaSolicitantes.add(dataSnapshot.getValue(Usuario.class));
-                    if (iAux == solicitantes.size()-1)
-                        ((MainPresenter)presenter).solicitantesObtained(itemView, listaSolicitantes, anuncio);
+                    if (iAux == solicitantes.size() - 1)
+                        ((MainPresenter) presenter).solicitantesObtained(itemView, listaSolicitantes, anuncio);
                 }
 
                 @Override

@@ -133,12 +133,15 @@ public class RegistroActivity extends AppCompatActivity implements RegistroActiv
     }
 
     @Override
-    public void userHasBeenRegistered(Usuario u) {
-        ArrayList<MyPresenter> presenters = new ArrayList<>();
-        presenters.add(presentador);
-        if (mFileUserPhoto != null)
-            new ImgurUploader(mFileUserPhoto, u, presenters).upload();
-        MainActivity.start(RegistroActivity.this, u);
+    public void userHasBeenRegistered(Object o) {
+        if (o instanceof Usuario) {
+            ArrayList<MyPresenter> presenters = new ArrayList<>();
+            presenters.add(presentador);
+            if (mFileUserPhoto != null)
+                new ImgurUploader(mFileUserPhoto, (Usuario)o, presenters).upload();
+            MainActivity.start(RegistroActivity.this, (Usuario)o);
+        } else
+            Toast.makeText(this, (String) o, Toast.LENGTH_SHORT).show();
     }
 
     private void showImageDialogList(ImageView img){
@@ -254,7 +257,5 @@ public class RegistroActivity extends AppCompatActivity implements RegistroActiv
                     mPermisoEscrituraAceptado = false;
                 break;
         }
-
-
     }
 }
