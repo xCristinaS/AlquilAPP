@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -319,11 +320,33 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
     }
 
     private boolean requiredFieldsFilled(){
-        boolean r = true;
-        if (TextUtils.isEmpty(txtTituloAnuncio.getText()) || TextUtils.isEmpty(txtPoblacion.getText()) || TextUtils.isEmpty(txtProvincia.getText()) || TextUtils.isEmpty(txtNum.getText()) ||
-                TextUtils.isEmpty(txtPrecio.getText()) || mAnuncio.getTipo_vivienda() == null)
-            r = false;
-        return r;
+        boolean empty = true;
+        if(TextUtils.isEmpty(txtTituloAnuncio.getText())){
+            empty = false;
+            txtTituloAnuncio.setError("Rellene este campo");
+        }
+        if(TextUtils.isEmpty(txtPoblacion.getText())){
+            empty = false;
+            txtPoblacion.setError("Rellene este campo");
+        }
+        if(TextUtils.isEmpty(txtDireccion.getText())){
+            empty = false;
+            txtDireccion.setError("Rellene este campo");
+        }
+        if(TextUtils.isEmpty(txtNum.getText())){
+            empty = false;
+            txtNum.setError("Rellene este campo");
+        }
+        if(TextUtils.isEmpty(txtPrecio.getText())){
+            empty = false;
+            txtPrecio.setError("Rellene este campo");
+        }
+        if(mAnuncio.getTipo_vivienda() == null){
+            empty = false;
+            Toast.makeText(this, "Seleccione el tipo de vivienda", Toast.LENGTH_SHORT).show();
+        }
+
+        return empty;
     }
 
     private void meterDatosEnAnuncio(){
