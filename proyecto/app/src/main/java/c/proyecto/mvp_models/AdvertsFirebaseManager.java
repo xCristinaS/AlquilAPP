@@ -247,21 +247,22 @@ public class AdvertsFirebaseManager {
                 boolean agregar;
                 for (DataSnapshot data : dataSnapshot.getChildren()) {
                     a = data.getValue(Anuncio.class);
-                    if (!a.getAnunciante().equals(currentUser.getKey()) && a.getTamanio() >= minSize) {
-                        agregar = anuncioCumpleFiltroPoblacion(poblacion, a);
-                        if (agregar && !TextUtils.isEmpty(provincia))
-                            agregar = anuncioCumpleFiltroProvincia(provincia, a);
-                        if (agregar)
-                            agregar = anuncioCumpleFiltroTipoVivienda(tipoVivienda, a);
-                        if (agregar)
-                            agregar = anuncioCumpleFiltroPrecio(minPrice, maxPrice, a);
-                        if (agregar)
-                            agregar = anuncioCumpleFiltroTamanio(minSize, maxSize, a);
-                        if (prestaciones.size() > 0 && agregar)
-                            agregar = anuncioCumpleFiltroPrestaciones(prestaciones, a);
-                        if (agregar)
-                            filteredAdverts.add(a);
-                    }
+                    if (!a.getSolicitantes().keySet().contains(currentUser.getKey()))
+                        if (!a.getAnunciante().equals(currentUser.getKey()) && a.getTamanio() >= minSize) {
+                            agregar = anuncioCumpleFiltroPoblacion(poblacion, a);
+                            if (agregar && !TextUtils.isEmpty(provincia))
+                                agregar = anuncioCumpleFiltroProvincia(provincia, a);
+                            if (agregar)
+                                agregar = anuncioCumpleFiltroTipoVivienda(tipoVivienda, a);
+                            if (agregar)
+                                agregar = anuncioCumpleFiltroPrecio(minPrice, maxPrice, a);
+                            if (agregar)
+                                agregar = anuncioCumpleFiltroTamanio(minSize, maxSize, a);
+                            if (prestaciones.size() > 0 && agregar)
+                                agregar = anuncioCumpleFiltroPrestaciones(prestaciones, a);
+                            if (agregar)
+                                filteredAdverts.add(a);
+                        }
                 }
                 ((MainPresenter) presenter).onFilterResponsed(filteredAdverts);
             }
@@ -464,7 +465,7 @@ public class AdvertsFirebaseManager {
         detachGeoAdvertsLocationListener();
     }
 
-    public void detachGeoAdvertsLocationListener(){
+    public void detachGeoAdvertsLocationListener() {
         if (geoQueryAdverts != null)
             geoQueryAdverts.removeAllListeners();
         geoQueryAdverts = null;
