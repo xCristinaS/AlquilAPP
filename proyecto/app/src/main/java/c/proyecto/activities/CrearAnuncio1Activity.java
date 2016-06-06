@@ -56,7 +56,7 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
 
     private TextView lblSiguiente;
     private ImageView imgSiguiente, imgPrincipal, img1, img2, img3, img4, img5, imgSeleccionada;
-    private ProgressBar prbPrincipal, prb1, prb2, prb3, prb4, prb5;
+    private ProgressBar prbPrincipal, prb1, prb2, prb3, prb4, prb5, prbSeleccionado;
     private String mPathOriginal;
     private File[] mImagenesAnuncio;
     private Anuncio mAnuncio;
@@ -225,8 +225,12 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
             public void onClick(View v) {
                 int idArrayOpciones = R.array.chooseImageWithoutRemoveListItem;
                 final ImageView[] imgViews = {imgPrincipal, img1, img2, img3, img4, img5};
+                final ProgressBar[] prbViews = {prbPrincipal, prb1, prb2, prb3, prb4, prb5};
 
                 imgSeleccionada = img;
+                for (int i = 0; i < imgViews.length; i++)
+                    if(imgViews[i].equals(imgSeleccionada))
+                        prbSeleccionado = prbViews[i];
 
                 //Pedirá los permisos de escritura y lectura en ejecución (API >23)
                 if (Build.VERSION.SDK_INT >= 23)
@@ -310,6 +314,7 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
         if (resultCode == RESULT_OK)
             switch (requestCode) {
                 case RC_ABRIR_GALERIA:
+                    prbSeleccionado.setVisibility(View.VISIBLE);
                     // Se obtiene el path real a partir de la URI retornada por la galería.
                     Uri uriGaleria = data.getData();
                     mPathOriginal = Imagenes.getRealPathFromGallery(this, uriGaleria);
@@ -317,6 +322,7 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
                     imagesModified = true;
                     break;
                 case RC_CAPTURAR_FOTO:
+                    prbSeleccionado.setVisibility(View.VISIBLE);
                     new HiloEscalador().execute(imgSeleccionada.getWidth(), imgSeleccionada.getHeight());
                     imagesModified = true;
                     break;
@@ -332,11 +338,13 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
 
         @Override
         protected Bitmap doInBackground(Integer... params) {
+
             return Imagenes.escalar(params[0], params[1], mPathOriginal);
         }
 
         @Override
         protected void onPostExecute(Bitmap bitmap) {
+            prbSeleccionado.setVisibility(View.GONE);
             imgSeleccionada.setImageBitmap(bitmap);
             //Guarda la imagen capturada o seleccionada en un array de bitmap para cuando
             //termine de editar o crear el anuncio las suba a prest_internet y no antes.
