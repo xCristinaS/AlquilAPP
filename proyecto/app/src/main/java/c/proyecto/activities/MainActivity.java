@@ -251,10 +251,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
                 desactivarMultiseleccion();
                 return true;
             case R.id.nav_map:
-                if (mLastLocation != null)
-                    MapBrowserActivity.start(this, mLastLocation, mUser);
-                else
-                    Toast.makeText(this, "No es posible encontrar su posición", Toast.LENGTH_SHORT).show();
+                if(UtilMethods.isUbicationPermissionGranted(MainActivity.this)){
+                    if (mLastLocation != null)
+                        MapBrowserActivity.start(this, mLastLocation, mUser);
+                    else
+                        Toast.makeText(this, "No es posible encontrar su posición", Toast.LENGTH_SHORT).show();
+                }
 
                 return true;
             case R.id.nav_filters:
@@ -588,7 +590,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
                     getAdvertsNearUser();
                 }
                 else
-                    Toast.makeText(this, "No aceptado", Toast.LENGTH_SHORT).show();
+                    System.out.println("");
                 break;
         }
     }
