@@ -27,6 +27,7 @@ import c.proyecto.adapters.AdvertsRecyclerViewAdapter;
 import c.proyecto.pojo.Anuncio;
 import c.proyecto.pojo.Usuario;
 import c.proyecto.mvp_presenters.MainPresenter;
+import c.proyecto.utils.UtilMethods;
 
 
 public class PrincipalFragment extends Fragment {
@@ -57,6 +58,7 @@ public class PrincipalFragment extends Fragment {
         mPresenter = MainPresenter.getPresentador(getActivity());
         user = ((MainActivity) getActivity()).getmUser();
         confViewPager();
+
     }
 
     private void confViewPager() {

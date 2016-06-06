@@ -24,6 +24,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.stetho.common.Util;
 import com.firebase.geofire.GeoLocation;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -60,6 +61,7 @@ import c.proyecto.pojo.Anuncio;
 import c.proyecto.pojo.MessagePojo;
 import c.proyecto.pojo.Prestacion;
 import c.proyecto.pojo.Usuario;
+import c.proyecto.utils.UtilMethods;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainActivity extends AppCompatActivity implements MainActivityOps, AdvertsRecyclerViewAdapter.OnAdapterItemLongClick, AdvertsRecyclerViewAdapter.OnAdapterItemClick, NavigationView.OnNavigationItemSelectedListener, MessagesRecyclerViewAdapter.OnMessagesAdapterItemClick, PrincipalFragment.AllowFilters, FilterDialogFramgent.ApplyFilters, SeleccionPrestacionesDialogFragment.ICallBackOnDismiss, AdvertsRecyclerViewAdapter.OnSubsIconClick, HuespedesAdapter.OnUserSubClick, GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks {
@@ -126,6 +128,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
     }
 
     private void configLocation() {
+        UtilMethods.isUbicationPermissionGranted(this);
         mLocationRequest = LocationRequest.create();
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         mLocationRequest.setInterval(30000);
@@ -252,6 +255,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
                     MapBrowserActivity.start(this, mLastLocation, mUser);
                 else
                     Toast.makeText(this, "No es posible encontrar su posición", Toast.LENGTH_SHORT).show();
+
                 return true;
             case R.id.nav_filters:
                 new FilterDialogFramgent().show(getSupportFragmentManager(), TAG_FILTER_DIALOG_FRAMGENT);
@@ -573,5 +577,19 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
 
     public static MainPresenter getmPresenter() {
         return mPresenter;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode){
+            case UtilMethods.TAG_LOCATION_PERMISION:
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                    getAdvertsNearUser();
+                }
+                else
+                    Toast.makeText(this, "No aceptado", Toast.LENGTH_SHORT).show();
+                break;
+        }
     }
 }
