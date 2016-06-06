@@ -390,6 +390,14 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
                     txtNum.setText(address.getSubThoroughfare());
                     txtPoblacion.setText(address.getLocality());
                     txtProvincia.setText(address.getSubAdminArea());
+
+                    if(!txtDireccion.getText().toString().isEmpty())
+                        txtDireccion.setError(null);
+                    if(!txtPoblacion.getText().toString().isEmpty())
+                        txtPoblacion.setError(null);
+                    if(!txtNum.getText().toString().isEmpty())
+                        txtNum.setError(null);
+
                     //Se guarda la latitud del punto seleccionado para la localización de la vivienda.
                     mAnuncio.setLats(new MyLatLng(address.getLatitude(), address.getLongitude()));
                     break;
