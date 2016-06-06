@@ -118,6 +118,9 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (mImagenesAnuncio[0] != null) {
+                    imgSiguiente.setEnabled(false);
+                    lblSiguiente.setEnabled(false);
+
                     if (imagesModified)
                         CrearAnuncio2Activity.startForResult(CrearAnuncio1Activity.this, mAnuncio, user, RC_CLOSE, mImagenesAnuncio[0], mImagenesAnuncio[1], mImagenesAnuncio[2], mImagenesAnuncio[3], mImagenesAnuncio[4], mImagenesAnuncio[5]);
                     else
@@ -391,4 +394,13 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onResume() {
+        if(imgSiguiente != null && lblSiguiente != null){
+            imgSiguiente.setEnabled(true);
+            lblSiguiente.setEnabled(true);
+        }
+
+        super.onResume();
+    }
 }
