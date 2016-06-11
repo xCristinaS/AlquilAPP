@@ -587,10 +587,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
         switch (requestCode){
             case UtilMethods.TAG_LOCATION_PERMISION:
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                    mSharedPref.edit().putBoolean(Constantes.KEY_LOCATION_ACTIVED, true).apply();
                     getAdvertsNearUser();
                 }
                 else
-                    System.out.println("");
+                    mSharedPref.edit().putBoolean(Constantes.KEY_LOCATION_ACTIVED, false).apply();
                 break;
         }
     }

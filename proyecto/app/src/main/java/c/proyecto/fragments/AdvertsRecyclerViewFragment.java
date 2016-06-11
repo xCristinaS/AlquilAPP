@@ -1,6 +1,8 @@
 package c.proyecto.fragments;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.ColorFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -16,6 +18,7 @@ import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import c.proyecto.Constantes;
 import c.proyecto.R;
 import c.proyecto.adapters.AdvertsRecyclerViewAdapter;
 import c.proyecto.adapters.HuespedesAdapter;
@@ -58,6 +61,7 @@ public class AdvertsRecyclerViewFragment extends Fragment {
 
     private void initViews() {
         Bundle args = getArguments();
+        int idDrawable = 0;
         LinearLayout emptyView = (LinearLayout) getView().findViewById(R.id.emptyView);
         ImageView imgEmptyView = (ImageView) getView().findViewById(R.id.imgEmptyView);
         TextView lblEmptyView = (TextView) getView().findViewById(R.id.lblEmptyView);
@@ -77,22 +81,30 @@ public class AdvertsRecyclerViewFragment extends Fragment {
             case AdvertsRecyclerViewAdapter.ADAPTER_TYPE_SUBS:
                 mAdapter.setListenerLongClick(listenerLongClick);
                 mAdapter.setListenerItemClick(listenerItemClick);
-                imgEmptyView.setImageResource(R.drawable.tab_solicitudes);
-                lblEmptyView.setText("Sin solicitudes");
+                idDrawable = R.drawable.tab_solicitudes;
+                lblEmptyView.setText("Sin suscribciones");
                 break;
             case AdvertsRecyclerViewAdapter.ADAPTER_TYPE_ADVS:
                 mAdapter.setListenerSubsClick(listenerSubClick);
                 mAdapter.setListenerUserSubClick(listenerUserSubClick);
-                imgEmptyView.setImageResource(R.drawable.tab_anuncios);
+                idDrawable = R.drawable.tab_anuncios;
                 lblEmptyView.setText("Sin anuncios");
                 break;
             case AdvertsRecyclerViewAdapter.ADAPTER_TYPE_MY_ADVS:
                 mAdapter.setListenerLongClick(listenerLongClick);
                 mAdapter.setListenerItemClick(listenerItemClick);
-                imgEmptyView.setImageResource(R.drawable.tab_mis_anuncios);
+                idDrawable = R.drawable.tab_mis_anuncios;
                 lblEmptyView.setText("Sin Mis anuncios");
                 break;
         }
+        //Si tiene activado la localización
+        if(getActivity().getSharedPreferences(Constantes.NOMBRE_PREFERENCIAS, Context.MODE_PRIVATE).getBoolean(Constantes.KEY_LOCATION_ACTIVED, false))
+            imgEmptyView.setImageResource(idDrawable);
+        else
+            imgEmptyView.setImageResource(R.drawable.logo);
+        
+        imgEmptyView.setColorFilter(getResources().getColor(R.color.colorAccent));
+
         mAdapter.setEmptyView(emptyView);
     }
 
