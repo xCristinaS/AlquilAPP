@@ -35,8 +35,10 @@ import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
+import java.util.List;
 
 import c.proyecto.Constantes;
 import c.proyecto.R;
@@ -83,6 +85,7 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
     private int mAdverType;
     private GoogleMap mGoogleMap;
     private MessagePojo mMessage;
+    private List<DefaultSliderView> sliderImages;
 
     private IDetallesAnuncioFragmentListener mListener;
     private OnDetallesAnuncioFragmentClic mListenerClick;
@@ -113,6 +116,7 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
         mUserAnunciante = getArguments().getParcelable(ARG_USER_ANUNCIANTE);
         mCurrentUser = getArguments().getParcelable(ARG_CURRENT_USER);
         mMessage = getArguments().getParcelable(ARG_MESSAGE);
+        sliderImages = new ArrayList<>();
         initViews();
         confRecyclerview();
         confMap();
@@ -220,6 +224,7 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
         slider.startAutoCycle(Constantes.DELAY_TIME, Constantes.DURATION, false);
         slider.getPagerIndicator().destroySelf();
         slider.addOnPageChangeListener(this);
+        slider.setWillNotCacheDrawing(true);
 
         DefaultSliderView defaultSliderView;
         LinkedList<String> lista = new LinkedList<>();
@@ -232,10 +237,12 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
                     lista.add(mAnuncio.getImagenes().get(key));
 
             //Introduce imagenes en el slider.
+            vaciarSlider();
             for(String url : lista){
                 defaultSliderView = new DefaultSliderView(getContext());
                 defaultSliderView.image(url).setScaleType(BaseSliderView.ScaleType.CenterCrop);
-                slider.addSlider(defaultSliderView);
+                sliderImages.add(defaultSliderView);
+                slider.addSlider(sliderImages.get(sliderImages.size()-1));
             }
         }
 
@@ -246,6 +253,12 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
                 protected void onTransform(View view, float v) {
                 }
             });
+    }
+
+    private void vaciarSlider() {
+        for (DefaultSliderView sV: sliderImages)
+            sV = null;
+        sliderImages.clear();
     }
 
     private void confRecyclerview() {
@@ -416,6 +429,10 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
         mListener = null;
         mListenerClick = null;
         slider.stopAutoCycle();
+        slider.removeAllSliders();
+        slider.removeOnPageChangeListener(this);
+        slider.destroyDrawingCache();
+        vaciarSlider();
         super.onDetach();
     }
 
