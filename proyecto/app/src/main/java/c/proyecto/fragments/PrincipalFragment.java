@@ -61,6 +61,7 @@ public class PrincipalFragment extends Fragment {
         user = ((MainActivity) getActivity()).getmUser();
         confViewPager();
 
+
     }
 
     private void confViewPager() {
@@ -271,6 +272,7 @@ public class PrincipalFragment extends Fragment {
     public void onDetach() {
         listener = null;
         super.onDetach();
+
     }
 
     public void confEmptyViewsNormales(){

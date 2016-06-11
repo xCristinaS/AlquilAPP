@@ -113,8 +113,10 @@ public class AdvertsRecyclerViewFragment extends Fragment {
     public void confEmptyView(int idDrawable, String textEmptyView){
         //Si tiene activado la localización
         //Default true --> Por si el dispositivo es menor a la API 23, no tendrá esta preferencia ya que no se le pedirá el permiso en ejecución
-        if(PreferenceManager.getDefaultSharedPreferences(getContext()).getBoolean(Constantes.KEY_LOCATION_ACTIVED, true))
+        if(PreferenceManager.getDefaultSharedPreferences(getContext()).getBoolean(Constantes.KEY_LOCATION_ACTIVED, true)){
             imgEmptyView.setImageResource(idDrawable);
+            lblEmptyView.setText(textEmptyView);
+        }
         else{
             imgEmptyView.setImageResource(R.drawable.logo);
             lblEmptyView.setText("Sin ubicación activada");
@@ -125,7 +127,6 @@ public class AdvertsRecyclerViewFragment extends Fragment {
                 }
             });
         }
-        lblEmptyView.setText(textEmptyView);
     }
     @Override
     public void onAttach(Context context) {
