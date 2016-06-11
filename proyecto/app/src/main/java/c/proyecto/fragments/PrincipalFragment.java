@@ -193,8 +193,12 @@ public class PrincipalFragment extends Fragment {
 
     public void loadFilteredAdverts(ArrayList<Anuncio> filteredAdverts) {
         AdvertsRecyclerViewFragment f = (AdvertsRecyclerViewFragment) vpAdapter.getItem(1);
-        if (f.getmAdapter().getAdapter_type() == AdvertsRecyclerViewAdapter.ADAPTER_TYPE_ADVS)
+        if (f.getmAdapter().getAdapter_type() == AdvertsRecyclerViewAdapter.ADAPTER_TYPE_ADVS){
+            //Si no ha encontrado ningún anuncio filtrando
+            if(filteredAdverts.size() == 0)
+                f.confEmptyView(R.drawable.cama, "Sin coincidencias");
             f.getmAdapter().addItems(filteredAdverts);
+        }
     }
 
 
@@ -204,6 +208,8 @@ public class PrincipalFragment extends Fragment {
             f.getmAdapter().removeFilter();
             if(!PreferenceManager.getDefaultSharedPreferences(getContext()).getBoolean(Constantes.KEY_LOCATION_ACTIVED, true))
                 confEmptyViewsSinUbicacion();
+            else
+                f.confEmptyView(R.drawable.tab_anuncios, "Sin anuncios");
         }
     }
 
@@ -281,9 +287,7 @@ public class PrincipalFragment extends Fragment {
         ((AdvertsRecyclerViewFragment) vpAdapter.getItem(2)).confEmptyView(R.drawable.tab_mis_anuncios, "Sin mis anuncios");
     }
     public void confEmptyViewsSinUbicacion(){
-        ((AdvertsRecyclerViewFragment) vpAdapter.getItem(0)).confEmptyView(R.drawable.logo, "Sin ubicación activada");
         ((AdvertsRecyclerViewFragment) vpAdapter.getItem(1)).confEmptyView(R.drawable.logo, "Sin ubicación activada");
-        ((AdvertsRecyclerViewFragment) vpAdapter.getItem(2)).confEmptyView(R.drawable.logo, "Sin ubicación activada");
     }
 
 

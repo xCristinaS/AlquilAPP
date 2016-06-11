@@ -75,59 +75,68 @@ public class AdvertsRecyclerViewFragment extends Fragment {
         adapter_type = args.getInt(ARG_ADAPTER_TYPE);
 
         rvLista = (RecyclerView) getView().findViewById(R.id.rvLista);
-        mAdapter = new AdvertsRecyclerViewAdapter(adapter_type, MainPresenter.getPresentador(getActivity()), ((PrincipalFragment)getParentFragment()).getUser());
-        mLayoutManager = new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL);
+        mAdapter = new AdvertsRecyclerViewAdapter(adapter_type, MainPresenter.getPresentador(getActivity()), ((PrincipalFragment) getParentFragment()).getUser());
+        mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
 
         rvLista.setAdapter(mAdapter);
         rvLista.setLayoutManager(mLayoutManager);
         rvLista.setItemAnimator(new DefaultItemAnimator());
         mAdapter.setListenerItemClick(listenerItemClick);
 
-        switch (adapter_type){
+        switch (adapter_type) {
             case AdvertsRecyclerViewAdapter.ADAPTER_TYPE_SUBS:
                 mAdapter.setListenerLongClick(listenerLongClick);
                 mAdapter.setListenerItemClick(listenerItemClick);
                 idDrawable = R.drawable.tab_solicitudes;
-                textEmptyView = "Sin suscribciones";
+                textEmptyView = "Aún no te has suscrito a ningún anuncio";
                 break;
             case AdvertsRecyclerViewAdapter.ADAPTER_TYPE_ADVS:
                 mAdapter.setListenerSubsClick(listenerSubClick);
                 mAdapter.setListenerUserSubClick(listenerUserSubClick);
                 idDrawable = R.drawable.tab_anuncios;
-                textEmptyView = "Sin anuncios";
+                textEmptyView = "No se han encontrado anuncios cerca de tí";
                 break;
             case AdvertsRecyclerViewAdapter.ADAPTER_TYPE_MY_ADVS:
                 mAdapter.setListenerLongClick(listenerLongClick);
                 mAdapter.setListenerItemClick(listenerItemClick);
                 idDrawable = R.drawable.tab_mis_anuncios;
-                textEmptyView = "Sin Mis anuncios";
+                textEmptyView = "Aún no has publicado ningún anuncio";
                 break;
         }
         mAdapter.setEmptyView(emptyView);
 
-        confEmptyView(idDrawable,textEmptyView);
+        confEmptyView(idDrawable, textEmptyView);
         imgEmptyView.setColorFilter(getResources().getColor(R.color.colorAccent));
 
     }
 
-    public void confEmptyView(int idDrawable, String textEmptyView){
-        //Si tiene activado la localización
+    public void confEmptyView(int idDrawable, String textEmptyView) {
+        //Si no tiene activado la localización
         //Default true --> Por si el dispositivo es menor a la API 23, no tendrá esta preferencia ya que no se le pedirá el permiso en ejecución
-        if(PreferenceManager.getDefaultSharedPreferences(getContext()).getBoolean(Constantes.KEY_LOCATION_ACTIVED, true)){
+        if (!PreferenceManager.getDefaultSharedPreferences(getContext()).getBoolean(Constantes.KEY_LOCATION_ACTIVED, true)) {
+            if (adapter_type == AdvertsRecyclerViewAdapter.ADAPTER_TYPE_ADVS) {
+                imgEmptyView.setImageResource(R.drawable.logo);
+                lblEmptyView.setText("Sin ubicación activada");
+                emptyView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        UtilMethods.isUbicationPermissionGranted(getActivity());
+                    }
+                });
+
+            }else{
+                imgEmptyView.setImageResource(idDrawable);
+                lblEmptyView.setText(textEmptyView);
+            }
+
+        } else {
             imgEmptyView.setImageResource(idDrawable);
             lblEmptyView.setText(textEmptyView);
         }
-        else{
-            imgEmptyView.setImageResource(R.drawable.logo);
-            lblEmptyView.setText("Sin ubicación activada");
-            emptyView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    UtilMethods.isUbicationPermissionGranted(getActivity());
-                }
-            });
-        }
+
+
     }
+
     @Override
     public void onAttach(Context context) {
         listenerLongClick = (AdvertsRecyclerViewAdapter.OnAdapterItemLongClick) context;
@@ -146,7 +155,7 @@ public class AdvertsRecyclerViewFragment extends Fragment {
         super.onDetach();
     }
 
-    public void disableMultideletion(){
+    public void disableMultideletion() {
         listenerLongClick.desactivarMultiseleccion();
         mAdapter.clearAllSelections();
         mAdapter.disableMultiDeletionMode();
