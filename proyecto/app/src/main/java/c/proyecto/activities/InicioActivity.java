@@ -137,10 +137,4 @@ public class InicioActivity extends AppCompatActivity implements InicioActivityO
         editor.apply();
         super.onBackPressed();
     }
-
-    @Override
-    protected void onDestroy() {
-        presentador.liberarMemoria();
-        super.onDestroy();
-    }
 }

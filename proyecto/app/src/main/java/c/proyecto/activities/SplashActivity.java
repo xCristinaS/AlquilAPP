@@ -128,10 +128,4 @@ public class SplashActivity extends AppCompatActivity implements InicioActivityO
             }
         }
     }
-
-    @Override
-    protected void onDestroy() {
-        mPresenter.liberarMemoria();
-        super.onDestroy();
-    }
 }

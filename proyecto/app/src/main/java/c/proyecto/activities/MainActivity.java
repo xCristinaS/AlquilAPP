@@ -55,6 +55,7 @@ import c.proyecto.fragments.PrincipalFragment;
 import c.proyecto.mvp_models.AdvertsFirebaseManager;
 import c.proyecto.mvp_models.MessagesFirebaseManager;
 import c.proyecto.mvp_models.UsersFirebaseManager;
+import c.proyecto.mvp_presenters.InicioPresenter;
 import c.proyecto.mvp_presenters.MainPresenter;
 import c.proyecto.mvp_views_interfaces.MainActivityOps;
 import c.proyecto.pojo.Anuncio;
@@ -114,6 +115,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
         mSharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         configLocation();
         initViews();
+        InicioPresenter.getPresentador(null).liberarMemoria();
     }
 
     private void initViews() {
