@@ -143,7 +143,7 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
 
     private void checkIfEmpty() {
         if(emptyView != null)
-            emptyView.setVisibility(getItemCount() > 0 ? View.GONE : View.VISIBLE);
+            emptyView.setVisibility(getItemCount() == 0 ? View.VISIBLE : View.GONE);
     }
 
     public void clearAllSelections() {
@@ -160,6 +160,7 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
             int pos = seleccionados.get(i);
             removeItem(pos);
         }
+        checkIfEmpty();
     }
 
     public List<Integer> getSelectedItemsPositions() {
@@ -349,7 +350,8 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
             if (!stop)
                 mDatos.add(0, a);
             notifyItemInserted(mDatos.indexOf(a));
-            notifyDataSetChanged();
+            //notifyDataSetChanged();
+            checkIfEmpty();
         }
     }
 
@@ -358,6 +360,7 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
         mDatos.clear();
         mDatos.addAll(filteredAdverts);
         notifyDataSetChanged();
+        checkIfEmpty();
     }
 
     private void removeItem(int pos) {
@@ -382,7 +385,7 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
                 }
         }
         notifyItemRemoved(pos);
-        notifyDataSetChanged();
+        checkIfEmpty();
     }
 
     public void replaceItem(Anuncio a) {
@@ -392,14 +395,17 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
                 Anuncio aux = mDatos.remove(i);
                 mDatos.add(i, a);
                 stop = true;
+                notifyItemChanged(i);
                 if (aux.getSolicitantes().size() != a.getSolicitantes().size()) {
                     mPresenter.getSolicitantes(null, a); // para actualizar el dialogo de solicitantes.
                     a.setSubsChanged(true);
                 }
             }
-        if (!stop && adapter_type != ADAPTER_TYPE_ADVS)
+        if (!stop && adapter_type != ADAPTER_TYPE_ADVS){
             mDatos.add(a);
-        notifyDataSetChanged();
+            notifyItemInserted(mDatos.indexOf(a));
+        }
+        checkIfEmpty();
     }
 
     public Anuncio getAdvert(int position) {

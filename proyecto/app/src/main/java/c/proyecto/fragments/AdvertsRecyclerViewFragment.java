@@ -10,8 +10,11 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Switch;
+import android.widget.TextView;
 
 import c.proyecto.R;
 import c.proyecto.adapters.AdvertsRecyclerViewAdapter;
@@ -55,7 +58,10 @@ public class AdvertsRecyclerViewFragment extends Fragment {
 
     private void initViews() {
         Bundle args = getArguments();
-        RelativeLayout emptyView = (RelativeLayout) getActivity().findViewById(R.id.emptyView);
+        LinearLayout emptyView = (LinearLayout) getActivity().findViewById(R.id.emptyView);
+        ImageView imgEmptyView = (ImageView) getActivity().findViewById(R.id.imgEmptyView);
+        TextView lblEmptyView = (TextView) getActivity().findViewById(R.id.lblEmptyView);
+
         adapter_type = args.getInt(ARG_ADAPTER_TYPE);
 
         rvLista = (RecyclerView) getView().findViewById(R.id.rvLista);
@@ -71,18 +77,23 @@ public class AdvertsRecyclerViewFragment extends Fragment {
             case AdvertsRecyclerViewAdapter.ADAPTER_TYPE_SUBS:
                 mAdapter.setListenerLongClick(listenerLongClick);
                 mAdapter.setListenerItemClick(listenerItemClick);
+                imgEmptyView.setImageResource(R.drawable.tab_solicitudes);
+                lblEmptyView.setText("Sin solicitudes");
                 break;
             case AdvertsRecyclerViewAdapter.ADAPTER_TYPE_ADVS:
                 mAdapter.setListenerSubsClick(listenerSubClick);
                 mAdapter.setListenerUserSubClick(listenerUserSubClick);
+                imgEmptyView.setImageResource(R.drawable.tab_anuncios);
+                lblEmptyView.setText("Sin anuncios");
                 break;
             case AdvertsRecyclerViewAdapter.ADAPTER_TYPE_MY_ADVS:
                 mAdapter.setListenerLongClick(listenerLongClick);
                 mAdapter.setListenerItemClick(listenerItemClick);
-
+                imgEmptyView.setImageResource(R.drawable.tab_mis_anuncios);
+                lblEmptyView.setText("Sin Mis anuncios");
                 break;
-
         }
+        mAdapter.setEmptyView(emptyView);
     }
 
     @Override
