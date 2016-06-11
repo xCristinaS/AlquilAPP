@@ -85,7 +85,6 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
     private int mAdverType;
     private GoogleMap mGoogleMap;
     private MessagePojo mMessage;
-    private List<DefaultSliderView> sliderImages;
 
     private IDetallesAnuncioFragmentListener mListener;
     private OnDetallesAnuncioFragmentClic mListenerClick;
@@ -116,7 +115,6 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
         mUserAnunciante = getArguments().getParcelable(ARG_USER_ANUNCIANTE);
         mCurrentUser = getArguments().getParcelable(ARG_CURRENT_USER);
         mMessage = getArguments().getParcelable(ARG_MESSAGE);
-        sliderImages = new ArrayList<>();
         initViews();
         confRecyclerview();
         confMap();
@@ -237,12 +235,10 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
                     lista.add(mAnuncio.getImagenes().get(key));
 
             //Introduce imagenes en el slider.
-            vaciarSlider();
             for(String url : lista){
                 defaultSliderView = new DefaultSliderView(getContext());
                 defaultSliderView.image(url).setScaleType(BaseSliderView.ScaleType.CenterCrop);
-                sliderImages.add(defaultSliderView);
-                slider.addSlider(sliderImages.get(sliderImages.size()-1));
+                slider.addSlider(defaultSliderView);
             }
         }
 
@@ -253,12 +249,6 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
                 protected void onTransform(View view, float v) {
                 }
             });
-    }
-
-    private void vaciarSlider() {
-        for (DefaultSliderView sV: sliderImages)
-            sV = null;
-        sliderImages.clear();
     }
 
     private void confRecyclerview() {
@@ -432,8 +422,14 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
         slider.removeAllSliders();
         slider.removeOnPageChangeListener(this);
         slider.destroyDrawingCache();
-        vaciarSlider();
+        slider.removeAllViews();
+        slider.removeAllViewsInLayout();
+        slider = null;
+        groupImagenes.removeAllViews();
+        groupImagenes.removeAllViewsInLayout();
+        groupImagenes = null;
         super.onDetach();
+        System.gc();
     }
 
     public void setmAnuncio(Anuncio anuncio) {
