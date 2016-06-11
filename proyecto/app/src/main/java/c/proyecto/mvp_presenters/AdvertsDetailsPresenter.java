@@ -63,7 +63,7 @@ public class AdvertsDetailsPresenter implements AdvertsDetailsPresenterOps, MyPr
 
     @Override
     public void updateAdvert(Anuncio anuncio) {
-        if (activity.get() != null)
+        if (activity != null && activity.get() != null)
             activity.get().updateAdvert(anuncio);
     }
 
