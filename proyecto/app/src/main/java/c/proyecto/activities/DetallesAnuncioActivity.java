@@ -32,7 +32,7 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
     private static final String EXTRA_ADVERT_TYPE = "advert_type";
     private static final String EXTRA_USER = "user";
 
-    private static AdvertsDetailsPresenter mPresenter;
+    private AdvertsDetailsPresenter mPresenter;
     private Anuncio anuncio;
     private int advertType;
     private Usuario currentUser;
@@ -168,7 +168,7 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
         unregisterReceiver(receiver);
     }
 
-    public static AdvertsDetailsPresenter getmPresenter() {
+    public AdvertsDetailsPresenter getmPresenter() {
         return mPresenter;
     }
 }
