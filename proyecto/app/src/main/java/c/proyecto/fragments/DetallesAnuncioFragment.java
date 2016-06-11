@@ -261,7 +261,6 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
         rvPrestaciones.setItemAnimator(new DefaultItemAnimator());
     }
 
-
     private void confMap() {
         FragmentManager fm = getChildFragmentManager();
         SupportMapFragment mapFragment =  SupportMapFragment.newInstance();
@@ -282,8 +281,7 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
         });
     }
     private void posicionarMapa(){
-        mGoogleMap.clear();
-        //No se le permite al usuario mover el mapa de ninguna forma
+        mGoogleMap.clear(); // No se le permite al usuario mover el mapa de ninguna forma
         mGoogleMap.getUiSettings().setAllGesturesEnabled(false);
         LatLng lat = new LatLng(mAnuncio.getLats().getLatitude(), mAnuncio.getLats().getLongitude());
         mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(lat, Constantes.ZOOM_ANUNCIO_CON_LOCALIZACION));
@@ -418,6 +416,8 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
     public void onDetach() {
         mListener = null;
         mListenerClick = null;
+        for (int i = 0; i < mAnuncio.getImagenes().size(); i++)
+            slider.removeSliderAt(i);
         slider.stopAutoCycle();
         slider.removeAllSliders();
         slider.removeOnPageChangeListener(this);
