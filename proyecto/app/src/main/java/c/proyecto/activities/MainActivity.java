@@ -24,7 +24,6 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.facebook.stetho.common.Util;
 import com.firebase.geofire.GeoLocation;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -49,7 +48,6 @@ import c.proyecto.adapters.MessagesRecyclerViewAdapter;
 import c.proyecto.dialog_fragments.AboutUsDialogFragment;
 import c.proyecto.dialog_fragments.FilterDialogFramgent;
 import c.proyecto.dialog_fragments.SeleccionPrestacionesDialogFragment;
-import c.proyecto.fragments.AdvertsRecyclerViewFragment;
 import c.proyecto.fragments.MessagesFragment;
 import c.proyecto.fragments.PreferencesFragment;
 import c.proyecto.fragments.PrincipalFragment;
@@ -587,14 +585,17 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode){
             case UtilMethods.TAG_LOCATION_PERMISION:
+                Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.frmContenido);
+
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED){
                     mSharedPref.edit().putBoolean(Constantes.KEY_LOCATION_ACTIVED, true).apply();
+                    ((PrincipalFragment) fragment).confEmptyViewsNormales();
                     getAdvertsNearUser();
                 }
                 else{
                     mSharedPref.edit().putBoolean(Constantes.KEY_LOCATION_ACTIVED, false).apply();
-                    if (getSupportFragmentManager().findFragmentById(R.id.frmContenido) instanceof PrincipalFragment)
-                        ((PrincipalFragment) getSupportFragmentManager().findFragmentById(R.id.frmContenido)).confEmptyViews();
+                    if (fragment instanceof PrincipalFragment)
+                        ((PrincipalFragment) fragment).confEmptyViewsSinUbicacion();
                 }
 
 

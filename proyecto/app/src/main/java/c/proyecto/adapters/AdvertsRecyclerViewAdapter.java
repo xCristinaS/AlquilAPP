@@ -416,6 +416,7 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
         setFiltersApplied(false);
         mDatos.clear();
         notifyDataSetChanged();
+        checkIfEmpty();
     }
 
     public void setFiltersApplied(boolean filtersApplied) {

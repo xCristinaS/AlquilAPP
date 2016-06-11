@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.ColorMatrixColorFilter;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -20,6 +21,7 @@ import com.ogaclejapan.smarttablayout.SmartTabLayout;
 
 import java.util.ArrayList;
 
+import c.proyecto.Constantes;
 import c.proyecto.R;
 import c.proyecto.activities.MainActivity;
 import c.proyecto.adapters.CachedFragmentPagerAdapter;
@@ -197,8 +199,11 @@ public class PrincipalFragment extends Fragment {
 
     public void removeFilter() {
         AdvertsRecyclerViewFragment f = (AdvertsRecyclerViewFragment) vpAdapter.getItem(1);
-        if (f.getmAdapter().getAdapter_type() == AdvertsRecyclerViewAdapter.ADAPTER_TYPE_ADVS)
+        if (f.getmAdapter().getAdapter_type() == AdvertsRecyclerViewAdapter.ADAPTER_TYPE_ADVS){
             f.getmAdapter().removeFilter();
+            if(!PreferenceManager.getDefaultSharedPreferences(getContext()).getBoolean(Constantes.KEY_LOCATION_ACTIVED, true))
+                confEmptyViewsSinUbicacion();
+        }
     }
 
 
@@ -268,7 +273,12 @@ public class PrincipalFragment extends Fragment {
         super.onDetach();
     }
 
-    public void confEmptyViews(){
+    public void confEmptyViewsNormales(){
+        ((AdvertsRecyclerViewFragment) vpAdapter.getItem(0)).confEmptyView(R.drawable.tab_solicitudes, "Sin solicitudes");
+        ((AdvertsRecyclerViewFragment) vpAdapter.getItem(1)).confEmptyView(R.drawable.tab_anuncios, "Anuncios no encontrados");
+        ((AdvertsRecyclerViewFragment) vpAdapter.getItem(2)).confEmptyView(R.drawable.tab_mis_anuncios, "Sin mis anuncios");
+    }
+    public void confEmptyViewsSinUbicacion(){
         ((AdvertsRecyclerViewFragment) vpAdapter.getItem(0)).confEmptyView(R.drawable.logo, "Sin ubicación activada");
         ((AdvertsRecyclerViewFragment) vpAdapter.getItem(1)).confEmptyView(R.drawable.logo, "Sin ubicación activada");
         ((AdvertsRecyclerViewFragment) vpAdapter.getItem(2)).confEmptyView(R.drawable.logo, "Sin ubicación activada");
