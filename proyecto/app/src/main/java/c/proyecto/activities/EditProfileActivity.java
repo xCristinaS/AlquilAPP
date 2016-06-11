@@ -282,8 +282,6 @@ public class EditProfileActivity extends AppCompatActivity implements Nacionalid
             }
 
         });
-
-
     }
 
     private void takePhoto() {
@@ -360,7 +358,11 @@ public class EditProfileActivity extends AppCompatActivity implements Nacionalid
                     mPermisoEscrituraAceptado = false;
                 break;
         }
+    }
 
-
+    @Override
+    protected void onDestroy() {
+        mPresenter.liberarMemoria();
+        super.onDestroy();
     }
 }

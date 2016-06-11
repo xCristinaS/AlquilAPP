@@ -138,5 +138,9 @@ public class InicioActivity extends AppCompatActivity implements InicioActivityO
         super.onBackPressed();
     }
 
-
+    @Override
+    protected void onDestroy() {
+        presentador.liberarMemoria();
+        super.onDestroy();
+    }
 }

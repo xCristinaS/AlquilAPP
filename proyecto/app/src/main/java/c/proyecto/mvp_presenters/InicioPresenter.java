@@ -54,4 +54,10 @@ public class InicioPresenter implements InicioPresenterOps, MyPresenter {
     public void signInWithFacebookRequested(String email, String contra) {
         usersManager.signInWithFacebook(email, contra);
     }
+
+    @Override
+    public void liberarMemoria() {
+        activity = null;
+        presentador = null;
+    }
 }

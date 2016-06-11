@@ -267,4 +267,10 @@ public class RegistroActivity extends AppCompatActivity implements RegistroActiv
                 break;
         }
     }
+
+    @Override
+    protected void onDestroy() {
+        presentador.liberarMemoria();
+        super.onDestroy();
+    }
 }

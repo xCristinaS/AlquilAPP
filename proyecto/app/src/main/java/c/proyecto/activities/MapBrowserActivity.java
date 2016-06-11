@@ -150,6 +150,7 @@ public class MapBrowserActivity extends AppCompatActivity implements OnMapReadyC
     @Override
     protected void onDestroy() {
         mPresenter.detachGeolocationListener();
+        mPresenter.liberarMemoria();
         super.onDestroy();
     }
 }

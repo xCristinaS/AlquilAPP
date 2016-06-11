@@ -62,4 +62,10 @@ public class ProfilePresenter implements ProfilePresenterOps, MyPresenter {
     public void sendNewMessage(MessagePojo messagePojo, String keyReceptor) {
         messagesManager.sendMessage(messagePojo, keyReceptor, true);
     }
+
+    @Override
+    public void liberarMemoria() {
+        activity = null;
+        presentador = null;
+    }
 }

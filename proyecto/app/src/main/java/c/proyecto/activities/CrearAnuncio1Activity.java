@@ -229,13 +229,13 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
 
                 imgSeleccionada = img;
                 for (int i = 0; i < imgViews.length; i++)
-                    if(imgViews[i].equals(imgSeleccionada))
+                    if (imgViews[i].equals(imgSeleccionada))
                         prbSeleccionado = prbViews[i];
 
                 //Pedirá los permisos de escritura y lectura en ejecución (API >23)
                 if (Build.VERSION.SDK_INT >= 23)
                     //Si no se han aceptado los permisos no mostrará el diálogo y saldrá del método
-                    if (!UtilMethods.isStoragePermissionGranted(CrearAnuncio1Activity.this) || !mPermisoEscrituraAceptado )
+                    if (!UtilMethods.isStoragePermissionGranted(CrearAnuncio1Activity.this) || !mPermisoEscrituraAceptado)
                         return;
 
 

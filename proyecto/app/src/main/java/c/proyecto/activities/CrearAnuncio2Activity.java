@@ -404,4 +404,10 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
                     break;
             }
     }
+
+    @Override
+    protected void onDestroy() {
+        mPresenter.liberarMemoria();
+        super.onDestroy();
+    }
 }

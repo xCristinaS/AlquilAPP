@@ -54,4 +54,10 @@ public class RegistroPresenter implements RegistroPresenterOps, MyPresenter {
         if (activity.get() != null)
             activity.get().userHasBeenRegistered(u);
     }
+
+    @Override
+    public void liberarMemoria() {
+        activity = null;
+        presentador = null;
+    }
 }

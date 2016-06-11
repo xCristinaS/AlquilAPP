@@ -37,4 +37,10 @@ public class CrearEditarAnuncioPresenter implements CrearEditarAnuncioPresenterO
     public void publishNewAdvert(Anuncio anuncio) {
         advertsManager.publishNewAdvert(anuncio);
     }
+
+    @Override
+    public void liberarMemoria() {
+        activity = null;
+        presentador = null;
+    }
 }

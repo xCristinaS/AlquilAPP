@@ -83,4 +83,9 @@ public class ConversationPresenter implements ConversationPresenterOps, MyPresen
         if (activity.get() != null)
             activity.get().allMessagesObtained();
     }
+
+    public void liberarMemoria() {
+        activity = null;
+        presentador = null;
+    }
 }

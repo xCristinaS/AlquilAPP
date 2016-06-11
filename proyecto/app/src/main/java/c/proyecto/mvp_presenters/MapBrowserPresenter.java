@@ -60,4 +60,10 @@ public class MapBrowserPresenter implements MyPresenter, MapBrowserPresenterOps 
     public void detachGeolocationListener() {
         advertsManager.detachGeolocationMapListener();
     }
+
+    @Override
+    public void liberarMemoria() {
+        activity = null;
+        presentador = null;
+    }
 }

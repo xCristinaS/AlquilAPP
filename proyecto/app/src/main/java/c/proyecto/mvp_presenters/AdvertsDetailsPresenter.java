@@ -92,4 +92,9 @@ public class AdvertsDetailsPresenter implements AdvertsDetailsPresenterOps, MyPr
         if (activity.get() != null)
             activity.get().messageIfConverExistObtained(m);
     }
+
+    public void liberarMemoria(){
+        activity = null;
+        presentador = null;
+    }
 }

@@ -50,6 +50,7 @@ public class LocalizacionActivity extends AppCompatActivity implements OnMapRead
     public static final String EXTRA_ADDRESS = "ExtraAddress";
     private static final String EXTRA_SELECTOR_MODE = "ExtraEditable";
     public static final int RC_ADDRESS = 233;
+
     private TextView lblTitle;
     private AutoCompleteTextView txtDireccion;
     private Toolbar toolbar;
