@@ -25,7 +25,7 @@ public class MapBrowserPresenter implements MyPresenter, MapBrowserPresenterOps 
     public static MapBrowserPresenter getPresentador(Activity a) {
         if (presentador == null)
             presentador = new MapBrowserPresenter(a);
-        else
+        else if (a != null)
             activity = new WeakReference<>((MapBrowserActivity) a);
         return presentador;
     }

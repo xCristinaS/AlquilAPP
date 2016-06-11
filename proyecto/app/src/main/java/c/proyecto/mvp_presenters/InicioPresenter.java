@@ -25,7 +25,7 @@ public class InicioPresenter implements InicioPresenterOps, MyPresenter {
     public static InicioPresenter getPresentador(Activity a) {
         if (presentador == null)
             presentador = new InicioPresenter(a);
-        else
+        else if (a != null)
             activity = new WeakReference<>((MyInicio) a);
         return presentador;
     }

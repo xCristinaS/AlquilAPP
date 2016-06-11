@@ -59,13 +59,13 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
     private List<Anuncio> mDatos;
     private OnAdapterItemLongClick listenerLongClick;
     private OnAdapterItemClick listenerItemClick;
-    private static OnSubsIconClick listenerSubsClick;
-    private static HuespedesAdapter.OnUserSubClick listenerUserSubClick;
+    private OnSubsIconClick listenerSubsClick;
+    private HuespedesAdapter.OnUserSubClick listenerUserSubClick;
     private View emptyView;
     private static MainPresenter mPresenter;
     private SparseBooleanArray mSelectedItems = new SparseBooleanArray();
     private boolean multiDeletionModeActivated = false;
-    private static Usuario user;
+    private Usuario user;
     private boolean filtersApplied;
     private RecyclerView rvSolicitantesDialog;
     private AlertDialog solicitantesDialog;
@@ -173,11 +173,11 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
     }
 
     public void setListenerSubsClick(OnSubsIconClick listenerSubsClick) {
-        AdvertsRecyclerViewAdapter.listenerSubsClick = listenerSubsClick;
+        this.listenerSubsClick = listenerSubsClick;
     }
 
     public void setListenerUserSubClick(HuespedesAdapter.OnUserSubClick listenerUserSubClick) {
-        AdvertsRecyclerViewAdapter.listenerUserSubClick = listenerUserSubClick;
+        this.listenerUserSubClick = listenerUserSubClick;
     }
 
     private static int getAnchoPantalla(Context context) {
@@ -240,7 +240,7 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
         }
     }
 
-    static class MiAnuncioViewHolder extends RecyclerView.ViewHolder {
+    class MiAnuncioViewHolder extends RecyclerView.ViewHolder {
 
         private final LinearLayout groupSuscritos;
         private ImageView imgAvatar, imgSuscritos;

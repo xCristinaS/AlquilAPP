@@ -29,7 +29,7 @@ public class ProfilePresenter implements ProfilePresenterOps, MyPresenter {
     public static ProfilePresenter getPresentador(Activity a) {
         if (presentador == null)
             presentador = new ProfilePresenter(a);
-        else
+        else if (a != null)
             activity = new WeakReference<>(a);
         return presentador;
     }

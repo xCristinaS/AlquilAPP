@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
     private static final String TAG_ABOUT_US = "dialog_fragment_about_us";
     public static final String EXTRA_ANUNCIO_ELIMINADO = "anuncio_eliminado_ext";
 
-    private static MainPresenter mPresenter;
+    private MainPresenter mPresenter;
     private Usuario mUser;
     private DrawerLayout drawer;
     private ActionBarDrawerToggle toggle;
@@ -575,10 +575,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
 
     public Usuario getmUser() {
         return mUser;
-    }
-
-    public static MainPresenter getmPresenter() {
-        return mPresenter;
     }
 
     @Override

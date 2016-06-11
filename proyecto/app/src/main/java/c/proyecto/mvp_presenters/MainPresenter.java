@@ -34,7 +34,7 @@ public class MainPresenter implements MainPresenterOps, MyPresenter {
     public static MainPresenter getPresentador(Activity a) {
         if (presentador == null)
             presentador = new MainPresenter(a);
-        else
+        else if (a != null)
             activity = new WeakReference<>((MainActivity) a);
         return presentador;
     }
