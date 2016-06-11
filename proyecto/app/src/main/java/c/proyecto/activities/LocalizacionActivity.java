@@ -18,6 +18,7 @@ import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -36,6 +37,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Locale;
 
 import c.proyecto.Constantes;
@@ -246,19 +248,28 @@ public class LocalizacionActivity extends AppCompatActivity implements OnMapRead
     private void confirmarCambios() {
         Intent result = new Intent();
         LatLng lat = mGoogleMap.getCameraPosition().target;
+        Address address = getAddress(lat.latitude, lat.longitude);
 
-        //Se devuelve la dirección del lugar seleccionado para su introducción en el EditText pulsado anteriormente.
-        result.putExtra(EXTRA_ADDRESS, getAddress(lat.latitude, lat.longitude));
-        setResult(RESULT_OK, result);
-        finish();
+        if(address == null)
+            Toast.makeText(this, "Esta localización no es válida", Toast.LENGTH_SHORT).show();
+        else{
+            //Se devuelve la dirección del lugar seleccionado para su introducción en el EditText pulsado anteriormente.
+            result.putExtra(EXTRA_ADDRESS, address);
+            setResult(RESULT_OK, result);
+            finish();
+        }
+
     }
 
     private Address getAddress(double latitude, double longitude){
         Geocoder geo = new Geocoder(this, Locale.getDefault());
+        List<Address> addresses;
         Address address = null;
 
         try {
-            address = geo.getFromLocation(latitude, longitude, 1).get(0);
+            addresses = geo.getFromLocation(latitude, longitude, 1);
+            if(addresses.size() > 0)
+                address = addresses.get(0);
         } catch (IOException e) {
             e.printStackTrace();
         }
