@@ -56,5 +56,7 @@ public final class Constantes {
     public static final String URL_USERS = URL_MAIN_FIREBASE + "usuarios/";
 
 
+    //ESCALADO
+    public static final int FACTOR_ESCALADO = 280;
 }
 

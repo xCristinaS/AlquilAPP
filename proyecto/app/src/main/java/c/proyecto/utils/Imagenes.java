@@ -21,6 +21,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.lang.ref.WeakReference;
 
+import c.proyecto.Constantes;
 import c.proyecto.R;
 import c.proyecto.activities.CrearAnuncio1Activity;
 
@@ -51,8 +52,8 @@ public final class Imagenes {
         int anchoFoto = opciones.outWidth;
         int altoFoto = opciones.outHeight;
         // Se obtiene el factor de escalado para la imagen.
-        int factorEscalado = Math.min(anchoFoto / width,
-                altoFoto / height);
+        int factorEscalado = Math.min(anchoFoto / Constantes.FACTOR_ESCALADO,
+                altoFoto / Constantes.FACTOR_ESCALADO);
         // Se escala la imagen con dicho factor de escalado.
         opciones.inJustDecodeBounds = false; // Se escalará.
         opciones.inSampleSize = factorEscalado;
