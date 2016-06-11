@@ -29,7 +29,7 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
     private static final String EXTRA_ADVERT_TYPE = "advert_type";
     private static final String EXTRA_USER = "user";
 
-    private static AdvertsDetailsPresenter mPresenter;
+    private AdvertsDetailsPresenter mPresenter;
     private Anuncio anuncio;
     private int advertType;
     private Usuario currentUser;
@@ -50,7 +50,6 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detalles_anuncio);
         currentUser = getIntent().getParcelableExtra(EXTRA_USER);
-
 
         receiverAnuncioEliminado = new BroadcastReceiver() {
             @Override
@@ -81,7 +80,6 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
         mPresenter.getMessageIfConverExist(anuncio);
 
         configToolbar();
-
     }
 
     private void configToolbar() {
@@ -179,7 +177,7 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
         unregisterReceiver(receiverAnuncioModificado);
     }
 
-    public static AdvertsDetailsPresenter getmPresenter() {
+    public AdvertsDetailsPresenter getmPresenter() {
         return mPresenter;
     }
 }

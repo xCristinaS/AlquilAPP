@@ -29,7 +29,7 @@ public class ProfilePresenter implements ProfilePresenterOps, MyPresenter {
     public static ProfilePresenter getPresentador(Activity a) {
         if (presentador == null)
             presentador = new ProfilePresenter(a);
-        else
+        else if (a != null)
             activity = new WeakReference<>(a);
         return presentador;
     }
@@ -61,5 +61,11 @@ public class ProfilePresenter implements ProfilePresenterOps, MyPresenter {
     @Override
     public void sendNewMessage(MessagePojo messagePojo, String keyReceptor) {
         messagesManager.sendMessage(messagePojo, keyReceptor, true);
+    }
+
+    @Override
+    public void liberarMemoria() {
+        activity = null;
+        presentador = null;
     }
 }

@@ -28,7 +28,7 @@ public class CrearEditarAnuncioPresenter implements CrearEditarAnuncioPresenterO
     public static CrearEditarAnuncioPresenter getPresentador(Activity a) {
         if (presentador == null)
             presentador = new CrearEditarAnuncioPresenter(a);
-        else
+        else if (a != null)
             activity = new WeakReference<>((CrearAnuncio2Activity) a);
         return presentador;
     }
@@ -36,5 +36,11 @@ public class CrearEditarAnuncioPresenter implements CrearEditarAnuncioPresenterO
     @Override
     public void publishNewAdvert(Anuncio anuncio) {
         advertsManager.publishNewAdvert(anuncio);
+    }
+
+    @Override
+    public void liberarMemoria() {
+        activity = null;
+        presentador = null;
     }
 }

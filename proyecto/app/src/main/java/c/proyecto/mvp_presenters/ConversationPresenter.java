@@ -28,7 +28,7 @@ public class ConversationPresenter implements ConversationPresenterOps, MyPresen
     public static ConversationPresenter getPresentador(Activity a) {
         if (presentador == null)
             presentador = new ConversationPresenter(a);
-        else
+        else if (a != null)
             activity = new WeakReference<>((ConversationActivity) a);
         return presentador;
     }
@@ -82,5 +82,10 @@ public class ConversationPresenter implements ConversationPresenterOps, MyPresen
     public void allMessagesObtained() {
         if (activity.get() != null)
             activity.get().allMessagesObtained();
+    }
+
+    public void liberarMemoria() {
+        activity = null;
+        presentador = null;
     }
 }

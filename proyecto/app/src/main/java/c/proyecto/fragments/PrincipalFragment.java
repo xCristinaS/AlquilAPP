@@ -39,8 +39,8 @@ public class PrincipalFragment extends Fragment {
         void showMapIcon();
     }
 
-    private static MainPresenter mPresenter;
-    private static Usuario user;
+    private MainPresenter mPresenter;
+    private Usuario user;
     private SectionsPagerAdapter vpAdapter;
     private ViewPager viewPager;
     private TabLayout tabLayout;
@@ -55,7 +55,7 @@ public class PrincipalFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mPresenter = MainPresenter.getPresentador(getActivity());
+        mPresenter = MainPresenter.getPresentador(null);
         user = ((MainActivity) getActivity()).getmUser();
         confViewPager();
 

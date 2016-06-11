@@ -34,7 +34,7 @@ public class MainPresenter implements MainPresenterOps, MyPresenter {
     public static MainPresenter getPresentador(Activity a) {
         if (presentador == null)
             presentador = new MainPresenter(a);
-        else
+        else if (a != null)
             activity = new WeakReference<>((MainActivity) a);
         return presentador;
     }
@@ -200,9 +200,14 @@ public class MainPresenter implements MainPresenterOps, MyPresenter {
             activity.get().allMessagesObtained();
     }
 
-    @Override
     public void sendAdvertHasBeenModifiedBroadcast(Anuncio a) {
         if (activity.get() != null)
             activity.get().sendAdvertHasBeenModifiedBroadcast(a);
+    }
+
+    @Override
+    public void liberarMemoria() {
+        activity = null;
+        presentador = null;
     }
 }

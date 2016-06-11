@@ -19,7 +19,7 @@ public class RegistroPresenter implements RegistroPresenterOps, MyPresenter {
     public static RegistroPresenter getPresentador(Activity activity) {
         if (presentador == null)
             presentador = new RegistroPresenter(activity);
-        else
+        else if (activity != null)
             RegistroPresenter.activity = new WeakReference<>((RegistroActivity) activity);
 
         return presentador;
@@ -53,5 +53,11 @@ public class RegistroPresenter implements RegistroPresenterOps, MyPresenter {
     public void userHasBeenCreated(Object u) {
         if (activity.get() != null)
             activity.get().userHasBeenRegistered(u);
+    }
+
+    @Override
+    public void liberarMemoria() {
+        activity = null;
+        presentador = null;
     }
 }

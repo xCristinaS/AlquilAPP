@@ -137,6 +137,4 @@ public class InicioActivity extends AppCompatActivity implements InicioActivityO
         editor.apply();
         super.onBackPressed();
     }
-
-
 }

@@ -188,4 +188,9 @@ public class VerPerfilActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onDestroy() {
+        mPresenter.liberarMemoria();
+        super.onDestroy();
+    }
 }

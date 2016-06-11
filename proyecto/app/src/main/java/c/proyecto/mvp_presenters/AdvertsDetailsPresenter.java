@@ -29,7 +29,7 @@ public class AdvertsDetailsPresenter implements AdvertsDetailsPresenterOps, MyPr
     public static AdvertsDetailsPresenter getPresentador(Activity a) {
         if (presentador == null)
             presentador = new AdvertsDetailsPresenter(a);
-        else
+        else if (a != null)
             activity = new WeakReference<>((DetallesAnuncioActivity) a);
         return presentador;
     }
@@ -63,7 +63,7 @@ public class AdvertsDetailsPresenter implements AdvertsDetailsPresenterOps, MyPr
 
     @Override
     public void updateAdvert(Anuncio anuncio) {
-        if (activity.get() != null)
+        if (activity != null && activity.get() != null)
             activity.get().updateAdvert(anuncio);
     }
 
@@ -91,5 +91,10 @@ public class AdvertsDetailsPresenter implements AdvertsDetailsPresenterOps, MyPr
     public void messageIfConverExistObtained(MessagePojo m) {
         if (activity.get() != null)
             activity.get().messageIfConverExistObtained(m);
+    }
+
+    public void liberarMemoria(){
+        activity = null;
+        presentador = null;
     }
 }

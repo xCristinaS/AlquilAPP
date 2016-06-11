@@ -56,6 +56,8 @@ import c.proyecto.fragments.PrincipalFragment;
 import c.proyecto.mvp_models.AdvertsFirebaseManager;
 import c.proyecto.mvp_models.MessagesFirebaseManager;
 import c.proyecto.mvp_models.UsersFirebaseManager;
+import c.proyecto.mvp_presenters.AdvertsDetailsPresenter;
+import c.proyecto.mvp_presenters.InicioPresenter;
 import c.proyecto.mvp_presenters.MainPresenter;
 import c.proyecto.mvp_views_interfaces.MainActivityOps;
 import c.proyecto.pojo.Anuncio;
@@ -78,7 +80,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
     public static final String EXTRA_ANUNCIO_ELIMINADO = "anuncio_eliminado_ext";
     public static final String ACTION_ANUNCIO_MODIFICADO = "anuncio_modificado_ext";
 
-    private static MainPresenter mPresenter;
+    private MainPresenter mPresenter;
     private Usuario mUser;
     private DrawerLayout drawer;
     private ActionBarDrawerToggle toggle;
@@ -116,6 +118,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
         mSharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         configLocation();
         initViews();
+        InicioPresenter.getPresentador(null).liberarMemoria();
     }
 
     private void initViews() {
@@ -560,6 +563,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
     @Override
     protected void onDestroy() {
         mPresenter.detachListeners();
+        mPresenter.liberarMemoria();
+        AdvertsDetailsPresenter.getPresentador(null).liberarMemoria();
         if (mGoogleApiClient != null) {
             if (mLocationListener != null)
                 LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, mLocationListener);
@@ -580,10 +585,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
 
     public Usuario getmUser() {
         return mUser;
-    }
-
-    public static MainPresenter getmPresenter() {
-        return mPresenter;
     }
 
     @Override

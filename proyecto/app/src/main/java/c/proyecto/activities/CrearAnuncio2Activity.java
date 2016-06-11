@@ -33,6 +33,7 @@ import c.proyecto.api.ImgurUploader;
 import c.proyecto.dialog_fragments.SeleccionPrestacionesDialogFragment;
 import c.proyecto.interfaces.MyPresenter;
 import c.proyecto.mvp_models.AdvertsFirebaseManager;
+import c.proyecto.mvp_presenters.AdvertsDetailsPresenter;
 import c.proyecto.pojo.Anuncio;
 import c.proyecto.pojo.MyLatLng;
 import c.proyecto.pojo.Usuario;
@@ -307,7 +308,7 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
                 //Subir las imagenes a la api de imágenes.
                 ArrayList<MyPresenter> presenters = new ArrayList<>();
                 presenters.add(mPresenter);
-                presenters.add(DetallesAnuncioActivity.getmPresenter());
+                presenters.add(AdvertsDetailsPresenter.getPresentador(null));
                 new ImgurUploader(imagenesAnuncio, mAnuncio, presenters).upload();
             }
             //Guardar todos los editText en el objeto anuncio.
@@ -402,5 +403,11 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
                     mAnuncio.setLats(new MyLatLng(address.getLatitude(), address.getLongitude()));
                     break;
             }
+    }
+
+    @Override
+    protected void onDestroy() {
+        mPresenter.liberarMemoria();
+        super.onDestroy();
     }
 }

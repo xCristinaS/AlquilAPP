@@ -59,12 +59,13 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
     private List<Anuncio> mDatos;
     private OnAdapterItemLongClick listenerLongClick;
     private OnAdapterItemClick listenerItemClick;
-    private static OnSubsIconClick listenerSubsClick;
-    private static HuespedesAdapter.OnUserSubClick listenerUserSubClick;
+    private OnSubsIconClick listenerSubsClick;
+    private HuespedesAdapter.OnUserSubClick listenerUserSubClick;
     private View emptyView;
-    private static MainPresenter mPresenter;
+    private MainPresenter mPresenter;
     private SparseBooleanArray mSelectedItems = new SparseBooleanArray();
     private boolean multiDeletionModeActivated = false;
+    private Usuario user;
     private boolean filtersApplied;
     private RecyclerView rvSolicitantes;
     private AlertDialog solicitantesDialog;
@@ -171,11 +172,11 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
     }
 
     public void setListenerSubsClick(OnSubsIconClick listenerSubsClick) {
-        AdvertsRecyclerViewAdapter.listenerSubsClick = listenerSubsClick;
+        this.listenerSubsClick = listenerSubsClick;
     }
 
     public void setListenerUserSubClick(HuespedesAdapter.OnUserSubClick listenerUserSubClick) {
-        AdvertsRecyclerViewAdapter.listenerUserSubClick = listenerUserSubClick;
+        this.listenerUserSubClick = listenerUserSubClick;
     }
 
     private static int getAnchoPantalla(Context context) {
@@ -199,7 +200,7 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
 
 
     /////////////////////////////////////////////    VIEWHOLDERS    //////////////////////////////////////////////
-    static class AnuncioViewHolder extends RecyclerView.ViewHolder {
+    class AnuncioViewHolder extends RecyclerView.ViewHolder {
 
         private ImageView imgAvatar;
         private ProgressBar prbAnuncio;
@@ -238,7 +239,7 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
         }
     }
 
-    static class MiAnuncioViewHolder extends RecyclerView.ViewHolder {
+    class MiAnuncioViewHolder extends RecyclerView.ViewHolder {
 
         private final LinearLayout groupSuscritos;
         private ImageView imgAvatar, imgSuscritos;
@@ -426,7 +427,7 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
         this.filtersApplied = filtersApplied;
     }
 
-    private static class ImageLoadedCallback implements Callback {
+    private class ImageLoadedCallback implements Callback {
         ProgressBar progressBar;
 
         public ImageLoadedCallback(ProgressBar progBar) {

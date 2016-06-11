@@ -35,8 +35,10 @@ import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
+import java.util.List;
 
 import c.proyecto.Constantes;
 import c.proyecto.R;
@@ -220,6 +222,7 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
         slider.startAutoCycle(Constantes.DELAY_TIME, Constantes.DURATION, false);
         slider.getPagerIndicator().destroySelf();
         slider.addOnPageChangeListener(this);
+        slider.setWillNotCacheDrawing(true);
 
         DefaultSliderView defaultSliderView;
         LinkedList<String> lista = new LinkedList<>();
@@ -258,7 +261,6 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
         rvPrestaciones.setItemAnimator(new DefaultItemAnimator());
     }
 
-
     private void confMap() {
         FragmentManager fm = getChildFragmentManager();
         SupportMapFragment mapFragment =  SupportMapFragment.newInstance();
@@ -279,8 +281,7 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
         });
     }
     private void posicionarMapa(){
-        mGoogleMap.clear();
-        //No se le permite al usuario mover el mapa de ninguna forma
+        mGoogleMap.clear(); // No se le permite al usuario mover el mapa de ninguna forma
         mGoogleMap.getUiSettings().setAllGesturesEnabled(false);
         LatLng lat = new LatLng(mAnuncio.getLats().getLatitude(), mAnuncio.getLats().getLongitude());
         mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(lat, Constantes.ZOOM_ANUNCIO_CON_LOCALIZACION));
@@ -415,8 +416,20 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
     public void onDetach() {
         mListener = null;
         mListenerClick = null;
+        for (int i = 0; i < mAnuncio.getImagenes().size(); i++)
+            slider.removeSliderAt(i);
         slider.stopAutoCycle();
+        slider.removeAllSliders();
+        slider.removeOnPageChangeListener(this);
+        slider.destroyDrawingCache();
+        slider.removeAllViews();
+        slider.removeAllViewsInLayout();
+        slider = null;
+        groupImagenes.removeAllViews();
+        groupImagenes.removeAllViewsInLayout();
+        groupImagenes = null;
         super.onDetach();
+        System.gc();
     }
 
     public void setmAnuncio(Anuncio anuncio) {
