@@ -136,6 +136,16 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
         }
     }
 
+    public void setEmptyView(View emptyView){
+        this.emptyView = emptyView;
+        checkIfEmpty();
+    }
+
+    private void checkIfEmpty() {
+        if(emptyView != null)
+            emptyView.setVisibility(getItemCount() > 0 ? View.GONE : View.VISIBLE);
+    }
+
     public void clearAllSelections() {
         if (mSelectedItems.size() > 0) {
             mSelectedItems.clear();

@@ -10,6 +10,8 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
+import android.widget.Switch;
 
 import c.proyecto.R;
 import c.proyecto.adapters.AdvertsRecyclerViewAdapter;
@@ -53,6 +55,7 @@ public class AdvertsRecyclerViewFragment extends Fragment {
 
     private void initViews() {
         Bundle args = getArguments();
+        RelativeLayout emptyView = (RelativeLayout) getActivity().findViewById(R.id.emptyView);
         adapter_type = args.getInt(ARG_ADAPTER_TYPE);
 
         rvLista = (RecyclerView) getView().findViewById(R.id.rvLista);
@@ -63,12 +66,22 @@ public class AdvertsRecyclerViewFragment extends Fragment {
         rvLista.setLayoutManager(mLayoutManager);
         rvLista.setItemAnimator(new DefaultItemAnimator());
         mAdapter.setListenerItemClick(listenerItemClick);
-        if (adapter_type == AdvertsRecyclerViewAdapter.ADAPTER_TYPE_MY_ADVS || adapter_type == AdvertsRecyclerViewAdapter.ADAPTER_TYPE_SUBS) {
-            mAdapter.setListenerLongClick(listenerLongClick);
-            mAdapter.setListenerItemClick(listenerItemClick);
-        } else {
-            mAdapter.setListenerSubsClick(listenerSubClick);
-            mAdapter.setListenerUserSubClick(listenerUserSubClick);
+
+        switch (adapter_type){
+            case AdvertsRecyclerViewAdapter.ADAPTER_TYPE_SUBS:
+                mAdapter.setListenerLongClick(listenerLongClick);
+                mAdapter.setListenerItemClick(listenerItemClick);
+                break;
+            case AdvertsRecyclerViewAdapter.ADAPTER_TYPE_ADVS:
+                mAdapter.setListenerSubsClick(listenerSubClick);
+                mAdapter.setListenerUserSubClick(listenerUserSubClick);
+                break;
+            case AdvertsRecyclerViewAdapter.ADAPTER_TYPE_MY_ADVS:
+                mAdapter.setListenerLongClick(listenerLongClick);
+                mAdapter.setListenerItemClick(listenerItemClick);
+
+                break;
+
         }
     }
 
