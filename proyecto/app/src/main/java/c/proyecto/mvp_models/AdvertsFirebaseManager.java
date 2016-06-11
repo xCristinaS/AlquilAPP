@@ -32,10 +32,10 @@ public class AdvertsFirebaseManager {
     private static final String URL_SOLICITUDES = "https://proyectofinaldam.firebaseio.com/solicitudes/";
     private static final String URL_LOCATIONS = "https://proyectofinaldam.firebaseio.com/Locations/";
 
-    private static boolean userSubRemoved = false;
-    private static Firebase mFirebase;
-    private static ChildEventListener listener;
-    private static GeoQuery geoQueryAdverts, geoQueryLocations;
+    private boolean userSubRemoved = false;
+    private Firebase mFirebase;
+    private ChildEventListener listener;
+    private GeoQuery geoQueryAdverts, geoQueryLocations;
 
     private Usuario currentUser;
     private MyPresenter presenter;

@@ -25,8 +25,8 @@ import c.proyecto.pojo.Usuario;
 public class UsersFirebaseManager {
 
     private MyPresenter presenter;
-    private static Firebase mFirebase;
-    private static ValueEventListener listener;
+    private Firebase mFirebase;
+    private ValueEventListener listener;
 
     public UsersFirebaseManager(MyPresenter presenter) {
         this.presenter = presenter;

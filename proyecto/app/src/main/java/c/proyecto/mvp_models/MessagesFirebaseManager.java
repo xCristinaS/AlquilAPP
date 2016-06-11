@@ -30,14 +30,14 @@ public class MessagesFirebaseManager {
     private static final String URL_USERS = "https://proyectofinaldam.firebaseio.com/usuarios/";
     private static final int MESSAGES_LIMIT_CONVER = 20;
 
-    private static Firebase mFirebaseReceivedMessages, mFirebaseConversations, mFirebaseMessagesWithoutAnswer;
-    private static ValueEventListener mListenerMessagesWithoutAnswer;
-    private static ChildEventListener mListenerConversation, mListenerReceivedMessages;
+    private Firebase mFirebaseReceivedMessages, mFirebaseConversations, mFirebaseMessagesWithoutAnswer;
+    private ValueEventListener mListenerMessagesWithoutAnswer;
+    private ChildEventListener mListenerConversation, mListenerReceivedMessages;
     private HashMap<Query, ChildEventListener> listenersInternosConvers, listenersInternosMessagesSinResp, listenerInternosMessages;
 
     private MyPresenter presenter;
     private Usuario currentUser;
-    private static String lastEmisor_titleAdvert, lastMessageWithoutAnswerSended;
+    private String lastEmisor_titleAdvert, lastMessageWithoutAnswerSended;
     private boolean messagesWithoutAnswerConsulted, receivedMessagesConsulted;
 
     public MessagesFirebaseManager(MyPresenter presenter, Usuario currentUser) {

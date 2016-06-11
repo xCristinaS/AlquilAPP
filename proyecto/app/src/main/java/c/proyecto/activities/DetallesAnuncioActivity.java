@@ -54,7 +54,6 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
         setContentView(R.layout.activity_detalles_anuncio);
         currentUser = getIntent().getParcelableExtra(EXTRA_USER);
 
-
         receiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -73,7 +72,6 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
         mPresenter.getMessageIfConverExist(anuncio);
 
         configToolbar();
-
     }
 
     private void configToolbar() {
