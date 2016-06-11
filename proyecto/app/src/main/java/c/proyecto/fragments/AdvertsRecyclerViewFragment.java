@@ -63,13 +63,12 @@ public class AdvertsRecyclerViewFragment extends Fragment {
         rvLista.setLayoutManager(mLayoutManager);
         rvLista.setItemAnimator(new DefaultItemAnimator());
         mAdapter.setListenerItemClick(listenerItemClick);
-        if (adapter_type == AdvertsRecyclerViewAdapter.ADAPTER_TYPE_MY_ADVS || adapter_type == AdvertsRecyclerViewAdapter.ADAPTER_TYPE_SUBS) {
+        if (adapter_type == AdvertsRecyclerViewAdapter.ADAPTER_TYPE_MY_ADVS) {
             mAdapter.setListenerLongClick(listenerLongClick);
-            mAdapter.setListenerItemClick(listenerItemClick);
-        } else {
             mAdapter.setListenerSubsClick(listenerSubClick);
             mAdapter.setListenerUserSubClick(listenerUserSubClick);
-        }
+        } else if (adapter_type == AdvertsRecyclerViewAdapter.ADAPTER_TYPE_SUBS)
+            mAdapter.setListenerLongClick(listenerLongClick);
     }
 
     @Override
