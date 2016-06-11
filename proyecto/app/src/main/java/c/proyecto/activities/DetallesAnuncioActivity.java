@@ -169,12 +169,6 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
     public AdvertsDetailsPresenter getmPresenter() {
         return mPresenter;
     }
-
-    @Override
-    protected void onDestroy() {
-        mPresenter.liberarMemoria();
-        super.onDestroy();
-    }
 }
 
 

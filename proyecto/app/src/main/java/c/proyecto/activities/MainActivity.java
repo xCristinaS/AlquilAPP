@@ -55,6 +55,7 @@ import c.proyecto.fragments.PrincipalFragment;
 import c.proyecto.mvp_models.AdvertsFirebaseManager;
 import c.proyecto.mvp_models.MessagesFirebaseManager;
 import c.proyecto.mvp_models.UsersFirebaseManager;
+import c.proyecto.mvp_presenters.AdvertsDetailsPresenter;
 import c.proyecto.mvp_presenters.InicioPresenter;
 import c.proyecto.mvp_presenters.MainPresenter;
 import c.proyecto.mvp_views_interfaces.MainActivityOps;
@@ -558,6 +559,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
     protected void onDestroy() {
         mPresenter.detachListeners();
         mPresenter.liberarMemoria();
+        AdvertsDetailsPresenter.getPresentador(null).liberarMemoria();
         if (mGoogleApiClient != null) {
             if (mLocationListener != null)
                 LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, mLocationListener);
