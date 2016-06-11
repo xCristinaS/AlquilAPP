@@ -38,6 +38,9 @@ public class AdvertsRecyclerViewFragment extends Fragment {
     private AdvertsRecyclerViewAdapter.OnSubsIconClick listenerSubClick;
     private HuespedesAdapter.OnUserSubClick listenerUserSubClick;
     private int adapter_type;
+    private ImageView imgEmptyView;
+    private TextView lblEmptyView;
+    private LinearLayout emptyView;
 
     public static AdvertsRecyclerViewFragment newInstance(int adapter_type) {
         Bundle args = new Bundle();
@@ -62,9 +65,9 @@ public class AdvertsRecyclerViewFragment extends Fragment {
     private void initViews() {
         Bundle args = getArguments();
         int idDrawable = 0;
-        LinearLayout emptyView = (LinearLayout) getView().findViewById(R.id.emptyView);
-        ImageView imgEmptyView = (ImageView) getView().findViewById(R.id.imgEmptyView);
-        TextView lblEmptyView = (TextView) getView().findViewById(R.id.lblEmptyView);
+        emptyView = (LinearLayout) getView().findViewById(R.id.emptyView);
+        imgEmptyView = (ImageView) getView().findViewById(R.id.imgEmptyView);
+        lblEmptyView = (TextView) getView().findViewById(R.id.lblEmptyView);
 
         adapter_type = args.getInt(ARG_ADAPTER_TYPE);
 
@@ -97,15 +100,17 @@ public class AdvertsRecyclerViewFragment extends Fragment {
                 lblEmptyView.setText("Sin Mis anuncios");
                 break;
         }
+        mAdapter.setEmptyView(emptyView);
         //Si tiene activado la localización
-        if(getActivity().getSharedPreferences(Constantes.NOMBRE_PREFERENCIAS, Context.MODE_PRIVATE).getBoolean(Constantes.KEY_LOCATION_ACTIVED, false))
+        //Default true --> Por si el dispositivo es menor a la API 23, no tendrá esta preferencia ya que no se le pedirá el permiso en ejecución
+        if(getActivity().getSharedPreferences(Constantes.NOMBRE_PREFERENCIAS, Context.MODE_PRIVATE).getBoolean(Constantes.KEY_LOCATION_ACTIVED, true))
             imgEmptyView.setImageResource(idDrawable);
-        else
+        else{
             imgEmptyView.setImageResource(R.drawable.logo);
-        
+        }
+
         imgEmptyView.setColorFilter(getResources().getColor(R.color.colorAccent));
 
-        mAdapter.setEmptyView(emptyView);
     }
 
     @Override
