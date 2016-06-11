@@ -199,4 +199,10 @@ public class MainPresenter implements MainPresenterOps, MyPresenter {
         if (activity.get() != null)
             activity.get().allMessagesObtained();
     }
+
+    @Override
+    public void sendAdvertHasBeenModifiedBroadcast(Anuncio a) {
+        if (activity.get() != null)
+            activity.get().sendAdvertHasBeenModifiedBroadcast(a);
+    }
 }

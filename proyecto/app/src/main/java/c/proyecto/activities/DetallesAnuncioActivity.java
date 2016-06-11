@@ -9,9 +9,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.FrameLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import c.proyecto.R;
@@ -36,7 +33,7 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
     private Anuncio anuncio;
     private int advertType;
     private Usuario currentUser;
-    private BroadcastReceiver receiver;
+    private BroadcastReceiver receiverAnuncioEliminado, receiverAnuncioModificado;
     private MessagePojo messagePojoAux;
     private Toolbar toolbar;
 
@@ -55,12 +52,23 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
         currentUser = getIntent().getParcelableExtra(EXTRA_USER);
 
 
-        receiver = new BroadcastReceiver() {
+        receiverAnuncioEliminado = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 Anuncio a = intent.getParcelableExtra(MainActivity.EXTRA_ANUNCIO_ELIMINADO);
                 if (anuncio.getKey().equals(a.getKey()))
                     showAdvertHasBeenRemovedDialog();
+            }
+        };
+
+        receiverAnuncioModificado = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                Anuncio a = intent.getParcelableExtra(MainActivity.EXTRA_ANUNCIO_ELIMINADO);
+                if (anuncio.getKey().equals(a.getKey())) {
+                    anuncio = a;
+                    updateAdvert(anuncio);
+                }
             }
         };
 
@@ -159,13 +167,16 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
     protected void onResume() {
         super.onResume();
         IntentFilter filtro = new IntentFilter(MainActivity.ACTION_ANUNCIO_ELIMINADO);
-        registerReceiver(receiver, filtro);
+        registerReceiver(receiverAnuncioEliminado, filtro);
+        IntentFilter filtro2 = new IntentFilter(MainActivity.ACTION_ANUNCIO_MODIFICADO);
+        registerReceiver(receiverAnuncioModificado, filtro2);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        unregisterReceiver(receiver);
+        unregisterReceiver(receiverAnuncioEliminado);
+        unregisterReceiver(receiverAnuncioModificado);
     }
 
     public static AdvertsDetailsPresenter getmPresenter() {

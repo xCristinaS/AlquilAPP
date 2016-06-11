@@ -38,4 +38,5 @@ public interface MainPresenterOps {
     void updateAdvert(Anuncio anuncio);
     void detachGeoAdvertsLocationListener();
     void allMessagesObtained();
+    void sendAdvertHasBeenModifiedBroadcast(Anuncio a);
 }

@@ -147,6 +147,7 @@ public class AdvertsFirebaseManager {
                         ((MainPresenter) presenter).adverHasBeenModified(a);
 
                     userSubRemoved = false;
+                    ((MainPresenter) presenter).sendAdvertHasBeenModifiedBroadcast(a);
                 }
 
                 @Override
