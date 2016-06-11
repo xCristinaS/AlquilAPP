@@ -49,6 +49,7 @@ import c.proyecto.adapters.MessagesRecyclerViewAdapter;
 import c.proyecto.dialog_fragments.AboutUsDialogFragment;
 import c.proyecto.dialog_fragments.FilterDialogFramgent;
 import c.proyecto.dialog_fragments.SeleccionPrestacionesDialogFragment;
+import c.proyecto.fragments.AdvertsRecyclerViewFragment;
 import c.proyecto.fragments.MessagesFragment;
 import c.proyecto.fragments.PreferencesFragment;
 import c.proyecto.fragments.PrincipalFragment;
@@ -590,8 +591,14 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
                     mSharedPref.edit().putBoolean(Constantes.KEY_LOCATION_ACTIVED, true).apply();
                     getAdvertsNearUser();
                 }
-                else
+                else{
                     mSharedPref.edit().putBoolean(Constantes.KEY_LOCATION_ACTIVED, false).apply();
+                    if (getSupportFragmentManager().findFragmentById(R.id.frmContenido) instanceof PrincipalFragment)
+                        ((PrincipalFragment) getSupportFragmentManager().findFragmentById(R.id.frmContenido)).confEmptyViews();
+                }
+
+
+
                 break;
         }
     }

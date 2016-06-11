@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -23,6 +24,7 @@ import c.proyecto.R;
 import c.proyecto.adapters.AdvertsRecyclerViewAdapter;
 import c.proyecto.adapters.HuespedesAdapter;
 import c.proyecto.mvp_presenters.MainPresenter;
+import c.proyecto.utils.UtilMethods;
 
 
 public class AdvertsRecyclerViewFragment extends Fragment {
@@ -65,6 +67,7 @@ public class AdvertsRecyclerViewFragment extends Fragment {
     private void initViews() {
         Bundle args = getArguments();
         int idDrawable = 0;
+        String textEmptyView = "";
         emptyView = (LinearLayout) getView().findViewById(R.id.emptyView);
         imgEmptyView = (ImageView) getView().findViewById(R.id.imgEmptyView);
         lblEmptyView = (TextView) getView().findViewById(R.id.lblEmptyView);
@@ -85,34 +88,45 @@ public class AdvertsRecyclerViewFragment extends Fragment {
                 mAdapter.setListenerLongClick(listenerLongClick);
                 mAdapter.setListenerItemClick(listenerItemClick);
                 idDrawable = R.drawable.tab_solicitudes;
-                lblEmptyView.setText("Sin suscribciones");
+                textEmptyView = "Sin suscribciones";
                 break;
             case AdvertsRecyclerViewAdapter.ADAPTER_TYPE_ADVS:
                 mAdapter.setListenerSubsClick(listenerSubClick);
                 mAdapter.setListenerUserSubClick(listenerUserSubClick);
                 idDrawable = R.drawable.tab_anuncios;
-                lblEmptyView.setText("Sin anuncios");
+                textEmptyView = "Sin anuncios";
                 break;
             case AdvertsRecyclerViewAdapter.ADAPTER_TYPE_MY_ADVS:
                 mAdapter.setListenerLongClick(listenerLongClick);
                 mAdapter.setListenerItemClick(listenerItemClick);
                 idDrawable = R.drawable.tab_mis_anuncios;
-                lblEmptyView.setText("Sin Mis anuncios");
+                textEmptyView = "Sin Mis anuncios";
                 break;
         }
         mAdapter.setEmptyView(emptyView);
-        //Si tiene activado la localización
-        //Default true --> Por si el dispositivo es menor a la API 23, no tendrá esta preferencia ya que no se le pedirá el permiso en ejecución
-        if(getActivity().getSharedPreferences(Constantes.NOMBRE_PREFERENCIAS, Context.MODE_PRIVATE).getBoolean(Constantes.KEY_LOCATION_ACTIVED, true))
-            imgEmptyView.setImageResource(idDrawable);
-        else{
-            imgEmptyView.setImageResource(R.drawable.logo);
-        }
 
+        confEmptyView(idDrawable,textEmptyView);
         imgEmptyView.setColorFilter(getResources().getColor(R.color.colorAccent));
 
     }
 
+    public void confEmptyView(int idDrawable, String textEmptyView){
+        //Si tiene activado la localización
+        //Default true --> Por si el dispositivo es menor a la API 23, no tendrá esta preferencia ya que no se le pedirá el permiso en ejecución
+        if(PreferenceManager.getDefaultSharedPreferences(getContext()).getBoolean(Constantes.KEY_LOCATION_ACTIVED, true))
+            imgEmptyView.setImageResource(idDrawable);
+        else{
+            imgEmptyView.setImageResource(R.drawable.logo);
+            lblEmptyView.setText("Sin ubicación activada");
+            emptyView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    UtilMethods.isUbicationPermissionGranted(getActivity());
+                }
+            });
+        }
+        lblEmptyView.setText(textEmptyView);
+    }
     @Override
     public void onAttach(Context context) {
         listenerLongClick = (AdvertsRecyclerViewAdapter.OnAdapterItemLongClick) context;

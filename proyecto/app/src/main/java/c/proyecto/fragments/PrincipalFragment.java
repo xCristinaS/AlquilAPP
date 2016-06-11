@@ -268,5 +268,11 @@ public class PrincipalFragment extends Fragment {
         super.onDetach();
     }
 
+    public void confEmptyViews(){
+        ((AdvertsRecyclerViewFragment) vpAdapter.getItem(0)).confEmptyView(R.drawable.logo, "Sin ubicación activada");
+        ((AdvertsRecyclerViewFragment) vpAdapter.getItem(1)).confEmptyView(R.drawable.logo, "Sin ubicación activada");
+        ((AdvertsRecyclerViewFragment) vpAdapter.getItem(2)).confEmptyView(R.drawable.logo, "Sin ubicación activada");
+    }
+
 
 }
