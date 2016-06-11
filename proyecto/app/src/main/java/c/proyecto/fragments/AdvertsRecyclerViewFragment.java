@@ -58,9 +58,9 @@ public class AdvertsRecyclerViewFragment extends Fragment {
 
     private void initViews() {
         Bundle args = getArguments();
-        LinearLayout emptyView = (LinearLayout) getActivity().findViewById(R.id.emptyView);
-        ImageView imgEmptyView = (ImageView) getActivity().findViewById(R.id.imgEmptyView);
-        TextView lblEmptyView = (TextView) getActivity().findViewById(R.id.lblEmptyView);
+        LinearLayout emptyView = (LinearLayout) getView().findViewById(R.id.emptyView);
+        ImageView imgEmptyView = (ImageView) getView().findViewById(R.id.imgEmptyView);
+        TextView lblEmptyView = (TextView) getView().findViewById(R.id.lblEmptyView);
 
         adapter_type = args.getInt(ARG_ADAPTER_TYPE);
 

@@ -415,6 +415,7 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
     public void removeFilter() {
         setFiltersApplied(false);
         mDatos.clear();
+        notifyDataSetChanged();
     }
 
     public void setFiltersApplied(boolean filtersApplied) {
