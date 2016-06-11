@@ -136,13 +136,13 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
         }
     }
 
-    public void setEmptyView(View emptyView){
+    public void setEmptyView(View emptyView) {
         this.emptyView = emptyView;
-        checkIfEmpty();
+        //checkIfEmpty();
     }
 
     private void checkIfEmpty() {
-        if(emptyView != null)
+        if (emptyView != null)
             emptyView.setVisibility(getItemCount() == 0 ? View.VISIBLE : View.GONE);
     }
 
@@ -238,7 +238,7 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
                 lblLocalizacion.setText(anuncio.getPoblacion());
 
                 //Si el precio no tiene decimales, el número será mostrado sin 0  Ej: 10.00 -> 10
-                if(anuncio.getPrecio() % 1 == 0)
+                if (anuncio.getPrecio() % 1 == 0)
                     formatPrecio = "%.0f";
                 lblPrecio.setText(String.format(formatPrecio + "%s", anuncio.getPrecio(), Constantes.MONEDA));
 
@@ -342,17 +342,18 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
     //Manejo del Adaptador
     public void addItem(Anuncio a) {
         boolean stop = false;
-        if (adapter_type != ADAPTER_TYPE_ADVS || !filtersApplied) {
-            for (int i = 0; !stop && i < mDatos.size(); i++)
-                if (mDatos.get(i).getKey().equals(a.getKey()))
-                    stop = true;
+        if (a != null)
+            if (adapter_type != ADAPTER_TYPE_ADVS || !filtersApplied) {
+                for (int i = 0; !stop && i < mDatos.size(); i++)
+                    if (mDatos.get(i).getKey().equals(a.getKey()))
+                        stop = true;
 
-            if (!stop)
-                mDatos.add(0, a);
-            notifyItemInserted(mDatos.indexOf(a));
-            //notifyDataSetChanged();
-            checkIfEmpty();
-        }
+                if (!stop)
+                    mDatos.add(0, a);
+                notifyItemInserted(mDatos.indexOf(a));
+                //notifyDataSetChanged();
+            }
+        checkIfEmpty();
     }
 
     public void addItems(ArrayList<Anuncio> filteredAdverts) {
@@ -401,7 +402,7 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
                     a.setSubsChanged(true);
                 }
             }
-        if (!stop && adapter_type != ADAPTER_TYPE_ADVS){
+        if (!stop && adapter_type != ADAPTER_TYPE_ADVS) {
             mDatos.add(a);
             notifyItemInserted(mDatos.indexOf(a));
         }

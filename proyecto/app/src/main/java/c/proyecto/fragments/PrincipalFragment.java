@@ -60,8 +60,6 @@ public class PrincipalFragment extends Fragment {
         mPresenter = MainPresenter.getPresentador(getActivity());
         user = ((MainActivity) getActivity()).getmUser();
         confViewPager();
-
-
     }
 
     private void confViewPager() {
