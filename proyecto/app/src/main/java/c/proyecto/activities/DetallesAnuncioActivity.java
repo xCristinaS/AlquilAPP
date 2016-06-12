@@ -68,7 +68,7 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
     private AdvertsDetailsPresenter mPresenter;
     private Anuncio anuncio;
     private int advertType;
-    private Usuario currentUser;
+    private Usuario currentUser, userPropietario;
     private BroadcastReceiver receiverAnuncioEliminado, receiverAnuncioModificado;
     private MessagePojo messagePojoAux;
 
@@ -81,7 +81,6 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
     private TextView lblNombre, lblPrecio, lblTamano, lblTipoVivienda, lblCamas, lblNumCamas, lblNumToilets, lblDescripcionNoDisponible, lblDescripcion;
     private RecyclerView rvPrestaciones;
     private PrestacionesAdapter mPrestacionesAdapter;
-
     private GoogleMap mGoogleMap;
 
     public static void start(Context context, Anuncio anuncio, int advertType, Usuario u) {
@@ -127,12 +126,7 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
         mPresenter.getMessageIfConverExist(anuncio);
 
         configToolbar();
-        initViews();
-        confRecyclerview();
-        confMap();
-        bindData();
     }
-
 
     private void configToolbar() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -141,11 +135,32 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
         ((TextView) toolbar.findViewById(R.id.lblTituloAnuncio)).setText(anuncio.getTitulo());
         ((TextView) toolbar.findViewById(R.id.lblLocalizacion)).setText(anuncio.getPoblacion());
         ((TextView) toolbar.findViewById(R.id.lblDireccion)).setText(anuncio.getDireccion() + " " + anuncio.getNumero());
+    }
 
+    @Override
+    public void messageIfConverExistObtained(MessagePojo m) {
+        messagePojoAux = m;
+        if (advertType != AdvertsRecyclerViewAdapter.ADAPTER_TYPE_MY_ADVS)
+            mPresenter.advertPublisherRequested(anuncio.getAnunciante());
+        else {
+            userPropietario = currentUser;
+            initViews();
+            confRecyclerview();
+            confMap();
+            bindData();
+        }
+    }
+
+    @Override
+    public void onAdvertPublisherRequestedResponsed(Usuario u) {
+        userPropietario = u;
+        initViews();
+        confRecyclerview();
+        confMap();
+        bindData();
     }
 
     private void initViews() {
-
         groupImagenes = (RelativeLayout) findViewById(R.id.groupImagenes);
         lblNombre = (TextView) findViewById(R.id.lblNombre);
         slider = (SliderLayout) findViewById(R.id.slider);
@@ -181,64 +196,63 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
                     ConversationActivity.start(DetallesAnuncioActivity.this, messagePojoAux, currentUser);
                 }
             });
-
-            imgEdit = (ImageView) findViewById(R.id.imgEdit);
-            imgSubscribe = (ImageView) findViewById(R.id.imgSubscribe);
-
-            switch (advertType) {
-                case AdvertsRecyclerViewAdapter.ADAPTER_TYPE_MY_ADVS:
-                    imgEdit.setVisibility(View.VISIBLE);
-                    imgMessage.setVisibility(View.GONE);
-                    break;
-                case AdvertsRecyclerViewAdapter.ADAPTER_TYPE_ADVS:
-                    imgSubscribe.setVisibility(View.VISIBLE);
-                    break;
-                case AdvertsRecyclerViewAdapter.ADAPTER_TYPE_SUBS:
-                    imgSubscribe.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_unsubscribe));
-                    imgSubscribe.setVisibility(View.VISIBLE);
-                    break;
-            }
-
-
-            //Permite editar el anuncio
-            imgEdit.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    onImgEditClicked(anuncio, currentUser);
-                }
-            });
-            //Subscribe al usuario al anuncio
-            imgSubscribe.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (advertType == AdvertsRecyclerViewAdapter.ADAPTER_TYPE_ADVS) {
-                        onImgSubClicked(anuncio);
-                        //Al subscribirse, cambiará el icono a la imagen de desubscribirse y cambiará el advertType al de desubscribirse
-                        imgSubscribe.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_unsubscribe));
-                        advertType = AdvertsRecyclerViewAdapter.ADAPTER_TYPE_SUBS;
-                    } else {
-                        onImgUnSubClicked(anuncio);
-                        //Al subscribirse, cambiará el icono a la imagen de subscribirse y cambiará el advertType al de subcribirse.
-                        imgSubscribe.setImageDrawable(getResources().getDrawable(R.drawable.ic_subscribe));
-                        advertType = AdvertsRecyclerViewAdapter.ADAPTER_TYPE_ADVS;
-                    }
-                }
-            });
-
-            //Muestra el usuario propietario del anuncio
-            imgAvatar.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    VerPerfilActivity.start(DetallesAnuncioActivity.this, currentUser);
-                }
-            });
-            lblNombre.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    VerPerfilActivity.start(DetallesAnuncioActivity.this, currentUser);
-                }
-            });
         }
+
+        imgEdit = (ImageView) findViewById(R.id.imgEdit);
+        imgSubscribe = (ImageView) findViewById(R.id.imgSubscribe);
+
+        switch (advertType) {
+            case AdvertsRecyclerViewAdapter.ADAPTER_TYPE_MY_ADVS:
+                imgEdit.setVisibility(View.VISIBLE);
+                imgMessage.setVisibility(View.GONE);
+                break;
+            case AdvertsRecyclerViewAdapter.ADAPTER_TYPE_ADVS:
+                imgSubscribe.setVisibility(View.VISIBLE);
+                break;
+            case AdvertsRecyclerViewAdapter.ADAPTER_TYPE_SUBS:
+                imgSubscribe.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_unsubscribe));
+                imgSubscribe.setVisibility(View.VISIBLE);
+                break;
+        }
+
+        //Permite editar el anuncio
+        imgEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onImgEditClicked(anuncio, currentUser);
+            }
+        });
+        //Subscribe al usuario al anuncio
+        imgSubscribe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (advertType == AdvertsRecyclerViewAdapter.ADAPTER_TYPE_ADVS) {
+                    onImgSubClicked(anuncio);
+                    //Al subscribirse, cambiará el icono a la imagen de desubscribirse y cambiará el advertType al de desubscribirse
+                    imgSubscribe.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_unsubscribe));
+                    advertType = AdvertsRecyclerViewAdapter.ADAPTER_TYPE_SUBS;
+                } else {
+                    onImgUnSubClicked(anuncio);
+                    //Al subscribirse, cambiará el icono a la imagen de subscribirse y cambiará el advertType al de subcribirse.
+                    imgSubscribe.setImageDrawable(getResources().getDrawable(R.drawable.ic_subscribe));
+                    advertType = AdvertsRecyclerViewAdapter.ADAPTER_TYPE_ADVS;
+                }
+            }
+        });
+
+        //Muestra el usuario propietario del anuncio
+        imgAvatar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                VerPerfilActivity.start(DetallesAnuncioActivity.this, userPropietario);
+            }
+        });
+        lblNombre.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                VerPerfilActivity.start(DetallesAnuncioActivity.this, userPropietario);
+            }
+        });
     }
 
     private void confRecyclerview() {
@@ -327,7 +341,6 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
         groupImagenes.removeAllViews();
         groupImagenes.addView(r);
 
-
         //Si no hay ninguna prestación se le cambiará el color al shape del comentario al color del fondo
         if (anuncio.getPrestaciones().size() == 0) {
             rvPrestaciones.setVisibility(View.GONE);
@@ -335,9 +348,9 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
         } else
             shapeComentario.setBackgroundColor(getResources().getColor(R.color.colorShape));
 
-        lblNombre.setText(currentUser.getNombre());
-        if (currentUser.getFoto() != null)
-            Picasso.with(DetallesAnuncioActivity.this).load(currentUser.getFoto()).error(R.drawable.default_user).fit().centerCrop().into(imgAvatar);
+        lblNombre.setText(userPropietario.getNombre());
+        if (userPropietario.getFoto() != null)
+            Picasso.with(DetallesAnuncioActivity.this).load(userPropietario.getFoto()).error(R.drawable.default_user).fit().centerCrop().into(imgAvatar);
         else
             Picasso.with(DetallesAnuncioActivity.this).load(R.drawable.default_user).fit().centerCrop().into(imgAvatar);
 
@@ -376,7 +389,7 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
             lblDescripcion.setText(anuncio.getDescripcion());
         }
         //Evita que se pueda hacer scroll cuando no haya suficientes items
-        if(anuncio.getPrestaciones().size()<5)
+        if (anuncio.getPrestaciones().size() < 5)
             rvPrestaciones.setOverScrollMode(View.OVER_SCROLL_NEVER);
         else
             rvPrestaciones.setOverScrollMode(View.OVER_SCROLL_ALWAYS);
@@ -391,6 +404,7 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
     public void onEmptyViewClicked() {
 
     }
+
     private void mostrarDialogoPrestaciones() {
         AlertDialog dialog = new AlertDialog.Builder(DetallesAnuncioActivity.this).create();
         View dialogView = View.inflate(DetallesAnuncioActivity.this, R.layout.dialog_prestaciones_detalladas, null);
@@ -446,57 +460,44 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
         dialog.show();
     }
 
-
-
-    @Override
-    public void messageIfConverExistObtained(MessagePojo m) {
-       /* messagePojoAux = m;
-        if (advertType != AdvertsRecyclerViewAdapter.ADAPTER_TYPE_MY_ADVS)
-            mPresenter.advertPublisherRequested(anuncio.getAnunciante());
-        else
-            getSupportFragmentManager().beginTransaction().replace(R.id.frmContenido, DetallesAnuncioFragment.newInstance(anuncio, advertType, currentUser, currentUser, m)).commit();*/
-    }
-
-    @Override
-    public void onAdvertPublisherRequestedResponsed(Usuario u) {
-       // getSupportFragmentManager().beginTransaction().replace(R.id.frmContenido, DetallesAnuncioFragment.newInstance(anuncio, advertType, u, currentUser, messagePojoAux)).commit();
-    }
-
     @Override
     public void onImgEditClicked(Anuncio advert, Usuario user) {
-      //  CrearAnuncio1Activity.startForResult(this, advert, user, CrearAnuncio1Activity.RC_EDITAR_ANUNCIO);
+        CrearAnuncio1Activity.startForResult(this, advert, user, CrearAnuncio1Activity.RC_EDITAR_ANUNCIO);
     }
 
     @Override
     public void updateAdvert(Anuncio anuncio) {
-       /* DetallesAnuncioFragment f = (DetallesAnuncioFragment) getSupportFragmentManager().findFragmentById(R.id.frmContenido);
-        if (f != null)
-            f.setmAnuncio(anuncio);*/
+        this.anuncio = anuncio;
+        bindData();
+        posicionarMapa();
+
+        mPrestacionesAdapter.replaceAll(anuncio.getPrestaciones());
+        //Si cuando ha terminado de editar el anuncio tiene prestaciones, se mostrará el hueco de prestaciones
+        //sino se ocultará
+        if (anuncio.getPrestaciones().size() > 0) {
+            shapeComentario.setBackgroundColor(getResources().getColor(R.color.colorShape));
+            rvPrestaciones.setVisibility(View.VISIBLE);
+        } else {
+            shapeComentario.setBackgroundColor(getResources().getColor(android.R.color.white));
+            rvPrestaciones.setVisibility(View.GONE);
+        }
     }
 
     @Override
     public void onImgSubClicked(Anuncio a) {
-       // mPresenter.userNewSubRequested(a);
+        mPresenter.userNewSubRequested(a);
     }
 
     @Override
     public void onImgUnSubClicked(Anuncio a) {
-      //  mPresenter.unSubRequested(a);
+        mPresenter.unSubRequested(a);
     }
 
     @Override
     public void onNewMessageClic(MessagePojo m, String keyReceptor) {
-      //  mPresenter.sendNewMessage(m, keyReceptor);
+        mPresenter.sendNewMessage(m, keyReceptor);
     }
 
-
-    public void setmMessage(MessagePojo mMessage) {
-        messagePojoAux = mMessage;
-    }
-
-    public void setmAdverType(int mAdverType) {
-        advertType = mAdverType;
-    }
 
     public void setmAnuncio(Anuncio anuncio) {
         this.anuncio = anuncio;
@@ -506,11 +507,10 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
         mPrestacionesAdapter.replaceAll(anuncio.getPrestaciones());
         //Si cuando ha terminado de editar el anuncio tiene prestaciones, se mostrará el hueco de prestaciones
         //sino se ocultará
-        if (anuncio.getPrestaciones().size() > 0){
+        if (anuncio.getPrestaciones().size() > 0) {
             shapeComentario.setBackgroundColor(getResources().getColor(R.color.colorShape));
             rvPrestaciones.setVisibility(View.VISIBLE);
-        }
-        else{
+        } else {
             shapeComentario.setBackgroundColor(getResources().getColor(android.R.color.white));
             rvPrestaciones.setVisibility(View.GONE);
         }
@@ -577,8 +577,6 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
         System.gc();
         super.onDestroy();
     }
-
-
 }
 
 

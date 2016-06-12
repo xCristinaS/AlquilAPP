@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 
 import com.squareup.picasso.Callback;
+import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -343,7 +344,6 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
 
         solicitantesDialog.getWindow().setLayout((int) (boundsScreen.x * Constantes.PORCENTAJE_PANTALLA), WindowManager.LayoutParams.WRAP_CONTENT);
     }
-
 
     private void updateSolicitantesDialog(ArrayList<Usuario> listaSolicitantes) {
         if (rvSolicitantes != null)
