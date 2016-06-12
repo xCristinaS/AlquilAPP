@@ -277,14 +277,44 @@ public class AdvertsFirebaseManager {
 
     private boolean anuncioCumpleFiltroPoblacion(String poblacion, Anuncio a) {
         boolean r = false;
-        if (a.getPoblacion().equalsIgnoreCase(poblacion) || a.getPoblacion().toLowerCase().contains(poblacion.toLowerCase()))
+        String poblacionAnuncioSinAcentos;
+        String poblacionBuscar;
+
+        poblacionAnuncioSinAcentos = a.getPoblacion().toLowerCase().trim().replace("á", "a");
+        poblacionAnuncioSinAcentos = poblacionAnuncioSinAcentos.replace("é", "e");
+        poblacionAnuncioSinAcentos = poblacionAnuncioSinAcentos.replace("í", "i");
+        poblacionAnuncioSinAcentos = poblacionAnuncioSinAcentos.replace("ó", "o");
+        poblacionAnuncioSinAcentos = poblacionAnuncioSinAcentos.replace("ú", "u");
+
+        poblacionBuscar = poblacion.toLowerCase().trim().replace("á", "a");
+        poblacionBuscar = poblacionBuscar.replace("é", "e");
+        poblacionBuscar = poblacionBuscar.replace("í", "i");
+        poblacionBuscar = poblacionBuscar.replace("ó", "o");
+        poblacionBuscar = poblacionBuscar.replace("ú", "u");
+
+        if (poblacionAnuncioSinAcentos.equalsIgnoreCase(poblacionBuscar) || poblacionAnuncioSinAcentos.contains(poblacionBuscar.toLowerCase()))
             r = true;
         return r;
     }
 
     private boolean anuncioCumpleFiltroProvincia(String provincia, Anuncio a) {
         boolean r = false;
-        if (a.getProvincia().equalsIgnoreCase(provincia) || a.getProvincia().toLowerCase().contains(provincia.toLowerCase()))
+        String provinciaAnuncioSinAcentos;
+        String provinciaBuscar;
+
+        provinciaAnuncioSinAcentos = a.getProvincia().toLowerCase().trim().replace("á", "a");
+        provinciaAnuncioSinAcentos = provinciaAnuncioSinAcentos.replace("é", "e");
+        provinciaAnuncioSinAcentos = provinciaAnuncioSinAcentos.replace("í", "i");
+        provinciaAnuncioSinAcentos = provinciaAnuncioSinAcentos.replace("ó", "o");
+        provinciaAnuncioSinAcentos = provinciaAnuncioSinAcentos.replace("ú", "u");
+
+        provinciaBuscar = provincia.toLowerCase().trim().replace("á", "a");
+        provinciaBuscar = provinciaBuscar.replace("é", "e");
+        provinciaBuscar = provinciaBuscar.replace("í", "i");
+        provinciaBuscar = provinciaBuscar.replace("ó", "o");
+        provinciaBuscar = provinciaBuscar.replace("ú", "u");
+
+        if (provinciaAnuncioSinAcentos.equalsIgnoreCase(provinciaBuscar) || provinciaAnuncioSinAcentos.contains(provinciaBuscar.toLowerCase()))
             r = true;
         return r;
     }
