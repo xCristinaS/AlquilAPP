@@ -318,20 +318,50 @@
                 android:src="@drawable/ic_action_edit"
                 android:visibility="gone" />
 
+
             <!-- Prestaciones -->
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/rvPrestaciones"
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:id="@+id/groupPrestaciones"
+                android:layout_width="match_parent"
                 android:layout_height="100dp"
                 android:layout_below="@id/shapeRectangulo"
-                android:layout_centerHorizontal="true" />
+                >
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rvPrestaciones"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_centerHorizontal="true" />
+
+                <LinearLayout
+                    android:id="@+id/emptyViewPrestaciones"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:visibility="gone"
+                    android:layout_centerInParent="true">
+                    <ImageView
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:src="@drawable/house_gear"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="12dp"
+                        android:textSize="17sp"
+                        android:textStyle="bold"
+                        android:text="Sin prestaciones"/>
+                </LinearLayout>
+            </RelativeLayout>
+
+
 
             <!-- Descripción -->
             <RelativeLayout
                 android:id="@+id/shapeComentario"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/rvPrestaciones"
+                android:layout_below="@id/groupPrestaciones"
                 android:background="@color/colorShape"
                 android:paddingBottom="10dp"
                 android:paddingTop="10dp">

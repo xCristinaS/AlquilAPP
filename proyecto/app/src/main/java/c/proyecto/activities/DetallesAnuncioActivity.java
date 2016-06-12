@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -68,10 +69,10 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
     private MessagePojo messagePojoAux;
 
     private Toolbar toolbar;
-    private RelativeLayout shapeComentario, groupImagenes;
+    private RelativeLayout shapeComentario, groupImagenes,groupProgressBar;
     private SliderLayout slider;
     private ImageView imgTipoVivienda, imgCamas, imgMessage, imgEdit, imgSubscribe;
-    private RelativeLayout groupProgressBar;
+    private LinearLayout emptyViewPrestaciones;
 
     private CircleImageView imgAvatar;
     private TextView lblNombre, lblPrecio, lblTamano, lblTipoVivienda, lblCamas, lblNumCamas, lblNumToilets, lblDescripcionNoDisponible, lblDescripcion;
@@ -154,6 +155,7 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
     }
 
     private void initViews() {
+        emptyViewPrestaciones = (LinearLayout) findViewById(R.id.emptyViewPrestaciones);
         groupProgressBar = (RelativeLayout) findViewById(R.id.groupProgressBar);
         groupImagenes = (RelativeLayout) findViewById(R.id.groupImagenes);
         lblNombre = (TextView) findViewById(R.id.lblNombre);
@@ -339,18 +341,16 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
         ((TextView) toolbar.findViewById(R.id.lblLocalizacion)).setText(anuncio.getPoblacion());
         ((TextView) toolbar.findViewById(R.id.lblDireccion)).setText(anuncio.getDireccion() + " " + anuncio.getNumero());
 
-        //Si no hay ninguna prestación se le cambiará el color al shape del comentario al color del fondo
-        if (anuncio.getPrestaciones().size() == 0) {
-            rvPrestaciones.setVisibility(View.GONE);
-            shapeComentario.setBackgroundColor(getResources().getColor(android.R.color.white));
-        } else
-            shapeComentario.setBackgroundColor(getResources().getColor(R.color.colorShape));
-
         lblNombre.setText(userPropietario.getNombre());
         if (userPropietario.getFoto() != null)
             Picasso.with(DetallesAnuncioActivity.this).load(userPropietario.getFoto()).error(R.drawable.default_user).fit().centerCrop().into(imgAvatar);
         else
             Picasso.with(DetallesAnuncioActivity.this).load(R.drawable.default_user).fit().centerCrop().into(imgAvatar);
+
+        if (anuncio.getPrestaciones().size() == 0)
+            emptyViewPrestaciones.setVisibility(View.VISIBLE);
+        else
+            emptyViewPrestaciones.setVisibility(View.GONE);
 
         //Si el precio no tiene decimales, el número será mostrado sin 0  Ej: 10.00 -> 10
         if (anuncio.getPrecio() % 1 == 0)
@@ -473,15 +473,7 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
         posicionarMapa();
 
         mPrestacionesAdapter.replaceAll(anuncio.getPrestaciones());
-        //Si cuando ha terminado de editar el anuncio tiene prestaciones, se mostrará el hueco de prestaciones
-        //sino se ocultará
-        if (anuncio.getPrestaciones().size() > 0) {
-            shapeComentario.setBackgroundColor(getResources().getColor(R.color.colorShape));
-            rvPrestaciones.setVisibility(View.VISIBLE);
-        } else {
-            shapeComentario.setBackgroundColor(getResources().getColor(android.R.color.white));
-            rvPrestaciones.setVisibility(View.GONE);
-        }
+
     }
 
     @Override
