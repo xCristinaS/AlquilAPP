@@ -214,6 +214,7 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
 
     private void recuperarAnuncio() {
         txtTituloAnuncio.setText(mAnuncio.getTitulo());
+        txtTituloAnuncio.setEnabled(false);
         switch (mAnuncio.getTipo_vivienda()) {
             case Constantes.CASA:
                 tintVivienda(imgCasa);

@@ -442,8 +442,8 @@ public class MessagesFirebaseManager {
                 if (m instanceof MessagePojoWithoutAnswer && mensaje.getKey().equals(m.getKey())) {
                     if (presenter instanceof ConversationPresenter)
                         ((ConversationPresenter) presenter).allMessagesObtained();
-                } else
-                    checkIfUserAnswer(m.getEmisor().getKey(), nodoAsunto2);
+                } //else
+                    //checkIfUserAnswer(m.getEmisor().getKey(), nodoAsunto2);
 
                 if (!(m instanceof MessagePojoWithoutAnswer) && listenersInternosConvers.size() == 0) {
                     Query fInterno = new Firebase(URL_CONVERSACIONES).child(m.getEmisor().getKey()).child(nodoAsunto2);
@@ -560,15 +560,15 @@ public class MessagesFirebaseManager {
     }
 
     public void getMessageIfConverExist(final Anuncio anuncio) {
-        Firebase f = new Firebase(URL_CONVERSACIONES).child(currentUser.getKey()).child(anuncio.getAnunciante().trim() + "_" + anuncio.getTitulo().trim());
+        Firebase f = new Firebase(URL_CONVERSACIONES).child(anuncio.getAnunciante()).child(currentUser.getKey().trim() + "_" + anuncio.getTitulo().trim());
         f.limitToLast(1).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.getValue() != null) {
                     final DataSnapshot data = dataSnapshot.getChildren().iterator().next();
-                    final MessagePojo m = new MessagePojo();
+                    final MessagePojoWithoutAnswer m = new MessagePojoWithoutAnswer();
                     m.setKey(data.getKey());
-                    m.setKeyReceptor(currentUser.getKey());
+                    m.setEmisor(currentUser);
                     m.setTituloAnuncio(anuncio.getTitulo());
                     Message mAux = data.getValue(Message.class);
                     m.setFecha(new Date(mAux.getFecha()));
@@ -577,7 +577,9 @@ public class MessagesFirebaseManager {
                     new Firebase(URL_USERS).child(anuncio.getAnunciante()).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
-                            m.setEmisor(dataSnapshot.getValue(Usuario.class));
+                            Usuario u = dataSnapshot.getValue(Usuario.class);
+                            m.setKeyReceptor(u.getKey());
+                            m.setReceptor(u);
                             ((AdvertsDetailsPresenter) presenter).messageIfConverExistObtained(m);
                         }
 

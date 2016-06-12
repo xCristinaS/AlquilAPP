@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 
 import com.squareup.picasso.Callback;
+import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -360,16 +361,13 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
 
 
     private void updateSolicitantesDialog(ArrayList<Usuario> listaSolicitantes, Anuncio a) {
-        if (rvSolicitantes != null){
+        if (rvSolicitantes != null) {
             //Si se han desuscrito todos los solicitantes mientras estaba en pantalla el diálogo, se cerrará
             if (listaSolicitantes == null)
                 solicitantesDialog.dismiss();
             else
                 ((HuespedesAdapter) rvSolicitantes.getAdapter()).updateData(listaSolicitantes, a);
         }
-
-
-
     }
 
     //Manejo del Adaptador
