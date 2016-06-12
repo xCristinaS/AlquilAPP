@@ -439,7 +439,7 @@ public class MessagesFirebaseManager {
                 String nodoAsunto2 = currentUser.getKey() + "_" + m.getTituloAnuncio().trim().replace(" ", "_");
                 nodoAsunto2 = nodoAsunto2.substring(0, nodoAsunto2.length());
 
-                if (m instanceof MessagePojoWithoutAnswer && mensaje.getKey().equals(m.getKey())) {
+                if (m instanceof MessagePojoWithoutAnswer && (mensaje.getKey().equals(m.getKey()) || m.getKey() == null)) {
                     if (presenter instanceof ConversationPresenter)
                         ((ConversationPresenter) presenter).allMessagesObtained();
                 } //else

@@ -50,6 +50,7 @@ import c.proyecto.mvp_models.MessagesFirebaseManager;
 import c.proyecto.mvp_models.UsersFirebaseManager;
 import c.proyecto.mvp_views_interfaces.AdvertsDetailsActivityOps;
 import c.proyecto.pojo.Anuncio;
+import c.proyecto.pojo.MessagePojoWithoutAnswer;
 import c.proyecto.pojo.Usuario;
 import c.proyecto.mvp_presenters.AdvertsDetailsPresenter;
 import c.proyecto.pojo.MessagePojo;
@@ -176,23 +177,7 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
 
         imgMessage = (ImageView) findViewById(R.id.imgMessage);
 
-        if (messagePojoAux == null) {
-            imgMessage.setImageResource(R.drawable.ic_message_black);
-            imgMessage.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    showSenMessageDialog();
-                }
-            });
-        } else {
-            imgMessage.setImageResource(R.drawable.ic_chat_black);
-            imgMessage.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    ConversationActivity.start(DetallesAnuncioActivity.this, messagePojoAux, currentUser);
-                }
-            });
-        }
+        setImgMessageClickListener();
 
         imgEdit = (ImageView) findViewById(R.id.imgEdit);
         imgSubscribe = (ImageView) findViewById(R.id.imgSubscribe);
@@ -249,6 +234,27 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
                 VerPerfilActivity.start(DetallesAnuncioActivity.this, userPropietario);
             }
         });
+    }
+
+    private void setImgMessageClickListener() {
+        imgMessage.setOnClickListener(null);
+        if (messagePojoAux == null) {
+            imgMessage.setImageResource(R.drawable.ic_message_black);
+            imgMessage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showSenMessageDialog();
+                }
+            });
+        } else {
+            imgMessage.setImageResource(R.drawable.ic_chat_black);
+            imgMessage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ConversationActivity.start(DetallesAnuncioActivity.this, messagePojoAux, currentUser);
+                }
+            });
+        }
     }
 
     private void confRecyclerview() {
@@ -437,7 +443,15 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
             @Override
             public void onClick(View v) {
                 if (!TextUtils.isEmpty(txtMensaje.getText())) {
-                    onNewMessageClic(new MessagePojo(currentUser, anuncio.getTitulo(), txtMensaje.getText().toString(), new Date()), anuncio.getAnunciante());
+                    messagePojoAux = new MessagePojoWithoutAnswer();
+                    ((MessagePojoWithoutAnswer)messagePojoAux).setReceptor(userPropietario);
+                    messagePojoAux.setKeyReceptor(userPropietario.getKey());
+                    messagePojoAux.setEmisor(currentUser);
+                    messagePojoAux.setTituloAnuncio(anuncio.getTitulo());
+                    messagePojoAux.setContenido(txtMensaje.getText().toString());
+                    messagePojoAux.setFecha(new Date());
+                    onNewMessageClic(messagePojoAux, anuncio.getAnunciante());
+                    setImgMessageClickListener();
                     dialog.dismiss();
                 }
             }
