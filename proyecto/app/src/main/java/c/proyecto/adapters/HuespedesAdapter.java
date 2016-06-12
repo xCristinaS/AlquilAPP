@@ -28,7 +28,7 @@ public class HuespedesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     private OnUserSubClick listener;
     private Anuncio mAnuncio;
 
-    public HuespedesAdapter(List<Usuario> users, Anuncio anuncio){
+    public HuespedesAdapter(List<Usuario> users, Anuncio anuncio) {
         mUsers = users;
         mAnuncio = anuncio;
     }
@@ -49,17 +49,20 @@ public class HuespedesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         return mUsers.size();
     }
 
-    public void updateData(ArrayList<Usuario> listaSolicitantes){
-        mUsers.clear();
-        mUsers.addAll(listaSolicitantes);
-        notifyDataSetChanged();
+    public void updateData(ArrayList<Usuario> listaSolicitantes, Anuncio a) {
+        if (a.getKey().equals(mAnuncio.getKey())) {
+            mUsers.clear();
+            if (listaSolicitantes != null)
+                mUsers.addAll(listaSolicitantes);
+            notifyDataSetChanged();
+        }
     }
 
     public void setListener(OnUserSubClick listener) {
         this.listener = listener;
     }
 
-    class HuespedViewHolder extends RecyclerView.ViewHolder{
+    class HuespedViewHolder extends RecyclerView.ViewHolder {
 
         private final ImageView imgHuesped;
         private final TextView lblNombre;
@@ -69,6 +72,7 @@ public class HuespedesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             imgHuesped = (ImageView) itemView.findViewById(R.id.imgHuesped);
             lblNombre = (TextView) itemView.findViewById(R.id.lblNombre);
         }
+
         public void onBind(final Usuario user) {
             Picasso.with(itemView.getContext()).load(user.getFoto()).fit().error(R.drawable.default_user).into(imgHuesped);
             lblNombre.setText(user.getNombre() + " " + user.getApellidos());

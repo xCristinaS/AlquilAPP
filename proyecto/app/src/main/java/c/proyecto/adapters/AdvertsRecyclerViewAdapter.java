@@ -297,7 +297,7 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
         if (itemView != null)
             showSolicitantesDialog(itemView, listaSolicitantes, anuncio);
         else
-            updateSolicitantesDialog(listaSolicitantes);
+            updateSolicitantesDialog(listaSolicitantes, anuncio);
     }
 
     private void showSolicitantesDialog(View itemView, ArrayList<Usuario> listaSolicitantes, Anuncio anuncio) {
@@ -345,9 +345,9 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
     }
 
 
-    private void updateSolicitantesDialog(ArrayList<Usuario> listaSolicitantes) {
+    private void updateSolicitantesDialog(ArrayList<Usuario> listaSolicitantes, Anuncio a) {
         if (rvSolicitantes != null)
-            ((HuespedesAdapter) rvSolicitantes.getAdapter()).updateData(listaSolicitantes);
+            ((HuespedesAdapter) rvSolicitantes.getAdapter()).updateData(listaSolicitantes, a);
     }
 
     //Manejo del Adaptador
@@ -405,8 +405,11 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
                 mDatos.add(i, a);
                 stop = true;
                 if (aux.getSolicitantes().size() != a.getSolicitantes().size()) {
-                    mPresenter.getSolicitantes(null, a); // para actualizar el dialogo de solicitantes.
-                    a.setSubsChanged(true);
+                    if(a.getSolicitantes().size() > 0) {
+                        mPresenter.getSolicitantes(null, a); // para actualizar el dialogo de solicitantes.
+                        a.setSubsChanged(true);
+                    } else
+                        updateSolicitantesDialog(null, a);
                 }
             }
         if (!stop && adapter_type != ADAPTER_TYPE_ADVS)
