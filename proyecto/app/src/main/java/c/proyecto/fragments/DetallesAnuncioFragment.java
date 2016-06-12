@@ -466,4 +466,5 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
     public void onPageScrollStateChanged(int state) {
 
     }
+
 }

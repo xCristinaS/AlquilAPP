@@ -14,6 +14,7 @@ import com.firebase.geofire.GeoQueryEventListener;
 import com.firebase.geofire.util.Constants;
 import com.firebase.geofire.util.GeoUtils;
 
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -65,20 +66,23 @@ public class AdvertsFirebaseManager {
         firebaseSubs.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot data : dataSnapshot.getChildren()) {
-                    String subKey = (String) data.getValue(HashMap.class).keySet().iterator().next();
-                    fAdverts.child(subKey).addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            ((MainPresenter) presenter).subHasBeenObtained(dataSnapshot.getValue(Anuncio.class));
-                        }
+                if (dataSnapshot.getValue() != null)
+                    for (DataSnapshot data : dataSnapshot.getChildren()) {
+                        String subKey = (String) data.getValue(HashMap.class).keySet().iterator().next();
+                        fAdverts.child(subKey).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                ((MainPresenter) presenter).subHasBeenObtained(dataSnapshot.getValue(Anuncio.class));
+                            }
 
-                        @Override
-                        public void onCancelled(FirebaseError firebaseError) {
+                            @Override
+                            public void onCancelled(FirebaseError firebaseError) {
 
-                        }
-                    });
-                }
+                            }
+                        });
+                    }
+                else
+                    ((MainPresenter) presenter).subHasBeenObtained(null);
             }
 
             @Override
@@ -91,20 +95,23 @@ public class AdvertsFirebaseManager {
         new Firebase(URL_ANUNCIOS_USUARIOS).child(currentUser.getKey()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot data : dataSnapshot.getChildren()) {
-                    String advertKey = (String) data.getValue(HashMap.class).keySet().iterator().next();
-                    fAdverts.child(advertKey).addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            ((MainPresenter) presenter).userAdvertHasBeenObtained(dataSnapshot.getValue(Anuncio.class));
-                        }
+                if (dataSnapshot.getValue() != null)
+                    for (DataSnapshot data : dataSnapshot.getChildren()) {
+                        String advertKey = (String) data.getValue(HashMap.class).keySet().iterator().next();
+                        fAdverts.child(advertKey).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                ((MainPresenter) presenter).userAdvertHasBeenObtained(dataSnapshot.getValue(Anuncio.class));
+                            }
 
-                        @Override
-                        public void onCancelled(FirebaseError firebaseError) {
+                            @Override
+                            public void onCancelled(FirebaseError firebaseError) {
 
-                        }
-                    });
-                }
+                            }
+                        });
+                    }
+                else
+                    ((MainPresenter) presenter).userAdvertHasBeenObtained(null);
             }
 
             @Override

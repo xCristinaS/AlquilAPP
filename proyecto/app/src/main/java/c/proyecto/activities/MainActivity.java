@@ -590,11 +590,21 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode){
             case UtilMethods.TAG_LOCATION_PERMISION:
+                Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.frmContenido);
+
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                    mSharedPref.edit().putBoolean(Constantes.KEY_LOCATION_ACTIVED, true).apply();
+                    ((PrincipalFragment) fragment).confEmptyViewsNormales();
                     getAdvertsNearUser();
                 }
-                else
-                    System.out.println("");
+                else{
+                    mSharedPref.edit().putBoolean(Constantes.KEY_LOCATION_ACTIVED, false).apply();
+                    if (fragment instanceof PrincipalFragment)
+                        ((PrincipalFragment) fragment).confEmptyViewsSinUbicacion();
+                }
+
+
+
                 break;
         }
     }

@@ -1,7 +1,10 @@
 package c.proyecto.fragments;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.ColorFilter;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -10,11 +13,18 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.Switch;
+import android.widget.TextView;
 
+import c.proyecto.Constantes;
 import c.proyecto.R;
 import c.proyecto.adapters.AdvertsRecyclerViewAdapter;
 import c.proyecto.adapters.HuespedesAdapter;
 import c.proyecto.mvp_presenters.MainPresenter;
+import c.proyecto.utils.UtilMethods;
 
 
 public class AdvertsRecyclerViewFragment extends Fragment {
@@ -30,6 +40,9 @@ public class AdvertsRecyclerViewFragment extends Fragment {
     private AdvertsRecyclerViewAdapter.OnSubsIconClick listenerSubClick;
     private HuespedesAdapter.IHuespedesAdapterListener listenerUserSubClick;
     private int adapter_type;
+    private ImageView imgEmptyView;
+    private TextView lblEmptyView;
+    private LinearLayout emptyView;
 
     public static AdvertsRecyclerViewFragment newInstance(int adapter_type) {
         Bundle args = new Bundle();
@@ -53,22 +66,72 @@ public class AdvertsRecyclerViewFragment extends Fragment {
 
     private void initViews() {
         Bundle args = getArguments();
+        int idDrawable = 0;
+        String textEmptyView = "";
+        emptyView = (LinearLayout) getView().findViewById(R.id.emptyView);
+        imgEmptyView = (ImageView) getView().findViewById(R.id.imgEmptyView);
+        lblEmptyView = (TextView) getView().findViewById(R.id.lblEmptyView);
+
         adapter_type = args.getInt(ARG_ADAPTER_TYPE);
 
         rvLista = (RecyclerView) getView().findViewById(R.id.rvLista);
-        mAdapter = new AdvertsRecyclerViewAdapter(adapter_type, MainPresenter.getPresentador(getActivity()), ((PrincipalFragment)getParentFragment()).getUser());
-        mLayoutManager = new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL);
+        mAdapter = new AdvertsRecyclerViewAdapter(adapter_type, MainPresenter.getPresentador(getActivity()), ((PrincipalFragment) getParentFragment()).getUser());
+        mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
 
         rvLista.setAdapter(mAdapter);
         rvLista.setLayoutManager(mLayoutManager);
         rvLista.setItemAnimator(new DefaultItemAnimator());
         mAdapter.setListenerItemClick(listenerItemClick);
-        if (adapter_type == AdvertsRecyclerViewAdapter.ADAPTER_TYPE_MY_ADVS) {
-            mAdapter.setListenerLongClick(listenerLongClick);
-            mAdapter.setListenerSubsClick(listenerSubClick);
-            mAdapter.setListenerUserSubClick(listenerUserSubClick);
-        } else if (adapter_type == AdvertsRecyclerViewAdapter.ADAPTER_TYPE_SUBS)
-            mAdapter.setListenerLongClick(listenerLongClick);
+
+        switch (adapter_type) {
+            case AdvertsRecyclerViewAdapter.ADAPTER_TYPE_SUBS:
+                mAdapter.setListenerLongClick(listenerLongClick);
+                idDrawable = R.drawable.tab_solicitudes;
+                textEmptyView = "Aún no te has suscrito a ningún anuncio";
+                break;
+            case AdvertsRecyclerViewAdapter.ADAPTER_TYPE_ADVS:
+                idDrawable = R.drawable.tab_anuncios;
+                textEmptyView = "No se han encontrado anuncios cerca de tí";
+                break;
+            case AdvertsRecyclerViewAdapter.ADAPTER_TYPE_MY_ADVS:
+                mAdapter.setListenerLongClick(listenerLongClick);
+                mAdapter.setListenerSubsClick(listenerSubClick);
+                mAdapter.setListenerUserSubClick(listenerUserSubClick);
+                idDrawable = R.drawable.tab_mis_anuncios;
+                textEmptyView = "Aún no has publicado ningún anuncio";
+                break;
+        }
+        mAdapter.setEmptyView(emptyView);
+
+        confEmptyView(idDrawable, textEmptyView);
+        imgEmptyView.setColorFilter(getResources().getColor(R.color.colorAccent));
+
+    }
+
+    public void confEmptyView(int idDrawable, String textEmptyView) {
+        //Si no tiene activado la localización
+        //Default true --> Por si el dispositivo es menor a la API 23, no tendrá esta preferencia ya que no se le pedirá el permiso en ejecución
+        if (!PreferenceManager.getDefaultSharedPreferences(getContext()).getBoolean(Constantes.KEY_LOCATION_ACTIVED, true)) {
+            if (adapter_type == AdvertsRecyclerViewAdapter.ADAPTER_TYPE_ADVS) {
+                imgEmptyView.setImageResource(R.drawable.logo);
+                lblEmptyView.setText("Sin ubicación activada");
+                emptyView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        UtilMethods.isUbicationPermissionGranted(getActivity());
+                    }
+                });
+
+            }else{
+                imgEmptyView.setImageResource(idDrawable);
+                lblEmptyView.setText(textEmptyView);
+            }
+
+        } else {
+            imgEmptyView.setImageResource(idDrawable);
+            lblEmptyView.setText(textEmptyView);
+        }
+        
     }
 
     @Override
@@ -89,7 +152,7 @@ public class AdvertsRecyclerViewFragment extends Fragment {
         super.onDetach();
     }
 
-    public void disableMultideletion(){
+    public void disableMultideletion() {
         listenerLongClick.desactivarMultiseleccion();
         mAdapter.clearAllSelections();
         mAdapter.disableMultiDeletionMode();

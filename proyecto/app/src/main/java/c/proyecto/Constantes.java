@@ -27,6 +27,7 @@ public final class Constantes {
         //Keys
         public static final String KEY_USER = "keyUser";
         public static final String KEY_PASS = "keyPass";
+        public static final String KEY_LOCATION_ACTIVED = "keyLocationActived";
         //Shared
         public static final int DEFAULT_RATIO_BUSQUEDA = 10;
 
