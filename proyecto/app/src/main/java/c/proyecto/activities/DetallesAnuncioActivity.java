@@ -56,11 +56,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class DetallesAnuncioActivity extends AppCompatActivity implements AdvertsDetailsActivityOps, DetallesAnuncioFragment.IDetallesAnuncioFragmentListener, DetallesAnuncioFragment.OnDetallesAnuncioFragmentClic, ViewPagerEx.OnPageChangeListener, PrestacionesAdapter.IPrestacionAdapter, OnMapReadyCallback {
 
-    private static final String ARG_ANUNCIO = "anuncio";
-    private static final String ARG_ADVERT_TYPE = "advert_type";
-    private static final String ARG_USER_ANUNCIANTE = "mUserAnunciante";
-    private static final String ARG_CURRENT_USER = "usuarioLogueado";
-    private static final String ARG_MESSAGE = "mensaje_si_existe_conversacion";
     private static final String EXTRA_ANUNCIO = "anuncio";
     private static final String EXTRA_ADVERT_TYPE = "advert_type";
     private static final String EXTRA_USER = "user";
@@ -76,12 +71,14 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
     private RelativeLayout shapeComentario, groupImagenes;
     private SliderLayout slider;
     private ImageView imgTipoVivienda, imgCamas, imgMessage, imgEdit, imgSubscribe;
+    private RelativeLayout groupProgressBar;
 
     private CircleImageView imgAvatar;
     private TextView lblNombre, lblPrecio, lblTamano, lblTipoVivienda, lblCamas, lblNumCamas, lblNumToilets, lblDescripcionNoDisponible, lblDescripcion;
     private RecyclerView rvPrestaciones;
     private PrestacionesAdapter mPrestacionesAdapter;
     private GoogleMap mGoogleMap;
+
 
     public static void start(Context context, Anuncio anuncio, int advertType, Usuario u) {
         Intent intent = new Intent(context, DetallesAnuncioActivity.class);
@@ -161,6 +158,7 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
     }
 
     private void initViews() {
+        groupProgressBar = (RelativeLayout) findViewById(R.id.groupProgressBar);
         groupImagenes = (RelativeLayout) findViewById(R.id.groupImagenes);
         lblNombre = (TextView) findViewById(R.id.lblNombre);
         slider = (SliderLayout) findViewById(R.id.slider);
@@ -393,6 +391,9 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
             rvPrestaciones.setOverScrollMode(View.OVER_SCROLL_NEVER);
         else
             rvPrestaciones.setOverScrollMode(View.OVER_SCROLL_ALWAYS);
+        //Se ha cargado todoo y desaparece la barra de carga.
+        groupProgressBar.setVisibility(View.GONE);
+
     }
 
     @Override

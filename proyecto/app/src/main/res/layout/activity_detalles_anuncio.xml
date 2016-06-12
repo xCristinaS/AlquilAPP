@@ -24,7 +24,6 @@
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:maxLines="1"
-                android:text="Título del anuncio"
                 />
             <TextView
                 android:id="@+id/lblLocalizacion"
@@ -35,7 +34,6 @@
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:maxLines="1"
-                android:text="Jimena de la Frontera"
                 />
 
             <TextView
@@ -47,7 +45,6 @@
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:maxLines="1"
-                android:text="La Loba 44"
                 />
         </LinearLayout>
     </android.support.v7.widget.Toolbar>
@@ -98,7 +95,7 @@
                     android:id="@+id/imgAvatar"
                     android:layout_width="70dp"
                     android:layout_height="70dp"
-                    android:src="@drawable/default_user" />
+                    />
 
                 <TextView
                     android:id="@+id/lblNombre"
@@ -134,14 +131,13 @@
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:layout_gravity="center"
-                        android:src="@drawable/tipo_habitacion" />
+                         />
 
                     <TextView
                         android:id="@+id/lblTipoVivienda"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:text="Habitación" />
+                        android:layout_gravity="center" />
                 </LinearLayout>
 
                 <RelativeLayout
@@ -158,7 +154,7 @@
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:layout_centerHorizontal="true"
-                        android:src="@drawable/cama" />
+                         />
 
                     <TextView
                         android:id="@+id/lblCamas"
@@ -166,8 +162,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:layout_centerHorizontal="true"
-                        android:layout_below="@id/imgCamas"
-                        android:text="Camas" />
+                        android:layout_below="@id/imgCamas" />
 
 
                     <TextView
@@ -175,7 +170,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:text="10"
                         android:layout_centerVertical="true"
                         android:layout_toRightOf="@id/imgCamas"
                         android:layout_toEndOf="@id/imgCamas"
@@ -200,8 +194,8 @@
                         android:id="@+id/imgToilet"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
-                        android:layout_centerHorizontal="true"
-                        android:src="@drawable/ic_toilet" />
+                        android:src="@drawable/ic_toilet"
+                        android:layout_centerHorizontal="true" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -219,7 +213,6 @@
                         android:layout_centerVertical="true"
                         android:paddingBottom="12dp"
                         android:paddingLeft="10dp"
-                        android:text="0"
                         android:textStyle="bold" />
                 </RelativeLayout>
 
@@ -372,4 +365,18 @@
         </RelativeLayout>
 
     </ScrollView>
+
+    <RelativeLayout
+        android:id="@+id/groupProgressBar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/toolbar"
+        android:background="@android:color/white">
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:max="10"
+            android:layout_centerInParent="true"/>
+    </RelativeLayout>
 </RelativeLayout>
