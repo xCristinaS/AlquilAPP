@@ -603,8 +603,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
                         ((PrincipalFragment) fragment).confEmptyViewsSinUbicacion();
                 }
 
-
-
                 break;
         }
     }
