@@ -128,10 +128,6 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
     private void configToolbar() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        ((TextView) toolbar.findViewById(R.id.lblTituloAnuncio)).setText(anuncio.getTitulo());
-        ((TextView) toolbar.findViewById(R.id.lblLocalizacion)).setText(anuncio.getPoblacion());
-        ((TextView) toolbar.findViewById(R.id.lblDireccion)).setText(anuncio.getDireccion() + " " + anuncio.getNumero());
     }
 
     @Override
@@ -339,6 +335,10 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
         groupImagenes.removeAllViews();
         groupImagenes.addView(r);
 
+        ((TextView) toolbar.findViewById(R.id.lblTituloAnuncio)).setText(anuncio.getTitulo());
+        ((TextView) toolbar.findViewById(R.id.lblLocalizacion)).setText(anuncio.getPoblacion());
+        ((TextView) toolbar.findViewById(R.id.lblDireccion)).setText(anuncio.getDireccion() + " " + anuncio.getNumero());
+
         //Si no hay ninguna prestación se le cambiará el color al shape del comentario al color del fondo
         if (anuncio.getPrestaciones().size() == 0) {
             rvPrestaciones.setVisibility(View.GONE);
@@ -500,24 +500,6 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
     }
 
 
-    public void setmAnuncio(Anuncio anuncio) {
-        this.anuncio = anuncio;
-        bindData();
-        posicionarMapa();
-
-        mPrestacionesAdapter.replaceAll(anuncio.getPrestaciones());
-        //Si cuando ha terminado de editar el anuncio tiene prestaciones, se mostrará el hueco de prestaciones
-        //sino se ocultará
-        if (anuncio.getPrestaciones().size() > 0) {
-            shapeComentario.setBackgroundColor(getResources().getColor(R.color.colorShape));
-            rvPrestaciones.setVisibility(View.VISIBLE);
-        } else {
-            shapeComentario.setBackgroundColor(getResources().getColor(android.R.color.white));
-            rvPrestaciones.setVisibility(View.GONE);
-        }
-    }
-
-
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
@@ -539,7 +521,7 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case CrearAnuncio1Activity.RC_EDITAR_ANUNCIO:
-                    ((DetallesAnuncioFragment) getSupportFragmentManager().findFragmentById(R.id.frmContenido)).setmAnuncio((Anuncio) data.getParcelableExtra(CrearAnuncio1Activity.EXTRA_ANUNCIO_RESULT));
+                    updateAdvert((Anuncio) data.getParcelableExtra(CrearAnuncio1Activity.EXTRA_ANUNCIO_RESULT));
                     break;
             }
         }
