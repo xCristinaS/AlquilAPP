@@ -33,6 +33,7 @@ public class InicioActivity extends AppCompatActivity implements InicioActivityO
     private SharedPreferences preferences;
     private InicioPresenter presentador;
     private Button btnIniciar;
+    private boolean loging;
 
     public static void start(Activity a) {
         Intent intent = new Intent(a, InicioActivity.class);
@@ -43,6 +44,7 @@ public class InicioActivity extends AppCompatActivity implements InicioActivityO
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inicio);
+        loging = false;
         initViews();
         checkIfSavedUser();
     }
@@ -64,6 +66,7 @@ public class InicioActivity extends AppCompatActivity implements InicioActivityO
         btnIniciar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                loging = true;
                 presentador.signInRequested(txtUser.getText().toString(), txtPass.getText().toString());
                 btnIniciar.setEnabled(false);
             }
@@ -72,30 +75,11 @@ public class InicioActivity extends AppCompatActivity implements InicioActivityO
         findViewById(R.id.btnRegistrarse).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(InicioActivity.this, RegistroActivity.class));
+                if(!loging)
+                    startActivity(new Intent(InicioActivity.this, RegistroActivity.class));
             }
         });
-        //Iniciar sesión con google
-        findViewById(R.id.btnGoogle).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-            }
-        });
-        //Iniciar sesión con twiter
-        findViewById(R.id.btnTwitter).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                presentador.signInWithTwitterRequested(txtUser.getText().toString(), txtPass.getText().toString());
-            }
-        });
-        //Iniciar sesión con facebook
-        findViewById(R.id.btnFace).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                presentador.signInWithFacebookRequested(txtUser.getText().toString(), txtPass.getText().toString());
-            }
-        });
     }
 
     private void checkIfSavedUser() {
@@ -126,6 +110,7 @@ public class InicioActivity extends AppCompatActivity implements InicioActivityO
         } else {
             Toast.makeText(this, (String) o, Toast.LENGTH_SHORT).show();
             btnIniciar.setEnabled(true);
+            loging = false;
         }
     }
 

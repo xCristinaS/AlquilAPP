@@ -39,10 +39,6 @@ public class InicioPresenter implements InicioPresenterOps, MyPresenter {
         usersManager.signIn(email, contra);
     }
 
-    @Override
-    public void signInWithTwitterRequested(String email, String contra) {
-        usersManager.signInWithTwitter(email, contra);
-    }
 
     @Override
     public void onSignInResponsed(Object o) {
@@ -50,10 +46,6 @@ public class InicioPresenter implements InicioPresenterOps, MyPresenter {
             activity.get().enter(o);
     }
 
-    @Override
-    public void signInWithFacebookRequested(String email, String contra) {
-        usersManager.signInWithFacebook(email, contra);
-    }
 
     @Override
     public void liberarMemoria() {
