@@ -338,6 +338,10 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
             empty = false;
             txtNum.setError("Rellene este campo");
         }
+        if(TextUtils.isEmpty(txtTamano.getText())){
+            empty = false;
+            txtTamano.setError("Rellene este campo");
+        }
         if(TextUtils.isEmpty(txtPrecio.getText())){
             empty = false;
             txtPrecio.setError("Rellene este campo");
@@ -355,6 +359,7 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
         mAnuncio.setPoblacion(txtPoblacion.getText().toString());
         mAnuncio.setProvincia(txtProvincia.getText().toString());
         mAnuncio.setNumero(txtNum.getText().toString());
+        mAnuncio.setTamanio(Integer.valueOf(txtTamano.getText().toString()));
         mAnuncio.setPrecio(Double.valueOf(txtPrecio.getText().toString()));
         mAnuncio.setDireccion(txtDireccion.getText().toString());
         mAnuncio.setAnunciante(user.getKey());
@@ -369,10 +374,7 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
             mAnuncio.setHabitaciones_o_camas(Integer.valueOf(txtCamas.getText().toString()));
         else
             mAnuncio.setHabitaciones_o_camas(0);
-        if (!TextUtils.isEmpty(txtTamano.getText()))
-            mAnuncio.setTamanio(Integer.valueOf(txtTamano.getText().toString()));
-        else
-            mAnuncio.setTamanio(0);
+
         if (!TextUtils.isEmpty(txtDescripcion.getText()))
             mAnuncio.setDescripcion(txtDescripcion.getText().toString());
         else
