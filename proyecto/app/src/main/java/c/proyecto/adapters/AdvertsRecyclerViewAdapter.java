@@ -138,7 +138,8 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
 
     public void setEmptyView(View emptyView) {
         this.emptyView = emptyView;
-        //checkIfEmpty();
+        if (adapter_type == ADAPTER_TYPE_ADVS) // No hay manera de comprobar si vas a obtener anuncios en función de tu radio. La query no hace nada.
+            checkIfEmpty();
     }
 
     private void checkIfEmpty() {
@@ -342,7 +343,7 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
     //Manejo del Adaptador
     public void addItem(Anuncio a) {
         boolean stop = false;
-        if (a != null)
+        if (a != null) // anuncio llega como null si el usuario no tiene susucripciones o anuncios publicados.
             if (adapter_type != ADAPTER_TYPE_ADVS || !filtersApplied) {
                 for (int i = 0; !stop && i < mDatos.size(); i++)
                     if (mDatos.get(i).getKey().equals(a.getKey()))

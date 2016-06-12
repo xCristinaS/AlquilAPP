@@ -389,7 +389,7 @@ public class AdvertsFirebaseManager {
 
                 @Override
                 public void onGeoQueryReady() {
-                    System.out.println("aaaaaaaaa");
+
                 }
 
                 @Override
