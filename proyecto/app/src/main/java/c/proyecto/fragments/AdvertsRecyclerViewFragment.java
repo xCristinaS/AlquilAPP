@@ -28,7 +28,7 @@ public class AdvertsRecyclerViewFragment extends Fragment {
     private AdvertsRecyclerViewAdapter.OnAdapterItemLongClick listenerLongClick;
     private AdvertsRecyclerViewAdapter.OnAdapterItemClick listenerItemClick;
     private AdvertsRecyclerViewAdapter.OnSubsIconClick listenerSubClick;
-    private HuespedesAdapter.OnUserSubClick listenerUserSubClick;
+    private HuespedesAdapter.IHuespedesAdapterListener listenerUserSubClick;
     private int adapter_type;
 
     public static AdvertsRecyclerViewFragment newInstance(int adapter_type) {
@@ -76,7 +76,7 @@ public class AdvertsRecyclerViewFragment extends Fragment {
         listenerLongClick = (AdvertsRecyclerViewAdapter.OnAdapterItemLongClick) context;
         listenerItemClick = (AdvertsRecyclerViewAdapter.OnAdapterItemClick) context;
         listenerSubClick = (AdvertsRecyclerViewAdapter.OnSubsIconClick) context;
-        listenerUserSubClick = (HuespedesAdapter.OnUserSubClick) context;
+        listenerUserSubClick = (HuespedesAdapter.IHuespedesAdapterListener) context;
         super.onAttach(context);
     }
 

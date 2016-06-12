@@ -60,7 +60,7 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
     private OnAdapterItemLongClick listenerLongClick;
     private OnAdapterItemClick listenerItemClick;
     private OnSubsIconClick listenerSubsClick;
-    private HuespedesAdapter.OnUserSubClick listenerUserSubClick;
+    private HuespedesAdapter.IHuespedesAdapterListener listenerUserSubClick;
     private View emptyView;
     private MainPresenter mPresenter;
     private SparseBooleanArray mSelectedItems = new SparseBooleanArray();
@@ -175,7 +175,7 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
         this.listenerSubsClick = listenerSubsClick;
     }
 
-    public void setListenerUserSubClick(HuespedesAdapter.OnUserSubClick listenerUserSubClick) {
+    public void setListenerUserSubClick(HuespedesAdapter.IHuespedesAdapterListener listenerUserSubClick) {
         this.listenerUserSubClick = listenerUserSubClick;
     }
 
@@ -301,6 +301,7 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
     }
 
     private void showSolicitantesDialog(View itemView, ArrayList<Usuario> listaSolicitantes, Anuncio anuncio) {
+        HuespedesAdapter adapter;
         solicitantesDialog = new AlertDialog.Builder(itemView.getContext()).create();
         View dialogView = View.inflate(itemView.getContext(), R.layout.dialog_solicitantes, null);
         solicitantesDialog.setView(dialogView);
@@ -308,8 +309,9 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
         solicitantesDialog.setTitle("Solicitantes");
 
         rvSolicitantes = (RecyclerView) dialogView.findViewById(R.id.rvSolicitantes);
-        rvSolicitantes.setAdapter(new HuespedesAdapter(listaSolicitantes, anuncio));
-        ((HuespedesAdapter) rvSolicitantes.getAdapter()).setListener(listenerUserSubClick);
+        adapter = new HuespedesAdapter(listaSolicitantes, anuncio);
+        rvSolicitantes.setAdapter(adapter);
+        adapter.setmListener(listenerUserSubClick);
         final LinearLayoutManager mLayoutManager = new LinearLayoutManager(itemView.getContext(), LinearLayoutManager.VERTICAL, false);
         rvSolicitantes.setLayoutManager(mLayoutManager);
         rvSolicitantes.setItemAnimator(new DefaultItemAnimator());
@@ -319,15 +321,15 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
         //Para NotifyDataSetChange, porque cada vez que se actualiza la lista se borran todos y se vuelven a introducir.
         rvSolicitantes.addOnChildAttachStateChangeListener(new RecyclerView.OnChildAttachStateChangeListener() {
             int mUltimoItem = -2;
+
             @Override
             public void onChildViewAttachedToWindow(View view) {
                 int ultimoItemVisible = mLayoutManager.findLastCompletelyVisibleItemPosition();
 
-                if(ultimoItemVisible > mUltimoItem){
+                if (ultimoItemVisible > mUltimoItem) {
                     mUltimoItem = ultimoItemVisible;
                     rvSolicitantes.setOverScrollMode(View.OVER_SCROLL_NEVER);
-                }
-                else
+                } else
                     rvSolicitantes.setOverScrollMode(View.OVER_SCROLL_ALWAYS);
             }
 
@@ -348,6 +350,11 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
     private void updateSolicitantesDialog(ArrayList<Usuario> listaSolicitantes, Anuncio a) {
         if (rvSolicitantes != null)
             ((HuespedesAdapter) rvSolicitantes.getAdapter()).updateData(listaSolicitantes, a);
+        
+        //Si se han desuscrito todos los solicitantes mientras estaba en pantalla el diálogo, se cerrará
+        if(listaSolicitantes == null)
+            solicitantesDialog.dismiss();
+
     }
 
     //Manejo del Adaptador

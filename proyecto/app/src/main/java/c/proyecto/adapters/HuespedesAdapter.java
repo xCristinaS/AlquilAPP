@@ -13,19 +13,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 import c.proyecto.R;
-import c.proyecto.activities.VerPerfilActivity;
 import c.proyecto.pojo.Anuncio;
 import c.proyecto.pojo.Usuario;
 
 
 public class HuespedesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    public interface OnUserSubClick {
+
+
+    public interface IHuespedesAdapterListener {
         void onUserSubClick(Usuario u, Anuncio anuncio);
     }
 
     private final List<Usuario> mUsers;
-    private OnUserSubClick listener;
+    private IHuespedesAdapterListener mListener;
     private Anuncio mAnuncio;
 
     public HuespedesAdapter(List<Usuario> users, Anuncio anuncio) {
@@ -52,14 +53,16 @@ public class HuespedesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     public void updateData(ArrayList<Usuario> listaSolicitantes, Anuncio a) {
         if (a.getKey().equals(mAnuncio.getKey())) {
             mUsers.clear();
-            if (listaSolicitantes != null)
+            if (listaSolicitantes != null){
                 mUsers.addAll(listaSolicitantes);
-            notifyDataSetChanged();
+                notifyDataSetChanged();
+            }
+
         }
     }
 
-    public void setListener(OnUserSubClick listener) {
-        this.listener = listener;
+    public void setmListener(IHuespedesAdapterListener mListener) {
+        this.mListener = mListener;
     }
 
     class HuespedViewHolder extends RecyclerView.ViewHolder {
@@ -80,11 +83,13 @@ public class HuespedesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listener.onUserSubClick(user, mAnuncio);
+                    mListener.onUserSubClick(user, mAnuncio);
                 }
             });
         }
     }
+
+
 
 
 }
