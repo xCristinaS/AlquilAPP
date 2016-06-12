@@ -408,17 +408,18 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
     public void removeItem(Anuncio a) {
         boolean stop = false;
         int pos = mDatos.indexOf(a);
-        if (pos >= 0) {
+        if (pos >= 0)
             mDatos.remove(a);
-            notifyItemRemoved(pos);
-        } else {
+        else {
             for (int i = 0; !stop && i < mDatos.size(); i++)
                 if (mDatos.get(i).getKey().equals(a.getKey())) {
                     mDatos.remove(i);
                     stop = true;
-                    notifyItemRemoved(i);
+                    pos = i;
                 }
         }
+        notifyItemRemoved(pos);
+        notifyDataSetChanged();
         checkIfEmpty();
     }
 

@@ -33,7 +33,7 @@ public class AdvertsFirebaseManager {
     private static final String URL_SOLICITUDES = "https://proyectofinaldam.firebaseio.com/solicitudes/";
     private static final String URL_LOCATIONS = "https://proyectofinaldam.firebaseio.com/Locations/";
 
-    private boolean userSubRemoved = false;
+    private static boolean userSubRemoved = false;
     private Firebase mFirebase;
     private ChildEventListener listener;
     private GeoQuery geoQueryAdverts, geoQueryLocations;
@@ -195,11 +195,11 @@ public class AdvertsFirebaseManager {
     }
 
     public void removeUserSub(final Anuncio a) {
+        userSubRemoved = true;
         a.setSubsChanged(true);
         Firebase mFirebase = new Firebase(URL_ANUNCIOS).child(a.getKey()).child("solicitantes").child(currentUser.getKey());
         mFirebase.setValue(null);
         new Firebase(URL_SOLICITUDES).child(currentUser.getKey()).child(a.getKey()).setValue(null);
-        userSubRemoved = true;
     }
 
     public void createNewUserSub(Anuncio a) {
