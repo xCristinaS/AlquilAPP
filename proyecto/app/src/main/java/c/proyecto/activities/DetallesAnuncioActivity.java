@@ -183,7 +183,7 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
                 }
             });
         } else {
-            imgMessage.setImageResource(R.drawable.ic_chat);
+            imgMessage.setImageResource(R.drawable.ic_chat_black);
             imgMessage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
