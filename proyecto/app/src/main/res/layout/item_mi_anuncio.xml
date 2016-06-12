@@ -14,9 +14,11 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:foreground="@drawable/item_background_selector"
+            >
 
             <ImageView
                 android:id="@+id/imgAvatar"
@@ -29,17 +31,16 @@
                 android:id="@+id/prbAnuncio"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
+                android:layout_gravity="center"
                 android:indeterminate="true"
                 android:max="10"
                 android:visibility="gone" />
-        </RelativeLayout>
+        </FrameLayout>
 
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/item_background_selector"
+
             >
 
 
