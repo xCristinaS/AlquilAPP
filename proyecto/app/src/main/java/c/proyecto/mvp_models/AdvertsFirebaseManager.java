@@ -33,7 +33,7 @@ public class AdvertsFirebaseManager {
     private static final String URL_SOLICITUDES = "https://proyectofinaldam.firebaseio.com/solicitudes/";
     private static final String URL_LOCATIONS = "https://proyectofinaldam.firebaseio.com/Locations/";
 
-    private static boolean userSubRemoved = false;
+    private static int userSubRemoved;
     private Firebase mFirebase;
     private ChildEventListener listener;
     private GeoQuery geoQueryAdverts, geoQueryLocations;
@@ -46,6 +46,7 @@ public class AdvertsFirebaseManager {
     public AdvertsFirebaseManager(MyPresenter presenter, Usuario currentUser) {
         this.presenter = presenter;
         this.currentUser = currentUser;
+        userSubRemoved = 0;
     }
 
     public void publishNewAdvert(Anuncio a) { // crea un nuevo anuncio en la rama /anuncios/keyAnuncio/valorAnuncio --> keyAnuncio = numeroIdentificadoUsuarioQuePublica_numeroIdentificadorAnuncio
@@ -143,17 +144,17 @@ public class AdvertsFirebaseManager {
                     Anuncio a = dataSnapshot.getValue(Anuncio.class);
                     if (dataSnapshot.getKey().contains(currentUser.getKey()))
                         ((MainPresenter) presenter).userAdvertHasBeenModified(a);
-                    else if (!userSubRemoved && a.getSolicitantes().containsKey(currentUser.getKey())) {
+                    else if (userSubRemoved == 0 && a.getSolicitantes().containsKey(currentUser.getKey())) {
                         ((MainPresenter) presenter).subHasBeenModified(a);
                         ((MainPresenter) presenter).removeAdvert(a);
-                    } else if (userSubRemoved) {
+                    } else if (userSubRemoved>0) {
                         ((MainPresenter) presenter).removeSub(a);
                         if (GeoUtils.distance(new GeoLocation(a.getLats().getLatitude(), a.getLats().getLongitude()), mUserLocation) <= mRadius)
                             ((MainPresenter) presenter).advertHasBeenObtained(a);
+                        userSubRemoved--;
                     } else
                         ((MainPresenter) presenter).adverHasBeenModified(a);
 
-                    userSubRemoved = false;
                     ((MainPresenter) presenter).sendAdvertHasBeenModifiedBroadcast(a);
                 }
 
@@ -195,7 +196,7 @@ public class AdvertsFirebaseManager {
     }
 
     public void removeUserSub(final Anuncio a) {
-        userSubRemoved = true;
+        userSubRemoved++;
         a.setSubsChanged(true);
         Firebase mFirebase = new Firebase(URL_ANUNCIOS).child(a.getKey()).child("solicitantes").child(currentUser.getKey());
         mFirebase.setValue(null);
