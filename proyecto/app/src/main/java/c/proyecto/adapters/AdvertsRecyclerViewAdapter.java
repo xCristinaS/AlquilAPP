@@ -362,9 +362,9 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
     private void updateSolicitantesDialog(ArrayList<Usuario> listaSolicitantes, Anuncio a) {
         if (rvSolicitantes != null)
             ((HuespedesAdapter) rvSolicitantes.getAdapter()).updateData(listaSolicitantes, a);
-        
+
         //Si se han desuscrito todos los solicitantes mientras estaba en pantalla el diálogo, se cerrará
-        if(listaSolicitantes == null)
+        if (listaSolicitantes == null)
             solicitantesDialog.dismiss();
 
     }
@@ -405,17 +405,17 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
     public void removeItem(Anuncio a) {
         boolean stop = false;
         int pos = mDatos.indexOf(a);
-        if (pos >= 0)
+        if (pos >= 0) {
             mDatos.remove(a);
-        else {
+            notifyItemRemoved(pos);
+        } else {
             for (int i = 0; !stop && i < mDatos.size(); i++)
                 if (mDatos.get(i).getKey().equals(a.getKey())) {
                     mDatos.remove(i);
                     stop = true;
-                    pos = i;
+                    notifyItemRemoved(i);
                 }
         }
-        notifyItemRemoved(pos);
         checkIfEmpty();
     }
 
@@ -428,7 +428,7 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
                 stop = true;
                 notifyItemChanged(i);
                 if (aux.getSolicitantes().size() != a.getSolicitantes().size()) {
-                    if(a.getSolicitantes().size() > 0) {
+                    if (a.getSolicitantes().size() > 0) {
                         mPresenter.getSolicitantes(null, a); // para actualizar el dialogo de solicitantes.
                         a.setSubsChanged(true);
                     } else
