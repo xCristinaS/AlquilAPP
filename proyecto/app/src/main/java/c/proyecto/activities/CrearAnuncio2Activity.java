@@ -56,7 +56,7 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
 
     private EditText txtTituloAnuncio, txtNum, txtPoblacion, txtProvincia, txtCamas, txtToilets, txtTamano, txtDescripcion, txtPrecio, txtDireccion;
     private ImageView imgCasa, imgHabitacion, imgPiso;
-    private RecyclerView rvPrestaciones, rvHuespedes;
+    private RecyclerView rvPrestaciones;
 
     private PrestacionesAdapter mPrestacionesAdapter;
     private CrearEditarAnuncioPresenter mPresenter;
@@ -325,31 +325,31 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
         boolean empty = true;
         if(TextUtils.isEmpty(txtTituloAnuncio.getText())){
             empty = false;
-            txtTituloAnuncio.setError("Rellene este campo");
+            txtTituloAnuncio.setError(getString(R.string.error_campoVacio));
         }
         if(TextUtils.isEmpty(txtPoblacion.getText())){
             empty = false;
-            txtPoblacion.setError("Rellene este campo");
+            txtPoblacion.setError(getString(R.string.error_campoVacio));
         }
         if(TextUtils.isEmpty(txtDireccion.getText())){
             empty = false;
-            txtDireccion.setError("Rellene este campo");
+            txtDireccion.setError(getString(R.string.error_campoVacio));
         }
         if(TextUtils.isEmpty(txtNum.getText())){
             empty = false;
-            txtNum.setError("Rellene este campo");
+            txtNum.setError(getString(R.string.error_campoVacio));
         }
         if(TextUtils.isEmpty(txtTamano.getText())){
             empty = false;
-            txtTamano.setError("Rellene este campo");
+            txtTamano.setError(getString(R.string.error_campoVacio));
         }
         if(TextUtils.isEmpty(txtPrecio.getText())){
             empty = false;
-            txtPrecio.setError("Rellene este campo");
+            txtPrecio.setError(getString(R.string.error_campoVacio));
         }
         if(mAnuncio.getTipo_vivienda() == null){
             empty = false;
-            Toast.makeText(this, "Seleccione el tipo de vivienda", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.toast_seleccionaVivienda, Toast.LENGTH_SHORT).show();
         }
 
         return empty;

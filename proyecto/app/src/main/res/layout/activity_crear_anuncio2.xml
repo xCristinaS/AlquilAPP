@@ -25,7 +25,7 @@
                 android:inputType="text"
                 android:maxLines="1"
                 android:maxLength="30"
-                android:hint="Título del anuncio" />
+                android:hint="@string/hint_txtTituloAnuncio" />
 
             <!-- CASA -->
             <ImageView
@@ -43,7 +43,7 @@
                 android:layout_below="@id/imgCasa"
                 android:layout_marginLeft="41dp"
                 android:layout_marginTop="10dp"
-                android:text="Casa"
+                android:text="@string/tipoVivienda_casa"
                 android:textStyle="bold" />
 
             <!-- HABITACIÓN -->
@@ -64,7 +64,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginLeft="41dp"
                 android:layout_marginTop="10dp"
-                android:text="Habitación"
+                android:text="@string/tipoVivienda_habitacion"
                 android:textStyle="bold" />
 
             <!-- PISO -->
@@ -87,7 +87,7 @@
                 android:layout_below="@id/imgPiso"
                 android:layout_marginRight="40dp"
                 android:layout_marginTop="10dp"
-                android:text="Piso"
+                android:text="@string/tipoVivienda_piso"
                 android:textStyle="bold" />
 
             <!-- LOCALIZACIÓN -->
@@ -101,7 +101,7 @@
                 android:layout_marginTop="50dp"
                 android:inputType="none"
                 android:focusable="false"
-                android:hint="Dirección"
+                android:hint="@string/hint_txtDireccion"
                 android:dropDownWidth="match_parent"
                 />
 
@@ -114,7 +114,7 @@
                 android:layout_toEndOf="@id/txtDireccion"
                 android:layout_toRightOf="@id/txtDireccion"
                 android:maxLines="1"
-                android:hint="Número" />
+                android:hint="@string/hint_txtNum" />
 
             <EditText
                 android:id="@+id/txtPoblacion"
@@ -123,7 +123,7 @@
                 android:layout_below="@id/txtDireccion"
                 android:inputType="none"
                 android:focusable="false"
-                android:hint="Población" />
+                android:hint="@string/hint_txtPoblacion" />
 
             <EditText
                 android:id="@+id/txtProvincia"
@@ -133,7 +133,7 @@
                 android:inputType="none"
                 android:focusable="false"
                 android:maxLines="1"
-                android:hint="Provincia" />
+                android:hint="@string/hint_txtProvincia" />
         </RelativeLayout>
 
 
@@ -178,7 +178,7 @@
                 android:inputType="number"
                 android:maxLength="2"
                 android:maxLines="1"
-                android:hint="Habitaciones" />
+                android:hint="@string/hint_txtCamas" />
 
             <EditText
                 android:id="@+id/txtToilets"
@@ -189,7 +189,7 @@
                 android:inputType="number"
                 android:maxLength="2"
                 android:maxLines="1"
-                android:hint="Cuartos de baño" />
+                android:hint="@string/hint_txtToilets" />
 
             <EditText
                 android:id="@+id/txtTamano"
@@ -198,14 +198,14 @@
                 android:layout_below="@id/txtCamas"
                 android:inputType="number"
                 android:maxLines="1"
-                android:hint="Tamaño"/>
+                android:hint="@string/hint_txtTamano"/>
 
             <EditText
                 android:id="@+id/txtDescripcion"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/txtTamano"
-                android:hint="Descripción"/>
+                android:hint="@string/hint_txtDescripcion"/>
 
             <EditText
                 android:id="@+id/txtPrecio"
@@ -213,7 +213,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/txtDescripcion"
                 android:maxLines="1"
-                android:hint="Precio"
+                android:hint="@string/hint_txtPrecio"
                 android:inputType="numberDecimal"/>
 
         </RelativeLayout>

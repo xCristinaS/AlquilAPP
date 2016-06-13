@@ -70,7 +70,7 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
     private MessagePojo messagePojoAux;
 
     private Toolbar toolbar;
-    private RelativeLayout shapeComentario, groupImagenes,groupProgressBar;
+    private RelativeLayout groupImagenes,groupProgressBar;
     private SliderLayout slider;
     private ImageView imgTipoVivienda, imgCamas, imgMessage, imgEdit, imgSubscribe;
     private LinearLayout emptyViewPrestaciones;
@@ -173,7 +173,6 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
         rvPrestaciones = (RecyclerView) findViewById(R.id.rvPrestaciones);
         lblDescripcionNoDisponible = (TextView) findViewById(R.id.lblDescripcionNoDisponible);
         lblDescripcion = (TextView) findViewById(R.id.lblDescripcion);
-        shapeComentario = (RelativeLayout) findViewById(R.id.shapeComentario);
 
         imgMessage = (ImageView) findViewById(R.id.imgMessage);
 
@@ -437,7 +436,7 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
         View dialogView = View.inflate(DetallesAnuncioActivity.this, R.layout.dialog_fragment_send_message, null);
         dialog.setView(dialogView);
         dialog.setCanceledOnTouchOutside(true);
-        dialog.setTitle("Enviar mensaje");
+        dialog.setTitle(getString(R.string.title_dialogEnviarMensaje));
         txtMensaje = (EditText) dialogView.findViewById(R.id.txtMensaje);
         dialogView.findViewById(R.id.imgEnviar).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -463,7 +462,7 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
         final AlertDialog dialog = new AlertDialog.Builder(this).create();
         View dialogView = View.inflate(this, R.layout.dialog_removed_advert, null);
         dialog.setView(dialogView);
-        dialog.setTitle("Ups! El anuncio ha sido eliminado");
+        dialog.setTitle(getString(R.string.title_AdvertRemovedDialog));
         dialogView.findViewById(R.id.btnAceptar).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

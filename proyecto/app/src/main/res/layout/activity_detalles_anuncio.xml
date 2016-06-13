@@ -202,7 +202,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
                         android:layout_below="@id/imgToilet"
-                        android:text="Baños" />
+                        android:text="@string/text_lblToilets" />
 
                     <TextView
                         android:id="@+id/lblNumToilets"
@@ -242,7 +242,7 @@
                 android:layout_marginLeft="15dp"
                 android:layout_toEndOf="@id/dividerAvatar"
                 android:layout_toRightOf="@id/dividerAvatar"
-                android:text="Tamaño"
+                android:text="@string/text_lblTituloTamano"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
@@ -266,7 +266,7 @@
                 android:layout_marginTop="5dp"
                 android:layout_toEndOf="@id/dividerAvatar"
                 android:layout_toRightOf="@id/dividerAvatar"
-                android:text="Precio"
+                android:text="@string/text_lblTituloPrecio"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 

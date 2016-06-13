@@ -44,7 +44,35 @@
     <string name="siguiente_CrearAnuncio1">Siguiente</string>
         <!-- Diálogo de selección -> Cámara, Galería, Eliminar-->
         <string name="title_DialogSelectImage">Seleccione una de las opciones</string>
-    <string name="noCamera_DialogSelectImage">Este dispositivo no dispone de cámara</string>
+        <string name="noCamera_DialogSelectImage">Este dispositivo no dispone de cámara</string>
+
+    <!-- CrearAnuncio2Activity-->
+    <string name="tipoVivienda_casa">Casa</string>
+    <string name="tipoVivienda_habitacion">Habitación</string>
+    <string name="tipoVivienda_piso">Piso</string>
+
+    <string name="hint_txtTituloAnuncio">Título del anuncio</string>
+    <string name="hint_txtDireccion">Dirección</string>
+    <string name="hint_txtNum">Número</string>
+    <string name="hint_txtPoblacion">Población</string>
+    <string name="hint_txtProvincia">Provincia</string>
+    <string name="hint_txtCamas">Habitaciones</string>
+    <string name="hint_txtToilets">Cuartos de baño</string>
+    <string name="hint_txtTamano">Tamaño</string>
+    <string name="hint_txtDescripcion">Descripción</string>
+    <string name="hint_txtPrecio">Precio</string>
+
+    <string name="error_campoVacio">Rellene este campo</string>
+    <string name="toast_seleccionaVivienda">Seleccione el tipo de vivienda</string>
+
+    <!-- DetallesAnuncioActivity -->
+    <string name="text_lblTituloTamano">Tamaño</string>
+    <string name="text_lblTituloPrecio">Precio</string>
+    <string name="text_lblToilets">Baños</string>
+        <!-- Dialog Enviar Mensaje-->
+        <string name="title_dialogEnviarMensaje">Enviar mensaje</string>
+        <!-- Dialog Advert Removed-->
+        <string name="title_AdvertRemovedDialog">Ups! El anuncio ha sido eliminado</string>
 
 
 </resources>
