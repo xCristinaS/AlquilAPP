@@ -53,7 +53,6 @@ public class FilterDialogFramgent extends AppCompatDialogFragment implements Pre
     private PrestacionesAdapter mPrestacionesAdapter;
     private RecyclerView rvPrestaciones;
     private TextView emptyViewPres;
-    private Button btnFiltrar;
     private ApplyFilters listener;
     private ArrayList<Prestacion> prestaciones;
     private EditText txtPoblacion, txtProvincia;
@@ -68,16 +67,16 @@ public class FilterDialogFramgent extends AppCompatDialogFragment implements Pre
 
     @Override
     public void setupDialog(Dialog dialog, int style) {
-        dialog.setTitle("Filtrar Anuncios");
+        dialog.setTitle(R.string.title_FilterDialogFragment);
         super.setupDialog(dialog, style);
     }
 
     private void initViews(View view) {
         prestaciones = new ArrayList<>();
+        Button btnFiltrar = (Button) view.findViewById(R.id.btnFiltrar);
         imgPiso = (ImageView) view.findViewById(R.id.imgPiso);
         imgCasa = (ImageView) view.findViewById(R.id.imgCasa);
         imgHabitacion = (ImageView) view.findViewById(R.id.imgHabitacion);
-        btnFiltrar = (Button) view.findViewById(R.id.btnFiltrar);
         rangeBarPrecio = (RangeBar) view.findViewById(R.id.rangeBarPrecio);
         rangeBarTamanio = (RangeBar) view.findViewById(R.id.rangeBarTamanio);
         rvPrestaciones = (RecyclerView) view.findViewById(R.id.rvPrestaciones);

@@ -33,7 +33,7 @@ public class DescripcionDialogFragment extends AppCompatDialogFragment {
 
     @Override
     public void setupDialog(Dialog dialog, int style) {
-        dialog.setTitle("Descripción");
+        dialog.setTitle(R.string.title_DescripcionDialogFragment);
         super.setupDialog(dialog, style);
     }
 

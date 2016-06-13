@@ -87,18 +87,18 @@ public class AdvertsRecyclerViewFragment extends Fragment {
             case AdvertsRecyclerViewAdapter.ADAPTER_TYPE_SUBS:
                 mAdapter.setListenerLongClick(listenerLongClick);
                 idDrawable = R.drawable.tab_solicitudes;
-                textEmptyView = "Aún no te has suscrito a ningún anuncio";
+                textEmptyView = getActivity().getString(R.string.text_emptyView_tab_suscritos);
                 break;
             case AdvertsRecyclerViewAdapter.ADAPTER_TYPE_ADVS:
                 idDrawable = R.drawable.tab_anuncios;
-                textEmptyView = "No se han encontrado anuncios cerca de tí";
+                textEmptyView = getActivity().getString(R.string.text_emptyView_tab_anuncios);
                 break;
             case AdvertsRecyclerViewAdapter.ADAPTER_TYPE_MY_ADVS:
                 mAdapter.setListenerLongClick(listenerLongClick);
                 mAdapter.setListenerSubsClick(listenerSubClick);
                 mAdapter.setListenerUserSubClick(listenerUserSubClick);
                 idDrawable = R.drawable.tab_mis_anuncios;
-                textEmptyView = "Aún no has publicado ningún anuncio";
+                textEmptyView = getActivity().getString(R.string.text_emptyView_tab_misAnuncios);
                 break;
         }
         mAdapter.setEmptyView(emptyView);
@@ -114,7 +114,7 @@ public class AdvertsRecyclerViewFragment extends Fragment {
         if (!PreferenceManager.getDefaultSharedPreferences(getContext()).getBoolean(Constantes.KEY_LOCATION_ACTIVED, true)) {
             if (adapter_type == AdvertsRecyclerViewAdapter.ADAPTER_TYPE_ADVS) {
                 imgEmptyView.setImageResource(R.drawable.logo);
-                lblEmptyView.setText("Sin ubicación activada");
+                lblEmptyView.setText(R.string.text_emptyView_anuncios_ubicacion_desactivada);
                 emptyView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

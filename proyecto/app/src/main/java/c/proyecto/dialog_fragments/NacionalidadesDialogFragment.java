@@ -53,7 +53,7 @@ public class NacionalidadesDialogFragment extends DialogFragment {
 
     @Override
     public void setupDialog(Dialog dialog, int style) {
-        dialog.setTitle("Nacionalidades");
+        dialog.setTitle(R.string.title_NacionalidadesDialogFragment);
         super.setupDialog(dialog, style);
     }
 

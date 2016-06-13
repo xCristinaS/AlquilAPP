@@ -26,7 +26,7 @@ public class PreferencesFragment extends PreferenceFragment implements SharedPre
     }
 
     private void initPreferences() {
-        SeekBarPreference seek = (SeekBarPreference) findPreference("prefRatio");
+        SeekBarPreference seek = (SeekBarPreference) findPreference(getString(R.string.pref_ratio));
         seek.setCurrentValue(seek.getCurrentValue());
     }
 

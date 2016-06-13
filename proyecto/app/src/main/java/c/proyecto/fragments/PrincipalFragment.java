@@ -2,9 +2,6 @@ package c.proyecto.fragments;
 
 
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.ColorFilter;
-import android.graphics.ColorMatrixColorFilter;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
@@ -17,8 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.ogaclejapan.smarttablayout.SmartTabLayout;
-
 import java.util.ArrayList;
 
 import c.proyecto.Constantes;
@@ -29,7 +24,6 @@ import c.proyecto.adapters.AdvertsRecyclerViewAdapter;
 import c.proyecto.pojo.Anuncio;
 import c.proyecto.pojo.Usuario;
 import c.proyecto.mvp_presenters.MainPresenter;
-import c.proyecto.utils.UtilMethods;
 
 
 public class PrincipalFragment extends Fragment {
@@ -98,19 +92,19 @@ public class PrincipalFragment extends Fragment {
 
                 switch (position){
                     case 0:
-                        getActivity().setTitle("Suscripciones");
+                        getActivity().setTitle(getString(R.string.tab_solicitudes));
                         tab1.clearColorFilter();
                         tab2.clearColorFilter();
                         ((ImageView) tabLayout.getTabAt(0).getCustomView()).setColorFilter(getResources().getColor(R.color.colorAccent));
                         break;
                     case 1:
-                        getActivity().setTitle("Anuncios");
+                        getActivity().setTitle(getString(R.string.tab_anuncios));
                         tab0.clearColorFilter();
                         tab2.clearColorFilter();
                         ((ImageView) tabLayout.getTabAt(1).getCustomView()).setColorFilter(getResources().getColor(R.color.colorAccent));
                         break;
                     case 2:
-                        getActivity().setTitle("Mis Anuncios");
+                        getActivity().setTitle(getString(R.string.tab_mis_anuncios));
                         tab0.clearColorFilter();
                         tab1.clearColorFilter();
                         ((ImageView) tabLayout.getTabAt(2).getCustomView()).setColorFilter(getResources().getColor(R.color.colorAccent));
@@ -194,7 +188,7 @@ public class PrincipalFragment extends Fragment {
         if (f.getmAdapter().getAdapter_type() == AdvertsRecyclerViewAdapter.ADAPTER_TYPE_ADVS){
             //Si no ha encontrado ningún anuncio filtrando
             if(filteredAdverts.size() == 0)
-                f.confEmptyView(R.drawable.cama, "Sin coincidencias");
+                f.confEmptyView(R.drawable.cama, getString(R.string.emptyView_busqueda_sin_exito));
             f.getmAdapter().addItems(filteredAdverts);
         }
     }
@@ -207,7 +201,7 @@ public class PrincipalFragment extends Fragment {
             if(!PreferenceManager.getDefaultSharedPreferences(getContext()).getBoolean(Constantes.KEY_LOCATION_ACTIVED, true))
                 confEmptyViewsSinUbicacion();
             else
-                f.confEmptyView(R.drawable.tab_anuncios, "Sin anuncios");
+                f.confEmptyView(R.drawable.tab_anuncios, getString(R.string.emptyView_notNearAdvert));
         }
     }
 
@@ -280,12 +274,12 @@ public class PrincipalFragment extends Fragment {
     }
 
     public void confEmptyViewsNormales(){
-        ((AdvertsRecyclerViewFragment) vpAdapter.getItem(0)).confEmptyView(R.drawable.tab_solicitudes, "Sin solicitudes");
-        ((AdvertsRecyclerViewFragment) vpAdapter.getItem(1)).confEmptyView(R.drawable.tab_anuncios, "Anuncios no encontrados");
-        ((AdvertsRecyclerViewFragment) vpAdapter.getItem(2)).confEmptyView(R.drawable.tab_mis_anuncios, "Sin mis anuncios");
+        ((AdvertsRecyclerViewFragment) vpAdapter.getItem(0)).confEmptyView(R.drawable.tab_solicitudes, getString(R.string.emptyView_tab_suscritos));
+        ((AdvertsRecyclerViewFragment) vpAdapter.getItem(1)).confEmptyView(R.drawable.tab_anuncios, getString(R.string.emptyView_notNearAdvert));
+        ((AdvertsRecyclerViewFragment) vpAdapter.getItem(2)).confEmptyView(R.drawable.tab_mis_anuncios, getString(R.string.emptyView_tab_misAnuncios));
     }
     public void confEmptyViewsSinUbicacion(){
-        ((AdvertsRecyclerViewFragment) vpAdapter.getItem(1)).confEmptyView(R.drawable.logo, "Sin ubicación activada");
+        ((AdvertsRecyclerViewFragment) vpAdapter.getItem(1)).confEmptyView(R.drawable.logo, getString(R.string.emptyView_location_disabled));
     }
 
 

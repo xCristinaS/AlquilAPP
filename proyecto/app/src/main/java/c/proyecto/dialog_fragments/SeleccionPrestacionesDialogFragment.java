@@ -38,7 +38,6 @@ public class SeleccionPrestacionesDialogFragment extends AppCompatDialogFragment
     private CheckBox cbTren;
     private CheckBox cbTv;
     private CheckBox cbInternet;
-    private TextView lblAireAcondicionado;
     private List<Prestacion> mPrestaciones;
 
     public static SeleccionPrestacionesDialogFragment newInstance(ArrayList<Prestacion> prestacionesSelected) {
@@ -62,7 +61,7 @@ public class SeleccionPrestacionesDialogFragment extends AppCompatDialogFragment
 
     @Override
     public void setupDialog(Dialog dialog, int style) {
-        dialog.setTitle("Prestaciones");
+        dialog.setTitle(R.string.title_SeleccionPrestacionesDialogFragment);
         super.setupDialog(dialog, style);
     }
 
@@ -79,8 +78,6 @@ public class SeleccionPrestacionesDialogFragment extends AppCompatDialogFragment
         cbTv = (CheckBox) view.findViewById(R.id.cbTv);
         cbInternet = (CheckBox) view.findViewById(R.id.cbInternet);
 
-
-        lblAireAcondicionado = (TextView) view.findViewById(R.id.lblAireAcondicionado);
         bindCheckBox();
     }
 

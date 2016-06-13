@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="1.5"
-            android:text="Ordenado" />
+            android:text="@string/text_lblOrdenado" />
 
         <android.support.v7.widget.AppCompatSeekBar
             android:id="@+id/skOrdenado"
@@ -37,7 +37,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
-            android:text="0" />
+            android:text="@string/default_num_caracteristica" />
     </LinearLayout>
 
 
@@ -56,7 +56,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="1.5"
-            android:text="Fiestero" />
+            android:text="@string/text_lblFiestero" />
 
         <android.support.v7.widget.AppCompatSeekBar
             android:id="@+id/skFiestero"
@@ -71,7 +71,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
-            android:text="0" />
+            android:text="@string/default_num_caracteristica" />
     </LinearLayout>
 
     <!-- SOCIABLE -->
@@ -89,7 +89,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="1.5"
-            android:text="Sociable" />
+            android:text="@string/text_lblSociable" />
 
         <android.support.v7.widget.AppCompatSeekBar
             android:id="@+id/skSociable"
@@ -105,7 +105,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
-            android:text="0" />
+            android:text="@string/default_num_caracteristica" />
     </LinearLayout>
 
     <!-- ACTIVO -->
@@ -123,7 +123,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="1.5"
-            android:text="Activo" />
+            android:text="@string/text_lblActivo" />
 
         <android.support.v7.widget.AppCompatSeekBar
             android:id="@+id/skActivo"
@@ -138,6 +138,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
-            android:text="0" />
+            android:text="@string/default_num_caracteristica" />
     </LinearLayout>
 </LinearLayout>

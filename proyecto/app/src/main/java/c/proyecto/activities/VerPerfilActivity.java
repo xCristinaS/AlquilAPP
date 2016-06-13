@@ -105,7 +105,7 @@ public class VerPerfilActivity extends AppCompatActivity {
         View dialogView = View.inflate(this, R.layout.dialog_fragment_send_message, null);
         dialog.setView(dialogView);
         dialog.setCanceledOnTouchOutside(true);
-        dialog.setTitle("Enviar mensaje");
+        dialog.setTitle(getString(R.string.title_dialogEnviarMensaje));
         txtMensaje = (EditText) dialogView.findViewById(R.id.txtMensaje);
         dialogView.findViewById(R.id.imgEnviar).setOnClickListener(new View.OnClickListener() {
             @Override

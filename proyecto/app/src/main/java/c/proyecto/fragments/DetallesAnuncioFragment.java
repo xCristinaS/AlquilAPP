@@ -73,7 +73,7 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
 
     private RelativeLayout shapeComentario, groupImagenes;
     private SliderLayout slider;
-    private ImageView imgTipoVivienda,imgCamas,imgMessage, imgEdit, imgSubscribe;
+    private ImageView imgTipoVivienda, imgCamas, imgSubscribe;
 
     private CircleImageView imgAvatar;
     private TextView lblNombre, lblPrecio, lblTamano, lblTipoVivienda, lblCamas, lblNumCamas, lblNumToilets, lblDescripcionNoDisponible, lblDescripcion;
@@ -139,7 +139,9 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
         lblDescripcion = (TextView) getView().findViewById(R.id.lblDescripcion);
         shapeComentario = (RelativeLayout) getView().findViewById(R.id.shapeComentario);
 
-        imgMessage = (ImageView) getView().findViewById(R.id.imgMessage);
+        ImageView imgEdit = (ImageView) getView().findViewById(R.id.imgEdit);
+        ImageView imgMessage = (ImageView) getView().findViewById(R.id.imgMessage);
+
         if (mMessage == null)
             imgMessage.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -157,7 +159,7 @@ public class DetallesAnuncioFragment extends Fragment implements PrestacionesAda
             });
         }
 
-        imgEdit = (ImageView) getView().findViewById(R.id.imgEdit);
+
         imgSubscribe = (ImageView) getView().findViewById(R.id.imgSubscribe);
 
         switch (mAdverType) {

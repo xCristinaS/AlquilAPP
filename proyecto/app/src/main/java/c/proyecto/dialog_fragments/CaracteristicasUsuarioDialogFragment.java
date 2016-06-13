@@ -54,7 +54,7 @@ public class CaracteristicasUsuarioDialogFragment extends AppCompatDialogFragmen
 
     @Override
     public void setupDialog(Dialog dialog, int style) {
-        dialog.setTitle("Características");
+        dialog.setTitle(R.string.title_CaracteristicasUsuarioDialogFragment);
         super.setupDialog(dialog, style);
     }
 

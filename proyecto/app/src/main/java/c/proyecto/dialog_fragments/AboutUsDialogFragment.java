@@ -22,7 +22,7 @@ public class AboutUsDialogFragment extends AppCompatDialogFragment {
 
     @Override
     public void setupDialog(Dialog dialog, int style) {
-        dialog.setTitle("About Us");
+        dialog.setTitle(R.string.title_AboutUsDialog);
         super.setupDialog(dialog, style);
     }
 }

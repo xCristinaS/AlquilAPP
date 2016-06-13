@@ -29,7 +29,7 @@
                 android:layout_below="@id/imgCasa"
                 android:layout_marginLeft="41dp"
                 android:layout_marginTop="10dp"
-                android:text="Casa"
+                android:text="@string/tipoVivienda_casa"
                 android:textStyle="bold" />
 
             <!-- HABITACIÓN -->
@@ -50,7 +50,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginLeft="41dp"
                 android:layout_marginTop="10dp"
-                android:text="Habitación"
+                android:text="@string/tipoVivienda_habitacion"
                 android:textStyle="bold" />
 
             <!-- PISO -->
@@ -73,7 +73,7 @@
                 android:layout_below="@id/imgPiso"
                 android:layout_marginRight="40dp"
                 android:layout_marginTop="10dp"
-                android:text="Piso"
+                android:text="@string/tipoVivienda_piso"
                 android:textStyle="bold" />
 
             <TextView
@@ -83,7 +83,7 @@
                 android:layout_below="@id/imgPiso"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="50dp"
-                android:text="Precio" />
+                android:text="@string/hint_txtPrecio" />
 
             <com.appyvet.rangebar.RangeBar
                 xmlns:custom="http://schemas.android.com/apk/res-auto"
@@ -114,7 +114,7 @@
                 android:layout_below="@id/rangeBarPrecio"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="10dp"
-                android:text="Tamaño" />
+                android:text="@string/hint_txtTamano" />
 
             <com.appyvet.rangebar.RangeBar
                 xmlns:custom="http://schemas.android.com/apk/res-auto"
@@ -158,7 +158,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:text="Seleccione las prestaciones que desee"
+                    android:text="@string/text_emptyViewPrestaciones"
                     android:visibility="gone" />
             </RelativeLayout>
 
@@ -168,7 +168,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/groupPrestaciones"
                 android:gravity="center"
-                android:hint="Provincia"
+                android:hint="@string/hint_txtProvincia"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
                 android:layout_marginRight="10dp"
@@ -185,7 +185,7 @@
                 android:layout_marginBottom="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginLeft="10dp"
-                android:hint="Población"
+                android:hint="@string/hint_txtPoblacion"
                 android:inputType="text"
                 android:maxLines="1" />
         </RelativeLayout>
@@ -198,6 +198,6 @@
         android:layout_alignParentBottom="true"
         android:background="@color/colorPrimary"
         android:textColor="@android:color/white"
-        android:text="Filtrar" />
+        android:text="@string/text_btnFiltrar" />
 
 </RelativeLayout>

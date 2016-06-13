@@ -4,6 +4,7 @@
 
     <!-- PREFERENCIAS-->
     <string name="pref_ratio">prefRatio</string>
+
     <!-- TabLayout -->
     <string name="tab_solicitudes">Solicitudes</string>
     <string name="tab_anuncios">Anuncios</string>
@@ -109,6 +110,48 @@
     <string name="hint_btnRegistrarse">Registrarse</string>
     <string name="error_notEqualPasswords">Las contraseñas no son iguales</string>
     <string name="error_alreadyUserCreated">Este usuario ya existe</string>
+
+    <!-- VerPerfilActivity -->
+    <string name="text_lblDescripcionNoDisponible">Descripción no disponible</string>
+
+
+    <!-- AboutUsDialogFragment -->
+    <string name="title_AboutUsDialog">About Us</string>
+
+    <!-- CaracteristicasUsuarioDialogFragment -->
+    <string name="title_CaracteristicasUsuarioDialogFragment">Características</string>
+    <string name="text_lblOrdenado">Ordenado</string>
+    <string name="text_lblFiestero">Fiestero</string>
+    <string name="text_lblSociable">Sociable</string>
+    <string name="text_lblActivo">Activo</string>
+    <string name="default_num_caracteristica">0</string>
+
+    <!-- DescripbionDialogFragment-->
+    <string name="title_DescripcionDialogFragment">Descripción</string>
+
+    <!-- FilterDialogFragment -->
+    <string name="title_FilterDialogFragment">Filtrar Anuncios</string>
+    <string name="text_btnFiltrar">Filtrar</string>
+    <string name="text_emptyViewPrestaciones">Seleccione las prestaciones que desee</string>
+
+    <!-- NacionalidadesDialogFragment -->
+    <string name="title_NacionalidadesDialogFragment">Nacionalidades</string>
+
+    <!-- SeleccionPrestacionesDialogFragment-->
+    <string name="title_SeleccionPrestacionesDialogFragment">Prestaciones</string>
+
+    <!-- AdvertsRecyclerViewFragment -->
+    <string name="text_emptyView_tab_suscritos">Aún no te has suscrito a ningún anuncio</string>
+    <string name="text_emptyView_tab_anuncios">No se han encontrado anuncios cerca de tí</string>
+    <string name="text_emptyView_tab_misAnuncios">Aún no has publicado ningún anuncio</string>
+    <string name="text_emptyView_anuncios_ubicacion_desactivada">Sin ubicación activada</string>
+
+    <!-- PrincipalFragment -->
+    <string name="emptyView_busqueda_sin_exito">No se ha encontrado ningún anuncio</string>
+    <string name="emptyView_notNearAdvert">Ningún anuncio cercano</string>
+    <string name="emptyView_tab_suscritos">Aún no te has suscrito a ningún anuncio</string>
+    <string name="emptyView_tab_misAnuncios">Aún no has publicado ningún anuncio</string>
+    <string name="emptyView_location_disabled">Ubicación desactivada</string>
 
 
 </resources>
