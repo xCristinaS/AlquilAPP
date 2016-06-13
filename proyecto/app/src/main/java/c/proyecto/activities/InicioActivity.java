@@ -4,8 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SwitchCompat;
 import android.view.View;
@@ -54,7 +52,7 @@ public class InicioActivity extends AppCompatActivity implements InicioActivityO
         presentador = InicioPresenter.getPresentador(this);
         presentador.setUsersManager(new UsersFirebaseManager(presentador));
         swRememberMe = (SwitchCompat) findViewById(R.id.swRememberMe);
-        txtUser = (TextView) findViewById(R.id.txtUser);
+        txtUser = (TextView) findViewById(R.id.txtEmail);
         txtPass = (TextView) findViewById(R.id.txtPass);
         MaterialTextField mTUser = (MaterialTextField) findViewById(R.id.mTUser);
         MaterialTextField mTPass = (MaterialTextField) findViewById(R.id.mTPass);

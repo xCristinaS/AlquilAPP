@@ -252,7 +252,7 @@ public class LocalizacionActivity extends AppCompatActivity implements OnMapRead
         Address address = getAddress(lat.latitude, lat.longitude);
 
         if(address == null)
-            Toast.makeText(this, "Esta localización no es válida", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.toast_noValidLocation, Toast.LENGTH_SHORT).show();
         else{
             //Se devuelve la dirección del lugar seleccionado para su introducción en el EditText pulsado anteriormente.
             result.putExtra(EXTRA_ADDRESS, address);

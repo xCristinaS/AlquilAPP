@@ -209,7 +209,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
                 mPresenter.requestUserMessages(mUser);
 
                 getSupportFragmentManager().beginTransaction().replace(R.id.frmContenido, MessagesFragment.newInstance(false, null), TAG_MESSAGES_FRAGMENT).commit();
-                toolbar.setTitle("Mensajes");
+                toolbar.setTitle(R.string.toolbarTitle_mensajes);
                 break;
             case R.id.nav_preferences:
                 startActivityForResult(new Intent(this, PreferencesActivity.class), RC_PREFERENCES);
@@ -258,7 +258,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
                     if (mLastLocation != null)
                         MapBrowserActivity.start(this, mLastLocation, mUser);
                     else
-                        Toast.makeText(this, "No es posible encontrar su posición", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, R.string.error_locationNotFound, Toast.LENGTH_SHORT).show();
                 }
 
                 return true;
@@ -513,7 +513,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
                     //Se espera a que haya conseguido la localización tras activar el gps, carga los anuncios y desvincula el listener.
                     LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, mLocationListener);
                 } else
-                    Toast.makeText(this, "Necesita activar Ubicación para poder ver los anuncios cercanos a usted", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, R.string.toast_needLocationToSeeNearAdverts, Toast.LENGTH_LONG).show();
                 break;
             case RC_PREFERENCES:
                 if (resultCode == RESULT_OK) {

@@ -30,7 +30,7 @@
                 android:inputType="text"
                 android:maxLines="1"
                 android:theme="@style/subrayadoBlanco"
-                android:hint="Buscar"
+                android:hint="@string/hint_txtDireccion_localizador"
                 android:textColorHint="@android:color/darker_gray"
                 android:textColor="@android:color/white"
                 android:gravity="start"/>

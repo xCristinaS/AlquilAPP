@@ -32,6 +32,8 @@
     <string name="television">Televisión</string>
     <string name="internet">Internet</string>
 
+    <!-- TOOLBAR TITLES-->
+    <string name="toolbarTitle_mensajes">Mensajes</string>
 
     <!-- MAPS =  getString(String, Object...) does not support HTML tags directly, they need to be encoded first.
     Original string: <b>%1$s</b><br/><i>Place Id: %2$s</i><br/>Address: %3$s<br/>Phone: %4$s<br/>Website: %5$s-->
@@ -44,7 +46,7 @@
     <string name="siguiente_CrearAnuncio1">Siguiente</string>
         <!-- Diálogo de selección -> Cámara, Galería, Eliminar-->
         <string name="title_DialogSelectImage">Seleccione una de las opciones</string>
-        <string name="noCamera_DialogSelectImage">Este dispositivo no dispone de cámara</string>
+        <string name="alert_noCamera">Este dispositivo no dispone de cámara</string>
 
     <!-- CrearAnuncio2Activity-->
     <string name="tipoVivienda_casa">Casa</string>
@@ -59,7 +61,7 @@
     <string name="hint_txtCamas">Habitaciones</string>
     <string name="hint_txtToilets">Cuartos de baño</string>
     <string name="hint_txtTamano">Tamaño</string>
-    <string name="hint_txtDescripcion_CrearAnuncio2">Descripción</string>
+    <string name="hint_txtDescripcion">Descripción</string>
     <string name="hint_txtPrecio">Precio</string>
 
     <string name="error_campoVacio">Rellene este campo</string>
@@ -85,15 +87,28 @@
     <string name="text_btnConfirmar">Confirmar</string>
         <!-- DatePicker -->
         <string name="title_datePicker">Seleccione su fecha</string>
-        <string name="title_ImageDialogList">Seleccione una de las opciones</string>
-        <string name="alert_noCamera_ImageDialogList">Este dispositivo no dispone de cámara</string>
 
     <!-- InicioActivity -->
-    <string name="hint_txtUser">Email</string>
+    <string name="hint_txtEmail">Email</string>
     <string name="hint_txtPass">Contraseña</string>
     <string name="text_rememberMe">Seguir conectado</string>
     <string name="text_btnIniciar">Iniciar sesión</string>
     <string name="text_btnRegistrarse">¿Nuevo Aquí? Registrate</string>
+
+    <!-- LocalizacionActivity-->
+    <string name="hint_txtDireccion_localizador">Buscar</string>
+    <string name="toast_noValidLocation">Esta localización no es válida</string>
+
+    <!-- MainActivity -->
+    <string name="error_locationNotFound">No es posible encontrar su posición</string>
+    <string name="toast_needLocationToSeeNearAdverts">Necesita activar Ubicación para poder ver los anuncios cercanos a usted</string>
+
+    <!-- RegistroActivity-->
+    <string name="hint_txtRepeatPass">Repetir Contraseña</string>
+    <string name="hint_lblCancelar">CANCELAR</string>
+    <string name="hint_btnRegistrarse">Registrarse</string>
+    <string name="error_notEqualPasswords">Las contraseñas no son iguales</string>
+    <string name="error_alreadyUserCreated">Este usuario ya existe</string>
 
 
 </resources>

@@ -260,7 +260,7 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
                                 if (Imagenes.hayCamara(CrearAnuncio1Activity.this))
                                     takePhoto();
                                 else
-                                    Toast.makeText(CrearAnuncio1Activity.this, R.string.noCamera_DialogSelectImage, Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(CrearAnuncio1Activity.this, R.string.alert_noCamera, Toast.LENGTH_SHORT).show();
                                 break;
                             //Eliminar imagen
                             case 2:

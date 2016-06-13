@@ -44,7 +44,7 @@
             android:layout_centerHorizontal="true">
 
             <EditText
-                android:id="@+id/txtUser"
+                android:id="@+id/txtEmail"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
@@ -52,7 +52,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:background="@android:color/transparent"
-                android:hint="Email"
+                android:hint="@string/hint_txtEmail"
                 android:maxLines="1"
                 android:inputType="textEmailAddress"
                 android:textColor="#333"
@@ -78,7 +78,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:background="@android:color/transparent"
-                android:hint="Contraseña"
+                android:hint="@string/hint_txtPass"
                 android:inputType="textPassword"
                 android:textColor="#333"
                 android:textColorHint="#666"
@@ -103,7 +103,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:background="@android:color/transparent"
-                android:hint="Repetir Contraseña"
+                android:hint="@string/hint_txtRepeatPass"
                 android:inputType="textPassword"
                 android:textColor="#333"
                 android:textColorHint="#666"
@@ -133,7 +133,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:background="@android:color/transparent"
-                android:hint="Nombre"
+                android:hint="@string/hint_txtNombre"
                 android:maxLines="1"
                 android:inputType="text"
                 android:textColor="#333"
@@ -159,7 +159,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:background="@android:color/transparent"
-                android:hint="Apellidos"
+                android:hint="@string/hint_txtApellidos"
                 android:maxLines="1"
                 android:inputType="text"
                 android:textColor="#333"
@@ -182,7 +182,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignBaseline="@id/btnRegistrarse"
-                android:text="CANCELAR"
+                android:text="@string/hint_lblCancelar"
                 android:padding="5dp"
                 app:layout_marginLeftPercent="22%" />
 
@@ -191,7 +191,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:background="@color/colorAccent"
-                android:text="Registrarse"
+                android:text="@string/hint_btnRegistrarse"
                 app:layout_marginLeftPercent="54%"
                 app:layout_widthPercent="40.5%"
 

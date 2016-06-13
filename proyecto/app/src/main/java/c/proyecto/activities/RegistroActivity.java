@@ -11,7 +11,6 @@ import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.CardView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,10 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Locale;
 
 import c.proyecto.Constantes;
 import c.proyecto.R;
@@ -60,7 +56,7 @@ public class RegistroActivity extends AppCompatActivity implements RegistroActiv
     }
 
     private void initViews() {
-        txtUser = (EditText) findViewById(R.id.txtUser);
+        txtUser = (EditText) findViewById(R.id.txtEmail);
         txtPass = (EditText) findViewById(R.id.txtPass);
         txtRepeatPass = (EditText) findViewById(R.id.txtRepeatPass);
         txtNombre = (EditText) findViewById(R.id.txtNombre);
@@ -93,23 +89,23 @@ public class RegistroActivity extends AppCompatActivity implements RegistroActiv
         boolean empty = false;
 
         if(txtUser.getText().toString().isEmpty()){
-            txtUser.setError("Rellene este campo");
+            txtUser.setError(getString(R.string.error_campoVacio));
             empty = true;
         }
         if(txtPass.getText().toString().isEmpty()){
-            txtPass.setError("Rellene este campo");
+            txtPass.setError(getString(R.string.error_campoVacio));
             empty = true;
         }
         if(txtRepeatPass.getText().toString().isEmpty()){
-            txtRepeatPass.setError("Rellene este campo");
+            txtRepeatPass.setError(getString(R.string.error_campoVacio));
             empty = true;
         }
         if(txtNombre.getText().toString().isEmpty()){
-            txtNombre.setError("Rellene este campo");
+            txtNombre.setError(getString(R.string.error_campoVacio));
             empty = true;
         }
         if(txtApellidos.getText().toString().isEmpty()){
-            txtApellidos.setError("Rellene este campo");
+            txtApellidos.setError(getString(R.string.error_campoVacio));
             empty = true;
         }
 
@@ -132,11 +128,11 @@ public class RegistroActivity extends AppCompatActivity implements RegistroActiv
                 getSharedPreferences(Constantes.NOMBRE_PREFERENCIAS, MODE_PRIVATE).edit().putString(Constantes.KEY_USER, txtUser.getText().toString()).apply();
                 presentador.register(txtUser.getText().toString(), txtPass.getText().toString(), txtNombre.getText().toString(), txtApellidos.getText().toString());
             }else{
-                txtRepeatPass.setError("Las contraseñas no son iguales");
+                txtRepeatPass.setError(getString(R.string.error_notEqualPasswords));
                 btnRegistrarse.setEnabled(true);
             }
         }else{
-            txtUser.setError("Este usuario ya existe");
+            txtUser.setError(getString(R.string.error_alreadyUserCreated));
             btnRegistrarse.setEnabled(true);
         }
     }
@@ -164,7 +160,7 @@ public class RegistroActivity extends AppCompatActivity implements RegistroActiv
                         return;
 
                 AlertDialog.Builder dialog = new AlertDialog.Builder(RegistroActivity.this);
-                dialog.setTitle("Seleccione una de las opciones");
+                dialog.setTitle(getString(R.string.title_DialogSelectImage));
                 dialog.setItems(R.array.chooseImageWithoutRemoveListItem, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -180,7 +176,7 @@ public class RegistroActivity extends AppCompatActivity implements RegistroActiv
                                 if (Imagenes.hayCamara(RegistroActivity.this))
                                     takePhoto();
                                 else
-                                    Toast.makeText(RegistroActivity.this, "Este dispositivo no dispone de cámara", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(RegistroActivity.this, getString(R.string.alert_noCamera), Toast.LENGTH_SHORT).show();
                                 break;
                         }
                     }
