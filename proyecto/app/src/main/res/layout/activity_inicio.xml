@@ -86,6 +86,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="5dp"
+            android:layout_marginStart="5dp"
             android:layout_below="@id/mTPass"
             android:layout_marginTop="20dp"/>
 
@@ -94,6 +95,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="5dp"
+            android:layout_marginStart="5dp"
             android:layout_toRightOf="@id/swRememberMe"
             android:layout_toEndOf="@id/swRememberMe"
             android:layout_alignBaseline="@id/swRememberMe"

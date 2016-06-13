@@ -16,4 +16,7 @@
     <color name="colorBlanco">#ffffff</color>
 
     <color name="colorDivider">#EEEEEE</color>
+
+    <!-- ConversationActivity -->
+    <color name="backgroundConversation">#f2efef</color>
 </resources>

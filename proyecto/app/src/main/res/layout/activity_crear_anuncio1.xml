@@ -281,7 +281,7 @@
     app:layout_heightPercent="26%"
     android:layout_alignParentBottom="true"
     android:background="@color/colorPrimary"
-    app:elevation="30dp"
+    app:elevation="@dimen/elevation_groupSiguiente"
 
     >
     <TextView
@@ -290,7 +290,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginStart="@dimen/activity_horizontal_margin"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="@dimen/marginTop_lblFrase"
         android:textSize="16sp"
         android:textColor="@android:color/white"
 
@@ -298,14 +298,14 @@
     <ImageView
         android:id="@+id/imgSiguiente"
         android:src="@drawable/flecha"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="@dimen/bounds_imgSiguiente"
+        android:layout_height="@dimen/bounds_imgSiguiente"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         app:layout_marginRightPercent="@fraction/views_margin"
         app:layout_marginEndPercent="@fraction/views_margin"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="@dimen/marginBottom_imgSiguiente"
         />
 
     <TextView
@@ -314,14 +314,14 @@
         android:layout_height="wrap_content"
         android:text="@string/siguiente_CrearAnuncio1"
         android:textStyle="bold"
-        android:textSize="16sp"
+        android:textSize="@dimen/textSize_lblSiguiente"
         android:textColor="@android:color/white"
         android:layout_alignBottom="@id/imgSiguiente"
-        android:layout_marginBottom="11dp"
+        android:layout_marginBottom="@dimen/marginBottom_lblSiguiente"
         android:layout_toLeftOf="@id/imgSiguiente"
         android:layout_toStartOf="@id/imgSiguiente"
-        android:layout_marginRight="3dp"
-        android:layout_marginEnd="3dp"/>
+        android:layout_marginRight="@dimen/marginRight_lblSiguiente"
+        android:layout_marginEnd="@dimen/marginRight_lblSiguiente"/>
 </android.support.percent.PercentRelativeLayout>
 
     <ImageView

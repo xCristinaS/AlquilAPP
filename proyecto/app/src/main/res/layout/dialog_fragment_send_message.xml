@@ -7,9 +7,10 @@
         android:id="@+id/txtMensaje"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="Mensaje"
+        android:hint="@string/hint_txtEscribirMensaje"
         android:maxLines="6"
         android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
         android:layout_weight="85"/>
 
     <ImageView

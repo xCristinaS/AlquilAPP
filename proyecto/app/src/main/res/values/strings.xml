@@ -68,12 +68,15 @@
     <string name="error_campoVacio">Rellene este campo</string>
     <string name="toast_seleccionaVivienda">Seleccione el tipo de vivienda</string>
 
+
     <!-- DetallesAnuncioActivity -->
     <string name="text_lblTituloTamano">Tamaño</string>
     <string name="text_lblTituloPrecio">Precio</string>
     <string name="text_lblToilets">Baños</string>
+    <string name="text_emptyViewPrestaciones_crearAnuncio2">Sin prestaciones</string>
         <!-- Dialog Enviar Mensaje-->
         <string name="title_dialogEnviarMensaje">Enviar mensaje</string>
+        <string name="hint_txtEscribirMensaje">Escribir mensaje</string>
         <!-- Dialog Advert Removed-->
         <string name="title_AdvertRemovedDialog">Ups! El anuncio ha sido eliminado</string>
 
@@ -152,6 +155,7 @@
     <string name="emptyView_tab_suscritos">Aún no te has suscrito a ningún anuncio</string>
     <string name="emptyView_tab_misAnuncios">Aún no has publicado ningún anuncio</string>
     <string name="emptyView_location_disabled">Ubicación desactivada</string>
+    <string name="text_emptyViewPrestaciones_ActivityDetallesAnuncio">Sin prestaciones</string>
 
 
 </resources>

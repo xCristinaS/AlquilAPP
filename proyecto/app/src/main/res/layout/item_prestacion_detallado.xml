@@ -5,13 +5,13 @@
     android:orientation="horizontal"
     android:layout_marginTop="15dp"
     android:layout_marginBottom="15dp"
-    android:layout_marginLeft="16dp">
+    android:layout_marginLeft="16dp"
+    android:layout_marginStart="16dp">
 
     <ImageView
         android:id="@+id/imgPrestacion"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:src="@drawable/prest_parking"
         />
     <TextView
         android:id="@+id/lblNombre"
@@ -20,5 +20,5 @@
         android:textStyle="bold"
         android:layout_gravity="center_vertical"
         android:layout_marginLeft="10dp"
-        android:text="Parking"/>
+        android:layout_marginStart="10dp"/>
 </LinearLayout>

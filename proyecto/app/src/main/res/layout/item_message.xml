@@ -10,8 +10,7 @@
         android:layout_width="55dp"
         android:layout_height="55dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:src="@drawable/default_user" />
+        android:layout_marginRight="8dp" />
 
     <RelativeLayout
         android:id="@+id/groupMensaje"
@@ -22,21 +21,22 @@
         android:layout_toEndOf="@id/imgEmisor"
         android:layout_toRightOf="@id/imgEmisor"
 
-        android:layout_marginRight="16dp">
+        android:layout_marginRight="16dp"
+        android:layout_marginEnd="16dp">
 
         <TextView
             android:id="@+id/lblFecha"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:text="Fecha" />
+            android:layout_alignParentRight="true" />
 
         <TextView
             android:id="@+id/lblNombreEmisor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:layout_marginEnd="10dp"
             android:layout_marginRight="10dp"
 
@@ -44,7 +44,6 @@
             android:layout_toStartOf="@id/lblFecha"
             android:ellipsize="end"
             android:maxLines="1"
-            android:text="Nombre emisor"
             android:textStyle="bold" />
 
 
@@ -57,7 +56,6 @@
             android:layout_marginRight="60dp"
             android:ellipsize="end"
             android:maxLines="1"
-            android:text="Titulo anuncio"
             android:textStyle="italic" />
 
 
@@ -69,8 +67,7 @@
             android:layout_marginEnd="60dp"
             android:layout_marginRight="60dp"
             android:ellipsize="end"
-            android:maxLines="1"
-            android:text="Contenido mensaje" />
+            android:maxLines="1" />
 
     </RelativeLayout>
 

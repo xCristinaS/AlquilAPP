@@ -16,10 +16,11 @@
             <!-- CASA -->
             <ImageView
                 android:id="@+id/imgCasa"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
+                android:layout_width="@dimen/bounds_imgTipoVivienda"
+                android:layout_height="@dimen/bounds_imgTipoVivienda"
                 android:layout_below="@id/txtTituloAnuncio"
                 android:layout_marginLeft="25dp"
+                android:layout_marginStart="25dp"
                 android:layout_marginTop="20dp"
                 android:src="@drawable/tipo_casa" />
 
@@ -28,6 +29,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/imgCasa"
                 android:layout_marginLeft="41dp"
+                android:layout_marginStart="41dp"
                 android:layout_marginTop="10dp"
                 android:text="@string/tipoVivienda_casa"
                 android:textStyle="bold" />
@@ -35,11 +37,12 @@
             <!-- HABITACIÓN -->
             <ImageView
                 android:id="@+id/imgHabitacion"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
+                android:layout_width="@dimen/bounds_imgTipoVivienda"
+                android:layout_height="@dimen/bounds_imgTipoVivienda"
                 android:layout_below="@id/txtTituloAnuncio"
                 android:layout_centerHorizontal="true"
                 android:layout_marginLeft="20dp"
+                android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp"
                 android:src="@drawable/tipo_habitacion" />
 
@@ -49,6 +52,7 @@
                 android:layout_below="@id/imgHabitacion"
                 android:layout_centerHorizontal="true"
                 android:layout_marginLeft="41dp"
+                android:layout_marginStart="41dp"
                 android:layout_marginTop="10dp"
                 android:text="@string/tipoVivienda_habitacion"
                 android:textStyle="bold" />
@@ -56,12 +60,13 @@
             <!-- PISO -->
             <ImageView
                 android:id="@+id/imgPiso"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
+                android:layout_width="@dimen/bounds_imgTipoVivienda"
+                android:layout_height="@dimen/bounds_imgTipoVivienda"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:layout_below="@id/txtTituloAnuncio"
                 android:layout_marginRight="25dp"
+                android:layout_marginEnd="25dp"
                 android:layout_marginTop="20dp"
                 android:src="@drawable/tipo_piso" />
 
@@ -72,6 +77,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_below="@id/imgPiso"
                 android:layout_marginRight="40dp"
+                android:layout_marginEnd="40dp"
                 android:layout_marginTop="10dp"
                 android:text="@string/tipoVivienda_piso"
                 android:textStyle="bold" />
@@ -81,7 +87,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/imgPiso"
-                android:layout_marginLeft="16dp"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
                 android:layout_marginTop="50dp"
                 android:text="@string/hint_txtPrecio" />
 
@@ -91,8 +98,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="72dp"
                 android:layout_below="@id/lblPrecio"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
                 custom:connectingLineColor="@color/colorPrimary"
                 custom:connectingLineWeight="4dp"
                 custom:pinColor="@color/colorPrimary"
@@ -112,7 +121,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/rangeBarPrecio"
-                android:layout_marginLeft="16dp"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
                 android:layout_marginTop="10dp"
                 android:text="@string/hint_txtTamano" />
 
@@ -122,8 +132,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="72dp"
                 android:layout_below="@id/lblTamanio"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
                 custom:connectingLineColor="@color/colorPrimary"
                 custom:connectingLineWeight="4dp"
                 custom:pinColor="@color/colorPrimary"
@@ -171,8 +183,10 @@
                 android:hint="@string/hint_txtProvincia"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
                 android:inputType="text"
                 android:maxLines="1" />
 
@@ -183,8 +197,10 @@
                 android:layout_below="@id/txtProvincia"
                 android:gravity="center"
                 android:layout_marginBottom="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
                 android:hint="@string/hint_txtPoblacion"
                 android:inputType="text"
                 android:maxLines="1" />

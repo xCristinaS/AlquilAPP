@@ -121,11 +121,12 @@
             android:id="@+id/lblProfesion"
             android:layout_width="170dp"
             android:layout_height="wrap_content"
-            android:gravity="right"
+            android:gravity="end"
             android:layout_alignBaseline="@id/lblNacionalidad"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="25dp" />
+            android:layout_marginRight="25dp"
+            android:layout_marginEnd="25dp"/>
 
         <!-- Descripción -->
         <RelativeLayout

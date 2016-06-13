@@ -59,8 +59,7 @@
                     android:id="@+id/imgSuscritos"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:src="@drawable/ic_action_user" />
+                    android:layout_gravity="center_horizontal" />
 
                 <TextView
                     android:id="@+id/lblSubs"
@@ -68,8 +67,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:paddingBottom="6dp"
-                    android:textColor="@color/colorGrayLightText"
-                    android:text="222" />
+                    android:textColor="@color/colorGrayLightText" />
 
 
             </LinearLayout>
@@ -83,22 +81,21 @@
                 android:layout_toLeftOf="@id/groupSuscritos"
                 android:layout_toStartOf="@id/groupSuscritos"
                 android:layout_marginRight="16dp"
+                android:layout_marginEnd="16dp"
                 android:padding="@dimen/margin_medium">
 
                 <TextView
                     android:id="@+id/lblTituloAnuncio"
                     style="@style/LabelTitle"
                     android:maxLines="1"
-                    android:ellipsize="end"
-                    android:text="Title" />
+                    android:ellipsize="end" />
 
                 <TextView
                     android:id="@+id/lblLocalizacion"
                     style="@style/LabelContent"
                     android:maxLines="3"
                     android:layout_marginTop="2dp"
-                    android:ellipsize="end"
-                    android:text="Subtitle" />
+                    android:ellipsize="end"/>
 
             </LinearLayout>
 

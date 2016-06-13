@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#f2efef"
+    android:background="@color/backgroundConversation"
     tools:context="c.proyecto.activities.ConversationActivity">
 
 
@@ -19,42 +19,41 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/imgContacto"
-                android:layout_width="43dp"
-                android:layout_height="43dp"
+                android:layout_width="@dimen/bounds_imgContacto"
+                android:layout_height="@dimen/bounds_imgContacto"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="5dp"
-                android:layout_marginStart="5dp"
-                android:scaleType="centerCrop"
-                android:src="@drawable/default_user" />
+                android:layout_marginLeft="@dimen/marginLeft_imgContacto"
+                android:layout_marginStart="@dimen/marginLeft_imgContacto"
+                android:scaleType="centerCrop" />
 
             <TextView
                 android:id="@+id/lblNombreContacto"
-                android:layout_width="280dp"
+                android:layout_width="@dimen/width_lblNombreContacto"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="12dp"
-                android:layout_marginTop="4dp"
+                android:layout_marginLeft="@dimen/marginLeft_lblNombreContacto"
+                android:layout_marginStart="@dimen/marginLeft_lblNombreContacto"
+                android:layout_marginTop="@dimen/marginTop_lblNombreContacto"
                 android:layout_toEndOf="@id/imgContacto"
                 android:layout_toRightOf="@id/imgContacto"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:text="Alejandro Torres"
                 android:textColor="@android:color/white"
-                android:textSize="17sp"
+                android:textSize="@dimen/textSize_lblNombreContacto"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/lblTituloAnuncio"
-                android:layout_width="260dp"
+                android:layout_width="@dimen/width_lblTituloAnuncio"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/lblNombreContacto"
-                android:layout_marginLeft="12dp"
+                android:layout_marginLeft="@dimen/marginLeft_lblTituloAnuncio"
+                android:layout_marginStart="@dimen/marginLeft_lblTituloAnuncio"
                 android:layout_toEndOf="@id/imgContacto"
                 android:layout_toRightOf="@id/imgContacto"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:text="Anuncio 01"
                 android:textColor="@android:color/white"
-                android:textSize="16sp"
+                android:textSize="@dimen/textSize_lblTituloAnuncio"
                 android:textStyle="italic" />
         </RelativeLayout>
 
@@ -69,7 +68,8 @@
         android:layout_alignParentBottom="true"
         android:background="@android:color/white"
         android:orientation="horizontal"
-        android:paddingLeft="7dp">
+        android:paddingLeft="@dimen/paddingLeft_groupEscribirMensaje"
+        android:paddingStart="@dimen/paddingLeft_groupEscribirMensaje">
 
         <EditText
             android:id="@+id/txtMensaje"
@@ -77,7 +77,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="95"
-            android:hint="Escribir mensaje"
+            android:hint="@string/hint_txtEscribirMensaje"
             android:maxLines="1" />
 
         <ImageView

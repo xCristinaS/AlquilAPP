@@ -46,7 +46,7 @@
                 style="@style/LabelTitle"
                 android:maxLines="1"
                 android:ellipsize="end"
-                android:text="Title" />
+                />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -61,7 +61,6 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:gravity="end"
-                    android:text="0€"
                     android:textSize="15.5sp"
                     android:textStyle="bold" />
 
@@ -75,7 +74,7 @@
                     android:layout_toStartOf="@id/lblPrecio"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="10dp"
-                    android:text="Subtitle" />
+                    android:layout_marginEnd="10dp"/>
             </RelativeLayout>
 
 

@@ -17,7 +17,9 @@
         android:layout_height="40dp"
         android:src="@drawable/genero_femenino"
         android:layout_toRightOf="@id/imgMasculino"
-        android:layout_marginLeft="35dp"/>
+        android:layout_toEndOf="@id/imgMasculino"
+        android:layout_marginLeft="35dp"
+        android:layout_marginStart="35dp"/>
 
     <ImageView
         android:id="@+id/imgEstudiante"
@@ -35,7 +37,8 @@
         android:src="@drawable/trabajador"
         android:layout_below="@id/imgFemenino"
         android:layout_marginTop="@dimen/marginTopItemsDescripcion"
-        android:layout_alignLeft="@id/imgFemenino"/>
+        android:layout_alignLeft="@id/imgFemenino"
+        android:layout_alignStart="@id/imgFemenino"/>
 
     <ImageView
         android:id="@+id/imgFumador"

@@ -11,7 +11,6 @@
     <!-- TABLAYOUT PRINCIPAL -->
     <dimen name="appbar_padding_top">8dp</dimen>
 
-
     <!-- RecyclerView Anuncios -->
     <dimen name="margin_xsmall">2dp</dimen>
     <dimen name="margin_small">4dp</dimen>
@@ -33,4 +32,57 @@
 
     <!-- DialogFragment Descripción -->
     <dimen name="marginTopItemsDescripcion">23dp</dimen>
+
+    <!-- ConversationActivity -->
+    <dimen name="bounds_imgContacto">43dp</dimen>
+    <dimen name="marginLeft_imgContacto">5dp</dimen>
+
+    <dimen name="width_lblNombreContacto">280dp</dimen>
+    <dimen name="marginLeft_lblNombreContacto">12dp</dimen>
+    <dimen name="marginTop_lblNombreContacto">4dp</dimen>
+    <dimen name="textSize_lblNombreContacto">17sp</dimen>
+
+    <dimen name="width_lblTituloAnuncio">260dp</dimen>
+    <dimen name="marginLeft_lblTituloAnuncio">12dp</dimen>
+    <dimen name="textSize_lblTituloAnuncio">16sp</dimen>
+
+    <dimen name="paddingLeft_groupEscribirMensaje">7dp</dimen>
+
+    <!-- CrearAnuncio1Activity -->
+    <dimen name="elevation_groupSiguiente">30dp</dimen>
+
+    <dimen name="marginTop_lblFrase">24dp</dimen>
+
+    <dimen name="bounds_imgSiguiente">40dp</dimen>
+    <dimen name="marginBottom_imgSiguiente">10dp</dimen>
+
+    <dimen name="textSize_lblSiguiente">16sp</dimen>
+    <dimen name="marginBottom_lblSiguiente">11dp</dimen>
+    <dimen name="marginRight_lblSiguiente">3dp</dimen>
+
+    <!-- CrearAnuncio2Activity -->
+    <dimen name="bounds_imgTipoVivienda">60dp</dimen>
+
+    <dimen name="marginLeft_imgCasa">25dp</dimen>
+    <dimen name="marginTop_imgCasa">20dp</dimen>
+    <dimen name="marginLeft_lblCasa">41dp</dimen>
+    <dimen name="marginTop_lblCasa">10dp</dimen>
+
+    <dimen name="marginLeft_imgHabitacion">20dp</dimen>
+    <dimen name="marginTop_imgHabitacion">20dp</dimen>
+    <dimen name="marginLeft_lblHabitacion">41dp</dimen>
+    <dimen name="marginTop_lblHabitacion">10dp</dimen>
+
+    <dimen name="marginRight_imgPiso">25dp</dimen>
+    <dimen name="marginTop_imgPiso">20dp</dimen>
+    <dimen name="marginRight_lblPiso">40dp</dimen>
+    <dimen name="marginTop_lblPiso">10dp</dimen>
+    <dimen name="width_txtDireccion">220dp</dimen>
+    <dimen name="marginTop_txtDireccion">50dp</dimen>
+    <dimen name="marginLeft_txtNum">10dp</dimen>
+
+    <!-- SeleccionPrestacionesDialogFragment -->
+    <dimen name="marginTop_lblPrestacion">10dp</dimen>
+    <dimen name="marginLeft_lblPrestacion">10dp</dimen>
+    <dimen name="bounds_imgPrestacionDetallada">30dp</dimen>
 </resources>

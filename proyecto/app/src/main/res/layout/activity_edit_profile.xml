@@ -35,6 +35,7 @@
                 app:layout_heightPercent="40%"
                 app:layout_marginTopPercent="10%"
                 android:layout_toRightOf="@id/slider"
+                android:layout_toEndOf="@id/slider"
                 android:layout_marginRight="@dimen/activity_horizontal_margin"
                 android:layout_marginLeft="@dimen/activity_horizontal_margin"
                 android:maxLines="1"
@@ -127,6 +128,7 @@
         android:layout_height="0dp"
         app:layout_heightPercent="15%"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
         android:layout_below="@id/cvDatos"
         app:layout_marginTopPercent="4%"
         >
@@ -147,7 +149,8 @@
                 app:layout_widthPercent="50%"
                 android:layout_height="match_parent"
                 android:src="@drawable/ic_action_user"
-                android:layout_toRightOf="@id/imgHabitos"/>
+                android:layout_toRightOf="@id/imgHabitos"
+                android:layout_toEndOf="@id/imgHabitos"/>
 
 
         </android.support.percent.PercentRelativeLayout>

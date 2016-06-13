@@ -18,8 +18,8 @@
 
             <ImageView
                 android:id="@+id/imgAptoMascotas"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="@dimen/bounds_imgPrestacionDetallada"
+                android:layout_height="@dimen/bounds_imgPrestacionDetallada"
                 android:src="@drawable/prest_apto_mascotas"/>
             <TextView
                 android:id="@+id/lblAptoMascotas"
@@ -30,8 +30,9 @@
                 android:layout_toEndOf="@id/imgAptoMascotas"
                 android:layout_centerVertical="true"
                 android:textSize="14dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="10dp"
+                android:layout_marginTop="@dimen/marginTop_lblPrestacion"
+                android:layout_marginLeft="@dimen/marginLeft_lblPrestacion"
+                android:layout_marginStart="@dimen/marginLeft_lblPrestacion"
                 />
             <CheckBox
                 android:id="@+id/cbAptoMascotas"
@@ -54,8 +55,8 @@
 
             <ImageView
                 android:id="@+id/imgAireAcondicionado"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="@dimen/bounds_imgPrestacionDetallada"
+                android:layout_height="@dimen/bounds_imgPrestacionDetallada"
                 android:src="@drawable/prest_aire_acondicionado"/>
             <TextView
                 android:id="@+id/lblAireAcondicionado"
@@ -66,8 +67,9 @@
                 android:layout_toEndOf="@id/imgAireAcondicionado"
                 android:textSize="14dp"
                 android:layout_centerVertical="true"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="10dp"
+                android:layout_marginTop="@dimen/marginTop_lblPrestacion"
+                android:layout_marginLeft="@dimen/marginLeft_lblPrestacion"
+                android:layout_marginStart="@dimen/marginLeft_lblPrestacion"
                 />
             <CheckBox
                 android:id="@+id/cbAireAcondicionado"
@@ -89,8 +91,8 @@
 
             <ImageView
                 android:id="@+id/imgAscensor"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="@dimen/bounds_imgPrestacionDetallada"
+                android:layout_height="@dimen/bounds_imgPrestacionDetallada"
                 android:src="@drawable/prest_ascensor"/>
             <TextView
                 android:id="@+id/lblAscensor"
@@ -101,8 +103,9 @@
                 android:layout_toEndOf="@id/imgAscensor"
                 android:layout_centerVertical="true"
                 android:textSize="14dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="10dp"
+                android:layout_marginTop="@dimen/marginTop_lblPrestacion"
+                android:layout_marginLeft="@dimen/marginLeft_lblPrestacion"
+                android:layout_marginStart="@dimen/marginLeft_lblPrestacion"
                 />
             <CheckBox
                 android:id="@+id/cbAscensor"
@@ -124,8 +127,8 @@
 
             <ImageView
                 android:id="@+id/imgCalefaccion"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="@dimen/bounds_imgPrestacionDetallada"
+                android:layout_height="@dimen/bounds_imgPrestacionDetallada"
                 android:src="@drawable/prest_calefaccion"/>
             <TextView
                 android:id="@+id/lblCalefaccion"
@@ -136,8 +139,9 @@
                 android:layout_toRightOf="@id/imgCalefaccion"
                 android:layout_toEndOf="@id/imgCalefaccion"
                 android:layout_centerVertical="true"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="10dp"
+                android:layout_marginTop="@dimen/marginTop_lblPrestacion"
+                android:layout_marginLeft="@dimen/marginLeft_lblPrestacion"
+                android:layout_marginStart="@dimen/marginLeft_lblPrestacion"
                 />
             <CheckBox
                 android:id="@+id/cbCalefaccion"
@@ -159,8 +163,8 @@
 
             <ImageView
                 android:id="@+id/imgLavadora"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="@dimen/bounds_imgPrestacionDetallada"
+                android:layout_height="@dimen/bounds_imgPrestacionDetallada"
                 android:src="@drawable/prest_lavadora"/>
             <TextView
                 android:id="@+id/lblLavadora"
@@ -171,8 +175,9 @@
                 android:layout_toRightOf="@id/imgLavadora"
                 android:layout_toEndOf="@id/imgLavadora"
                 android:layout_centerVertical="true"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="10dp"
+                android:layout_marginTop="@dimen/marginTop_lblPrestacion"
+                android:layout_marginLeft="@dimen/marginLeft_lblPrestacion"
+                android:layout_marginStart="@dimen/marginLeft_lblPrestacion"
                 />
             <CheckBox
                 android:id="@+id/cbLavadora"
@@ -194,8 +199,8 @@
 
             <ImageView
                 android:id="@+id/imgParking"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="@dimen/bounds_imgPrestacionDetallada"
+                android:layout_height="@dimen/bounds_imgPrestacionDetallada"
                 android:src="@drawable/prest_parking"/>
             <TextView
                 android:id="@+id/lblParking"
@@ -206,8 +211,9 @@
                 android:textSize="14dp"
                 android:layout_toEndOf="@id/imgParking"
                 android:layout_centerVertical="true"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="10dp"
+                android:layout_marginTop="@dimen/marginTop_lblPrestacion"
+                android:layout_marginLeft="@dimen/marginLeft_lblPrestacion"
+                android:layout_marginStart="@dimen/marginLeft_lblPrestacion"
                 />
             <CheckBox
                 android:id="@+id/cbParking"
@@ -230,8 +236,8 @@
 
             <ImageView
                 android:id="@+id/imgProhibidoFumar"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="@dimen/bounds_imgPrestacionDetallada"
+                android:layout_height="@dimen/bounds_imgPrestacionDetallada"
                 android:src="@drawable/prest_prohibido_fumar"/>
             <TextView
                 android:id="@+id/lblProhibidoFumar"
@@ -242,8 +248,9 @@
                 android:layout_toEndOf="@id/imgProhibidoFumar"
                 android:layout_centerVertical="true"
                 android:textSize="14dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="10dp"
+                android:layout_marginTop="@dimen/marginTop_lblPrestacion"
+                android:layout_marginLeft="@dimen/marginLeft_lblPrestacion"
+                android:layout_marginStart="@dimen/marginLeft_lblPrestacion"
                 />
             <CheckBox
                 android:id="@+id/cbProhibidoFumar"
@@ -265,8 +272,8 @@
 
             <ImageView
                 android:id="@+id/imgSecadora"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="@dimen/bounds_imgPrestacionDetallada"
+                android:layout_height="@dimen/bounds_imgPrestacionDetallada"
                 android:src="@drawable/prest_secadora"/>
             <TextView
                 android:id="@+id/lblSecadora"
@@ -277,8 +284,9 @@
                 android:layout_toEndOf="@id/imgSecadora"
                 android:layout_centerVertical="true"
                 android:textSize="14dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="10dp"
+                android:layout_marginTop="@dimen/marginTop_lblPrestacion"
+                android:layout_marginLeft="@dimen/marginLeft_lblPrestacion"
+                android:layout_marginStart="@dimen/marginLeft_lblPrestacion"
                 />
             <CheckBox
                 android:id="@+id/cbSecadora"
@@ -300,8 +308,8 @@
 
             <ImageView
                 android:id="@+id/imgTren"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="@dimen/bounds_imgPrestacionDetallada"
+                android:layout_height="@dimen/bounds_imgPrestacionDetallada"
                 android:src="@drawable/prest_tren"/>
             <TextView
                 android:id="@+id/lblTren"
@@ -312,8 +320,9 @@
                 android:layout_toEndOf="@id/imgTren"
                 android:layout_centerVertical="true"
                 android:textSize="14dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="10dp"
+                android:layout_marginTop="@dimen/marginTop_lblPrestacion"
+                android:layout_marginLeft="@dimen/marginLeft_lblPrestacion"
+                android:layout_marginStart="@dimen/marginLeft_lblPrestacion"
                 />
             <CheckBox
                 android:id="@+id/cbTren"
@@ -334,8 +343,8 @@
 
             <ImageView
                 android:id="@+id/imgTv"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="@dimen/bounds_imgPrestacionDetallada"
+                android:layout_height="@dimen/bounds_imgPrestacionDetallada"
                 android:src="@drawable/prest_tv"/>
             <TextView
                 android:id="@+id/lblTv"
@@ -346,8 +355,9 @@
                 android:layout_toEndOf="@id/imgTv"
                 android:layout_centerVertical="true"
                 android:textSize="14dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="10dp"
+                android:layout_marginTop="@dimen/marginTop_lblPrestacion"
+                android:layout_marginLeft="@dimen/marginLeft_lblPrestacion"
+                android:layout_marginStart="@dimen/marginLeft_lblPrestacion"
                 />
             <CheckBox
                 android:id="@+id/cbTv"
@@ -369,8 +379,8 @@
 
             <ImageView
                 android:id="@+id/imgInternet"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="@dimen/bounds_imgPrestacionDetallada"
+                android:layout_height="@dimen/bounds_imgPrestacionDetallada"
                 android:src="@drawable/prest_internet"/>
             <TextView
                 android:id="@+id/lblInternet"
@@ -381,8 +391,9 @@
                 android:layout_toEndOf="@id/imgInternet"
                 android:layout_centerVertical="true"
                 android:textSize="14dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="10dp"
+                android:layout_marginTop="@dimen/marginTop_lblPrestacion"
+                android:layout_marginLeft="@dimen/marginLeft_lblPrestacion"
+                android:layout_marginStart="@dimen/marginLeft_lblPrestacion"
                 />
             <CheckBox
                 android:id="@+id/cbInternet"

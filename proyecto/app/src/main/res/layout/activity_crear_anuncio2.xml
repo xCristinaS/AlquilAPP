@@ -9,7 +9,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="16dp">
+        android:paddingTop="@dimen/activity_vertical_margin">
 
         <RelativeLayout
             android:id="@+id/groupLocalizacion"
@@ -30,31 +30,34 @@
             <!-- CASA -->
             <ImageView
                 android:id="@+id/imgCasa"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
+                android:layout_width="@dimen/bounds_imgTipoVivienda"
+                android:layout_height="@dimen/bounds_imgTipoVivienda"
                 android:layout_below="@id/txtTituloAnuncio"
-                android:layout_marginLeft="25dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginLeft="@dimen/marginLeft_imgCasa"
+                android:layout_marginStart="@dimen/marginLeft_imgCasa"
+                android:layout_marginTop="@dimen/marginTop_imgCasa"
                 android:src="@drawable/tipo_casa" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/imgCasa"
-                android:layout_marginLeft="41dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginLeft="@dimen/marginLeft_lblCasa"
+                android:layout_marginStart="@dimen/marginLeft_lblCasa"
+                android:layout_marginTop="@dimen/marginTop_lblCasa"
                 android:text="@string/tipoVivienda_casa"
                 android:textStyle="bold" />
 
             <!-- HABITACIÓN -->
             <ImageView
                 android:id="@+id/imgHabitacion"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
+                android:layout_width="@dimen/bounds_imgTipoVivienda"
+                android:layout_height="@dimen/bounds_imgTipoVivienda"
                 android:layout_below="@id/txtTituloAnuncio"
                 android:layout_centerHorizontal="true"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginLeft="@dimen/marginLeft_imgHabitacion"
+                android:layout_marginStart="@dimen/marginLeft_imgHabitacion"
+                android:layout_marginTop="@dimen/marginTop_imgHabitacion"
                 android:src="@drawable/tipo_habitacion" />
 
             <TextView
@@ -62,21 +65,23 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/imgHabitacion"
                 android:layout_centerHorizontal="true"
-                android:layout_marginLeft="41dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginLeft="@dimen/marginLeft_lblHabitacion"
+                android:layout_marginStart="@dimen/marginLeft_lblHabitacion"
+                android:layout_marginTop="@dimen/marginTop_lblHabitacion"
                 android:text="@string/tipoVivienda_habitacion"
                 android:textStyle="bold" />
 
             <!-- PISO -->
             <ImageView
                 android:id="@+id/imgPiso"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
+                android:layout_width="@dimen/bounds_imgTipoVivienda"
+                android:layout_height="@dimen/bounds_imgTipoVivienda"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:layout_below="@id/txtTituloAnuncio"
-                android:layout_marginRight="25dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginRight="@dimen/marginRight_imgPiso"
+                android:layout_marginEnd="@dimen/marginRight_imgPiso"
+                android:layout_marginTop="@dimen/marginTop_imgPiso"
                 android:src="@drawable/tipo_piso" />
 
             <TextView
@@ -85,8 +90,9 @@
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:layout_below="@id/imgPiso"
-                android:layout_marginRight="40dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginRight="@dimen/marginRight_lblPiso"
+                android:layout_marginEnd="@dimen/marginRight_lblPiso"
+                android:layout_marginTop="@dimen/marginTop_lblPiso"
                 android:text="@string/tipoVivienda_piso"
                 android:textStyle="bold" />
 
@@ -95,10 +101,10 @@
 
             <EditText
                 android:id="@+id/txtDireccion"
-                android:layout_width="220dp"
+                android:layout_width="@dimen/width_txtDireccion"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/imgCasa"
-                android:layout_marginTop="50dp"
+                android:layout_marginTop="@dimen/marginTop_txtDireccion"
                 android:inputType="none"
                 android:focusable="false"
                 android:hint="@string/hint_txtDireccion"
@@ -110,7 +116,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignBottom="@id/txtDireccion"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="@dimen/marginLeft_txtNum"
+                android:layout_marginStart="@dimen/marginLeft_txtNum"
                 android:layout_toEndOf="@id/txtDireccion"
                 android:layout_toRightOf="@id/txtDireccion"
                 android:maxLines="1"
@@ -157,7 +164,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="Sin prestaciones"
+                android:text="@string/text_emptyViewPrestaciones_crearAnuncio2"
                 android:visibility="gone"/>
         </RelativeLayout>
 
