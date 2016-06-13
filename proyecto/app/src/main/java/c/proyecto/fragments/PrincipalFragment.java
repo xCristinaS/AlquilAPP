@@ -274,9 +274,9 @@ public class PrincipalFragment extends Fragment {
     }
 
     public void confEmptyViewsNormales(){
-        ((AdvertsRecyclerViewFragment) vpAdapter.getItem(0)).confEmptyView(R.drawable.tab_solicitudes, getString(R.string.emptyView_tab_suscritos));
+        ((AdvertsRecyclerViewFragment) vpAdapter.getItem(0)).confEmptyView(R.drawable.tab_solicitudes, getString(R.string.text_emptyView_tab_suscritos));
         ((AdvertsRecyclerViewFragment) vpAdapter.getItem(1)).confEmptyView(R.drawable.tab_anuncios, getString(R.string.text_emptyView_tab_anuncios));
-        ((AdvertsRecyclerViewFragment) vpAdapter.getItem(2)).confEmptyView(R.drawable.tab_mis_anuncios, getString(R.string.emptyView_tab_misAnuncios));
+        ((AdvertsRecyclerViewFragment) vpAdapter.getItem(2)).confEmptyView(R.drawable.tab_mis_anuncios, getString(R.string.text_emptyView_tab_misAnuncios));
     }
     public void confEmptyViewsSinUbicacion(){
         ((AdvertsRecyclerViewFragment) vpAdapter.getItem(1)).confEmptyView(R.drawable.logo, getString(R.string.emptyView_location_disabled));
