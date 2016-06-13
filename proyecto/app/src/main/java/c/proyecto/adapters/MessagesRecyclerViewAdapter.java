@@ -231,6 +231,7 @@ public class MessagesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
 
 
     public void allMessagesObtained() {
+        // todo NENE, PON TU LA BARRA DE CARGA MIENTRAS SE OBTIENEN TODOS LOS MENSAJES AQUÍ. CUANDO ENTRE POR ESTE MÉTODO ES QUE SE HAN OBTENIDO TODOS Y LA PUEDES OCULTAR.
         if (isAConversation) {
             mDatos.addAll(messagesConver);
             Collections.sort(mDatos, messagesComp);
