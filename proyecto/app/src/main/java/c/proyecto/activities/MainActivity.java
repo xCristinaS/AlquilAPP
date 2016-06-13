@@ -488,12 +488,25 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
                     getSupportFragmentManager().beginTransaction().replace(R.id.frmContenido, f).commit();
                 else
                     getSupportFragmentManager().beginTransaction().replace(R.id.frmContenido, new PrincipalFragment(), TAG_PRINCIPAL_FRAGMENT).commit();
-
+                setTitle(R.string.tab_anuncios);
                 showFilterIcon();
                 showMapIcon();
             } else
                 super.onBackPressed();
         }
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        switch (keyCode){
+            case KeyEvent.KEYCODE_MENU:
+                if (drawer.isDrawerOpen(GravityCompat.START))
+                    drawer.closeDrawers();
+                else
+                    drawer.openDrawer(GravityCompat.START);
+                break;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
     @Override
@@ -608,16 +621,5 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
         }
     }
 
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        switch (keyCode){
-            case KeyEvent.KEYCODE_MENU:
-                if (drawer.isDrawerOpen(GravityCompat.START))
-                    drawer.closeDrawers();
-                else
-                    drawer.openDrawer(GravityCompat.START);
-                break;
-        }
-        return super.onKeyDown(keyCode, event);
-    }
+
 }
