@@ -27,8 +27,8 @@ import c.proyecto.pojo.Usuario;
 public class MessagesFirebaseManager {
 
     private static final String URL_CONVERSACIONES = Constantes.URL_BASE + Constantes.CHILD_CONVERSACIONES;
-    private static final String URL_MSG_SIN_RESP =   Constantes.URL_BASE + Constantes.CHILD_MENSAJES_SIN_RESPUESTA;
-    private static final String URL_USERS =          Constantes.URL_BASE + Constantes.CHILD_USUARIOS;
+    private static final String URL_MSG_SIN_RESP = Constantes.URL_BASE + Constantes.CHILD_MENSAJES_SIN_RESPUESTA;
+    private static final String URL_USERS = Constantes.URL_BASE + Constantes.CHILD_USUARIOS;
     private static final int MESSAGES_LIMIT_CONVER = 20;
 
     private Firebase mFirebaseReceivedMessages, mFirebaseConversations, mFirebaseMessagesWithoutAnswer;
@@ -443,8 +443,8 @@ public class MessagesFirebaseManager {
                 if (m instanceof MessagePojoWithoutAnswer && (mensaje.getKey().equals(m.getKey()) || m.getKey() == null)) {
                     if (presenter instanceof ConversationPresenter)
                         ((ConversationPresenter) presenter).allMessagesObtained();
-                } //else
-                    //checkIfUserAnswer(m.getEmisor().getKey(), nodoAsunto2);
+                } else
+                    checkIfUserAnswer(m.getEmisor().getKey(), nodoAsunto2, m, mensaje);
 
                 if (!(m instanceof MessagePojoWithoutAnswer) && listenersInternosConvers.size() == 0) {
                     Query fInterno = new Firebase(URL_CONVERSACIONES).child(m.getEmisor().getKey()).child(nodoAsunto2);
@@ -528,12 +528,13 @@ public class MessagesFirebaseManager {
         mFirebaseConversations.limitToLast(MESSAGES_LIMIT_CONVER).addChildEventListener(mListenerConversation);
     }
 
-    private void checkIfUserAnswer(String emisorKey, String nodoAsunto2) {
+    private void checkIfUserAnswer(String emisorKey, String nodoAsunto2, final MessagePojo mensajeDelQueObtenerConver, final MessagePojo myMessageObtenido) {
         new Firebase(URL_CONVERSACIONES).child(emisorKey).child(nodoAsunto2).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.getValue() == null && presenter instanceof ConversationPresenter)
-                    ((ConversationPresenter) presenter).allMessagesObtained();
+                    if (myMessageObtenido.getKey().equals(mensajeDelQueObtenerConver.getKey()))
+                        ((ConversationPresenter) presenter).allMessagesObtained();
             }
 
             @Override
