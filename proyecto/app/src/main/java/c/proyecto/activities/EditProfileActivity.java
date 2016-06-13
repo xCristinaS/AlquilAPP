@@ -215,7 +215,7 @@ public class EditProfileActivity extends AppCompatActivity implements Nacionalid
             }
         }, year, mont, day);
 
-        datePicker.setTitle("Seleccione su fecha");
+        datePicker.setTitle(getString(R.string.title_datePicker));
         datePicker.show();
     }
 
@@ -256,7 +256,7 @@ public class EditProfileActivity extends AppCompatActivity implements Nacionalid
                         return;
 
                         AlertDialog.Builder dialog = new AlertDialog.Builder(EditProfileActivity.this);
-                        dialog.setTitle("Seleccione una de las opciones");
+                        dialog.setTitle(getString(R.string.title_ImageDialogList));
                         dialog.setItems(R.array.chooseImageWithoutRemoveListItem, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -272,7 +272,7 @@ public class EditProfileActivity extends AppCompatActivity implements Nacionalid
                                         if (Imagenes.hayCamara(EditProfileActivity.this))
                                             takePhoto();
                                         else
-                                            Toast.makeText(EditProfileActivity.this, "Este dispositivo no dispone de cámara", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(EditProfileActivity.this, R.string.alert_noCamera_ImageDialogList, Toast.LENGTH_SHORT).show();
                                         break;
                                 }
                             }

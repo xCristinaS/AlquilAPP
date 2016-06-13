@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">proyecto</string>
+    <string name="app_name">Alquila</string>
     <string name="action_settings">Settings</string>
 
     <!-- PREFERENCIAS-->
@@ -59,7 +59,7 @@
     <string name="hint_txtCamas">Habitaciones</string>
     <string name="hint_txtToilets">Cuartos de baño</string>
     <string name="hint_txtTamano">Tamaño</string>
-    <string name="hint_txtDescripcion">Descripción</string>
+    <string name="hint_txtDescripcion_CrearAnuncio2">Descripción</string>
     <string name="hint_txtPrecio">Precio</string>
 
     <string name="error_campoVacio">Rellene este campo</string>
@@ -73,6 +73,27 @@
         <string name="title_dialogEnviarMensaje">Enviar mensaje</string>
         <!-- Dialog Advert Removed-->
         <string name="title_AdvertRemovedDialog">Ups! El anuncio ha sido eliminado</string>
+
+
+    <!-- EditProfileActivity -->
+    <string name="hint_txtNombre">Nombre</string>
+    <string name="hint_txtApellidos">Apellidos</string>
+    <string name="hint_txtFechaNac">Fecha de nacimiento</string>
+    <string name="hint_txtNacionalidad">Nacionalidad</string>
+    <string name="hint_txtProfesion">Profesión</string>
+    <string name="hint_descripcion_editProfile">Descripción</string>
+    <string name="text_btnConfirmar">Confirmar</string>
+        <!-- DatePicker -->
+        <string name="title_datePicker">Seleccione su fecha</string>
+        <string name="title_ImageDialogList">Seleccione una de las opciones</string>
+        <string name="alert_noCamera_ImageDialogList">Este dispositivo no dispone de cámara</string>
+
+    <!-- InicioActivity -->
+    <string name="hint_txtUser">Email</string>
+    <string name="hint_txtPass">Contraseña</string>
+    <string name="text_rememberMe">Seguir conectado</string>
+    <string name="text_btnIniciar">Iniciar sesión</string>
+    <string name="text_btnRegistrarse">¿Nuevo Aquí? Registrate</string>
 
 
 </resources>

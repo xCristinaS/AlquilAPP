@@ -205,7 +205,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/txtTamano"
-                android:hint="@string/hint_txtDescripcion"/>
+                android:hint="@string/hint_txtDescripcion_CrearAnuncio2"/>
 
             <EditText
                 android:id="@+id/txtPrecio"

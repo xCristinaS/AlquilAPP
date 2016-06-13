@@ -25,12 +25,11 @@
                 android:layout_width="0dp"
                 app:layout_widthPercent="31.5%"
                 android:layout_height="match_parent"
-                android:scaleType="centerCrop"
-                android:src="@drawable/default_user" />
+                android:scaleType="centerCrop" />
 
             <EditText
                 android:id="@+id/txtNombre"
-                android:hint="Nombre"
+                android:hint="@string/hint_txtNombre"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 app:layout_heightPercent="40%"
@@ -43,7 +42,7 @@
 
             <EditText
                 android:id="@+id/txtApellidos"
-                android:hint="Apellidos"
+                android:hint="@string/hint_txtApellidos"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 app:layout_heightPercent="40%"
@@ -78,7 +77,7 @@
 
             <EditText
                 android:id="@+id/txtFechaNac"
-                android:hint="Fecha de nacimiento"
+                android:hint="@string/hint_txtFechaNac"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 app:layout_heightPercent="24%"
@@ -89,7 +88,7 @@
 
             <EditText
                 android:id="@+id/txtNacionalidad"
-                android:hint="Nacionalidad"
+                android:hint="@string/hint_txtNacionalidad"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 app:layout_heightPercent="24%"
@@ -100,7 +99,7 @@
 
             <EditText
                 android:id="@+id/txtProfesion"
-                android:hint="Profesión"
+                android:hint="@string/hint_txtProfesion"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 app:layout_heightPercent="24%"
@@ -111,7 +110,7 @@
 
             <EditText
                 android:id="@+id/txtComentDesc"
-                android:hint="Descripción"
+                android:hint="@string/hint_descripcion_editProfile"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 app:layout_heightPercent="24%"
@@ -166,7 +165,7 @@
         android:layout_alignBottom="@id/cvHabitos"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:text="Confirmar"
+        android:text="@string/text_btnConfirmar"
         android:background="@color/colorAccent"
         />
 </android.support.percent.PercentRelativeLayout>
