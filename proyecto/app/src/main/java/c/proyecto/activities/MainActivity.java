@@ -18,6 +18,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -605,5 +606,18 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
 
                 break;
         }
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        switch (keyCode){
+            case KeyEvent.KEYCODE_MENU:
+                if (drawer.isDrawerOpen(GravityCompat.START))
+                    drawer.closeDrawers();
+                else
+                    drawer.openDrawer(GravityCompat.START);
+                break;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }
