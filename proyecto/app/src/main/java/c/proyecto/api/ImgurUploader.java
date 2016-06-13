@@ -70,7 +70,7 @@ public class ImgurUploader {
                         ((ProfilePresenter) mPresenters.get(0)).updateUserProfile((Usuario) mModel);
                     } else if (mModel instanceof Usuario && mPresenters.get(0) instanceof RegistroPresenter){
                         ((Usuario) mModel).setFoto(respuesta.getData().getLink());
-                        Firebase mFirebase = new Firebase(Constantes.URL_USERS + ((Usuario) mModel).getKey() + "/");
+                        Firebase mFirebase = new Firebase(Constantes.URL_BASE + Constantes.CHILD_USUARIOS + ((Usuario) mModel).getKey() + "/");
                         mFirebase.setValue(mModel);
                     }
                 mainImg = false;

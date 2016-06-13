@@ -18,6 +18,7 @@ import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import c.proyecto.Constantes;
 import c.proyecto.interfaces.MyPresenter;
 import c.proyecto.mvp_presenters.ConversationPresenter;
 import c.proyecto.mvp_presenters.MainPresenter;
@@ -28,10 +29,10 @@ import c.proyecto.pojo.Usuario;
 
 public class AdvertsFirebaseManager {
 
-    private static final String URL_ANUNCIOS = "https://proyectofinaldam.firebaseio.com/anuncios/";
-    private static final String URL_ANUNCIOS_USUARIOS = "https://proyectofinaldam.firebaseio.com/anuncios_usuarios/";
-    private static final String URL_SOLICITUDES = "https://proyectofinaldam.firebaseio.com/solicitudes/";
-    private static final String URL_LOCATIONS = "https://proyectofinaldam.firebaseio.com/Locations/";
+    private static final String URL_ANUNCIOS = Constantes.URL_BASE + Constantes.CHILD_ANUNCIOS;
+    private static final String URL_ANUNCIOS_USUARIOS = Constantes.URL_BASE + Constantes.CHILD_ANUNCIOS_USUARIO;
+    private static final String URL_SOLICITUDES = Constantes.URL_BASE + Constantes.CHILD_SOLICITUDES;
+    private static final String URL_LOCATIONS = Constantes.URL_BASE + Constantes.CHILD_LOCATIONS;
 
     private static int userSubRemoved;
     private Firebase mFirebase;

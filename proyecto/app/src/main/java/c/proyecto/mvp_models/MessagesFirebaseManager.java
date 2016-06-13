@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import c.proyecto.Constantes;
 import c.proyecto.interfaces.MyPresenter;
 import c.proyecto.mvp_presenters.AdvertsDetailsPresenter;
 import c.proyecto.mvp_presenters.ConversationPresenter;
@@ -25,9 +26,9 @@ import c.proyecto.pojo.Usuario;
 
 public class MessagesFirebaseManager {
 
-    private static final String URL_CONVERSACIONES = "https://proyectofinaldam.firebaseio.com/conversaciones/";
-    private static final String URL_MSG_SIN_RESP = "https://proyectofinaldam.firebaseio.com/mensajesEnviadosSinRespuesta/";
-    private static final String URL_USERS = "https://proyectofinaldam.firebaseio.com/usuarios/";
+    private static final String URL_CONVERSACIONES = Constantes.URL_BASE + Constantes.CHILD_CONVERSACIONES;
+    private static final String URL_MSG_SIN_RESP =   Constantes.URL_BASE + Constantes.CHILD_MENSAJES_SIN_RESPUESTA;
+    private static final String URL_USERS =          Constantes.URL_BASE + Constantes.CHILD_USUARIOS;
     private static final int MESSAGES_LIMIT_CONVER = 20;
 
     private Firebase mFirebaseReceivedMessages, mFirebaseConversations, mFirebaseMessagesWithoutAnswer;

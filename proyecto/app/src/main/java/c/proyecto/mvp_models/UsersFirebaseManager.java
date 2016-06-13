@@ -33,12 +33,12 @@ public class UsersFirebaseManager {
     }
 
     public void createNewUser(final String email, final String contra, final String nombre, final String apellidos) {
-        Firebase ref = new Firebase(Constantes.URL_MAIN_FIREBASE);
+        Firebase ref = new Firebase(Constantes.URL_BASE);
         ref.createUser(email, contra, new Firebase.ValueResultHandler<Map<String, Object>>() {
             @Override
             public void onSuccess(Map<String, Object> result) {
                 String key = (String) result.get("uid");
-                Firebase mFirebase = new Firebase(Constantes.URL_USERS + key + "/");
+                Firebase mFirebase = new Firebase(Constantes.URL_BASE + Constantes.CHILD_USUARIOS + key + "/");
                 Usuario u = new Usuario(email, nombre, apellidos, key);
                 mFirebase.setValue(u);
                 signIn(email, contra);
@@ -52,11 +52,11 @@ public class UsersFirebaseManager {
     }
 
     public void signIn(final String email, final String contra) {
-        Firebase ref = new Firebase(Constantes.URL_MAIN_FIREBASE);
+        Firebase ref = new Firebase(Constantes.URL_BASE);
         ref.authWithPassword(email, contra, new Firebase.AuthResultHandler() {
             @Override
             public void onAuthenticated(final AuthData authData) {
-                Firebase firebase = new Firebase(Constantes.URL_USERS);
+                Firebase firebase = new Firebase(Constantes.URL_BASE + Constantes.CHILD_USUARIOS);
                 firebase.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -126,8 +126,8 @@ public class UsersFirebaseManager {
             ((RegistroPresenter) presenter).userHasBeenCreated(resp);
     }
 
-    public void signInWithTwitter(final String email, final String contra) {
-        Firebase ref = new Firebase(Constantes.URL_MAIN_FIREBASE);
+    /*public void signInWithTwitter(final String email, final String contra) {
+        Firebase ref = new Firebase(Constantes.URL_BASE);
         Map<String, String> options = new HashMap<String, String>();
         options.put("oauth_token", "3131343071-q9oM9NEb6NX1HZs7FEuxda6cmvgBMSvtxdZCFKh");
         options.put("oauth_token_secret", "mO4pPS4S9LoW0fcwAp1Jw19sPq2L1SMdhINgbShpInYnY");
@@ -143,17 +143,17 @@ public class UsersFirebaseManager {
                 System.out.println(firebaseError.getDetails());
             }
         });
-    }
-
+    }*/
+/*
     public void signInWithFacebook(String email, String contra) {
 
-    }
+    }*/
 
     public void initializeOnUserChangedListener(Usuario usuario) {
         if (listener != null)
             mFirebase.removeEventListener(listener);
         if (mFirebase == null)
-            mFirebase = new Firebase(Constantes.URL_USERS + usuario.getKey());
+            mFirebase = new Firebase(Constantes.URL_BASE + Constantes.CHILD_USUARIOS + usuario.getKey());
         if (listener == null)
             listener = new ValueEventListener() {
                 @Override
@@ -171,7 +171,7 @@ public class UsersFirebaseManager {
 
     //Comprueba si existe algún usuario con este usuario.
     public void amIRegistrered(final String user) {
-        Firebase firebase = new Firebase(Constantes.URL_USERS);
+        Firebase firebase = new Firebase(Constantes.URL_BASE + Constantes.CHILD_USUARIOS);
 
         firebase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -195,7 +195,7 @@ public class UsersFirebaseManager {
     }
 
     public void getAdvertPublisher(String anunciante) {
-        Firebase mFirebase = new Firebase(Constantes.URL_USERS).child(anunciante);
+        Firebase mFirebase = new Firebase(Constantes.URL_BASE + Constantes.CHILD_USUARIOS).child(anunciante);
         mFirebase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -211,13 +211,13 @@ public class UsersFirebaseManager {
     }
 
     public void updateUserProfile(Usuario u) {
-        Firebase mFirebase = new Firebase(Constantes.URL_USERS + u.getKey() + "/");
+        Firebase mFirebase = new Firebase(Constantes.URL_BASE + Constantes.CHILD_USUARIOS + u.getKey() + "/");
         mFirebase.setValue(u);
     }
 
 
     public void getSolicitantes(final View itemView, final Anuncio anuncio) {
-        Firebase f = new Firebase(Constantes.URL_USERS);
+        Firebase f = new Firebase(Constantes.URL_BASE + Constantes.CHILD_USUARIOS);
         final HashMap<String, Boolean> solicitantes = anuncio.getSolicitantes();
         final ArrayList<Usuario> listaSolicitantes = new ArrayList<>();
         final Iterator it = solicitantes.keySet().iterator();

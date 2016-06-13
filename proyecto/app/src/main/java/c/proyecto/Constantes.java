@@ -53,11 +53,20 @@ public final class Constantes {
     public static final int MAX_LENGHT_TITULO_ANUNCIO = 60;
 
     // FIREBASE
-    public static final String URL_MAIN_FIREBASE = "https://proyectofinaldam.firebaseio.com/";
-    public static final String URL_USERS = URL_MAIN_FIREBASE + "usuarios/";
-
+    public static final String URL_BASE = "https://proyectofinaldam.firebaseio.com/";
+    public static final String CHILD_CONVERSACIONES = "conversaciones/";
+    public static final String CHILD_MENSAJES_SIN_RESPUESTA = "mensajesEnviadosSinRespuesta/";
+    public static final String CHILD_USUARIOS = "usuarios/";
+    public static final String CHILD_ANUNCIOS = "anuncios/";
+    public static final String CHILD_ANUNCIOS_USUARIO = "anuncios_usuarios/";
+    public static final String CHILD_SOLICITUDES = "solicitudes/";
+    public static final String CHILD_LOCATIONS = "Locations/";
 
     //ESCALADO
     public static final int FACTOR_ESCALADO = 280;
+
+
+
+
 }
 
