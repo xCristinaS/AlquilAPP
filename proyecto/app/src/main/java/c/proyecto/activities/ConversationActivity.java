@@ -140,11 +140,11 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
         if (a != null)
             if (!a.getAnunciante().equals(user.getKey())) {
                 if (a.getSolicitantes().containsKey(user.getKey()))
-                    DetallesAnuncioActivity.start(this, a, AdvertsRecyclerViewAdapter.ADAPTER_TYPE_SUBS, user);
+                    DetallesAnuncioActivity.start(this, a, AdvertsRecyclerViewAdapter.ADAPTER_TYPE_SUBS, user, true);
                 else
-                    DetallesAnuncioActivity.start(this, a, AdvertsRecyclerViewAdapter.ADAPTER_TYPE_ADVS, user);
+                    DetallesAnuncioActivity.start(this, a, AdvertsRecyclerViewAdapter.ADAPTER_TYPE_ADVS, user, true);
             } else
-                DetallesAnuncioActivity.start(this, a, AdvertsRecyclerViewAdapter.ADAPTER_TYPE_MY_ADVS, user);
+                DetallesAnuncioActivity.start(this, a, AdvertsRecyclerViewAdapter.ADAPTER_TYPE_MY_ADVS, user, true);
     }
 
     @Override

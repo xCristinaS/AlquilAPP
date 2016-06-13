@@ -410,7 +410,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
 
     @Override
     public void onItemClick(Anuncio anuncio, int advertType) {
-        DetallesAnuncioActivity.start(this, anuncio, advertType, mUser);
+        DetallesAnuncioActivity.start(this, anuncio, advertType, mUser, false);
     }
 
     @Override
