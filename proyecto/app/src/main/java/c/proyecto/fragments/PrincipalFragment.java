@@ -201,7 +201,7 @@ public class PrincipalFragment extends Fragment {
             if(!PreferenceManager.getDefaultSharedPreferences(getContext()).getBoolean(Constantes.KEY_LOCATION_ACTIVED, true))
                 confEmptyViewsSinUbicacion();
             else
-                f.confEmptyView(R.drawable.tab_anuncios, getString(R.string.emptyView_notNearAdvert));
+                f.confEmptyView(R.drawable.tab_anuncios, getString(R.string.text_emptyView_tab_anuncios));
         }
     }
 
@@ -275,7 +275,7 @@ public class PrincipalFragment extends Fragment {
 
     public void confEmptyViewsNormales(){
         ((AdvertsRecyclerViewFragment) vpAdapter.getItem(0)).confEmptyView(R.drawable.tab_solicitudes, getString(R.string.emptyView_tab_suscritos));
-        ((AdvertsRecyclerViewFragment) vpAdapter.getItem(1)).confEmptyView(R.drawable.tab_anuncios, getString(R.string.emptyView_notNearAdvert));
+        ((AdvertsRecyclerViewFragment) vpAdapter.getItem(1)).confEmptyView(R.drawable.tab_anuncios, getString(R.string.text_emptyView_tab_anuncios));
         ((AdvertsRecyclerViewFragment) vpAdapter.getItem(2)).confEmptyView(R.drawable.tab_mis_anuncios, getString(R.string.emptyView_tab_misAnuncios));
     }
     public void confEmptyViewsSinUbicacion(){

@@ -1,8 +1,6 @@
 package c.proyecto.fragments;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.ColorFilter;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
@@ -15,8 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import c.proyecto.Constantes;
