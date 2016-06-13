@@ -120,7 +120,7 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
         imagesModified = getIntent().getBooleanExtra(EXTRA_IMAGE_MODIFIED, false);
         mAnuncio = getIntent().getParcelableExtra(EXTRA_ANUNCIO);
         user = getIntent().getParcelableExtra(EXTRA_USUARIO);
-        mPresenter = CrearEditarAnuncioPresenter.getPresentador(this);
+        mPresenter = CrearEditarAnuncioPresenter.getPresentador();
         mPresenter.setAdvertsManager(new AdvertsFirebaseManager(mPresenter, user));
 
         //Si se entra creando

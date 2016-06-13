@@ -12,24 +12,20 @@ import c.proyecto.pojo.Anuncio;
 
 public class CrearEditarAnuncioPresenter implements CrearEditarAnuncioPresenterOps, MyPresenter {
 
-    private static WeakReference<CrearAnuncio2Activity> activity;
     private static CrearEditarAnuncioPresenter presentador;
 
     private AdvertsFirebaseManager advertsManager;
 
-    private CrearEditarAnuncioPresenter(Activity a) {
-        activity = new WeakReference<>((CrearAnuncio2Activity) a);
+    private CrearEditarAnuncioPresenter() {
     }
 
     public void setAdvertsManager(AdvertsFirebaseManager advertsManager) {
         this.advertsManager = advertsManager;
     }
 
-    public static CrearEditarAnuncioPresenter getPresentador(Activity a) {
+    public static CrearEditarAnuncioPresenter getPresentador() {
         if (presentador == null)
-            presentador = new CrearEditarAnuncioPresenter(a);
-        else if (a != null)
-            activity = new WeakReference<>((CrearAnuncio2Activity) a);
+            presentador = new CrearEditarAnuncioPresenter();
         return presentador;
     }
 
@@ -40,7 +36,6 @@ public class CrearEditarAnuncioPresenter implements CrearEditarAnuncioPresenterO
 
     @Override
     public void liberarMemoria() {
-        activity = null;
         presentador = null;
     }
 }
