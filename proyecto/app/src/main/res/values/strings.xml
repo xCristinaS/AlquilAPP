@@ -37,4 +37,14 @@
     Original string: <b>%1$s</b><br/><i>Place Id: %2$s</i><br/>Address: %3$s<br/>Phone: %4$s<br/>Website: %5$s-->
     <string name="place_details">&lt;b&gt;%1$s&lt;/b&gt;&lt;br/&gt;&lt;i&gt;Place Id: %2$s&lt;/i&gt;&lt;br/&gt;Address: %3$s&lt;br/&gt;Phone: %4$s&lt;br/&gt;Website: %5$s</string>
 
+
+    <!-- CrearAnuncio1Activity-->
+    <string name="alertSinImagen_CrearAnuncioActivity1">Debes cargar al menos una imagen principal para el anuncio</string>
+    <string name="frase_CrearActivity1">Capta la atención de tus clientes con las mejores fotos.</string>
+    <string name="siguiente_CrearAnuncio1">Siguiente</string>
+        <!-- Diálogo de selección -> Cámara, Galería, Eliminar-->
+        <string name="title_DialogSelectImage">Seleccione una de las opciones</string>
+    <string name="noCamera_DialogSelectImage">Este dispositivo no dispone de cámara</string>
+
+
 </resources>

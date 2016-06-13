@@ -126,7 +126,7 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
                     else
                         CrearAnuncio2Activity.startForResult(CrearAnuncio1Activity.this, mAnuncio, user, RC_CLOSE);
                 } else
-                    Toast.makeText(CrearAnuncio1Activity.this, "Debe cargar una foto para continuar", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CrearAnuncio1Activity.this, R.string.alertSinImagen_CrearAnuncioActivity1, Toast.LENGTH_SHORT).show();
             }
         };
 
@@ -248,11 +248,10 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
 
 
                 AlertDialog.Builder dialog = new AlertDialog.Builder(CrearAnuncio1Activity.this);
-                dialog.setTitle("Seleccione una de las opciones");
+                dialog.setTitle(getString(R.string.title_DialogSelectImage));
                 dialog.setItems(idArrayOpciones, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        //Se guarda cual fue el último ImageView seleccionado
                         switch (which) {
                             //Galería
                             case 0:
@@ -263,7 +262,7 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
                                 if (Imagenes.hayCamara(CrearAnuncio1Activity.this))
                                     takePhoto();
                                 else
-                                    Toast.makeText(CrearAnuncio1Activity.this, "Este dispositivo no dispone de cámara", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(CrearAnuncio1Activity.this, R.string.noCamera_DialogSelectImage, Toast.LENGTH_SHORT).show();
                                 break;
                             //Eliminar imagen
                             case 2:

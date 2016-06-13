@@ -294,7 +294,7 @@
         android:textSize="16sp"
         android:textColor="@android:color/white"
 
-        android:text="Capta la atención de tus clientes con las mejores fotos."/>
+        android:text="@string/frase_CrearActivity1"/>
     <ImageView
         android:id="@+id/imgSiguiente"
         android:src="@drawable/flecha"
@@ -312,7 +312,7 @@
         android:id="@+id/lblSiguiente"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Siguiente"
+        android:text="@string/siguiente_CrearAnuncio1"
         android:textStyle="bold"
         android:textSize="16sp"
         android:textColor="@android:color/white"
