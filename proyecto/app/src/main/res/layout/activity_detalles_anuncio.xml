@@ -296,6 +296,7 @@
                 android:layout_below="@id/groupImagenes"
                 android:layout_marginRight="25dp"
                 android:layout_marginEnd="25dp"
+                android:visibility="visible"
                 android:layout_marginTop="72dp"
                 android:src="@drawable/ic_message_black" />
 
@@ -304,8 +305,10 @@
                 android:id="@+id/imgSubscribe"
                 android:layout_width="35dp"
                 android:layout_height="35dp"
-                android:layout_alignEnd="@id/imgMessage"
-                android:layout_alignRight="@id/imgMessage"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="25dp"
+                android:layout_marginEnd="25dp"
                 android:layout_below="@id/groupImagenes"
                 android:layout_marginTop="25dp"
                 android:src="@drawable/ic_subscribe"
@@ -409,6 +412,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/toolbar"
+        android:visibility="visible"
         android:background="@android:color/white">
         <ProgressBar
             android:layout_width="wrap_content"

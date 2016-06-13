@@ -488,6 +488,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
                 setTitle(R.string.tab_anuncios);
                 showFilterIcon();
                 showMapIcon();
+
             } else
                 super.onBackPressed();
         }

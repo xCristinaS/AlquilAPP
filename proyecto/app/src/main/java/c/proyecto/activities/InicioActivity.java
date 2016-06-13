@@ -3,6 +3,7 @@ package c.proyecto.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SwitchCompat;
@@ -48,6 +49,10 @@ public class InicioActivity extends AppCompatActivity implements InicioActivityO
     }
 
     private void initViews() {
+        TextView lblTitulo1 = (TextView) findViewById(R.id.lblTitulo1);
+        TextView lblTitulo2 = (TextView) findViewById(R.id.lblTitulo2);
+        lblTitulo1.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/nunito.regular.ttf"));
+        lblTitulo2.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/nunito.regular.ttf"));
         preferences = getSharedPreferences(Constantes.NOMBRE_PREFERENCIAS, MODE_PRIVATE);
         presentador = InicioPresenter.getPresentador(this);
         presentador.setUsersManager(new UsersFirebaseManager(presentador));
