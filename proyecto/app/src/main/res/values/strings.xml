@@ -150,7 +150,7 @@
     <string name="text_emptyView_anuncios_ubicacion_desactivada">Sin ubicación activada</string>
 
     <!-- PrincipalFragment -->
-    <string name="emptyView_busqueda_sin_exito">No se ha encontrado ningún anuncio</string>
+    <string name="emptyView_busqueda_sin_exito">Ningún resultado</string>
     <string name="emptyView_tab_suscritos">Aún no te has suscrito a ningún anuncio</string>
     <string name="emptyView_tab_misAnuncios">Aún no has publicado ningún anuncio</string>
     <string name="emptyView_location_disabled">Ubicación desactivada</string>

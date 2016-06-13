@@ -478,8 +478,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
         //Si el navDrawer está abierto lo cierra
         if (drawer.isDrawerOpen(GravityCompat.START))
             drawer.closeDrawers();
+
         else if (toolbar.getMenu().findItem(R.id.nav_eliminar).isVisible())
             desactivarMultiseleccion();
+
         else {
             Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.frmContenido);
             if (fragment instanceof MessagesFragment) {

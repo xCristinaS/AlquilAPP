@@ -188,7 +188,7 @@ public class PrincipalFragment extends Fragment {
         if (f.getmAdapter().getAdapter_type() == AdvertsRecyclerViewAdapter.ADAPTER_TYPE_ADVS){
             //Si no ha encontrado ningún anuncio filtrando
             if(filteredAdverts.size() == 0)
-                f.confEmptyView(R.drawable.cama, getString(R.string.emptyView_busqueda_sin_exito));
+                f.confEmptyView(R.drawable.ic_not_found, getString(R.string.emptyView_busqueda_sin_exito));
             f.getmAdapter().addItems(filteredAdverts);
         }
     }
