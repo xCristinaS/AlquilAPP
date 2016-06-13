@@ -61,6 +61,7 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
     private static final String EXTRA_ANUNCIO = "anuncio";
     private static final String EXTRA_ADVERT_TYPE = "advert_type";
     private static final String EXTRA_USER = "user";
+    private static final String EXTRA_OPEN_FROM_CHAT = "opem_from_chat";
 
     private AdvertsDetailsPresenter mPresenter;
     private Anuncio anuncio;
@@ -70,7 +71,7 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
     private MessagePojo messagePojoAux;
 
     private Toolbar toolbar;
-    private RelativeLayout groupImagenes,groupProgressBar;
+    private RelativeLayout groupImagenes, groupProgressBar;
     private SliderLayout slider;
     private ImageView imgTipoVivienda, imgCamas, imgMessage, imgEdit, imgSubscribe;
     private LinearLayout emptyViewPrestaciones;
@@ -80,13 +81,14 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
     private RecyclerView rvPrestaciones;
     private PrestacionesAdapter mPrestacionesAdapter;
     private GoogleMap mGoogleMap;
+    private boolean openFromChat;
 
-
-    public static void start(Context context, Anuncio anuncio, int advertType, Usuario u) {
+    public static void start(Context context, Anuncio anuncio, int advertType, Usuario u, boolean openFromChat) {
         Intent intent = new Intent(context, DetallesAnuncioActivity.class);
         intent.putExtra(EXTRA_ANUNCIO, anuncio);
         intent.putExtra(EXTRA_ADVERT_TYPE, advertType);
         intent.putExtra(EXTRA_USER, u);
+        intent.putExtra(EXTRA_OPEN_FROM_CHAT, openFromChat);
         context.startActivity(intent);
     }
 
@@ -117,6 +119,7 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
         };
 
         anuncio = getIntent().getParcelableExtra(EXTRA_ANUNCIO);
+        openFromChat = getIntent().getBooleanExtra(EXTRA_OPEN_FROM_CHAT, false);
         advertType = getIntent().getIntExtra(EXTRA_ADVERT_TYPE, -1);
         mPresenter = AdvertsDetailsPresenter.getPresentador(this);
         mPresenter.setAdvertsManager(new AdvertsFirebaseManager(mPresenter, currentUser));
@@ -236,24 +239,27 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
     }
 
     private void setImgMessageClickListener() {
-        imgMessage.setOnClickListener(null);
-        if (messagePojoAux == null) {
-            imgMessage.setImageResource(R.drawable.ic_message_black);
-            imgMessage.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    showSenMessageDialog();
-                }
-            });
-        } else {
-            imgMessage.setImageResource(R.drawable.ic_chat_black);
-            imgMessage.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    ConversationActivity.start(DetallesAnuncioActivity.this, messagePojoAux, currentUser);
-                }
-            });
-        }
+        if (!openFromChat) {
+            imgMessage.setOnClickListener(null);
+            if (messagePojoAux == null) {
+                imgMessage.setImageResource(R.drawable.ic_message_black);
+                imgMessage.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        showSenMessageDialog();
+                    }
+                });
+            } else {
+                imgMessage.setImageResource(R.drawable.ic_chat_black);
+                imgMessage.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ConversationActivity.start(DetallesAnuncioActivity.this, messagePojoAux, currentUser);
+                    }
+                });
+            }
+        } else
+            imgMessage.setVisibility(View.GONE);
     }
 
     private void confRecyclerview() {
@@ -443,7 +449,7 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
             public void onClick(View v) {
                 if (!TextUtils.isEmpty(txtMensaje.getText())) {
                     messagePojoAux = new MessagePojoWithoutAnswer();
-                    ((MessagePojoWithoutAnswer)messagePojoAux).setReceptor(userPropietario);
+                    ((MessagePojoWithoutAnswer) messagePojoAux).setReceptor(userPropietario);
                     messagePojoAux.setKeyReceptor(userPropietario.getKey());
                     messagePojoAux.setEmisor(currentUser);
                     messagePojoAux.setTituloAnuncio(anuncio.getTitulo());
@@ -550,7 +556,7 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
 
     @Override
     protected void onDestroy() {
-        if(slider != null){
+        if (slider != null) {
             for (int i = 0; i < anuncio.getImagenes().size(); i++)
                 slider.removeSliderAt(i);
             slider.stopAutoCycle();

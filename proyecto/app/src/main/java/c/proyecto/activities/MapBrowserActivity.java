@@ -131,7 +131,7 @@ public class MapBrowserActivity extends AppCompatActivity implements OnMapReadyC
 
     @Override
     public void advertClickedFromMapObtained(Anuncio a) {
-        DetallesAnuncioActivity.start(this, a, AdvertsRecyclerViewAdapter.ADAPTER_TYPE_ADVS, mCurrentUser);
+        DetallesAnuncioActivity.start(this, a, AdvertsRecyclerViewAdapter.ADAPTER_TYPE_ADVS, mCurrentUser, false);
     }
 
     @Override
