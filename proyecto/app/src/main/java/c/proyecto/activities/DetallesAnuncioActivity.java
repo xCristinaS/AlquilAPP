@@ -550,18 +550,20 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
 
     @Override
     protected void onDestroy() {
-        for (int i = 0; i < anuncio.getImagenes().size(); i++)
-            slider.removeSliderAt(i);
-        slider.stopAutoCycle();
-        slider.removeAllSliders();
-        slider.removeOnPageChangeListener(this);
-        slider.destroyDrawingCache();
-        slider.removeAllViews();
-        slider.removeAllViewsInLayout();
-        slider = null;
-        groupImagenes.removeAllViews();
-        groupImagenes.removeAllViewsInLayout();
-        groupImagenes = null;
+        if(slider != null){
+            for (int i = 0; i < anuncio.getImagenes().size(); i++)
+                slider.removeSliderAt(i);
+            slider.stopAutoCycle();
+            slider.removeAllSliders();
+            slider.removeOnPageChangeListener(this);
+            slider.destroyDrawingCache();
+            slider.removeAllViews();
+            slider.removeAllViewsInLayout();
+            slider = null;
+            groupImagenes.removeAllViews();
+            groupImagenes.removeAllViewsInLayout();
+            groupImagenes = null;
+        }
         System.gc();
         super.onDestroy();
     }

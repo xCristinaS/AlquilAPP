@@ -37,6 +37,7 @@ public class MessagesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
         void removeMessage(MessagePojo m);
     }
 
+    private View emptyView;
     private List<MessagePojo> mDatos, messagesConver;
     private OnMessagesAdapterItemClick listenerItemClick;
     private ConversationManager listenerConverManager;
@@ -225,6 +226,7 @@ public class MessagesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
 
         if (allMessagesObtained)
             notifyDataSetChanged();
+        checkIfEmpty();
     }
 
 
@@ -235,22 +237,36 @@ public class MessagesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
         }
         allMessagesObtained = true;
         notifyDataSetChanged();
+        checkIfEmpty();
     }
 
     public void addAll(ArrayList<MessagePojo> messagesList) {
         Collections.sort(messagesList, messagesComp);
         mDatos.addAll(messagesList);
         notifyDataSetChanged();
+        checkIfEmpty();
     }
 
     public void removeItem(MessagePojo m) {
         int position = mDatos.indexOf(m);
         mDatos.remove(m);
         notifyItemRemoved(position);
+        checkIfEmpty();
     }
 
     public void setAllMessagesObtained(boolean allMessagesObtained) {
         this.allMessagesObtained = allMessagesObtained;
         mDatos.clear();
     }
+
+    public void setEmptyView(View emptyView){
+        this.emptyView = emptyView;
+        checkIfEmpty();
+    }
+
+    private void checkIfEmpty() {
+        if(emptyView != null)
+            emptyView.setVisibility(getItemCount() > 0 ? View.GONE : View.VISIBLE);
+    }
+
 }

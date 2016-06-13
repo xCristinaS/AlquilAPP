@@ -10,6 +10,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import c.proyecto.R;
 import c.proyecto.adapters.MessagesRecyclerViewAdapter;
@@ -54,9 +56,10 @@ public class MessagesFragment extends Fragment {
         Bundle args = getArguments();
         isAConversation = args.getBoolean(ARG_CONVER, false);
         mKeyCurrentUser = args.getString(ARG_CURRENT_USER);
+        LinearLayout emptyView = (LinearLayout) getView().findViewById(R.id.emptyView);
         rvMessages = (RecyclerView) getView().findViewById(R.id.rvMessages);
         mAdapter = new MessagesRecyclerViewAdapter(isAConversation, mKeyCurrentUser);
-
+        mAdapter.setEmptyView(emptyView);
         if (listenerItemClick != null)
             mAdapter.setListenerItemClick(listenerItemClick);
         if (listenerConverManager != null)
@@ -105,4 +108,6 @@ public class MessagesFragment extends Fragment {
     public MessagesRecyclerViewAdapter getmAdapter() {
         return mAdapter;
     }
+
+
 }
