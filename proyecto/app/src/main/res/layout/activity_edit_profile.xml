@@ -148,7 +148,7 @@
                 android:layout_width="0dp"
                 app:layout_widthPercent="50%"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_action_user"
+                android:src="@drawable/ic_descripcion"
                 android:layout_toRightOf="@id/imgHabitos"
                 android:layout_toEndOf="@id/imgHabitos"/>
 

@@ -265,7 +265,7 @@ public class MessagesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
     }
 
     private void checkIfEmpty() {
-        if(emptyView != null)
+        if(emptyView != null && !isAConversation)
             emptyView.setVisibility(getItemCount() > 0 ? View.GONE : View.VISIBLE);
     }
 
