@@ -182,7 +182,6 @@ public class PrincipalFragment extends Fragment {
             f.getmAdapter().removeItem(a);
     }
 
-
     public void loadFilteredAdverts(ArrayList<Anuncio> filteredAdverts) {
         AdvertsRecyclerViewFragment f = (AdvertsRecyclerViewFragment) vpAdapter.getItem(1);
         if (f.getmAdapter().getAdapter_type() == AdvertsRecyclerViewAdapter.ADAPTER_TYPE_ADVS){
@@ -192,7 +191,6 @@ public class PrincipalFragment extends Fragment {
             f.getmAdapter().addItems(filteredAdverts);
         }
     }
-
 
     public void removeFilter() {
         AdvertsRecyclerViewFragment f = (AdvertsRecyclerViewFragment) vpAdapter.getItem(1);
@@ -204,7 +202,6 @@ public class PrincipalFragment extends Fragment {
                 f.confEmptyView(R.drawable.tab_anuncios, getString(R.string.text_emptyView_tab_anuncios));
         }
     }
-
 
     public void solicitantesObtained(View itemView, ArrayList<Usuario> listaSolicitantes, Anuncio anuncio) {
         AdvertsRecyclerViewFragment f = (AdvertsRecyclerViewFragment) vpAdapter.getItem(2);
@@ -281,6 +278,4 @@ public class PrincipalFragment extends Fragment {
     public void confEmptyViewsSinUbicacion(){
         ((AdvertsRecyclerViewFragment) vpAdapter.getItem(1)).confEmptyView(R.drawable.logo, getString(R.string.emptyView_location_disabled));
     }
-
-
 }

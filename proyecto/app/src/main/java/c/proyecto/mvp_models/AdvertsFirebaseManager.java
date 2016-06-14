@@ -196,7 +196,7 @@ public class AdvertsFirebaseManager {
             new Firebase(URL_SOLICITUDES).child(keySolicitante).child(a.getKey()).setValue(null);
     }
 
-    public void removeUserSub(final Anuncio a) {
+    public void removeUserSub(Anuncio a) {
         userSubRemoved++;
         a.setSubsChanged(true);
         Firebase mFirebase = new Firebase(URL_ANUNCIOS).child(a.getKey()).child("solicitantes").child(currentUser.getKey());

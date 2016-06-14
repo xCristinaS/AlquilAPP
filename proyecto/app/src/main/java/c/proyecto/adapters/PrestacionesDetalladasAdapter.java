@@ -17,10 +17,10 @@ public class PrestacionesDetalladasAdapter extends RecyclerView.Adapter<Recycler
 
     private final List<Prestacion> prestaciones;
 
-
     public PrestacionesDetalladasAdapter(List<Prestacion> prestaciones){
         this.prestaciones = prestaciones;
     }
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_prestacion_detallado, parent, false);

@@ -168,7 +168,6 @@ public class MainPresenter implements MainPresenterOps, MyPresenter {
     }
 
     @Override
-
     public void getSolicitantes(View itemView, Anuncio anuncio) {
         usersManager.getSolicitantes(itemView, anuncio);
     }

@@ -50,8 +50,6 @@ public class CaracteristicasUsuarioDialogFragment extends AppCompatDialogFragmen
         return view;
     }
 
-
-
     @Override
     public void setupDialog(Dialog dialog, int style) {
         dialog.setTitle(R.string.title_CaracteristicasUsuarioDialogFragment);
@@ -114,6 +112,7 @@ public class CaracteristicasUsuarioDialogFragment extends AppCompatDialogFragmen
         skSociable.setProgress(mUser.getSociable()* Constantes.MULTIPLICADOR_SEEK_BAR);
         skActivo.setProgress(mUser.getActivo()* Constantes.MULTIPLICADOR_SEEK_BAR);
     }
+
     private void saveChanges() {
         mUser.setOrdenado(Integer.valueOf(lblNumOrdenado.getText().toString()));
         mUser.setFiestero(Integer.valueOf(lblNumFiestero.getText().toString()));

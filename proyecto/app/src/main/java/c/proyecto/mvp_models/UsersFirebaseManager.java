@@ -51,7 +51,7 @@ public class UsersFirebaseManager {
         });
     }
 
-    public void signIn(final String email, final String contra) {
+    public void signIn(String email, String contra) {
         Firebase ref = new Firebase(Constantes.URL_BASE);
         ref.authWithPassword(email, contra, new Firebase.AuthResultHandler() {
             @Override
@@ -125,29 +125,6 @@ public class UsersFirebaseManager {
         else
             ((RegistroPresenter) presenter).userHasBeenCreated(resp);
     }
-
-    /*public void signInWithTwitter(final String email, final String contra) {
-        Firebase ref = new Firebase(Constantes.URL_BASE);
-        Map<String, String> options = new HashMap<String, String>();
-        options.put("oauth_token", "3131343071-q9oM9NEb6NX1HZs7FEuxda6cmvgBMSvtxdZCFKh");
-        options.put("oauth_token_secret", "mO4pPS4S9LoW0fcwAp1Jw19sPq2L1SMdhINgbShpInYnY");
-        options.put("user_id", email);
-        ref.authWithOAuthToken("twitter", options, new Firebase.AuthResultHandler() {
-            @Override
-            public void onAuthenticated(AuthData authData) {
-                System.out.println("SESION INICIADA");
-            }
-
-            @Override
-            public void onAuthenticationError(FirebaseError firebaseError) {
-                System.out.println(firebaseError.getDetails());
-            }
-        });
-    }*/
-/*
-    public void signInWithFacebook(String email, String contra) {
-
-    }*/
 
     public void initializeOnUserChangedListener(Usuario usuario) {
         if (listener != null)

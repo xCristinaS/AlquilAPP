@@ -24,7 +24,6 @@ import retrofit2.Response;
 
 public class ImgurUploader {
 
-
     private final LinkedList<File> mImagenes;
     private final MyModel mModel;
     private final List<MyPresenter> mPresenters;

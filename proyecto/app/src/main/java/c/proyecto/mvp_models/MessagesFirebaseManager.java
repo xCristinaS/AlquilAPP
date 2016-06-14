@@ -210,7 +210,7 @@ public class MessagesFirebaseManager {
     }
 
     // compruebo si el mensaje que he recibido es un mensaje en respuesta a una conversación iniciada por el usuario. Si es así, elimino el mensaje de la lista de mensajes enviados sin respuesta.
-    private void checkOnFirstMessageResponse(final String userKey, final String emisorKey, final String emisor_titleAdvert) {
+    private void checkOnFirstMessageResponse(final String userKey, final String emisorKey, String emisor_titleAdvert) {
         final String title = emisor_titleAdvert.substring(emisor_titleAdvert.indexOf("_") + 1, emisor_titleAdvert.length());
         new Firebase(URL_MSG_SIN_RESP).child(userKey).child(emisorKey).child(title).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

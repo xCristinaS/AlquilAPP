@@ -1,6 +1,5 @@
 package c.proyecto;
 
-
 import android.graphics.Color;
 
 import com.google.android.gms.maps.model.LatLng;

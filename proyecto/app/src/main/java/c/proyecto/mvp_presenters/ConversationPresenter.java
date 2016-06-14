@@ -84,6 +84,7 @@ public class ConversationPresenter implements ConversationPresenterOps, MyPresen
             activity.get().allMessagesObtained();
     }
 
+    @Override
     public void liberarMemoria() {
         activity = null;
         presentador = null;

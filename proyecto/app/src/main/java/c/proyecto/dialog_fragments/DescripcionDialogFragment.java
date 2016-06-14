@@ -21,7 +21,6 @@ public class DescripcionDialogFragment extends AppCompatDialogFragment {
     private Usuario mUser;
     private ImageView imgMasculino, imgFemenino, imgEstudiante, imgTrabajador, imgFumador, imgNoFumador;
 
-
     public static DescripcionDialogFragment newInstance(Usuario user) {
 
         Bundle args = new Bundle();

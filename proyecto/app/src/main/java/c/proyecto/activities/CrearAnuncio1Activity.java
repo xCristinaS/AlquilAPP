@@ -63,7 +63,6 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
     private LinkedList<ImagePojo> imagePojoToLoadList;
     private boolean mPermisoEscrituraAceptado;
 
-
     public static void start(Context context, Usuario user) {
         Intent intent = new Intent(context, CrearAnuncio1Activity.class);
         intent.putExtra(EXTRA_USUARIO, user);
@@ -131,7 +130,6 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
 
         imgSiguiente.setOnClickListener(siguienteOnClick);
         lblSiguiente.setOnClickListener(siguienteOnClick);
-
     }
 
     private void recuperarImagenes() {
@@ -335,7 +333,6 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
 
         @Override
         protected Bitmap doInBackground(Integer... params) {
-
             return Imagenes.escalar(params[0], params[1], mPathOriginal);
         }
 
@@ -395,8 +392,6 @@ public class CrearAnuncio1Activity extends AppCompatActivity {
                     mPermisoEscrituraAceptado = false;
                 break;
         }
-
-
     }
 
     @Override
