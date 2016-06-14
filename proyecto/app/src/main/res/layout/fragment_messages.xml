@@ -29,4 +29,23 @@
             android:text="Bandeja vacía"/>
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/groupProgressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_centerInParent="true"
+        android:orientation="vertical">
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:max="10"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cargando mensajes"/>
+    </LinearLayout>
+
 </RelativeLayout>
