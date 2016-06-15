@@ -22,6 +22,8 @@
         android:layout_height="wrap_content"
         android:textStyle="bold"
         android:layout_gravity="center"
+        android:maxLines="1"
+        android:ellipsize="end"
         android:layout_marginTop="5dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 

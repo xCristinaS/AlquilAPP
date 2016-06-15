@@ -184,6 +184,7 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
             public void onClick(View v) {
                 mAnuncio.setTipo_vivienda(Constantes.CASA);
                 tintVivienda(imgCasa);
+                txtCamas.setHint(getString(R.string.hint_txtHabitaciones));
             }
         });
         imgHabitacion.setOnClickListener(new View.OnClickListener() {
@@ -191,6 +192,7 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
             public void onClick(View v) {
                 mAnuncio.setTipo_vivienda(Constantes.HABITACION);
                 tintVivienda(imgHabitacion);
+                txtCamas.setHint(getString(R.string.hint_txtCamas));
             }
         });
         imgPiso.setOnClickListener(new View.OnClickListener() {
@@ -198,6 +200,7 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
             public void onClick(View v) {
                 mAnuncio.setTipo_vivienda(Constantes.PISO);
                 tintVivienda(imgPiso);
+                txtCamas.setHint(getString(R.string.hint_txtHabitaciones));
             }
         });
     }

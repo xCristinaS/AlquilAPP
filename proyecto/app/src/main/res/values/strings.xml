@@ -59,7 +59,8 @@
     <string name="hint_txtNum">Número</string>
     <string name="hint_txtPoblacion">Población</string>
     <string name="hint_txtProvincia">Provincia</string>
-    <string name="hint_txtCamas">Habitaciones</string>
+    <string name="hint_txtHabitaciones">Habitaciones</string>
+    <string name="hint_txtCamas">Camas</string>
     <string name="hint_txtToilets">Cuartos de baño</string>
     <string name="hint_txtTamano">Tamaño</string>
     <string name="hint_txtDescripcion">Descripción</string>

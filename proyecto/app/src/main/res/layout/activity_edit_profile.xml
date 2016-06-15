@@ -39,6 +39,7 @@
                 android:layout_marginRight="@dimen/activity_horizontal_margin"
                 android:layout_marginLeft="@dimen/activity_horizontal_margin"
                 android:maxLines="1"
+                android:maxLength="24"
                 android:inputType="text"/>
 
             <EditText
@@ -53,6 +54,7 @@
                 android:layout_marginLeft="@dimen/activity_horizontal_margin"
                 android:layout_below="@id/txtNombre"
                 android:maxLines="1"
+                android:maxLength="24"
                 android:inputType="text"/>
         </android.support.percent.PercentRelativeLayout>
 
