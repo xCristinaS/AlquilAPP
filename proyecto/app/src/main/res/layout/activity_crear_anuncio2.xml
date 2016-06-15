@@ -185,7 +185,7 @@
                 android:inputType="number"
                 android:maxLength="2"
                 android:maxLines="1"
-                android:hint="@string/hint_txtCamas" />
+                android:hint="@string/hint_txtHabitaciones" />
 
             <EditText
                 android:id="@+id/txtToilets"
