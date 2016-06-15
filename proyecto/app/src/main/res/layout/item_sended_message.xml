@@ -16,7 +16,7 @@
         android:layout_marginEnd="3dp"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        app:bl_bubbleColor="@android:color/holo_blue_dark"
+        app:bl_bubbleColor="#9FBA78"
         app:bl_arrowDirection="right"
         app:bl_arrowHeight="8dp"
         app:bl_arrowPosition="16dp"

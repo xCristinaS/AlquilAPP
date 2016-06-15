@@ -63,7 +63,8 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
     private LinkedList<File> imagenesAnuncio;
     private Anuncio mAnuncio;
     private Usuario user;
-    private boolean imagesModified;
+    private boolean imagesModified, editando;
+
 
     public static void startForResult(Activity a, Anuncio anuncio, Usuario user, int requestCode, File img0, File img1, File img2, File img3, File img4, File img5) {
         Intent intent = new Intent(a, CrearAnuncio2Activity.class);
@@ -125,10 +126,12 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
 
         //Si se entra creando
         if (mAnuncio == null) {
+            editando = false;
             mAnuncio = new Anuncio();
             mAnuncio.setPrestaciones(new ArrayList<Prestacion>());
             initViews();
         } else {
+            editando = true;
             initViews();
             recuperarAnuncio();
         }
@@ -160,7 +163,7 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
             @Override
             public void onClick(View v) {
                 //Si este anuncio ya existe y tiene una localización asignada se cargará está como punto de partida
-                if(mAnuncio != null && mAnuncio.getLats() != null)
+                if (mAnuncio != null && mAnuncio.getLats() != null)
                     LocalizacionActivity.startForResult(CrearAnuncio2Activity.this, new LatLng(mAnuncio.getLats().getLatitude(), mAnuncio.getLats().getLongitude()));
                 else
                     LocalizacionActivity.startForResult(CrearAnuncio2Activity.this);
@@ -309,7 +312,8 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
                 //Subir las imagenes a la api de imágenes.
                 ArrayList<MyPresenter> presenters = new ArrayList<>();
                 presenters.add(mPresenter);
-                presenters.add(AdvertsDetailsPresenter.getPresentador(null));
+                if (editando)
+                    presenters.add(AdvertsDetailsPresenter.getPresentador(null));
                 new ImgurUploader(imagenesAnuncio, mAnuncio, presenters).upload();
             }
             //Guardar todos los editText en el objeto anuncio.
@@ -321,33 +325,33 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
         }
     }
 
-    private boolean requiredFieldsFilled(){
+    private boolean requiredFieldsFilled() {
         boolean empty = true;
-        if(TextUtils.isEmpty(txtTituloAnuncio.getText())){
+        if (TextUtils.isEmpty(txtTituloAnuncio.getText())) {
             empty = false;
             txtTituloAnuncio.setError(getString(R.string.error_campoVacio));
         }
-        if(TextUtils.isEmpty(txtPoblacion.getText())){
+        if (TextUtils.isEmpty(txtPoblacion.getText())) {
             empty = false;
             txtPoblacion.setError(getString(R.string.error_campoVacio));
         }
-        if(TextUtils.isEmpty(txtDireccion.getText())){
+        if (TextUtils.isEmpty(txtDireccion.getText())) {
             empty = false;
             txtDireccion.setError(getString(R.string.error_campoVacio));
         }
-        if(TextUtils.isEmpty(txtNum.getText())){
+        if (TextUtils.isEmpty(txtNum.getText())) {
             empty = false;
             txtNum.setError(getString(R.string.error_campoVacio));
         }
-        if(TextUtils.isEmpty(txtTamano.getText())){
+        if (TextUtils.isEmpty(txtTamano.getText())) {
             empty = false;
             txtTamano.setError(getString(R.string.error_campoVacio));
         }
-        if(TextUtils.isEmpty(txtPrecio.getText())){
+        if (TextUtils.isEmpty(txtPrecio.getText())) {
             empty = false;
             txtPrecio.setError(getString(R.string.error_campoVacio));
         }
-        if(mAnuncio.getTipo_vivienda() == null){
+        if (mAnuncio.getTipo_vivienda() == null) {
             empty = false;
             Toast.makeText(this, R.string.toast_seleccionaVivienda, Toast.LENGTH_SHORT).show();
         }
@@ -355,7 +359,7 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
         return empty;
     }
 
-    private void meterDatosEnAnuncio(){
+    private void meterDatosEnAnuncio() {
         mAnuncio.setTitulo(txtTituloAnuncio.getText().toString());
         mAnuncio.setPoblacion(txtPoblacion.getText().toString());
         mAnuncio.setProvincia(txtProvincia.getText().toString());
@@ -386,8 +390,8 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode == RESULT_OK)
-            switch (requestCode){
+        if (resultCode == RESULT_OK)
+            switch (requestCode) {
                 case LocalizacionActivity.RC_ADDRESS:
                     Address address = data.getParcelableExtra(LocalizacionActivity.EXTRA_ADDRESS);
                     txtDireccion.setText(address.getThoroughfare());
@@ -395,11 +399,11 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
                     txtPoblacion.setText(address.getLocality());
                     txtProvincia.setText(address.getSubAdminArea());
 
-                    if(!txtDireccion.getText().toString().isEmpty())
+                    if (!txtDireccion.getText().toString().isEmpty())
                         txtDireccion.setError(null);
-                    if(!txtPoblacion.getText().toString().isEmpty())
+                    if (!txtPoblacion.getText().toString().isEmpty())
                         txtPoblacion.setError(null);
-                    if(!txtNum.getText().toString().isEmpty())
+                    if (!txtNum.getText().toString().isEmpty())
                         txtNum.setError(null);
 
                     //Se guarda la latitud del punto seleccionado para la localización de la vivienda.
