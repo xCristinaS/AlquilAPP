@@ -6,7 +6,9 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.location.GpsStatus;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
@@ -118,6 +120,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
         configLocation();
         initViews();
         InicioPresenter.getPresentador(null).liberarMemoria();
+
+        LocationManager lm = (LocationManager) getSystemService(LOCATION_SERVICE);
+
     }
 
     private void initViews() {
@@ -250,7 +255,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
                 desactivarMultiseleccion();
                 return true;
             case R.id.nav_map:
-                if(UtilMethods.isUbicationPermissionGranted(MainActivity.this)){
+                if (UtilMethods.isUbicationPermissionGranted(MainActivity.this)) {
                     if (mLastLocation != null)
                         MapBrowserActivity.start(this, mLastLocation, mUser);
                     else
@@ -396,13 +401,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
         hideMultiselectionIcons();
     }
 
-    private void hideMultiselectionIcons(){
+    private void hideMultiselectionIcons() {
         multiselectionActivated = false;
         toolbar.getMenu().findItem(R.id.nav_eliminar).setVisible(false);
         toolbar.getMenu().findItem(R.id.nav_limpiar).setVisible(false);
     }
 
-    private void showMultiselectionIcons(){
+    private void showMultiselectionIcons() {
         multiselectionActivated = true;
         toolbar.getMenu().findItem(R.id.nav_eliminar).setVisible(true);
         toolbar.getMenu().findItem(R.id.nav_limpiar).setVisible(true);
@@ -496,7 +501,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        switch (keyCode){
+        switch (keyCode) {
             case KeyEvent.KEYCODE_MENU:
                 if (drawer.isDrawerOpen(GravityCompat.START))
                     drawer.closeDrawers();
@@ -581,6 +586,22 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
             mGoogleApiClient.disconnect();
         }
         super.onDestroy();
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        ((LocationManager) getSystemService(LOCATION_SERVICE)).addGpsStatusListener(new GpsStatus.Listener() {
+            @Override
+            public void onGpsStatusChanged(int event) {
+
+            }
+        });
     }
 
     @Override
@@ -616,6 +637,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
                 }
 
                 break;
+
         }
     }
 
