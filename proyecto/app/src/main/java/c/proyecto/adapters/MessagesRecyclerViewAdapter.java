@@ -4,7 +4,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -18,7 +17,6 @@ import java.util.List;
 import java.util.Locale;
 
 import c.proyecto.R;
-import c.proyecto.pojo.Message;
 import c.proyecto.pojo.MessagePojo;
 import c.proyecto.pojo.MessagePojoWithoutAnswer;
 import c.proyecto.pojo.Usuario;
@@ -37,9 +35,15 @@ public class MessagesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
         void removeMessage(MessagePojo m);
     }
 
+    public interface IMessagesRecyclerViewAdapter {
+        void allObtained();
+    }
+
+
     private View emptyView;
     private List<MessagePojo> mDatos, messagesConver;
     private OnMessagesAdapterItemClick listenerItemClick;
+    private IMessagesRecyclerViewAdapter mListener;
     private ConversationManager listenerConverManager;
     private boolean isAConversation, allMessagesObtained;
 
@@ -98,6 +102,9 @@ public class MessagesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
 
     public void setListenerConverManager(ConversationManager listenerConverManager) {
         this.listenerConverManager = listenerConverManager;
+    }
+    public void setmListener(IMessagesRecyclerViewAdapter listener){
+        mListener = listener;
     }
 
     public List<MessagePojo> getmDatos() {
@@ -231,13 +238,13 @@ public class MessagesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
 
 
     public void allMessagesObtained() {
-        // todo NENE, PON TU LA BARRA DE CARGA MIENTRAS SE OBTIENEN TODOS LOS MENSAJES AQUÍ. CUANDO ENTRE POR ESTE MÉTODO ES QUE SE HAN OBTENIDO TODOS Y LA PUEDES OCULTAR.
         if (isAConversation) {
             mDatos.addAll(messagesConver);
             Collections.sort(mDatos, messagesComp);
         }
         allMessagesObtained = true;
         notifyDataSetChanged();
+        mListener.allObtained();
         checkIfEmpty();
     }
 
@@ -262,7 +269,6 @@ public class MessagesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
 
     public void setEmptyView(View emptyView){
         this.emptyView = emptyView;
-        checkIfEmpty();
     }
 
     private void checkIfEmpty() {

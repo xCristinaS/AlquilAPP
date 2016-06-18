@@ -6,7 +6,7 @@
     <string name="pref_ratio">prefRatio</string>
 
     <!-- TabLayout -->
-    <string name="tab_solicitudes">Solicitudes</string>
+    <string name="tab_solicitudes">Suscripciones</string>
     <string name="tab_anuncios">Anuncios</string>
     <string name="tab_mis_anuncios">Mis Anuncios</string>
 

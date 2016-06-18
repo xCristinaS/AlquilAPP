@@ -38,7 +38,7 @@ public class MessagesFirebaseManager {
 
     private MyPresenter presenter;
     private Usuario currentUser;
-    private String lastEmisor_titleAdvert, lastMessageWithoutAnswerSended;
+    private static String lastEmisor_titleAdvert, lastMessageWithoutAnswerSended;
     private boolean messagesWithoutAnswerConsulted, receivedMessagesConsulted;
 
     public MessagesFirebaseManager(MyPresenter presenter, Usuario currentUser) {
@@ -241,7 +241,7 @@ public class MessagesFirebaseManager {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.getChildren() != null && dataSnapshot.getChildren().iterator().hasNext()) {
                     lastEmisor_titleAdvert = dataSnapshot.getChildren().iterator().next().getKey(); // para obtener el último mensaje y devolver la lista de mensajes en lugar de devolverlos de 1 en 1
-                }
+                } 
             }
 
             @Override

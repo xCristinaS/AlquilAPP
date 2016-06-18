@@ -11,14 +11,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
+import android.widget.ProgressBar;
 
 import c.proyecto.R;
 import c.proyecto.adapters.MessagesRecyclerViewAdapter;
+import c.proyecto.adapters.MessagesRecyclerViewAdapter.ConversationManager;
 import c.proyecto.pojo.MessagePojo;
 import c.proyecto.utils.DividerItemDecoration;
 
-public class MessagesFragment extends Fragment {
+public class MessagesFragment extends Fragment implements MessagesRecyclerViewAdapter.IMessagesRecyclerViewAdapter {
 
     private static final String ARG_CONVER = "conver";
     private static final String ARG_CURRENT_USER = "user";
@@ -26,8 +27,10 @@ public class MessagesFragment extends Fragment {
     private RecyclerView rvMessages;
     private MessagesRecyclerViewAdapter mAdapter;
     private MessagesRecyclerViewAdapter.OnMessagesAdapterItemClick listenerItemClick;
-    private MessagesRecyclerViewAdapter.ConversationManager listenerConverManager;
+    private ConversationManager listenerConverManager;
     private boolean isAConversation;
+    private String mKeyCurrentUser;
+    private ProgressBar pbLoading;
 
     public static MessagesFragment newInstance(boolean isAConversation, String keyCurrentUser) {
         Bundle args = new Bundle();
@@ -52,6 +55,7 @@ public class MessagesFragment extends Fragment {
 
     private void initViews() {
         LinearLayoutManager mLayoutManager;
+        pbLoading = (ProgressBar) getView().findViewById(R.id.pbLoading);
         Bundle args = getArguments();
         isAConversation = args.getBoolean(ARG_CONVER, false);
         String mKeyCurrentUser = args.getString(ARG_CURRENT_USER);
@@ -59,6 +63,7 @@ public class MessagesFragment extends Fragment {
         rvMessages = (RecyclerView) getView().findViewById(R.id.rvMessages);
         mAdapter = new MessagesRecyclerViewAdapter(isAConversation, mKeyCurrentUser);
         mAdapter.setEmptyView(emptyView);
+        mAdapter.setmListener(this);
         if (listenerItemClick != null)
             mAdapter.setListenerItemClick(listenerItemClick);
         if (listenerConverManager != null)
@@ -90,8 +95,8 @@ public class MessagesFragment extends Fragment {
     public void onAttach(Context context) {
         if (context instanceof MessagesRecyclerViewAdapter.OnMessagesAdapterItemClick)
             listenerItemClick = (MessagesRecyclerViewAdapter.OnMessagesAdapterItemClick) context;
-        if (context instanceof MessagesRecyclerViewAdapter.ConversationManager)
-            listenerConverManager = (MessagesRecyclerViewAdapter.ConversationManager) context;
+        if (context instanceof ConversationManager)
+            listenerConverManager = (ConversationManager) context;
         super.onAttach(context);
     }
 
@@ -109,4 +114,8 @@ public class MessagesFragment extends Fragment {
     }
 
 
+    @Override
+    public void allObtained() {
+        pbLoading.setVisibility(View.GONE);
+    }
 }
