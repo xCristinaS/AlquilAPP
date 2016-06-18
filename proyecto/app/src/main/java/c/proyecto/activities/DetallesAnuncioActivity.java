@@ -565,6 +565,7 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
             groupImagenes = null;
         }
         System.gc();
+        mPresenter.liberarMemoria();
         super.onDestroy();
     }
 }
