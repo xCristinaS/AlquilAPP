@@ -528,7 +528,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
                     //Se espera a que haya conseguido la localización tras activar el gps, carga los anuncios y desvincula el listener.
                     LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, mLocationListener);
                 } else
-                    ((PrincipalFragment) mFragmentManager.findFragmentById(R.id.frmContenido)).confEmptyViewsSinUbicacion("Ubiación desactivada", new View.OnClickListener() {
+                    ((PrincipalFragment) mFragmentManager.findFragmentById(R.id.frmContenido)).confEmptyViewsSinUbicacion(getString(R.string.emptyView_location_disabled), new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             checkLocationSettings();
