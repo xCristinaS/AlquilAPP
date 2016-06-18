@@ -14,7 +14,7 @@
         android:layout_marginBottom="6dp"
         android:layout_marginLeft="3dp"
         android:layout_marginStart="3dp"
-        app:bl_bubbleColor="@color/colorPrimary"
+        app:bl_bubbleColor="#93a1c5"
         app:bl_arrowDirection="left"
         app:bl_arrowHeight="8dp"
         app:bl_arrowPosition="16dp"
