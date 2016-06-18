@@ -144,7 +144,7 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
             initViews();
             confRecyclerview();
             confMap();
-            bindData(true);
+            bindData(false);
         }
     }
 
@@ -154,7 +154,7 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
         initViews();
         confRecyclerview();
         confMap();
-        bindData(true);
+        bindData(false);
     }
 
     private void initViews() {
@@ -490,7 +490,7 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
 
         if (numImagenes != this.anuncio.getImagenes().size()) {
             destruirSlider();
-            bindData(true);
+            bindData(false);
         } else
             bindData(false);
         posicionarMapa();
