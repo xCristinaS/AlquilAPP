@@ -144,7 +144,7 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
             initViews();
             confRecyclerview();
             confMap();
-            bindData();
+            bindData(true);
         }
     }
 
@@ -154,7 +154,7 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
         initViews();
         confRecyclerview();
         confMap();
-        bindData();
+        bindData(true);
     }
 
     private void initViews() {
@@ -335,18 +335,19 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
         mGoogleMap.addCircle(new CircleOptions().center(lat).radius(Constantes.CIRCLE_RADIUS).fillColor(Constantes.CIRCLE_COLOR).strokeWidth(Constantes.CIRCLE_STROKE_WIDTH));
     }
 
-    private void bindData() {
+    private void bindData(boolean createNewSlider) {
         String formatPrecio = "%.2f";
 
         //Se infla un slider cada vez que se actualiza las imagenes
         //Se coloca la View inflada a modo de FrameLayout en el RelativeLayout
-        RelativeLayout r = (RelativeLayout) View.inflate(DetallesAnuncioActivity.this, R.layout.slider, null);
-        slider = (SliderLayout) r.findViewById(R.id.slider);
-        confSlider();
+        if (createNewSlider) {
+            RelativeLayout r = (RelativeLayout) View.inflate(DetallesAnuncioActivity.this, R.layout.slider, null);
+            slider = (SliderLayout) r.findViewById(R.id.slider);
+            confSlider();
 
-        groupImagenes.removeAllViews();
-        groupImagenes.addView(r);
-
+            groupImagenes.removeAllViews();
+            groupImagenes.addView(r);
+        }
         ((TextView) toolbar.findViewById(R.id.lblTituloAnuncio)).setText(anuncio.getTitulo());
         ((TextView) toolbar.findViewById(R.id.lblLocalizacion)).setText(anuncio.getPoblacion());
         ((TextView) toolbar.findViewById(R.id.lblDireccion)).setText(anuncio.getDireccion() + " " + anuncio.getNumero());
@@ -486,11 +487,14 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
     @Override
     public void updateAdvert(Anuncio anuncio) {
         this.anuncio = anuncio;
-        bindData();
+
+        if (anuncio.getImagenes().size() != this.anuncio.getImagenes().size()) {
+            bindData(true);
+        } else
+            bindData(false);
         posicionarMapa();
 
         mPrestacionesAdapter.replaceAll(anuncio.getPrestaciones());
-
     }
 
     public void onImgSubClicked(Anuncio a) {
