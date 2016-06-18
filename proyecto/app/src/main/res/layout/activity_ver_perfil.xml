@@ -133,7 +133,7 @@
             android:id="@+id/shapeDescripción"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/lblNacionalidad"
+            android:layout_below="@id/lblProfesion"
             android:layout_marginTop="14dp"
             android:background="@color/colorShape"
             android:paddingTop="10dp"
