@@ -279,7 +279,7 @@ public class PrincipalFragment extends Fragment {
         ((AdvertsRecyclerViewFragment) vpAdapter.getItem(1)).confEmptyView(R.drawable.location_disabled, getString(R.string.emptyView_location_disabled));
     }
 
-    public void confEmptyViewsSinUbicacion(View.OnClickListener onClickListener){
-        ((AdvertsRecyclerViewFragment) vpAdapter.getItem(1)).confEmptyViewWithClick(R.drawable.location_disabled, getString(R.string.emptyView_location_disabled), onClickListener);
+    public void confEmptyViewsSinUbicacion(String textoEmptyView, View.OnClickListener onClickListener){
+        ((AdvertsRecyclerViewFragment) vpAdapter.getItem(1)).confEmptyViewWithClick(R.drawable.location_disabled, textoEmptyView, onClickListener);
     }
 }

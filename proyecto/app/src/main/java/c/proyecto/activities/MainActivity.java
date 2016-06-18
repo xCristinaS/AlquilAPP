@@ -527,7 +527,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
                     //Se espera a que haya conseguido la localización tras activar el gps, carga los anuncios y desvincula el listener.
                     LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, mLocationListener);
                 } else
-                    Toast.makeText(this, R.string.toast_needLocationToSeeNearAdverts, Toast.LENGTH_LONG).show();
+                    ((PrincipalFragment) mFragmentManager.findFragmentById(R.id.frmContenido)).confEmptyViewsSinUbicacion("Ubiación desactivada", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            //Cargar todos los anuncios
+                        }
+                    });
+
                 break;
             case RC_PREFERENCES:
                 if (resultCode == RESULT_OK) {
