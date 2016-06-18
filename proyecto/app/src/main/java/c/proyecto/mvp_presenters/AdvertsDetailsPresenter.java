@@ -94,7 +94,7 @@ public class AdvertsDetailsPresenter implements AdvertsDetailsPresenterOps, MyPr
     }
 
     public void liberarMemoria(){
-        activity = null;
+        //activity = null;
         presentador = null;
     }
 }
