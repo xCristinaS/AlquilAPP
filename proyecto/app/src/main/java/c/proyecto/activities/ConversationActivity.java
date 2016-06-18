@@ -47,7 +47,6 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
     private Toolbar toolbar;
     private FragmentManager mFragmentManager;
 
-
     public static void start(Context c, MessagePojo mensaje, Usuario user) {
         Intent intent = new Intent(c, ConversationActivity.class);
         intent.putExtra(EXTRA_MENSAJE, mensaje);
@@ -79,11 +78,7 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
         mPresenter.setMessagesManager(new MessagesFirebaseManager(mPresenter, user));
         mPresenter.setAdvertsManager(new AdvertsFirebaseManager(mPresenter, user));
 
-        if (mensaje != null) {
-            mPresenter.userConversationRequested(mensaje);
-            MessagesFragment f = MessagesFragment.newInstance(true, mensaje.getKeyReceptor());
-            mFragmentManager.beginTransaction().replace(R.id.frmContenido, f, TAG_FR_MSG).commit();
-        }
+        requestUserConversation();
 
         imgEnviar = (ImageView) findViewById(R.id.imgEnviar);
         txtMensaje = (EditText) findViewById(R.id.txtMensaje);
@@ -92,18 +87,30 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
             @Override
             public void onClick(View v) {
                 if (!TextUtils.isEmpty(txtMensaje.getText())) {
-                    if (mensaje instanceof MessagePojoWithoutAnswer) {
-                        MessagePojo m = new MessagePojo(user, mensaje.getTituloAnuncio(), txtMensaje.getText().toString(), new Date());
-                        m.setKeyReceptor(mensaje.getKeyReceptor());
-                        mPresenter.sendMessage(m, mensaje.getKeyReceptor(), true);
-                    } else
-                        mPresenter.sendMessage(new MessagePojo(user, mensaje.getTituloAnuncio(), txtMensaje.getText().toString(), new Date()), mensaje.getEmisor().getKey(), false);
-
-                    txtMensaje.setText("");
+                    enviarMensaje();
                 }
             }
         });
         confToolbar();
+    }
+
+    private void requestUserConversation() {
+        if (mensaje != null) {
+            mPresenter.userConversationRequested(mensaje);
+            MessagesFragment f = MessagesFragment.newInstance(true, mensaje.getKeyReceptor());
+            mFragmentManager.beginTransaction().replace(R.id.frmContenido, f, TAG_FR_MSG).commit();
+        }
+    }
+
+    private void enviarMensaje() {
+        if (mensaje instanceof MessagePojoWithoutAnswer) {
+            MessagePojo m = new MessagePojo(user, mensaje.getTituloAnuncio(), txtMensaje.getText().toString(), new Date());
+            m.setKeyReceptor(mensaje.getKeyReceptor());
+            mPresenter.sendMessage(m, mensaje.getKeyReceptor(), true);
+        } else
+            mPresenter.sendMessage(new MessagePojo(user, mensaje.getTituloAnuncio(), txtMensaje.getText().toString(), new Date()), mensaje.getEmisor().getKey(), false);
+
+        txtMensaje.setText("");
     }
 
     private void confToolbar() {
@@ -160,14 +167,19 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
     }
 
     @Override
-    protected void onDestroy() {
-        mPresenter.detachFirebaseListeners();
-        mPresenter.liberarMemoria();
-        super.onDestroy();
-    }
-
     public void allMessagesObtained() {
         if (mFragmentManager.findFragmentById(R.id.frmContenido) instanceof MessagesFragment)
             ((MessagesFragment) mFragmentManager.findFragmentById(R.id.frmContenido)).getmAdapter().allMessagesObtained();
+    }
+
+    @Override
+    protected void onDestroy() {
+        desvincularPresenter();
+        super.onDestroy();
+    }
+
+    private void desvincularPresenter() {
+        mPresenter.detachFirebaseListeners();
+        mPresenter.liberarMemoria();
     }
 }

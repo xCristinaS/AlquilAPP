@@ -39,13 +39,11 @@ public class InicioPresenter implements InicioPresenterOps, MyPresenter {
         usersManager.signIn(email, contra);
     }
 
-
     @Override
     public void onSignInResponsed(Object o) {
         if (activity.get() != null)
             activity.get().enter(o);
     }
-
 
     @Override
     public void liberarMemoria() {

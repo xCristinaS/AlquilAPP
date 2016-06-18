@@ -38,9 +38,7 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
 
     public interface OnAdapterItemLongClick {
         void setAdapterAllowMultiDeletion(AdvertsRecyclerViewAdapter adaptador);
-
         void onItemLongClick();
-
         void desactivarMultiseleccion();
     }
 
@@ -66,7 +64,6 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
     private MainPresenter mPresenter;
     private SparseBooleanArray mSelectedItems = new SparseBooleanArray();
     private boolean multiDeletionModeActivated = false;
-    private Usuario user;
     private boolean filtersApplied;
     private RecyclerView rvSolicitantes;
     private AlertDialog solicitantesDialog;

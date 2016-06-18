@@ -19,8 +19,6 @@ import c.proyecto.pojo.Usuario;
 
 public class HuespedesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-
-
     public interface IHuespedesAdapterListener {
         void onUserSubClick(Usuario u, Anuncio anuncio);
     }
@@ -88,8 +86,5 @@ public class HuespedesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             });
         }
     }
-
-
-
 
 }

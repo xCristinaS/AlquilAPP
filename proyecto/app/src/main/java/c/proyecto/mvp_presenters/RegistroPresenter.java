@@ -10,8 +10,8 @@ import c.proyecto.mvp_models.UsersFirebaseManager;
 import c.proyecto.mvp_presenters_interfaces.RegistroPresenterOps;
 import c.proyecto.pojo.Usuario;
 
-
 public class RegistroPresenter implements RegistroPresenterOps, MyPresenter {
+
     private static WeakReference<RegistroActivity> activity;
     private static RegistroPresenter presentador;
     private UsersFirebaseManager usersManager;

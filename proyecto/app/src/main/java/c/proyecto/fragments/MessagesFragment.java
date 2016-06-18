@@ -28,7 +28,6 @@ public class MessagesFragment extends Fragment {
     private MessagesRecyclerViewAdapter.OnMessagesAdapterItemClick listenerItemClick;
     private MessagesRecyclerViewAdapter.ConversationManager listenerConverManager;
     private boolean isAConversation;
-    private String mKeyCurrentUser;
 
     public static MessagesFragment newInstance(boolean isAConversation, String keyCurrentUser) {
         Bundle args = new Bundle();
@@ -55,7 +54,7 @@ public class MessagesFragment extends Fragment {
         LinearLayoutManager mLayoutManager;
         Bundle args = getArguments();
         isAConversation = args.getBoolean(ARG_CONVER, false);
-        mKeyCurrentUser = args.getString(ARG_CURRENT_USER);
+        String mKeyCurrentUser = args.getString(ARG_CURRENT_USER);
         LinearLayout emptyView = (LinearLayout) getView().findViewById(R.id.emptyView);
         rvMessages = (RecyclerView) getView().findViewById(R.id.rvMessages);
         mAdapter = new MessagesRecyclerViewAdapter(isAConversation, mKeyCurrentUser);

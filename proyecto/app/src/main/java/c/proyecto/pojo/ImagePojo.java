@@ -5,9 +5,6 @@ import android.widget.ProgressBar;
 
 import java.io.File;
 
-/**
- * Created by OmniumMac04 on 6/4/16.
- */
 public class ImagePojo {
     private ImageView imgView;
     private ProgressBar prb;

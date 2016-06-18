@@ -44,7 +44,6 @@ import c.proyecto.R;
 import c.proyecto.adapters.AdvertsRecyclerViewAdapter;
 import c.proyecto.adapters.PrestacionesAdapter;
 import c.proyecto.adapters.PrestacionesDetalladasAdapter;
-import c.proyecto.fragments.DetallesAnuncioFragment;
 import c.proyecto.mvp_models.AdvertsFirebaseManager;
 import c.proyecto.mvp_models.MessagesFirebaseManager;
 import c.proyecto.mvp_models.UsersFirebaseManager;
@@ -56,7 +55,7 @@ import c.proyecto.mvp_presenters.AdvertsDetailsPresenter;
 import c.proyecto.pojo.MessagePojo;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class DetallesAnuncioActivity extends AppCompatActivity implements AdvertsDetailsActivityOps, DetallesAnuncioFragment.IDetallesAnuncioFragmentListener, DetallesAnuncioFragment.OnDetallesAnuncioFragmentClic, ViewPagerEx.OnPageChangeListener, PrestacionesAdapter.IPrestacionAdapter, OnMapReadyCallback {
+public class DetallesAnuncioActivity extends AppCompatActivity implements AdvertsDetailsActivityOps, ViewPagerEx.OnPageChangeListener, PrestacionesAdapter.IPrestacionAdapter, OnMapReadyCallback {
 
     private static final String EXTRA_ANUNCIO = "anuncio";
     private static final String EXTRA_ADVERT_TYPE = "advert_type";
@@ -179,7 +178,7 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
 
         imgMessage = (ImageView) findViewById(R.id.imgMessage);
 
-        setImgMessageClickListener();
+        confImgMessageClickListener();
 
         imgEdit = (ImageView) findViewById(R.id.imgEdit);
         imgSubscribe = (ImageView) findViewById(R.id.imgSubscribe);
@@ -238,7 +237,7 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
         });
     }
 
-    private void setImgMessageClickListener() {
+    private void confImgMessageClickListener() {
         if (!openFromChat) {
             imgMessage.setOnClickListener(null);
             if (messagePojoAux == null) {
@@ -456,7 +455,7 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
                     messagePojoAux.setContenido(txtMensaje.getText().toString());
                     messagePojoAux.setFecha(new Date());
                     onNewMessageClic(messagePojoAux, anuncio.getAnunciante());
-                    setImgMessageClickListener();
+                    confImgMessageClickListener();
                     dialog.dismiss();
                 }
             }
@@ -480,7 +479,6 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
         dialog.show();
     }
 
-    @Override
     public void onImgEditClicked(Anuncio advert, Usuario user) {
         CrearAnuncio1Activity.startForResult(this, advert, user, CrearAnuncio1Activity.RC_EDITAR_ANUNCIO);
     }
@@ -495,21 +493,17 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
 
     }
 
-    @Override
     public void onImgSubClicked(Anuncio a) {
         mPresenter.userNewSubRequested(a);
     }
 
-    @Override
     public void onImgUnSubClicked(Anuncio a) {
         mPresenter.unSubRequested(a);
     }
 
-    @Override
     public void onNewMessageClic(MessagePojo m, String keyReceptor) {
         mPresenter.sendNewMessage(m, keyReceptor);
     }
-
 
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {

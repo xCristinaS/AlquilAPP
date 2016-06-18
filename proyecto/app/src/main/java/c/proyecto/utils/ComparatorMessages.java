@@ -4,9 +4,6 @@ import java.util.Comparator;
 
 import c.proyecto.pojo.MessagePojo;
 
-/**
- * Created by Cristina on 02/04/2016.
- */
 public class ComparatorMessages implements Comparator<MessagePojo> {
 
     @Override

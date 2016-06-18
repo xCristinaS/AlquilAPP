@@ -50,7 +50,6 @@ import c.proyecto.utils.UtilMethods;
 
 public class EditProfileActivity extends AppCompatActivity implements NacionalidadesDialogFragment.IonNacionalidadClicked {
 
-
     private static final int RC_ABRIR_GALERIA = 274;
     private static final int RC_CAPTURAR_FOTO = 433;
 
@@ -245,7 +244,7 @@ public class EditProfileActivity extends AppCompatActivity implements Nacionalid
         txtNacionalidad.setText(nacionalidad);
     }
 
-    private void showImageDialogList(final ImageView img) {
+    private void showImageDialogList(ImageView img) {
         img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -301,7 +300,6 @@ public class EditProfileActivity extends AppCompatActivity implements Nacionalid
         }
     }
 
-
     private void openGallery() {
         Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         i.setType("image/*");
@@ -324,7 +322,6 @@ public class EditProfileActivity extends AppCompatActivity implements Nacionalid
                     break;
             }
     }
-
 
     class HiloEscalador extends AsyncTask<Integer, Void, Bitmap> {
 

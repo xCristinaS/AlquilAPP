@@ -5,7 +5,6 @@ import c.proyecto.pojo.Usuario;
 import c.proyecto.pojo.MessagePojo;
 
 public interface AdvertsDetailsPresenterOps {
-
     void advertPublisherRequested(String anunciante);
     void onAdvertPublisherRequestedResponsed(Usuario u);
     void updateAdvert(Anuncio anuncio);

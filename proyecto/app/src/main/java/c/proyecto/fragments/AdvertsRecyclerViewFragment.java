@@ -26,10 +26,7 @@ import c.proyecto.utils.UtilMethods;
 public class AdvertsRecyclerViewFragment extends Fragment {
 
     private static final String ARG_ADAPTER_TYPE = "type_of_adapter";
-    //Views
-    private RecyclerView rvLista;
     private AdvertsRecyclerViewAdapter mAdapter;
-    private StaggeredGridLayoutManager mLayoutManager;
     //Variables
     private AdvertsRecyclerViewAdapter.OnAdapterItemLongClick listenerLongClick;
     private AdvertsRecyclerViewAdapter.OnAdapterItemClick listenerItemClick;
@@ -70,9 +67,9 @@ public class AdvertsRecyclerViewFragment extends Fragment {
 
         adapter_type = args.getInt(ARG_ADAPTER_TYPE);
 
-        rvLista = (RecyclerView) getView().findViewById(R.id.rvLista);
+        RecyclerView rvLista = (RecyclerView) getView().findViewById(R.id.rvLista);
         mAdapter = new AdvertsRecyclerViewAdapter(adapter_type, MainPresenter.getPresentador(getActivity()), ((PrincipalFragment) getParentFragment()).getUser());
-        mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        StaggeredGridLayoutManager mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
 
         rvLista.setAdapter(mAdapter);
         rvLista.setLayoutManager(mLayoutManager);

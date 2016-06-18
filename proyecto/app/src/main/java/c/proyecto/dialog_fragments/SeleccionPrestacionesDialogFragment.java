@@ -25,8 +25,9 @@ public class SeleccionPrestacionesDialogFragment extends AppCompatDialogFragment
         void onDismiss();
     }
 
-    private ICallBackOnDismiss mListener;
     private static final String ARG_PRESTACIONES = "prestaciones_selected";
+
+    private ICallBackOnDismiss mListener;
     private CheckBox cbAptoMascotas;
     private CheckBox cbAireAcondicionado;
     private CheckBox cbAscensor;

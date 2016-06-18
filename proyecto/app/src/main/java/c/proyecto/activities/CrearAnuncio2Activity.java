@@ -162,11 +162,7 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
         View.OnClickListener onClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Si este anuncio ya existe y tiene una localización asignada se cargará está como punto de partida
-                if (mAnuncio != null && mAnuncio.getLats() != null)
-                    LocalizacionActivity.startForResult(CrearAnuncio2Activity.this, new LatLng(mAnuncio.getLats().getLatitude(), mAnuncio.getLats().getLongitude()));
-                else
-                    LocalizacionActivity.startForResult(CrearAnuncio2Activity.this);
+                openLocalizacionActivity();
             }
         };
         txtDireccion.setOnClickListener(onClickListener);
@@ -177,6 +173,13 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
         confRecyclerPrestaciones();
     }
 
+    private void openLocalizacionActivity() {
+        //Si este anuncio ya existe y tiene una localización asignada se cargará está como punto de partida
+        if(mAnuncio != null && mAnuncio.getLats() != null)
+            LocalizacionActivity.startForResult(CrearAnuncio2Activity.this, new LatLng(mAnuncio.getLats().getLatitude(), mAnuncio.getLats().getLongitude()));
+        else
+            LocalizacionActivity.startForResult(CrearAnuncio2Activity.this);
+    }
 
     private void confImgTipoVivienda() {
         imgCasa.setOnClickListener(new View.OnClickListener() {
@@ -243,7 +246,6 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
         txtPrecio.setText(String.valueOf(mAnuncio.getPrecio()));
     }
 
-
     @Override
     public void onPrestacionClicked() {
         showPrestacionesDialog();
@@ -261,7 +263,6 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
         else
             SeleccionPrestacionesDialogFragment.newInstance(mAnuncio.getPrestaciones()).show(fm, TAG_DIALOG_PRESTACIONES);
     }
-
 
     @Override
     public void onDismiss() {
@@ -388,7 +389,6 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
         else
             mAnuncio.setDescripcion("");
     }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

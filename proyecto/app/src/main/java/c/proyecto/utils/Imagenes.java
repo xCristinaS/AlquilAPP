@@ -28,7 +28,6 @@ import c.proyecto.activities.CrearAnuncio1Activity;
 
 public final class Imagenes {
 
-
     //Comprueba si el dispositivo dispone de cámara.
     public static boolean hayCamara(Context context) {
         return context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA);

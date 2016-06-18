@@ -36,7 +36,7 @@ public class RegistroActivity extends AppCompatActivity implements RegistroActiv
 
     private static final int RC_CAPTURAR_FOTO = 1;
     private static final int RC_ABRIR_GALERIA = 2;
-    private TextView lblCancelar;
+
     private EditText txtUser, txtPass, txtRepeatPass, txtNombre, txtApellidos;
     private Button btnRegistrarse;
     private RegistroPresenter presentador;
@@ -62,7 +62,7 @@ public class RegistroActivity extends AppCompatActivity implements RegistroActiv
         txtNombre = (EditText) findViewById(R.id.txtNombre);
         txtApellidos = (EditText) findViewById(R.id.txtApellidos);
         btnRegistrarse = (Button) findViewById(R.id.btnRegistrarse);
-        lblCancelar = (TextView) findViewById(R.id.lblCancelar);
+        TextView lblCancelar = (TextView) findViewById(R.id.lblCancelar);
         imgAvatar = (ImageView) findViewById(R.id.imgAvatar);
 
         showImageDialogList(imgAvatar);
@@ -111,6 +111,7 @@ public class RegistroActivity extends AppCompatActivity implements RegistroActiv
 
         return empty;
     }
+
     private void existUser(){
         presentador.checkUser(txtUser.getText().toString());
     }
@@ -205,7 +206,6 @@ public class RegistroActivity extends AppCompatActivity implements RegistroActiv
         }
     }
 
-
     private void openGallery() {
         Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         i.setType("image/*");
@@ -228,7 +228,6 @@ public class RegistroActivity extends AppCompatActivity implements RegistroActiv
                     break;
             }
     }
-
 
     class HiloEscalador extends AsyncTask<Integer, Void, Bitmap> {
 

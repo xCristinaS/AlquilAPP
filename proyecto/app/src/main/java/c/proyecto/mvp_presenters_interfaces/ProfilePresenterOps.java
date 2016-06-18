@@ -5,7 +5,6 @@ import c.proyecto.pojo.MessagePojo;
 import c.proyecto.pojo.Usuario;
 
 public interface ProfilePresenterOps {
-
     void updateUserProfile(Usuario usuario);
     void getMessageIfConverExist(Anuncio anuncio, String keySolicitante);
     void messageIfConverExistObtained(MessagePojo m);
