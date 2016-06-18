@@ -378,8 +378,7 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
 
                 if (!stop)
                     mDatos.add(0, a);
-                notifyItemInserted(mDatos.indexOf(a));
-                //notifyDataSetChanged();
+                notifyDataSetChanged();
             }
         checkIfEmpty();
     }
@@ -413,7 +412,6 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
                     pos = i;
                 }
         }
-        notifyItemRemoved(pos);
         notifyDataSetChanged();
         checkIfEmpty();
     }
@@ -425,7 +423,7 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
                 Anuncio aux = mDatos.remove(i);
                 mDatos.add(i, a);
                 stop = true;
-                notifyItemChanged(i);
+
                 if (aux.getSolicitantes().size() != a.getSolicitantes().size()) {
                     if (a.getSolicitantes().size() > 0) {
                         mPresenter.getSolicitantes(null, a); // para actualizar el dialogo de solicitantes.
@@ -434,10 +432,10 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
                         updateSolicitantesDialog(null, a);
                 }
             }
-        if (!stop && adapter_type != ADAPTER_TYPE_ADVS) {
+        if (!stop && adapter_type != ADAPTER_TYPE_ADVS)
             mDatos.add(a);
-            notifyItemInserted(mDatos.indexOf(a));
-        }
+
+        notifyDataSetChanged();
         checkIfEmpty();
     }
 
