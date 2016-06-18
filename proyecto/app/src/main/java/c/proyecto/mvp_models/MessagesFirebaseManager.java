@@ -250,8 +250,10 @@ public class MessagesFirebaseManager {
             }
         });
 
-        if (lastEmisor_titleAdvert == null)
+        if (lastEmisor_titleAdvert == null) {
             receivedMessagesConsulted = true;
+            checkIfAllMessagesObtained();
+        }
 
         mFirebaseReceivedMessages.removeEventListener(mListenerReceivedMessages);
         mFirebaseReceivedMessages.addChildEventListener(mListenerReceivedMessages);
@@ -277,8 +279,10 @@ public class MessagesFirebaseManager {
                 if (map != null)
                     lastMessageWithoutAnswerSended = map.entrySet().iterator().next().getKey();
 
-                if (lastMessageWithoutAnswerSended == null)
+                if (lastMessageWithoutAnswerSended == null) {
                     messagesWithoutAnswerConsulted = true;
+                    checkIfAllMessagesObtained();
+                }
             }
 
             @Override
