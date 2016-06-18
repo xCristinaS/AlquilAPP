@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 
 import c.proyecto.R;
 import c.proyecto.adapters.MessagesRecyclerViewAdapter;
@@ -29,7 +30,7 @@ public class MessagesFragment extends Fragment implements MessagesRecyclerViewAd
     private ConversationManager listenerConverManager;
     private boolean isAConversation;
     private String mKeyCurrentUser;
-    private LinearLayout groupProgressBar;
+    private ProgressBar pbLoading;
 
     public static MessagesFragment newInstance(boolean isAConversation, String keyCurrentUser) {
         Bundle args = new Bundle();
@@ -54,7 +55,7 @@ public class MessagesFragment extends Fragment implements MessagesRecyclerViewAd
 
     private void initViews() {
         LinearLayoutManager mLayoutManager;
-        groupProgressBar = (LinearLayout) getView().findViewById(R.id.groupProgressBar);
+        pbLoading = (ProgressBar) getView().findViewById(R.id.pbLoading);
         Bundle args = getArguments();
         isAConversation = args.getBoolean(ARG_CONVER, false);
         mKeyCurrentUser = args.getString(ARG_CURRENT_USER);
@@ -115,6 +116,6 @@ public class MessagesFragment extends Fragment implements MessagesRecyclerViewAd
 
     @Override
     public void allObtained() {
-        groupProgressBar.setVisibility(View.GONE);
+        pbLoading.setVisibility(View.GONE);
     }
 }
