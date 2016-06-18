@@ -489,6 +489,7 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
         this.anuncio = anuncio;
 
         if (numImagenes != this.anuncio.getImagenes().size()) {
+            destruirSlider();
             bindData(true);
         } else
             bindData(false);
@@ -554,6 +555,12 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
 
     @Override
     protected void onDestroy() {
+        destruirSlider();
+        mPresenter.liberarMemoria();
+        super.onDestroy();
+    }
+
+    private void destruirSlider() {
         if (slider != null) {
             for (int i = 0; i < anuncio.getImagenes().size(); i++)
                 slider.removeSliderAt(i);
@@ -569,8 +576,6 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
             groupImagenes = null;
         }
         System.gc();
-        mPresenter.liberarMemoria();
-        super.onDestroy();
     }
 }
 
