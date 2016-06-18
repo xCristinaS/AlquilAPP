@@ -278,4 +278,6 @@ public class PrincipalFragment extends Fragment {
     public void confEmptyViewsSinUbicacion(){
         ((AdvertsRecyclerViewFragment) vpAdapter.getItem(1)).confEmptyView(R.drawable.logo, getString(R.string.emptyView_location_disabled));
     }
+
+    public confEmptyView
 }
