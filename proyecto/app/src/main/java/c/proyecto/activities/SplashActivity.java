@@ -13,16 +13,14 @@ import c.proyecto.R;
 import c.proyecto.interfaces.MyInicio;
 import c.proyecto.mvp_models.UsersFirebaseManager;
 import c.proyecto.mvp_presenters.InicioPresenter;
-import c.proyecto.mvp_views_interfaces.InicioActivityOps;
 import c.proyecto.pojo.Usuario;
 
-public class SplashActivity extends AppCompatActivity implements InicioActivityOps, MyInicio {
+public class SplashActivity extends AppCompatActivity implements MyInicio {
 
     private ImageView imgLogo;
     private InicioPresenter mPresenter;
     private Usuario mUser;
     private Lanzador hiloLanzador;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +33,6 @@ public class SplashActivity extends AppCompatActivity implements InicioActivityO
         getStoredUser();
         initView();
     }
-
 
     private void initView() {
         imgLogo = (ImageView) findViewById(R.id.imgLogo);
@@ -108,7 +105,6 @@ public class SplashActivity extends AppCompatActivity implements InicioActivityO
             MainActivity.start(this, mUser);
         finish();
     }
-
 
     class Lanzador implements Runnable {
 

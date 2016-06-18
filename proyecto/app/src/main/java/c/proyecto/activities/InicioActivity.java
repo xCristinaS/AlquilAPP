@@ -20,11 +20,10 @@ import c.proyecto.Constantes;
 import c.proyecto.R;
 import c.proyecto.interfaces.MyInicio;
 import c.proyecto.mvp_models.UsersFirebaseManager;
-import c.proyecto.mvp_views_interfaces.InicioActivityOps;
 import c.proyecto.pojo.Usuario;
 import c.proyecto.mvp_presenters.InicioPresenter;
 
-public class InicioActivity extends AppCompatActivity implements InicioActivityOps, MyInicio {
+public class InicioActivity extends AppCompatActivity implements MyInicio {
 
     private TextView txtUser;
     private TextView txtPass;
@@ -93,7 +92,6 @@ public class InicioActivity extends AppCompatActivity implements InicioActivityO
             swRememberMe.setChecked(true);
     }
 
-
     @Override
     public void enter(Object o) {
         SharedPreferences.Editor editor = preferences.edit();
@@ -116,7 +114,6 @@ public class InicioActivity extends AppCompatActivity implements InicioActivityO
             loging = false;
         }
     }
-
 
     @Override
     public void onBackPressed() {

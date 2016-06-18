@@ -51,7 +51,6 @@ public class LocalizacionActivity extends AppCompatActivity implements OnMapRead
     private static final String EXTRA_SELECTOR_MODE = "ExtraEditable";
     public static final int RC_ADDRESS = 233;
 
-    private TextView lblTitle;
     private AutoCompleteTextView txtDireccion;
     private Toolbar toolbar;
     private ImageView imgLocIcon, imgLimpiarTexto;
@@ -60,7 +59,6 @@ public class LocalizacionActivity extends AppCompatActivity implements OnMapRead
     private GoogleMap mGoogleMap;
     private LatLng oldLat;
     private boolean mSelectorMode;
-
 
     public static void startForResult(Activity activity, LatLng latLng){
         Intent intent = new Intent(activity, LocalizacionActivity.class);
@@ -84,7 +82,7 @@ public class LocalizacionActivity extends AppCompatActivity implements OnMapRead
         oldLat = getIntent().getParcelableExtra(EXTRA_ANUNCIO);
         mSelectorMode = getIntent().getBooleanExtra(EXTRA_SELECTOR_MODE, true);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        lblTitle = (TextView) toolbar.findViewById(R.id.lblTitle);
+        TextView lblTitle = (TextView) toolbar.findViewById(R.id.lblTitle);
         if(!mSelectorMode)
             lblTitle.setText("Localización");
         setSupportActionBar(toolbar);
@@ -166,8 +164,6 @@ public class LocalizacionActivity extends AppCompatActivity implements OnMapRead
             }
         });
     }
-
-
 
     //Click para los items del autocompletado
     private AdapterView.OnItemClickListener mAutocompleteClickListener

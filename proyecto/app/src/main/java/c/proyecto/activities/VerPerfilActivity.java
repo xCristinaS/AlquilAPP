@@ -90,14 +90,13 @@ public class VerPerfilActivity extends AppCompatActivity {
         groupDescripcion = (RelativeLayout) findViewById(R.id.groupDescripcion);
     }
 
-    public void messageIfConverExistObtained(final MessagePojo m) {
+    public void messageIfConverExistObtained(MessagePojo m) {
         mMessage = m;
         if( m != null)
             mMenu.findItem(R.id.nav_send_message).setIcon(R.drawable.ic_chat);
 
         mMenu.findItem(R.id.nav_send_message).setVisible(true);
     }
-
 
     private void showSenMessageDialog() {
         final EditText txtMensaje;

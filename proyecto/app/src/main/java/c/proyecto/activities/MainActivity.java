@@ -82,13 +82,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
     private MainPresenter mPresenter;
     private Usuario mUser;
     private DrawerLayout drawer;
-    private ActionBarDrawerToggle toggle;
     private Toolbar toolbar;
-    private NavigationView navigationView;
     private AdvertsRecyclerViewAdapter adapter;
     private CircleImageView imgNavDrawer;
     private TextView txtUserNavDrawer;
-    private CircleImageView navHeader;
     private FragmentManager mFragmentManager;
     private GoogleApiClient mGoogleApiClient;
     private Location mLastLocation;
@@ -151,11 +148,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
 
     private void configNavDrawer() {
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
         //Listener del menú del navigationDrawer
-        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         txtUserNavDrawer = (TextView) navigationView.getHeaderView(0).findViewById(R.id.txtUserNavDrawer);
         txtUserNavDrawer.setText(String.format("%s %s", mUser.getNombre(), mUser.getApellidos()));
@@ -167,7 +164,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
         else
             Picasso.with(this).load(R.drawable.default_user).fit().centerCrop().into(imgNavDrawer);
 
-        navHeader = (CircleImageView) navigationView.getHeaderView(0).findViewById(R.id.imgNavDrawer);
+        CircleImageView navHeader = (CircleImageView) navigationView.getHeaderView(0).findViewById(R.id.imgNavDrawer);
         navHeader.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -569,7 +566,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
         });
     }
 
-
     @Override
     protected void onDestroy() {
         mPresenter.detachListeners();
@@ -618,6 +614,5 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
                 break;
         }
     }
-
 
 }

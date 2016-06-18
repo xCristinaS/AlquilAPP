@@ -244,7 +244,7 @@ public class EditProfileActivity extends AppCompatActivity implements Nacionalid
         txtNacionalidad.setText(nacionalidad);
     }
 
-    private void showImageDialogList(final ImageView img) {
+    private void showImageDialogList(ImageView img) {
         img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
