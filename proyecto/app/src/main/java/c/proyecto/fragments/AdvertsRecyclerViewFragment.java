@@ -127,6 +127,11 @@ public class AdvertsRecyclerViewFragment extends Fragment {
         
     }
 
+    public void confEmptyViewWithClick(int idDrawable, String textEmptyView, View.OnClickListener onClickListener){
+        emptyView.setOnClickListener(onClickListener);
+        confEmptyView(idDrawable, textEmptyView);
+    }
+
     @Override
     public void onAttach(Context context) {
         listenerLongClick = (AdvertsRecyclerViewAdapter.OnAdapterItemLongClick) context;
