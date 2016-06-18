@@ -118,7 +118,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
         initViews();
         InicioPresenter.getPresentador(null).liberarMemoria();
 
-        LocationManager lm = (LocationManager) getSystemService(LOCATION_SERVICE);
 
     }
 
@@ -517,6 +516,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
                 if (resultCode == RESULT_OK) {
                     if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
                         return;
+
+                    ((PrincipalFragment)mFragmentManager.findFragmentById(R.id.frmContenido)).confEmptyViewsNormales();
                     mLocationListener = new LocationListener() {
                         @Override
                         public void onLocationChanged(Location location) {
@@ -530,7 +531,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
                     ((PrincipalFragment) mFragmentManager.findFragmentById(R.id.frmContenido)).confEmptyViewsSinUbicacion("Ubiación desactivada", new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            //Cargar todos los anuncios
+                            checkLocationSettings();
                         }
                     });
 
@@ -548,6 +549,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
 
     @Override
     public void onConnected(Bundle bundle) {
+        checkLocationSettings();
+    }
+
+    private void checkLocationSettings(){
         PendingResult<LocationSettingsResult> result = LocationServices.SettingsApi.checkLocationSettings(mGoogleApiClient, mBuilder.build());
 
         result.setResultCallback(new ResultCallback<LocationSettingsResult>() {
