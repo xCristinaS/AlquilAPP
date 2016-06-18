@@ -62,7 +62,7 @@ public class ImgurUploader {
                     if (mModel instanceof Anuncio && mPresenters.get(0) instanceof CrearEditarAnuncioPresenter) {
                         ((Anuncio) mModel).getImagenes().put(mainImg ? Constantes.FOTO_PRINCIPAL : "foto" + respuesta.getData().getLink().hashCode(), respuesta.getData().getLink());
                         ((CrearEditarAnuncioPresenter) mPresenters.get(0)).publishNewAdvert((Anuncio) mModel);
-                        if (mPresenters.size() > 1 && mPresenters.get(1) instanceof AdvertsDetailsPresenter)
+                        if (mPresenters.size() > 1 && mPresenters.get(1) instanceof AdvertsDetailsPresenter && mImagenes.size() == 0)
                             ((AdvertsDetailsPresenter) mPresenters.get(1)).updateAdvert((Anuncio) mModel);
                     } else if (mModel instanceof Usuario && mPresenters.get(0) instanceof ProfilePresenter) {
                         ((Usuario) mModel).setFoto(respuesta.getData().getLink());
