@@ -343,10 +343,9 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
         if (createNewSlider) {
             RelativeLayout r = (RelativeLayout) View.inflate(DetallesAnuncioActivity.this, R.layout.slider, null);
             slider = (SliderLayout) r.findViewById(R.id.slider);
-            confSlider();
-
             groupImagenes.removeAllViews();
             groupImagenes.addView(r);
+            confSlider();
         }
         ((TextView) toolbar.findViewById(R.id.lblTituloAnuncio)).setText(anuncio.getTitulo());
         ((TextView) toolbar.findViewById(R.id.lblLocalizacion)).setText(anuncio.getPoblacion());
