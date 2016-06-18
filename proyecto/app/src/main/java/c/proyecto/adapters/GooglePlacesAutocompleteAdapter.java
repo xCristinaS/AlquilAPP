@@ -39,7 +39,6 @@ import java.util.concurrent.TimeUnit;
  * connection states. The API client must be connected with the {@link Places#GEO_DATA_API} API.
  */
 public class GooglePlacesAutocompleteAdapter extends ArrayAdapter<AutocompletePrediction> implements Filterable {
-
     private static final String TAG = "PlaceAutocompleteAdapter";
     private static final CharacterStyle STYLE_BOLD = new StyleSpan(Typeface.BOLD);
     /**
@@ -73,7 +72,6 @@ public class GooglePlacesAutocompleteAdapter extends ArrayAdapter<AutocompletePr
         mGoogleApiClient = googleApiClient;
         mBounds = bounds;
         mPlaceFilter = filter;
-        mResultList = new ArrayList<>();
     }
 
     /**
@@ -96,10 +94,7 @@ public class GooglePlacesAutocompleteAdapter extends ArrayAdapter<AutocompletePr
      */
     @Override
     public AutocompletePrediction getItem(int position) {
-        if (mResultList.size() > 0)
-            return mResultList.get(position);
-        else
-            return null;
+        return mResultList.get(position);
     }
 
     @Override
@@ -112,12 +107,10 @@ public class GooglePlacesAutocompleteAdapter extends ArrayAdapter<AutocompletePr
 
         AutocompletePrediction item = getItem(position);
 
-        if(item != null){
-            TextView textView1 = (TextView) row.findViewById(android.R.id.text1);
-            TextView textView2 = (TextView) row.findViewById(android.R.id.text2);
-            textView1.setText(item.getPrimaryText(STYLE_BOLD));
-            textView2.setText(item.getSecondaryText(STYLE_BOLD));
-        }
+        TextView textView1 = (TextView) row.findViewById(android.R.id.text1);
+        TextView textView2 = (TextView) row.findViewById(android.R.id.text2);
+        textView1.setText(item.getPrimaryText(STYLE_BOLD));
+        textView2.setText(item.getSecondaryText(STYLE_BOLD));
 
         return row;
     }
@@ -134,13 +127,8 @@ public class GooglePlacesAutocompleteAdapter extends ArrayAdapter<AutocompletePr
                 // Skip the autocomplete query if no constraints are given.
                 if (constraint != null) {
                     // Query the autocomplete API for the (constraint) search string.
-                    ArrayList<AutocompletePrediction> a = getAutocomplete(constraint);
-
-                    if (a != null) {
-                        mResultList.clear();
-                        mResultList.addAll(a);
-                        notifyDataSetChanged();
-
+                    mResultList = getAutocomplete(constraint);
+                    if (mResultList != null) {
                         // The API successfully returned results.
                         results.values = mResultList;
                         results.count = mResultList.size();
@@ -193,7 +181,7 @@ public class GooglePlacesAutocompleteAdapter extends ArrayAdapter<AutocompletePr
             // Submit the query to the autocomplete API and retrieve a PendingResult that will
             // contain the results when the query completes.
             PendingResult<AutocompletePredictionBuffer> results =
-                    Places.GeoDataApi.getAutocompletePredictions(mGoogleApiClient, constraint.toString(), mBounds, mPlaceFilter);
+                    Places.GeoDataApi.getAutocompletePredictions(mGoogleApiClient, constraint.toString(),   mBounds, mPlaceFilter);
 
             // This method should have been called off the menu_main UI thread. Block and wait for at most 60s
             // for a result from the API.
@@ -204,6 +192,4 @@ public class GooglePlacesAutocompleteAdapter extends ArrayAdapter<AutocompletePr
         }
         return null;
     }
-
-
 }
