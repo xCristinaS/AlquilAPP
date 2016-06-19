@@ -232,7 +232,7 @@ public class MessagesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
         Collections.sort(mDatos, messagesComp);
 
         if (allMessagesObtained)
-            notifyDataSetChanged();
+            notifyItemInserted(0);
         checkIfEmpty();
     }
 
@@ -240,6 +240,7 @@ public class MessagesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
     public void allMessagesObtained() {
         if (isAConversation) {
             mDatos.addAll(messagesConver);
+            messagesConver.clear();
             Collections.sort(mDatos, messagesComp);
         }
         allMessagesObtained = true;

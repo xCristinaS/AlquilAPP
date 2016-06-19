@@ -556,13 +556,13 @@ public class MessagesFirebaseManager {
     }
 
     public void removeMessage(MessagePojo m) {
-        String nodoAsunto = m.getEmisor().getKey() + "_" + m.getTituloAnuncio().replace(" ", "_");
+        String nodoAsunto = m.getEmisor().getKey() + "_" + m.getTituloAnuncio().trim().replace(" ", "_");
         nodoAsunto = nodoAsunto.substring(0, nodoAsunto.length());
         new Firebase(URL_CONVERSACIONES).child(m.getKeyReceptor()).child(nodoAsunto).child(m.getKey()).setValue(null);
     }
 
     public void getMessageIfConverExist(final Anuncio anuncio) {
-        Firebase f = new Firebase(URL_CONVERSACIONES).child(anuncio.getAnunciante()).child(currentUser.getKey().trim() + "_" + anuncio.getTitulo().trim());
+        Firebase f = new Firebase(URL_CONVERSACIONES).child(anuncio.getAnunciante()).child(currentUser.getKey().trim() + "_" + anuncio.getTitulo().trim().replace(" ", "_"));
         f.limitToLast(1).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -602,7 +602,7 @@ public class MessagesFirebaseManager {
     }
 
     public void getMessageIfConverExist(final Anuncio anuncio, final String keySolicitante) {
-        Firebase f = new Firebase(URL_CONVERSACIONES).child(currentUser.getKey()).child(keySolicitante + "_" + anuncio.getTitulo().trim());
+        Firebase f = new Firebase(URL_CONVERSACIONES).child(currentUser.getKey()).child(keySolicitante + "_" + anuncio.getTitulo().trim().replace(" ", "_"));
         f.limitToLast(1).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
