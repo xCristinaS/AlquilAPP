@@ -121,13 +121,12 @@ public class MessagesFirebaseManager {
                                                 mensaje.setFecha(new Date(m2.getFecha()));
                                                 mensaje.setKey(dataSnapshot.getKey());
                                                 ((MainPresenter) presenter).userMessageHasBeenObtained(mensaje);
-
-                                                if (lastEmisor_titleAdvert != null)
-                                                    if (lastEmisor_titleAdvert.equals(emisor_titleAdvert)) {
-                                                        receivedMessagesConsulted = true;
-                                                        checkIfAllMessagesObtained();
-                                                    }
                                             }
+                                            if (lastEmisor_titleAdvert != null)
+                                                if (lastEmisor_titleAdvert.equals(emisor_titleAdvert)) {
+                                                    receivedMessagesConsulted = true;
+                                                    checkIfAllMessagesObtained();
+                                                }
                                         }
 
                                         @Override
