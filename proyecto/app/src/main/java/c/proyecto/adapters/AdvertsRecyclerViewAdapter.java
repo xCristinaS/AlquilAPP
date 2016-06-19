@@ -386,7 +386,6 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
                 if (!stop)
                     mDatos.add(0, a);
                 notifyDataSetChanged();
-
             }
         mIAdvertsRecyclerViewAdapter.itemAdded(adapter_type);
         checkIfEmpty();

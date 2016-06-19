@@ -128,6 +128,7 @@ public class PrincipalFragment extends Fragment {
                     listener.hideFilterIcon();
                     listener.hideMapIcon();
                 }
+                confEmptyViewsNormales();
             }
         });
         mPresenter.initializeFirebaseListeners(user);
@@ -255,12 +256,9 @@ public class PrincipalFragment extends Fragment {
                         frgMisAnuncios = AdvertsRecyclerViewAdapterFragment.newInstance(AdvertsRecyclerViewAdapter.ADAPTER_TYPE_MY_ADVS);
                     frg = frgMisAnuncios;
                     break;
-
             }
             return frg;
         }
-
-
     }
 
     @Override
