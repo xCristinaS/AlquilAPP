@@ -155,4 +155,7 @@
     <string name="emptyView_busqueda_sin_exito">Sin resultados</string>
     <string name="emptyView_location_disabled">Ubicación desactivada</string>
 
+    <!-- MessageFragment-->
+    <string name="text_emptyViewMensajes">Cargando mensajes</string>
+
 </resources>

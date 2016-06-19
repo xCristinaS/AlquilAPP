@@ -30,7 +30,7 @@ public class MessagesFragment extends Fragment implements MessagesRecyclerViewAd
     private ConversationManager listenerConverManager;
     private boolean isAConversation;
     private String mKeyCurrentUser;
-    private ProgressBar pbLoading;
+    private LinearLayout groupEmptyView;
 
     public static MessagesFragment newInstance(boolean isAConversation, String keyCurrentUser) {
         Bundle args = new Bundle();
@@ -55,7 +55,7 @@ public class MessagesFragment extends Fragment implements MessagesRecyclerViewAd
 
     private void initViews() {
         LinearLayoutManager mLayoutManager;
-        pbLoading = (ProgressBar) getView().findViewById(R.id.pbLoading);
+        groupEmptyView = (LinearLayout) getView().findViewById(R.id.groupEmptyView);
         Bundle args = getArguments();
         isAConversation = args.getBoolean(ARG_CONVER, false);
         String mKeyCurrentUser = args.getString(ARG_CURRENT_USER);
@@ -116,6 +116,6 @@ public class MessagesFragment extends Fragment implements MessagesRecyclerViewAd
 
     @Override
     public void allObtained() {
-        pbLoading.setVisibility(View.GONE);
+        groupEmptyView.setVisibility(View.GONE);
     }
 }
