@@ -240,6 +240,7 @@ public class MessagesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
     public void allMessagesObtained() {
         if (isAConversation) {
             mDatos.addAll(messagesConver);
+            messagesConver.clear();
             Collections.sort(mDatos, messagesComp);
         }
         allMessagesObtained = true;
