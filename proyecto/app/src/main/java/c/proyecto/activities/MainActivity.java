@@ -196,22 +196,27 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
                 }
                 break;
             case R.id.nav_new_adv:
-                //Null = nuevo Anuncio.
-                CrearAnuncio1Activity.start(this, mUser);
+                if (UtilMethods.isNetworkAvailable(this))
+                    CrearAnuncio1Activity.start(this, mUser);//Null = nuevo Anuncio.
+                else
+                    Toast.makeText(this, Constantes.SIN_CONEXION, Toast.LENGTH_LONG).show();
                 break;
             case R.id.nav_edit_profile:
                 EditProfileActivity.start(this, mUser);
                 break;
             case R.id.nav_messages:
-                if (multiselectionActivated)
-                    desactivarMultiseleccion();
-                hideFilterIcon();
-                hideMapIcon();
-                toolbar.getMenu().findItem(R.id.nav_deshacer_filtro).setVisible(false);
-                mPresenter.requestUserMessages(mUser);
+                if (UtilMethods.isNetworkAvailable(this)) {
+                    if (multiselectionActivated)
+                        desactivarMultiseleccion();
+                    hideFilterIcon();
+                    hideMapIcon();
+                    toolbar.getMenu().findItem(R.id.nav_deshacer_filtro).setVisible(false);
+                    mPresenter.requestUserMessages(mUser);
 
-                getSupportFragmentManager().beginTransaction().replace(R.id.frmContenido, MessagesFragment.newInstance(false, null), TAG_MESSAGES_FRAGMENT).commit();
-                toolbar.setTitle(R.string.toolbarTitle_mensajes);
+                    getSupportFragmentManager().beginTransaction().replace(R.id.frmContenido, MessagesFragment.newInstance(false, null), TAG_MESSAGES_FRAGMENT).commit();
+                    toolbar.setTitle(R.string.toolbarTitle_mensajes);
+                } else
+                    Toast.makeText(this, Constantes.SIN_CONEXION, Toast.LENGTH_LONG).show();
                 break;
             case R.id.nav_preferences:
                 startActivityForResult(new Intent(this, PreferencesActivity.class), RC_PREFERENCES);
@@ -411,7 +416,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
 
     @Override
     public void onItemClick(Anuncio anuncio, int advertType) {
-        DetallesAnuncioActivity.start(this, anuncio, advertType, mUser, false);
+        if (UtilMethods.isNetworkAvailable(this))
+            DetallesAnuncioActivity.start(this, anuncio, advertType, mUser, false);
+        else
+            Toast.makeText(this, Constantes.SIN_CONEXION, Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -517,7 +525,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
                     if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
                         return;
 
-                    ((PrincipalFragment)mFragmentManager.findFragmentById(R.id.frmContenido)).confEmptyViewsNormales();
+                    ((PrincipalFragment) mFragmentManager.findFragmentById(R.id.frmContenido)).confEmptyViewsNormales();
                     mLocationListener = new LocationListener() {
                         @Override
                         public void onLocationChanged(Location location) {
@@ -552,7 +560,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
         checkLocationSettings();
     }
 
-    private void checkLocationSettings(){
+    private void checkLocationSettings() {
         PendingResult<LocationSettingsResult> result = LocationServices.SettingsApi.checkLocationSettings(mGoogleApiClient, mBuilder.build());
 
         result.setResultCallback(new ResultCallback<LocationSettingsResult>() {
@@ -628,16 +636,15 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode){
+        switch (requestCode) {
             case UtilMethods.TAG_LOCATION_PERMISION:
                 Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.frmContenido);
 
-                if (grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     mSharedPref.edit().putBoolean(Constantes.KEY_LOCATION_ACTIVED, true).apply();
                     ((PrincipalFragment) fragment).confEmptyViewsNormales();
                     getAdvertsNearUser();
-                }
-                else{
+                } else {
                     mSharedPref.edit().putBoolean(Constantes.KEY_LOCATION_ACTIVED, false).apply();
                     if (fragment instanceof PrincipalFragment)
                         ((PrincipalFragment) fragment).confEmptyViewsSinUbicacion();

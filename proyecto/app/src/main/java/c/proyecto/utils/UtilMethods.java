@@ -4,6 +4,8 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
@@ -26,7 +28,7 @@ public final class UtilMethods {
             }
         }
         else { //permission is automatically granted on sdk<23 upon installation
-            Log.v("WriteStorage","Permission is granted");
+            Log.v("WriteStorage", "Permission is granted");
             return true;
         }
 
@@ -48,5 +50,11 @@ public final class UtilMethods {
             Log.v("Ubication","Permission is granted");
             return true;
         }
+    }
+
+    public static boolean isNetworkAvailable(Context context) {
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null;
     }
 }

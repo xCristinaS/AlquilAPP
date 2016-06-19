@@ -36,6 +36,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import c.proyecto.Constantes;
 import c.proyecto.R;
 import c.proyecto.api.ImgurUploader;
 import c.proyecto.dialog_fragments.CaracteristicasUsuarioDialogFragment;
@@ -66,7 +67,7 @@ public class EditProfileActivity extends AppCompatActivity implements Nacionalid
     private String[] mNationalities;
     private String mPathOriginal;
     private File mFileUserPhoto;
-    private boolean mPermisoEscrituraAceptado;
+    private boolean mPermisoEscrituraAceptado, hayConexion;
 
     public static void start(Activity a, Usuario u) {
         Intent intent = new Intent(a, EditProfileActivity.class);
@@ -99,19 +100,26 @@ public class EditProfileActivity extends AppCompatActivity implements Nacionalid
         imgGenero = (ImageView) findViewById(R.id.imgGenero);
         btnConfirmar = (Button) findViewById(R.id.btnConfirmar);
         mPermisoEscrituraAceptado = true;
-
         showImageDialogList(imgFoto);
+
+        if (UtilMethods.isNetworkAvailable(EditProfileActivity.this))
+            hayConexion = true;
 
         btnConfirmar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ArrayList<MyPresenter> presenters = new ArrayList<>();
-                presenters.add(mPresenter);
-                introducirDatosEnUser();
-                if (mFileUserPhoto != null)
-                    new ImgurUploader(mFileUserPhoto, mUser, presenters).upload();
-                mPresenter.updateUserProfile(mUser);
-                finish();
+                if (hayConexion) {
+                    ArrayList<MyPresenter> presenters = new ArrayList<>();
+                    presenters.add(mPresenter);
+                    introducirDatosEnUser();
+                    if (mFileUserPhoto != null)
+                        new ImgurUploader(mFileUserPhoto, mUser, presenters).upload();
+                    mPresenter.updateUserProfile(mUser);
+                    finish();
+                }else {
+                    Toast.makeText(EditProfileActivity.this, Constantes.SIN_CONEXION, Toast.LENGTH_LONG).show();
+                    btnConfirmar.setEnabled(false);
+                }
             }
         });
 
