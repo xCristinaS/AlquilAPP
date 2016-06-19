@@ -232,7 +232,7 @@ public class MessagesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
         Collections.sort(mDatos, messagesComp);
 
         if (allMessagesObtained)
-            notifyItemInserted(0);
+            notifyDataSetChanged();
         checkIfEmpty();
     }
 
