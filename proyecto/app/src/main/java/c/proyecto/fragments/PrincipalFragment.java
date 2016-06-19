@@ -84,7 +84,7 @@ public class PrincipalFragment extends Fragment {
 
             @Override
             public void onPageSelected(int position) {
-                AdvertsRecyclerViewFragment fragmento = (AdvertsRecyclerViewFragment) vpAdapter.getItem(viewPager.getCurrentItem());
+                AdvertsRecyclerViewAdapterFragment fragmento = (AdvertsRecyclerViewAdapterFragment) vpAdapter.getItem(viewPager.getCurrentItem());
                 ((AdvertsRecyclerViewAdapter.OnAdapterItemLongClick) getActivity()).setAdapterAllowMultiDeletion(fragmento.getmAdapter());
                 AdvertsRecyclerViewAdapter adapter = fragmento.getmAdapter();
                 ImageView tab0 = (ImageView) tabLayout.getTabAt(0).getCustomView();
@@ -119,7 +119,7 @@ public class PrincipalFragment extends Fragment {
 
             @Override
             public void onPageScrollStateChanged(int state) {
-                AdvertsRecyclerViewFragment f = (AdvertsRecyclerViewFragment) vpAdapter.getItem(viewPager.getCurrentItem());
+                AdvertsRecyclerViewAdapterFragment f = (AdvertsRecyclerViewAdapterFragment) vpAdapter.getItem(viewPager.getCurrentItem());
                 if (f != null)
                     f.disableMultideletion();
 
@@ -136,55 +136,55 @@ public class PrincipalFragment extends Fragment {
     }
 
     public void addAdvertToAdapter(Anuncio a) {
-        AdvertsRecyclerViewFragment f = (AdvertsRecyclerViewFragment) vpAdapter.getItem(1);
+        AdvertsRecyclerViewAdapterFragment f = (AdvertsRecyclerViewAdapterFragment) vpAdapter.getItem(1);
         if (f.getmAdapter().getAdapter_type() == AdvertsRecyclerViewAdapter.ADAPTER_TYPE_ADVS)
             f.getmAdapter().addItem(a);
     }
 
     public void replaceAdvertFromAdapter(Anuncio a) {
-        AdvertsRecyclerViewFragment f = (AdvertsRecyclerViewFragment) vpAdapter.getItem(1);
+        AdvertsRecyclerViewAdapterFragment f = (AdvertsRecyclerViewAdapterFragment) vpAdapter.getItem(1);
         if (f.getmAdapter().getAdapter_type() == AdvertsRecyclerViewAdapter.ADAPTER_TYPE_ADVS)
             f.getmAdapter().replaceItem(a);
     }
 
     public void addSubToAdapter(Anuncio a) {
-        AdvertsRecyclerViewFragment f = (AdvertsRecyclerViewFragment) vpAdapter.getItem(0);
+        AdvertsRecyclerViewAdapterFragment f = (AdvertsRecyclerViewAdapterFragment) vpAdapter.getItem(0);
         if (f.getmAdapter().getAdapter_type() == AdvertsRecyclerViewAdapter.ADAPTER_TYPE_SUBS)
             f.getmAdapter().addItem(a);
     }
 
     public void replaceSubFromAdapter(Anuncio a) {
-        AdvertsRecyclerViewFragment f = (AdvertsRecyclerViewFragment) vpAdapter.getItem(0);
+        AdvertsRecyclerViewAdapterFragment f = (AdvertsRecyclerViewAdapterFragment) vpAdapter.getItem(0);
         if (f.getmAdapter().getAdapter_type() == AdvertsRecyclerViewAdapter.ADAPTER_TYPE_SUBS)
             f.getmAdapter().replaceItem(a);
     }
 
     public void addUserAdvertToAdapter(Anuncio a) {
-        AdvertsRecyclerViewFragment f = (AdvertsRecyclerViewFragment) vpAdapter.getItem(2);
+        AdvertsRecyclerViewAdapterFragment f = (AdvertsRecyclerViewAdapterFragment) vpAdapter.getItem(2);
         if (f.getmAdapter().getAdapter_type() == AdvertsRecyclerViewAdapter.ADAPTER_TYPE_MY_ADVS)
             f.getmAdapter().addItem(a);
     }
 
     public void replaceUserAdvertFromAdapter(Anuncio a) {
-        AdvertsRecyclerViewFragment f = (AdvertsRecyclerViewFragment) vpAdapter.getItem(2);
+        AdvertsRecyclerViewAdapterFragment f = (AdvertsRecyclerViewAdapterFragment) vpAdapter.getItem(2);
         if (f.getmAdapter().getAdapter_type() == AdvertsRecyclerViewAdapter.ADAPTER_TYPE_MY_ADVS)
             f.getmAdapter().replaceItem(a);
     }
 
     public void removeSub(Anuncio a) {
-        AdvertsRecyclerViewFragment f = (AdvertsRecyclerViewFragment) vpAdapter.getItem(0);
+        AdvertsRecyclerViewAdapterFragment f = (AdvertsRecyclerViewAdapterFragment) vpAdapter.getItem(0);
         if (f.getmAdapter().getAdapter_type() == AdvertsRecyclerViewAdapter.ADAPTER_TYPE_SUBS)
             f.getmAdapter().removeItem(a);
     }
 
     public void removeAdvert(Anuncio a) {
-        AdvertsRecyclerViewFragment f = (AdvertsRecyclerViewFragment) vpAdapter.getItem(1);
+        AdvertsRecyclerViewAdapterFragment f = (AdvertsRecyclerViewAdapterFragment) vpAdapter.getItem(1);
         if (f.getmAdapter().getAdapter_type() == AdvertsRecyclerViewAdapter.ADAPTER_TYPE_ADVS)
             f.getmAdapter().removeItem(a);
     }
 
     public void loadFilteredAdverts(ArrayList<Anuncio> filteredAdverts) {
-        AdvertsRecyclerViewFragment f = (AdvertsRecyclerViewFragment) vpAdapter.getItem(1);
+        AdvertsRecyclerViewAdapterFragment f = (AdvertsRecyclerViewAdapterFragment) vpAdapter.getItem(1);
         if (f.getmAdapter().getAdapter_type() == AdvertsRecyclerViewAdapter.ADAPTER_TYPE_ADVS){
             //Si no ha encontrado ningún anuncio filtrando
             if(filteredAdverts.size() == 0)
@@ -194,7 +194,7 @@ public class PrincipalFragment extends Fragment {
     }
 
     public void removeFilter() {
-        AdvertsRecyclerViewFragment f = (AdvertsRecyclerViewFragment) vpAdapter.getItem(1);
+        AdvertsRecyclerViewAdapterFragment f = (AdvertsRecyclerViewAdapterFragment) vpAdapter.getItem(1);
         if (f.getmAdapter().getAdapter_type() == AdvertsRecyclerViewAdapter.ADAPTER_TYPE_ADVS){
             f.getmAdapter().removeFilter();
             if(!PreferenceManager.getDefaultSharedPreferences(getContext()).getBoolean(Constantes.KEY_LOCATION_ACTIVED, true))
@@ -205,13 +205,13 @@ public class PrincipalFragment extends Fragment {
     }
 
     public void solicitantesObtained(View itemView, ArrayList<Usuario> listaSolicitantes, Anuncio anuncio) {
-        AdvertsRecyclerViewFragment f = (AdvertsRecyclerViewFragment) vpAdapter.getItem(2);
+        AdvertsRecyclerViewAdapterFragment f = (AdvertsRecyclerViewAdapterFragment) vpAdapter.getItem(2);
         if (f.getmAdapter().getAdapter_type() == AdvertsRecyclerViewAdapter.ADAPTER_TYPE_MY_ADVS)
             f.getmAdapter().solicitantesObtained(itemView, listaSolicitantes, anuncio);
     }
 
     public void closeSolicitantesDialog() {
-        AdvertsRecyclerViewFragment f = (AdvertsRecyclerViewFragment) vpAdapter.getItem(2);
+        AdvertsRecyclerViewAdapterFragment f = (AdvertsRecyclerViewAdapterFragment) vpAdapter.getItem(2);
         if (f.getmAdapter().getAdapter_type() == AdvertsRecyclerViewAdapter.ADAPTER_TYPE_MY_ADVS)
             f.getmAdapter().closeSolicitantesDialog();
     }
@@ -222,9 +222,9 @@ public class PrincipalFragment extends Fragment {
 
     //Adaptader
     class SectionsPagerAdapter extends CachedFragmentPagerAdapter {
-        AdvertsRecyclerViewFragment frgSolicitudes;
-        AdvertsRecyclerViewFragment frgAnuncios;
-        AdvertsRecyclerViewFragment frgMisAnuncios;
+        AdvertsRecyclerViewAdapterFragment frgSolicitudes;
+        AdvertsRecyclerViewAdapterFragment frgAnuncios;
+        AdvertsRecyclerViewAdapterFragment frgMisAnuncios;
 
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -241,15 +241,15 @@ public class PrincipalFragment extends Fragment {
             switch (position) {
                 case 0:
                     if (frgSolicitudes == null)
-                        frgSolicitudes = AdvertsRecyclerViewFragment.newInstance(AdvertsRecyclerViewAdapter.ADAPTER_TYPE_SUBS);
+                        frgSolicitudes = AdvertsRecyclerViewAdapterFragment.newInstance(AdvertsRecyclerViewAdapter.ADAPTER_TYPE_SUBS);
                     return frgSolicitudes;
                 case 1:
                     if (frgAnuncios == null)
-                        frgAnuncios = AdvertsRecyclerViewFragment.newInstance(AdvertsRecyclerViewAdapter.ADAPTER_TYPE_ADVS);
+                        frgAnuncios = AdvertsRecyclerViewAdapterFragment.newInstance(AdvertsRecyclerViewAdapter.ADAPTER_TYPE_ADVS);
                     return frgAnuncios;
                 case 2:
                     if (frgMisAnuncios == null)
-                        frgMisAnuncios = AdvertsRecyclerViewFragment.newInstance(AdvertsRecyclerViewAdapter.ADAPTER_TYPE_MY_ADVS);
+                        frgMisAnuncios = AdvertsRecyclerViewAdapterFragment.newInstance(AdvertsRecyclerViewAdapter.ADAPTER_TYPE_MY_ADVS);
                     return frgMisAnuncios;
             }
             return null;
@@ -272,15 +272,15 @@ public class PrincipalFragment extends Fragment {
     }
 
     public void confEmptyViewsNormales(){
-        ((AdvertsRecyclerViewFragment) vpAdapter.getItem(0)).confEmptyView(R.drawable.tab_suscripciones, getString(R.string.text_emptyView_tab_suscritos));
-        ((AdvertsRecyclerViewFragment) vpAdapter.getItem(1)).confEmptyView(R.drawable.tab_anuncios, getString(R.string.text_emptyView_tab_anuncios));
-        ((AdvertsRecyclerViewFragment) vpAdapter.getItem(2)).confEmptyView(R.drawable.tab_mis_anuncios, getString(R.string.text_emptyView_tab_misAnuncios));
+        ((AdvertsRecyclerViewAdapterFragment) vpAdapter.getItem(0)).confEmptyView(R.drawable.tab_suscripciones, getString(R.string.text_emptyView_tab_suscritos));
+        ((AdvertsRecyclerViewAdapterFragment) vpAdapter.getItem(1)).confEmptyView(R.drawable.tab_anuncios, getString(R.string.text_emptyView_tab_anuncios));
+        ((AdvertsRecyclerViewAdapterFragment) vpAdapter.getItem(2)).confEmptyView(R.drawable.tab_mis_anuncios, getString(R.string.text_emptyView_tab_misAnuncios));
     }
     public void confEmptyViewsSinUbicacion(){
-        ((AdvertsRecyclerViewFragment) vpAdapter.getItem(1)).confEmptyView(R.drawable.location_disabled, getString(R.string.emptyView_location_disabled));
+        ((AdvertsRecyclerViewAdapterFragment) vpAdapter.getItem(1)).confEmptyView(R.drawable.location_disabled, getString(R.string.emptyView_location_disabled));
     }
 
     public void confEmptyViewsSinUbicacion(String textoEmptyView, View.OnClickListener onClickListener){
-        ((AdvertsRecyclerViewFragment) vpAdapter.getItem(1)).confEmptyViewWithClick(R.drawable.location_disabled, textoEmptyView, onClickListener);
+        ((AdvertsRecyclerViewAdapterFragment) vpAdapter.getItem(1)).confEmptyViewWithClick(R.drawable.location_disabled, textoEmptyView, onClickListener);
     }
 }

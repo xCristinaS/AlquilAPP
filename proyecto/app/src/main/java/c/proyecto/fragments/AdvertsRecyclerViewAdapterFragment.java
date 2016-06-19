@@ -23,7 +23,7 @@ import c.proyecto.mvp_presenters.MainPresenter;
 import c.proyecto.utils.UtilMethods;
 
 
-public class AdvertsRecyclerViewFragment extends Fragment implements AdvertsRecyclerViewAdapter.ConfigEmptyView {
+public class AdvertsRecyclerViewAdapterFragment extends Fragment implements AdvertsRecyclerViewAdapter.IAdvertsRecyclerViewAdapter {
 
     private static final String ARG_ADAPTER_TYPE = "type_of_adapter";
     private AdvertsRecyclerViewAdapter mAdapter;
@@ -36,11 +36,12 @@ public class AdvertsRecyclerViewFragment extends Fragment implements AdvertsRecy
     private ImageView imgEmptyView;
     private TextView lblEmptyView;
     private LinearLayout emptyView;
+    private boolean creado = false;
 
-    public static AdvertsRecyclerViewFragment newInstance(int adapter_type) {
+    public static AdvertsRecyclerViewAdapterFragment newInstance(int adapter_type) {
         Bundle args = new Bundle();
         args.putInt(ARG_ADAPTER_TYPE, adapter_type);
-        AdvertsRecyclerViewFragment fragment = new AdvertsRecyclerViewFragment();
+        AdvertsRecyclerViewAdapterFragment fragment = new AdvertsRecyclerViewAdapterFragment();
         fragment.setArguments(args);
         return fragment;
     }
@@ -53,6 +54,7 @@ public class AdvertsRecyclerViewFragment extends Fragment implements AdvertsRecy
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        creado = true;
         initViews();
         super.onActivityCreated(savedInstanceState);
     }
@@ -69,7 +71,7 @@ public class AdvertsRecyclerViewFragment extends Fragment implements AdvertsRecy
 
         RecyclerView rvLista = (RecyclerView) getView().findViewById(R.id.rvLista);
         mAdapter = new AdvertsRecyclerViewAdapter(adapter_type, MainPresenter.getPresentador(getActivity()), ((PrincipalFragment) getParentFragment()).getUser());
-        mAdapter.setmConfigEmptyView(this);
+        mAdapter.setmIAdvertsRecyclerViewAdapter(this);
         StaggeredGridLayoutManager mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
 
         rvLista.setAdapter(mAdapter);
@@ -105,29 +107,32 @@ public class AdvertsRecyclerViewFragment extends Fragment implements AdvertsRecy
     public void confEmptyView(int idDrawable, String textEmptyView) {
         //Si no tiene activado la localización
         //Default true --> Por si el dispositivo es menor a la API 23, no tendrá esta preferencia ya que no se le pedirá el permiso en ejecución
-        if (!PreferenceManager.getDefaultSharedPreferences(getContext()).getBoolean(Constantes.KEY_LOCATION_ACTIVED, true)) {
-            if (adapter_type == AdvertsRecyclerViewAdapter.ADAPTER_TYPE_ADVS) {
-                imgEmptyView.setImageResource(R.drawable.logo);
-                lblEmptyView.setText(R.string.text_emptyView_anuncios_ubicacion_desactivada);
-                emptyView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        UtilMethods.isUbicationPermissionGranted(getActivity());
-                    }
-                });
+        if(creado){
+            if (!PreferenceManager.getDefaultSharedPreferences(getActivity()).getBoolean(Constantes.KEY_LOCATION_ACTIVED, true)) {
+                if (adapter_type == AdvertsRecyclerViewAdapter.ADAPTER_TYPE_ADVS) {
+                    imgEmptyView.setImageResource(R.drawable.logo);
+                    lblEmptyView.setText(R.string.text_emptyView_anuncios_ubicacion_desactivada);
+                    emptyView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            UtilMethods.isUbicationPermissionGranted(getActivity());
+                        }
+                    });
 
-            }else{
+                }else{
+                    imgEmptyView.setImageResource(idDrawable);
+                    lblEmptyView.setText(textEmptyView);
+                }
+
+            }else if(!UtilMethods.isNetworkAvailable(getContext())) {
+                imgEmptyView.setImageResource(R.drawable.no_connection);
+                lblEmptyView.setText(R.string.text_no_connection);
+            } else {
                 imgEmptyView.setImageResource(idDrawable);
                 lblEmptyView.setText(textEmptyView);
             }
-
-        }else if(!UtilMethods.isNetworkAvailable(getContext())) {
-            imgEmptyView.setImageResource(R.drawable.no_connection);
-            lblEmptyView.setText(R.string.text_no_connection);
-        } else {
-            imgEmptyView.setImageResource(idDrawable);
-            lblEmptyView.setText(textEmptyView);
         }
+
         
     }
 
@@ -165,7 +170,7 @@ public class AdvertsRecyclerViewFragment extends Fragment implements AdvertsRecy
     }
 
     @Override
-    public void loquetedelaganaAle(int AdvertType) {
+    public void itemAdded(int AdvertType) {
         switch (adapter_type){
             case AdvertsRecyclerViewAdapter.ADAPTER_TYPE_SUBS:
                 confEmptyView(R.drawable.tab_suscripciones, getString(R.string.text_emptyView_tab_suscritos));

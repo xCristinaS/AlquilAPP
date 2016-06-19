@@ -145,7 +145,7 @@
     <!-- SeleccionPrestacionesDialogFragment-->
     <string name="title_SeleccionPrestacionesDialogFragment">Prestaciones</string>
 
-    <!-- AdvertsRecyclerViewFragment -->
+    <!-- AdvertsRecyclerViewAdapterFragment -->
     <string name="text_emptyView_tab_suscritos">No estás suscrito a ningún anuncio</string>
     <string name="text_emptyView_tab_anuncios">No se han encontrado anuncios cerca de tí</string>
     <string name="text_emptyView_tab_misAnuncios">Aún no has publicado ningún anuncio</string>
