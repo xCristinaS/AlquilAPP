@@ -47,7 +47,6 @@ public class InicioPresenter implements InicioPresenterOps, MyPresenter {
 
     @Override
     public void liberarMemoria() {
-        activity = null;
         presentador = null;
     }
 }

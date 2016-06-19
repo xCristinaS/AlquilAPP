@@ -63,7 +63,6 @@ public class MapBrowserPresenter implements MyPresenter, MapBrowserPresenterOps 
 
     @Override
     public void liberarMemoria() {
-        activity = null;
         presentador = null;
     }
 }

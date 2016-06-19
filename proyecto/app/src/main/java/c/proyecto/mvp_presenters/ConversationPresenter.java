@@ -86,7 +86,6 @@ public class ConversationPresenter implements ConversationPresenterOps, MyPresen
 
     @Override
     public void liberarMemoria() {
-        activity = null;
         presentador = null;
     }
 }

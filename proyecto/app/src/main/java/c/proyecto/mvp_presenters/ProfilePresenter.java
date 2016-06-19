@@ -65,7 +65,6 @@ public class ProfilePresenter implements ProfilePresenterOps, MyPresenter {
 
     @Override
     public void liberarMemoria() {
-        activity = null;
         presentador = null;
     }
 }

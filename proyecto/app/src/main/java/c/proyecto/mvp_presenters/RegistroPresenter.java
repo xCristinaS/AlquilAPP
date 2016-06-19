@@ -57,7 +57,6 @@ public class RegistroPresenter implements RegistroPresenterOps, MyPresenter {
 
     @Override
     public void liberarMemoria() {
-        activity = null;
         presentador = null;
     }
 }

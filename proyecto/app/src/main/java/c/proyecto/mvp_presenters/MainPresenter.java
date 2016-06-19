@@ -206,7 +206,6 @@ public class MainPresenter implements MainPresenterOps, MyPresenter {
 
     @Override
     public void liberarMemoria() {
-        activity = null;
         presentador = null;
     }
 }
