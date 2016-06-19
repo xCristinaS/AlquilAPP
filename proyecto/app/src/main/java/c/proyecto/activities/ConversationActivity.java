@@ -36,6 +36,7 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
     private static final String EXTRA_MENSAJE = "mensaje_extra";
     private static final String EXTRA_USER = "user_extra";
     private static final String TAG_FR_MSG = "fragmento_mensajes";
+    private static final String EXTRA_OPEN_FROM_ADVERT_DETAILS = "open_from_advert_details";
 
     private MessagePojo mensaje;
     private ImageView imgEnviar;
@@ -46,11 +47,13 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
     private Usuario user;
     private Toolbar toolbar;
     private FragmentManager mFragmentManager;
+    private boolean openFromAdvertDetails;
 
-    public static void start(Context c, MessagePojo mensaje, Usuario user) {
+    public static void start(Context c, MessagePojo mensaje, Usuario user, boolean openFromAdvertDetails) {
         Intent intent = new Intent(c, ConversationActivity.class);
         intent.putExtra(EXTRA_MENSAJE, mensaje);
         intent.putExtra(EXTRA_USER, user);
+        intent.putExtra(EXTRA_OPEN_FROM_ADVERT_DETAILS, openFromAdvertDetails);
         c.startActivity(intent);
     }
 
@@ -60,6 +63,7 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
         setContentView(R.layout.activity_conversation);
         mensaje = getIntent().getParcelableExtra(EXTRA_MENSAJE);
         user = getIntent().getParcelableExtra(EXTRA_USER);
+        openFromAdvertDetails = getIntent().getBooleanExtra(EXTRA_OPEN_FROM_ADVERT_DETAILS, false);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("");
@@ -96,7 +100,7 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
 
     private void requestUserConversation() {
         if (mensaje != null) {
-            mPresenter.userConversationRequested(mensaje);
+            mPresenter.userConversationRequested(mensaje, openFromAdvertDetails);
             MessagesFragment f = MessagesFragment.newInstance(true, mensaje.getKeyReceptor());
             mFragmentManager.beginTransaction().replace(R.id.frmContenido, f, TAG_FR_MSG).commit();
         }

@@ -5,7 +5,7 @@ import c.proyecto.pojo.MessagePojo;
 import c.proyecto.pojo.Usuario;
 
 public interface ConversationPresenterOps {
-    void userConversationRequested(MessagePojo mensaje);
+    void userConversationRequested(MessagePojo mensaje, boolean requestedFromAdvertDetails);
     void messageHasBeenObtained(MessagePojo m);
     void sendMessage(MessagePojo mensaje, String keyReceptor, boolean isFirstMessageSended);
     void detachFirebaseListeners();

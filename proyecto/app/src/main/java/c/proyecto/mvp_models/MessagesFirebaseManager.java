@@ -407,7 +407,7 @@ public class MessagesFirebaseManager {
     }
 
     // obtengo la conversación entera sobre un anuncio concreto
-    public void getUserConversation(final MessagePojo m) {
+    public void getUserConversation(final MessagePojo m, final boolean requestedFromAdvertDetails) {
         String nodoAsunto;
         if (mFirebaseConversations != null)
             mFirebaseConversations.limitToLast(MESSAGES_LIMIT_CONVER).removeEventListener(mListenerConversation);
@@ -443,10 +443,14 @@ public class MessagesFirebaseManager {
                 if (m instanceof MessagePojoWithoutAnswer && (mensaje.getKey().equals(m.getKey()) || m.getKey() == null)) {
                     if (presenter instanceof ConversationPresenter)
                         ((ConversationPresenter) presenter).allMessagesObtained();
-                } else
+                } else if (!requestedFromAdvertDetails)
                     checkIfUserAnswer(m.getEmisor().getKey(), nodoAsunto2, m, mensaje);
 
-                if (!(m instanceof MessagePojoWithoutAnswer) && listenersInternosConvers.size() == 0) {
+                if (requestedFromAdvertDetails || (!(m instanceof MessagePojoWithoutAnswer) && listenersInternosConvers.size() == 0)) {
+                    if (requestedFromAdvertDetails) {
+                        nodoAsunto2 = m.getKeyReceptor() + "_" + m.getTituloAnuncio().trim().replace(" ", "_");
+                        nodoAsunto2 = nodoAsunto2.substring(0, nodoAsunto2.length());
+                    }
                     Query fInterno = new Firebase(URL_CONVERSACIONES).child(m.getEmisor().getKey()).child(nodoAsunto2);
                     final String[] keyLastMessage = new String[1];
                     fInterno.limitToLast(1).addListenerForSingleValueEvent(new ValueEventListener() {

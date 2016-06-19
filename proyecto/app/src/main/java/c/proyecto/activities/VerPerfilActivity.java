@@ -181,7 +181,7 @@ public class VerPerfilActivity extends AppCompatActivity {
                 if (mMessage == null)
                     showSenMessageDialog();
                 else
-                    ConversationActivity.start(VerPerfilActivity.this, mMessage, currentUser);
+                    ConversationActivity.start(VerPerfilActivity.this, mMessage, currentUser, false);
                 break;
         }
         return super.onOptionsItemSelected(item);
