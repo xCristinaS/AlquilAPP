@@ -282,6 +282,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
     }
 
     public void getAdvertsNearUser() {
+        Fragment frg = mFragmentManager.findFragmentById(R.id.frmContenido);
+        if(frg != null && frg instanceof PrincipalFragment)
+            ((PrincipalFragment) frg).confEmptyViewsNormales();
+        
         if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
             return;
         if (mLastLocation == null)
