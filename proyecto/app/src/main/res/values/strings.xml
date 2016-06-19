@@ -19,6 +19,7 @@
     <string name="title_nav_messages">Mensajes</string>
     <string name="title_nav_preferences">Preferencias</string>
     <string name="title_nav_sign_of">Cerrar Sesión</string>
+    <string name="title_nav_about_us">Acerca de</string>
 
     <!-- PRESTACIONES -->
     <string name="aptoMascotas">Apto para mascotas</string>
@@ -157,5 +158,6 @@
 
     <!-- MessageFragment-->
     <string name="text_emptyViewMensajes">Cargando mensajes</string>
+
 
 </resources>
