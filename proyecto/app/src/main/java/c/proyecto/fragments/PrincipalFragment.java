@@ -56,6 +56,7 @@ public class PrincipalFragment extends Fragment {
         confViewPager();
     }
 
+
     private void confViewPager() {
         vpAdapter = new SectionsPagerAdapter(getChildFragmentManager());
         viewPager = (ViewPager) getActivity().findViewById(R.id.container);
@@ -66,7 +67,7 @@ public class PrincipalFragment extends Fragment {
         ImageView customImg2 = (ImageView) getActivity().getLayoutInflater().inflate(R.layout.tab_custom, null);
         ImageView customImg3 = (ImageView) getActivity().getLayoutInflater().inflate(R.layout.tab_custom, null);
 
-        customImg.setImageResource(R.drawable.tab_solicitudes);
+        customImg.setImageResource(R.drawable.tab_suscripciones);
         tabLayout.getTabAt(0).setCustomView(customImg);
         customImg2.setImageResource(R.drawable.tab_anuncios);
         tabLayout.getTabAt(1).setCustomView(customImg2);
@@ -271,7 +272,7 @@ public class PrincipalFragment extends Fragment {
     }
 
     public void confEmptyViewsNormales(){
-        ((AdvertsRecyclerViewFragment) vpAdapter.getItem(0)).confEmptyView(R.drawable.tab_solicitudes, getString(R.string.text_emptyView_tab_suscritos));
+        ((AdvertsRecyclerViewFragment) vpAdapter.getItem(0)).confEmptyView(R.drawable.tab_suscripciones, getString(R.string.text_emptyView_tab_suscritos));
         ((AdvertsRecyclerViewFragment) vpAdapter.getItem(1)).confEmptyView(R.drawable.tab_anuncios, getString(R.string.text_emptyView_tab_anuncios));
         ((AdvertsRecyclerViewFragment) vpAdapter.getItem(2)).confEmptyView(R.drawable.tab_mis_anuncios, getString(R.string.text_emptyView_tab_misAnuncios));
     }

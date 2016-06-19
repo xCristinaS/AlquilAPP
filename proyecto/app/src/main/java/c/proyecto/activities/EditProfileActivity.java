@@ -117,7 +117,7 @@ public class EditProfileActivity extends AppCompatActivity implements Nacionalid
                     mPresenter.updateUserProfile(mUser);
                     finish();
                 }else {
-                    Toast.makeText(EditProfileActivity.this, Constantes.SIN_CONEXION, Toast.LENGTH_LONG).show();
+                    Toast.makeText(EditProfileActivity.this, R.string.text_no_connection, Toast.LENGTH_LONG).show();
                     btnConfirmar.setEnabled(false);
                 }
             }

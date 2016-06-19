@@ -20,7 +20,6 @@ import android.widget.TextView;
 
 
 import com.squareup.picasso.Callback;
-import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -50,6 +49,10 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
         void onSubsItemClick(View itemView, Anuncio anuncio);
     }
 
+    public interface ConfigEmptyView{
+        void loquetedelaganaAle(int AdvertType);
+    }
+
     public static final int ADAPTER_TYPE_SUBS = 0;
     public static final int ADAPTER_TYPE_ADVS = 1;
     public static final int ADAPTER_TYPE_MY_ADVS = 2;
@@ -59,6 +62,7 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
     private OnAdapterItemLongClick listenerLongClick;
     private OnAdapterItemClick listenerItemClick;
     private OnSubsIconClick listenerSubsClick;
+    private ConfigEmptyView mConfigEmptyView;
     private HuespedesAdapter.IHuespedesAdapterListener listenerUserSubClick;
     private View emptyView;
     private MainPresenter mPresenter;
@@ -187,6 +191,9 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
 
     public void setListenerUserSubClick(HuespedesAdapter.IHuespedesAdapterListener listenerUserSubClick) {
         this.listenerUserSubClick = listenerUserSubClick;
+    }
+    public void setmConfigEmptyView(ConfigEmptyView mConfigEmptyView){
+        this.mConfigEmptyView = mConfigEmptyView;
     }
 
     private static int getAnchoPantalla(Context context) {
@@ -379,7 +386,9 @@ public class AdvertsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
                 if (!stop)
                     mDatos.add(0, a);
                 notifyDataSetChanged();
+
             }
+        mConfigEmptyView.loquetedelaganaAle(adapter_type);
         checkIfEmpty();
     }
 

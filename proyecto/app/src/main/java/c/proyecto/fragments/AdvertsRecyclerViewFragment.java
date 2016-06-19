@@ -23,7 +23,7 @@ import c.proyecto.mvp_presenters.MainPresenter;
 import c.proyecto.utils.UtilMethods;
 
 
-public class AdvertsRecyclerViewFragment extends Fragment {
+public class AdvertsRecyclerViewFragment extends Fragment implements AdvertsRecyclerViewAdapter.ConfigEmptyView {
 
     private static final String ARG_ADAPTER_TYPE = "type_of_adapter";
     private AdvertsRecyclerViewAdapter mAdapter;
@@ -69,6 +69,7 @@ public class AdvertsRecyclerViewFragment extends Fragment {
 
         RecyclerView rvLista = (RecyclerView) getView().findViewById(R.id.rvLista);
         mAdapter = new AdvertsRecyclerViewAdapter(adapter_type, MainPresenter.getPresentador(getActivity()), ((PrincipalFragment) getParentFragment()).getUser());
+        mAdapter.setmConfigEmptyView(this);
         StaggeredGridLayoutManager mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
 
         rvLista.setAdapter(mAdapter);
@@ -79,7 +80,7 @@ public class AdvertsRecyclerViewFragment extends Fragment {
         switch (adapter_type) {
             case AdvertsRecyclerViewAdapter.ADAPTER_TYPE_SUBS:
                 mAdapter.setListenerLongClick(listenerLongClick);
-                idDrawable = R.drawable.tab_solicitudes;
+                idDrawable = R.drawable.tab_suscripciones;
                 textEmptyView = getActivity().getString(R.string.text_emptyView_tab_suscritos);
                 break;
             case AdvertsRecyclerViewAdapter.ADAPTER_TYPE_ADVS:
@@ -120,6 +121,9 @@ public class AdvertsRecyclerViewFragment extends Fragment {
                 lblEmptyView.setText(textEmptyView);
             }
 
+        }else if(!UtilMethods.isNetworkAvailable(getContext())) {
+            imgEmptyView.setImageResource(R.drawable.no_connection);
+            lblEmptyView.setText(R.string.text_no_connection);
         } else {
             imgEmptyView.setImageResource(idDrawable);
             lblEmptyView.setText(textEmptyView);
@@ -158,5 +162,20 @@ public class AdvertsRecyclerViewFragment extends Fragment {
 
     public AdvertsRecyclerViewAdapter getmAdapter() {
         return mAdapter;
+    }
+
+    @Override
+    public void loquetedelaganaAle(int AdvertType) {
+        switch (adapter_type){
+            case AdvertsRecyclerViewAdapter.ADAPTER_TYPE_SUBS:
+                confEmptyView(R.drawable.tab_suscripciones, getString(R.string.text_emptyView_tab_suscritos));
+                break;
+            case AdvertsRecyclerViewAdapter.ADAPTER_TYPE_ADVS:
+                confEmptyView(R.drawable.tab_anuncios, getString(R.string.text_emptyView_tab_anuncios));
+                break;
+            case AdvertsRecyclerViewAdapter.ADAPTER_TYPE_MY_ADVS:
+                confEmptyView(R.drawable.tab_mis_anuncios, getString(R.string.text_emptyView_tab_misAnuncios));
+                break;
+        }
     }
 }

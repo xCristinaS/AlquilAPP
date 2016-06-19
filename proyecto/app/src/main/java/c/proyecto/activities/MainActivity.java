@@ -199,7 +199,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
                 if (UtilMethods.isNetworkAvailable(this))
                     CrearAnuncio1Activity.start(this, mUser);//Null = nuevo Anuncio.
                 else
-                    Toast.makeText(this, Constantes.SIN_CONEXION, Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, R.string.text_no_connection, Toast.LENGTH_LONG).show();
                 break;
             case R.id.nav_edit_profile:
                 EditProfileActivity.start(this, mUser);
@@ -216,7 +216,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
                     getSupportFragmentManager().beginTransaction().replace(R.id.frmContenido, MessagesFragment.newInstance(false, null), TAG_MESSAGES_FRAGMENT).commit();
                     toolbar.setTitle(R.string.toolbarTitle_mensajes);
                 } else
-                    Toast.makeText(this, Constantes.SIN_CONEXION, Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, R.string.text_no_connection, Toast.LENGTH_LONG).show();
                 break;
             case R.id.nav_preferences:
                 startActivityForResult(new Intent(this, PreferencesActivity.class), RC_PREFERENCES);
@@ -419,7 +419,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
         if (UtilMethods.isNetworkAvailable(this))
             DetallesAnuncioActivity.start(this, anuncio, advertType, mUser, false);
         else
-            Toast.makeText(this, Constantes.SIN_CONEXION, Toast.LENGTH_LONG).show();
+            Toast.makeText(this, R.string.text_no_connection, Toast.LENGTH_LONG).show();
     }
 
     @Override

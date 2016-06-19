@@ -65,7 +65,6 @@ public final class Constantes {
     public static final int FACTOR_ESCALADO = 280;
 
 
-    public static final String SIN_CONEXION = "Sin conexión a internet";
 
 }
 
