@@ -238,21 +238,26 @@ public class PrincipalFragment extends Fragment {
         //Especifica que fragmento irá en cada página del viewPager
         @Override
         public Fragment getItem(int position) {
+            Fragment frg = null;
             switch (position) {
                 case 0:
                     if (frgSolicitudes == null)
                         frgSolicitudes = AdvertsRecyclerViewAdapterFragment.newInstance(AdvertsRecyclerViewAdapter.ADAPTER_TYPE_SUBS);
-                    return frgSolicitudes;
+                    frg = frgSolicitudes;
+                    break;
                 case 1:
                     if (frgAnuncios == null)
                         frgAnuncios = AdvertsRecyclerViewAdapterFragment.newInstance(AdvertsRecyclerViewAdapter.ADAPTER_TYPE_ADVS);
-                    return frgAnuncios;
+                    frg = frgAnuncios;
+                    break;
                 case 2:
                     if (frgMisAnuncios == null)
                         frgMisAnuncios = AdvertsRecyclerViewAdapterFragment.newInstance(AdvertsRecyclerViewAdapter.ADAPTER_TYPE_MY_ADVS);
-                    return frgMisAnuncios;
+                    frg = frgMisAnuncios;
+                    break;
+
             }
-            return null;
+            return frg;
         }
 
 
