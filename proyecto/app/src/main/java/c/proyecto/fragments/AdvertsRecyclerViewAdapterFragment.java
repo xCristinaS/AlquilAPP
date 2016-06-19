@@ -1,6 +1,7 @@
 package c.proyecto.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 
 import c.proyecto.Constantes;
 import c.proyecto.R;
+import c.proyecto.activities.MainActivity;
 import c.proyecto.adapters.AdvertsRecyclerViewAdapter;
 import c.proyecto.adapters.HuespedesAdapter;
 import c.proyecto.mvp_presenters.MainPresenter;
@@ -57,6 +59,7 @@ public class AdvertsRecyclerViewAdapterFragment extends Fragment implements Adve
         creado = true;
         initViews();
         super.onActivityCreated(savedInstanceState);
+        getActivity().sendBroadcast(new Intent(MainActivity.ACTION_ADVERT_RVADAP_CREADO));
     }
 
     private void initViews() {

@@ -74,6 +74,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class MainActivity extends AppCompatActivity implements MainActivityOps, AdvertsRecyclerViewAdapter.OnAdapterItemLongClick, AdvertsRecyclerViewAdapter.OnAdapterItemClick, NavigationView.OnNavigationItemSelectedListener, MessagesRecyclerViewAdapter.OnMessagesAdapterItemClick, PrincipalFragment.AllowFilters, FilterDialogFramgent.ApplyFilters, SeleccionPrestacionesDialogFragment.ICallBackOnDismiss, AdvertsRecyclerViewAdapter.OnSubsIconClick, HuespedesAdapter.IHuespedesAdapterListener, GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks {
 
     public static final String ACTION_ANUNCIO_ELIMINADO = "c.proyecto.activities.DetallesAnuncioActivity.ACTION_ANUNCIO_ELIMINADO";
+    public static final String ACTION_ADVERT_RVADAP_CREADO = "c.proyecto.fragments.AdvertRecyclerViewAdapterFragment.ACTION_ADVERT_RVADAP_CREADO";
+
     private static final int RC_REQUEST_LOCATION = 1000;
     private static final int RC_PREFERENCES = 3213;
     private static final String ARG_USUARIO = "usuario_extra";
@@ -99,7 +101,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
     private SharedPreferences mSharedPref;
     private LocationListener mLocationListener;
     private boolean multiselectionActivated;
-    private BroadcastReceiver connectionChangeReceiver;
+    private BroadcastReceiver connectionChangeReceiver, receiverRVAdapterCreado;
+    private boolean hayConexion;
 
     public static void start(Activity a, Usuario u) {
         Intent intent = new Intent(a, MainActivity.class);
@@ -139,11 +142,23 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
         connectionChangeReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                if (UtilMethods.isNetworkAvailable(MainActivity.this))
+                hayConexion = UtilMethods.isNetworkAvailable(MainActivity.this);
+                if (hayConexion)
                     getAdvertsNearUser();
                 else {
                     Fragment frg = mFragmentManager.findFragmentById(R.id.frmContenido);
                     if(frg != null && frg instanceof PrincipalFragment)
+                        ((PrincipalFragment) frg).confEmptyViewsNormales();
+                }
+            }
+        };
+
+        receiverRVAdapterCreado = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                if (!hayConexion) {
+                    Fragment frg = mFragmentManager.findFragmentById(R.id.frmContenido);
+                    if (frg != null && frg instanceof PrincipalFragment)
                         ((PrincipalFragment) frg).confEmptyViewsNormales();
                 }
             }
@@ -682,11 +697,14 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
         super.onResume();
         IntentFilter filtro = new IntentFilter("android.net.conn.CONNECTIVITY_CHANGE");
         registerReceiver(connectionChangeReceiver, filtro);
+        IntentFilter filtro2 = new IntentFilter(MainActivity.ACTION_ADVERT_RVADAP_CREADO);
+        registerReceiver(receiverRVAdapterCreado, filtro2);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         unregisterReceiver(connectionChangeReceiver);
+        unregisterReceiver(receiverRVAdapterCreado);
     }
 }
