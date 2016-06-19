@@ -118,7 +118,7 @@
 
                 <EditText
                     android:id="@+id/txtDireccion"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:inputType="text"
                     android:layout_gravity="center_vertical"
@@ -129,14 +129,14 @@
 
                 <EditText
                     android:id="@+id/txtNum"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/marginLeft_txtNum"
                     android:layout_marginStart="@dimen/marginLeft_txtNum"
                     android:layout_gravity="center_vertical"
                     android:maxLines="1"
                     android:inputType="text"
-                    android:layout_weight="1"
+                    android:layout_weight="5"
                     android:hint="@string/hint_txtNum"
                     android:enabled="false"/>
             </LinearLayout>

@@ -2,6 +2,7 @@ package c.proyecto.activities;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.location.Address;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
@@ -334,18 +335,6 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
             empty = false;
             txtTituloAnuncio.setError(getString(R.string.error_campoVacio));
         }
-        if (TextUtils.isEmpty(txtPoblacion.getText())) {
-            empty = false;
-            txtPoblacion.setError(getString(R.string.error_campoVacio));
-        }
-        if (TextUtils.isEmpty(txtDireccion.getText())) {
-            empty = false;
-            txtDireccion.setError(getString(R.string.error_campoVacio));
-        }
-        if (TextUtils.isEmpty(txtNum.getText())) {
-            empty = false;
-            txtNum.setError(getString(R.string.error_campoVacio));
-        }
         if (TextUtils.isEmpty(txtTamano.getText())) {
             empty = false;
             txtTamano.setError(getString(R.string.error_campoVacio));
@@ -358,6 +347,23 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
             empty = false;
             Toast.makeText(this, R.string.toast_seleccionaVivienda, Toast.LENGTH_SHORT).show();
         }
+
+        //Si está desactivado es porque no ha escogido aún ninguna coordenada
+        if(txtDireccion.isEnabled()){
+            if (TextUtils.isEmpty(txtPoblacion.getText())) {
+                empty = false;
+                txtPoblacion.setError(getString(R.string.error_campoVacio));
+            }
+            if (TextUtils.isEmpty(txtDireccion.getText())) {
+                empty = false;
+                txtDireccion.setError(getString(R.string.error_campoVacio));
+            }
+            if (TextUtils.isEmpty(txtNum.getText())) {
+                empty = false;
+                txtNum.setError(getString(R.string.error_campoVacio));
+            }
+        }else
+            imgLocation.setColorFilter(Color.RED);
 
         return empty;
     }
@@ -407,6 +413,7 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
                         txtPoblacion.setError(null);
                     if (!txtNum.getText().toString().isEmpty())
                         txtNum.setError(null);
+                    imgLocation.clearColorFilter();
 
                     //Se guarda la latitud del punto seleccionado para la localización de la vivienda.
                     mAnuncio.setLats(new MyLatLng(address.getLatitude(), address.getLongitude()));
