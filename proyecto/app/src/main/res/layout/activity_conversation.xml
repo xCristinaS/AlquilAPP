@@ -77,14 +77,15 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="95"
+            android:inputType="textMultiLine"
             android:hint="@string/hint_txtEscribirMensaje"
-            android:maxLines="1" />
+            android:maxLines="4" />
 
         <ImageView
             android:id="@+id/imgEnviar"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_gravity="center_vertical"
+            android:layout_gravity="bottom"
             android:layout_weight="5"
             android:src="@drawable/ic_action_send" />
     </LinearLayout>
