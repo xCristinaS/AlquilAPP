@@ -25,7 +25,6 @@ import c.proyecto.pojo.MessagePojoWithoutAnswer;
 import c.proyecto.pojo.Usuario;
 
 public class MessagesFirebaseManager {
-
     private static final String URL_CONVERSACIONES = Constantes.URL_BASE + Constantes.CHILD_CONVERSACIONES;
     private static final String URL_MSG_SIN_RESP = Constantes.URL_BASE + Constantes.CHILD_MENSAJES_SIN_RESPUESTA;
     private static final String URL_USERS = Constantes.URL_BASE + Constantes.CHILD_USUARIOS;
