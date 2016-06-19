@@ -99,35 +99,53 @@
             <!-- LOCALIZACIÓN -->
 
 
-            <EditText
-                android:id="@+id/txtDireccion"
-                android:layout_width="@dimen/width_txtDireccion"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/imgCasa"
-                android:layout_marginTop="@dimen/marginTop_txtDireccion"
-                android:inputType="none"
-                android:focusable="false"
-                android:hint="@string/hint_txtDireccion"
-                android:dropDownWidth="match_parent"
-                />
-
-            <EditText
-                android:id="@+id/txtNum"
+            <LinearLayout
+                android:id="@+id/groupDireccion"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignBottom="@id/txtDireccion"
-                android:layout_marginLeft="@dimen/marginLeft_txtNum"
-                android:layout_marginStart="@dimen/marginLeft_txtNum"
-                android:layout_toEndOf="@id/txtDireccion"
-                android:layout_toRightOf="@id/txtDireccion"
-                android:maxLines="1"
-                android:hint="@string/hint_txtNum" />
+                android:layout_marginTop="@dimen/marginTop_txtDireccion"
+                android:layout_below="@id/imgCasa"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/imgLocation"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:padding="5dp"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/location_button"
+                    />
+
+                <EditText
+                    android:id="@+id/txtDireccion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:inputType="none"
+                    android:focusable="false"
+                    android:layout_gravity="center_vertical"
+                    android:hint="@string/hint_txtDireccion"
+                    android:dropDownWidth="match_parent"
+                    android:layout_weight="12"
+                    />
+
+                <EditText
+                    android:id="@+id/txtNum"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/marginLeft_txtNum"
+                    android:layout_marginStart="@dimen/marginLeft_txtNum"
+                    android:layout_gravity="center_vertical"
+                    android:maxLines="1"
+                    android:layout_weight="1"
+                    android:hint="@string/hint_txtNum" />
+            </LinearLayout>
+
 
             <EditText
                 android:id="@+id/txtPoblacion"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/txtDireccion"
+                android:layout_below="@id/groupDireccion"
                 android:inputType="none"
                 android:focusable="false"
                 android:hint="@string/hint_txtPoblacion" />
