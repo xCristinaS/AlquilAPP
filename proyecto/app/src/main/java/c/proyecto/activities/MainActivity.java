@@ -2,7 +2,10 @@ package c.proyecto.activities;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -96,6 +99,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
     private SharedPreferences mSharedPref;
     private LocationListener mLocationListener;
     private boolean multiselectionActivated;
+    private BroadcastReceiver connectionChangeReceiver;
 
     public static void start(Activity a, Usuario u) {
         Intent intent = new Intent(a, MainActivity.class);
@@ -117,8 +121,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
         configLocation();
         initViews();
         InicioPresenter.getPresentador(null).liberarMemoria();
-
-
+        confBroadcastReceiver();
     }
 
     private void initViews() {
@@ -130,6 +133,21 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
         mFragmentManager = getSupportFragmentManager();
         mFragmentManager.beginTransaction().replace(R.id.frmContenido, new PrincipalFragment(), TAG_PRINCIPAL_FRAGMENT).commit();
         configNavDrawer();
+    }
+
+    private void confBroadcastReceiver() {
+        connectionChangeReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                if (UtilMethods.isNetworkAvailable(MainActivity.this))
+                    getAdvertsNearUser();
+                else {
+                    Fragment frg = mFragmentManager.findFragmentById(R.id.frmContenido);
+                    if(frg != null && frg instanceof PrincipalFragment)
+                        ((PrincipalFragment) frg).confEmptyViewsNormales();
+                }
+            }
+        };
     }
 
     private void configLocation() {
@@ -659,4 +677,16 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        IntentFilter filtro = new IntentFilter("android.net.conn.CONNECTIVITY_CHANGE");
+        registerReceiver(connectionChangeReceiver, filtro);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(connectionChangeReceiver);
+    }
 }
