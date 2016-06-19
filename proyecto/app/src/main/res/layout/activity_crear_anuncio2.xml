@@ -120,12 +120,11 @@
                     android:id="@+id/txtDireccion"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:inputType="none"
-                    android:focusable="false"
+                    android:inputType="text"
                     android:layout_gravity="center_vertical"
                     android:hint="@string/hint_txtDireccion"
-                    android:dropDownWidth="match_parent"
                     android:layout_weight="12"
+                    android:enabled="false"
                     />
 
                 <EditText
@@ -136,8 +135,10 @@
                     android:layout_marginStart="@dimen/marginLeft_txtNum"
                     android:layout_gravity="center_vertical"
                     android:maxLines="1"
+                    android:inputType="text"
                     android:layout_weight="1"
-                    android:hint="@string/hint_txtNum" />
+                    android:hint="@string/hint_txtNum"
+                    android:enabled="false"/>
             </LinearLayout>
 
 
@@ -146,8 +147,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/groupDireccion"
-                android:inputType="none"
-                android:focusable="false"
+                android:inputType="text"
+                android:enabled="false"
                 android:hint="@string/hint_txtPoblacion" />
 
             <EditText
@@ -155,10 +156,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/txtPoblacion"
-                android:inputType="none"
-                android:focusable="false"
+                android:inputType="text"
                 android:maxLines="1"
-                android:hint="@string/hint_txtProvincia" />
+                android:hint="@string/hint_txtProvincia"
+                android:enabled="false"/>
         </RelativeLayout>
 
 

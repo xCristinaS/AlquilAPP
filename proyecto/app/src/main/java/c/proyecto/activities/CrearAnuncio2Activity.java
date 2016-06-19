@@ -55,7 +55,7 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
     private static final String EXTRA_IMAGE_MODIFIED = "imagenes_modificadas";
 
     private EditText txtTituloAnuncio, txtNum, txtPoblacion, txtProvincia, txtCamas, txtToilets, txtTamano, txtDescripcion, txtPrecio, txtDireccion;
-    private ImageView imgCasa, imgHabitacion, imgPiso;
+    private ImageView imgCasa, imgHabitacion, imgPiso, imgLocation;
     private RecyclerView rvPrestaciones;
 
     private PrestacionesAdapter mPrestacionesAdapter;
@@ -133,6 +133,7 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
         } else {
             editando = true;
             initViews();
+            setEnabledTxtsLocation(true);
             recuperarAnuncio();
         }
 
@@ -142,6 +143,7 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
     }
 
     private void initViews() {
+        imgLocation = (ImageView) findViewById(R.id.imgLocation);
         txtTituloAnuncio = (EditText) findViewById(R.id.txtTituloAnuncio);
         imgCasa = (ImageView) findViewById(R.id.imgCasa);
         imgHabitacion = (ImageView) findViewById(R.id.imgHabitacion);
@@ -159,15 +161,12 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
         //Max lenght de título anuncio
         txtTituloAnuncio.setFilters(new InputFilter[]{new InputFilter.LengthFilter(Constantes.MAX_LENGHT_TITULO_ANUNCIO)});
 
-        View.OnClickListener onClickListener = new View.OnClickListener() {
+        imgLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 openLocalizacionActivity();
             }
-        };
-        txtDireccion.setOnClickListener(onClickListener);
-        txtProvincia.setOnClickListener(onClickListener);
-        txtPoblacion.setOnClickListener(onClickListener);
+        });
 
         confImgTipoVivienda();
         confRecyclerPrestaciones();
@@ -411,8 +410,17 @@ public class CrearAnuncio2Activity extends AppCompatActivity implements Prestaci
 
                     //Se guarda la latitud del punto seleccionado para la localización de la vivienda.
                     mAnuncio.setLats(new MyLatLng(address.getLatitude(), address.getLongitude()));
+
+                    setEnabledTxtsLocation(true);
                     break;
             }
+    }
+
+    private void setEnabledTxtsLocation(boolean enabled){
+        txtDireccion.setEnabled(enabled);
+        txtNum.setEnabled(enabled);
+        txtPoblacion.setEnabled(enabled);
+        txtProvincia.setEnabled(enabled);
     }
 
     @Override
