@@ -253,7 +253,7 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
                 imgMessage.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        ConversationActivity.start(DetallesAnuncioActivity.this, messagePojoAux, currentUser);
+                        ConversationActivity.startFromAdvertdDetails(DetallesAnuncioActivity.this, anuncio, currentUser, userPropietario);
                     }
                 });
             }

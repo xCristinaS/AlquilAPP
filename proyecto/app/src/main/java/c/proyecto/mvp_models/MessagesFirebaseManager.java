@@ -30,15 +30,15 @@ public class MessagesFirebaseManager {
     private static final String URL_USERS = Constantes.URL_BASE + Constantes.CHILD_USUARIOS;
     private static final int MESSAGES_LIMIT_CONVER = 20;
 
-    private Firebase mFirebaseReceivedMessages, mFirebaseConversations, mFirebaseMessagesWithoutAnswer;
+    private Firebase mFirebaseReceivedMessages, mFirebaseConversations, mFirebaseMessagesWithoutAnswer, refConverParteAnunciante, refConverParteCurrentUser;
     private ValueEventListener mListenerMessagesWithoutAnswer;
-    private ChildEventListener mListenerConversation, mListenerReceivedMessages;
+    private ChildEventListener mListenerConversation, mListenerReceivedMessages, listenerConverParteAnunciante, listenerConverParteCurrentUser;
     private HashMap<Query, ChildEventListener> listenersInternosConvers, listenersInternosMessagesSinResp, listenerInternosMessages;
 
     private MyPresenter presenter;
     private Usuario currentUser;
-    private static String lastEmisor_titleAdvert, lastMessageWithoutAnswerSended;
-    private static boolean messagesWithoutAnswerConsulted, receivedMessagesConsulted;
+    private static String lastEmisor_titleAdvert, lastMessageWithoutAnswerSended, keyUltimoMensajeParteAnunciante, keyUltimoMensajeParteCurrentUser;
+    private static boolean messagesWithoutAnswerConsulted, receivedMessagesConsulted, mensajesParteAnuncianteConsutados, mensajesParteCurrentUserConsultados;
 
     public MessagesFirebaseManager(MyPresenter presenter, Usuario currentUser) {
         this.presenter = presenter;
@@ -403,6 +403,140 @@ public class MessagesFirebaseManager {
         receivedMessagesConsulted = false;
         lastEmisor_titleAdvert = null;
         lastMessageWithoutAnswerSended = null;
+        mensajesParteAnuncianteConsutados = false;
+        mensajesParteCurrentUserConsultados = false;
+        keyUltimoMensajeParteAnunciante = null;
+        keyUltimoMensajeParteCurrentUser = null;
+    }
+
+    public void getUserConversation(final Anuncio anuncio, final Usuario usuarioAnunciante) {
+        final String keyAnunciante = anuncio.getAnunciante();
+        refConverParteAnunciante = new Firebase(URL_CONVERSACIONES).child(keyAnunciante).child(currentUser.getKey() + "_" + anuncio.getTitulo().trim().replace(" ", "_"));
+        refConverParteCurrentUser = new Firebase(URL_CONVERSACIONES).child(currentUser.getKey()).child(keyAnunciante + "_" + anuncio.getTitulo().trim().replace(" ", "_"));
+
+        refConverParteAnunciante.limitToLast(1).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getValue() != null && dataSnapshot.getChildren() != null) {
+                    keyUltimoMensajeParteAnunciante = dataSnapshot.getChildren().iterator().next().getKey();
+                } else {
+                    mensajesParteAnuncianteConsutados = true;
+                    checkIfAllMessagesObtainedFromAdvertDetails();
+                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+
+        refConverParteCurrentUser.limitToLast(1).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getValue() != null && dataSnapshot.getChildren() != null) {
+                    keyUltimoMensajeParteCurrentUser = dataSnapshot.getChildren().iterator().next().getKey();
+                } else {
+                    mensajesParteCurrentUserConsultados = true;
+                    checkIfAllMessagesObtainedFromAdvertDetails();
+                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+
+        listenerConverParteAnunciante = new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                MessagePojo mensaje = new MessagePojo();
+                mensaje.setKeyReceptor(keyAnunciante);
+                mensaje.setEmisor(currentUser);
+                mensaje.setKey(dataSnapshot.getKey());
+                mensaje.setTituloAnuncio(anuncio.getTitulo());
+                Message mAux = dataSnapshot.getValue(Message.class);
+                mensaje.setFecha(new Date(mAux.getFecha()));
+                mensaje.setContenido(mAux.getContenido());
+                ((ConversationPresenter) presenter).messageHasBeenObtained(mensaje);
+
+                if (keyUltimoMensajeParteAnunciante != null && keyUltimoMensajeParteAnunciante.equals(mensaje.getKey())) {
+                    mensajesParteAnuncianteConsutados = true;
+                    checkIfAllMessagesObtainedFromAdvertDetails();
+                }
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        };
+
+        listenerConverParteCurrentUser = new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                MessagePojo mensaje = new MessagePojo();
+                mensaje.setKeyReceptor(currentUser.getKey());
+                mensaje.setEmisor(usuarioAnunciante);
+                mensaje.setKey(dataSnapshot.getKey());
+                mensaje.setTituloAnuncio(anuncio.getTitulo());
+                Message mAux = dataSnapshot.getValue(Message.class);
+                mensaje.setFecha(new Date(mAux.getFecha()));
+                mensaje.setContenido(mAux.getContenido());
+                ((ConversationPresenter) presenter).messageHasBeenObtained(mensaje);
+
+                if (keyUltimoMensajeParteCurrentUser != null && keyUltimoMensajeParteCurrentUser.equals(mensaje.getKey())){
+                    mensajesParteCurrentUserConsultados = true;
+                    checkIfAllMessagesObtainedFromAdvertDetails();
+                }
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        };
+
+        refConverParteAnunciante.addChildEventListener(listenerConverParteAnunciante);
+        refConverParteCurrentUser.addChildEventListener(listenerConverParteCurrentUser);
+    }
+
+    private void checkIfAllMessagesObtainedFromAdvertDetails() {
+        if (mensajesParteAnuncianteConsutados && mensajesParteCurrentUserConsultados) {
+            ((ConversationPresenter) presenter).allMessagesObtained();
+            resetMessagesControlValues();
+        }
     }
 
     // obtengo la conversación entera sobre un anuncio concreto
@@ -649,6 +783,18 @@ public class MessagesFirebaseManager {
             f.removeEventListener(listenersInternosConvers.get(f));
 
         listenersInternosConvers.clear();
+
+        if (refConverParteAnunciante != null && listenerConverParteAnunciante != null){
+            refConverParteAnunciante.removeEventListener(listenerConverParteAnunciante);
+            listenerConverParteAnunciante = null;
+            refConverParteAnunciante = null;
+        }
+
+        if (refConverParteCurrentUser != null && listenerConverParteCurrentUser != null){
+            refConverParteCurrentUser.removeEventListener(listenerConverParteCurrentUser);
+            listenerConverParteCurrentUser = null;
+            refConverParteCurrentUser = null;
+        }
     }
 
     public void detachMessagesListeners() {

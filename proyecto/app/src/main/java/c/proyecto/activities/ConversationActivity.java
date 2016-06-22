@@ -36,6 +36,8 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
     private static final String EXTRA_MENSAJE = "mensaje_extra";
     private static final String EXTRA_USER = "user_extra";
     private static final String TAG_FR_MSG = "fragmento_mensajes";
+    private static final String EXTRA_ANUNCIO = "extra_anuncio";
+    private static final String EXTRA_USER_ANUNCIANTE = "user_anunciante_extra";
 
     private MessagePojo mensaje;
     private ImageView imgEnviar;
@@ -43,9 +45,10 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
     private TextView lblNombreContacto, lblTituloAnuncio;
     private EditText txtMensaje;
     private ConversationPresenter mPresenter;
-    private Usuario user;
+    private Usuario currentUser, userAnunciante;
     private Toolbar toolbar;
     private FragmentManager mFragmentManager;
+    private Anuncio mAnuncio;
 
     public static void start(Context c, MessagePojo mensaje, Usuario user) {
         Intent intent = new Intent(c, ConversationActivity.class);
@@ -54,12 +57,26 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
         c.startActivity(intent);
     }
 
+    public static void startFromAdvertdDetails(Context c, Anuncio a, Usuario user, Usuario userPropietarioAnuncio) {
+        Intent intent = new Intent(c, ConversationActivity.class);
+        intent.putExtra(EXTRA_USER, user);
+        intent.putExtra(EXTRA_USER_ANUNCIANTE, userPropietarioAnuncio);
+        intent.putExtra(EXTRA_ANUNCIO, a);
+        c.startActivity(intent);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_conversation);
-        mensaje = getIntent().getParcelableExtra(EXTRA_MENSAJE);
-        user = getIntent().getParcelableExtra(EXTRA_USER);
+        Intent i = getIntent();
+        currentUser = i.getParcelableExtra(EXTRA_USER);
+        if (i.hasExtra(EXTRA_MENSAJE))
+            mensaje = i.getParcelableExtra(EXTRA_MENSAJE);
+        if (i.hasExtra(EXTRA_ANUNCIO))
+            mAnuncio = i.getParcelableExtra(EXTRA_ANUNCIO);
+        if (i.hasExtra(EXTRA_USER_ANUNCIANTE))
+            userAnunciante = i.getParcelableExtra(EXTRA_USER_ANUNCIANTE);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("");
@@ -75,8 +92,8 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
         lblNombreContacto = (TextView) findViewById(R.id.lblNombreContacto);
         lblTituloAnuncio = (TextView) findViewById(R.id.lblTituloAnuncio);
         mPresenter = ConversationPresenter.getPresentador(this);
-        mPresenter.setMessagesManager(new MessagesFirebaseManager(mPresenter, user));
-        mPresenter.setAdvertsManager(new AdvertsFirebaseManager(mPresenter, user));
+        mPresenter.setMessagesManager(new MessagesFirebaseManager(mPresenter, currentUser));
+        mPresenter.setAdvertsManager(new AdvertsFirebaseManager(mPresenter, currentUser));
 
         requestUserConversation();
 
@@ -99,16 +116,24 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
             mPresenter.userConversationRequested(mensaje);
             MessagesFragment f = MessagesFragment.newInstance(true, mensaje.getKeyReceptor());
             mFragmentManager.beginTransaction().replace(R.id.frmContenido, f, TAG_FR_MSG).commit();
+        } else if (mAnuncio != null){
+            mPresenter.userConversationRequested(mAnuncio, userAnunciante);
+            MessagesFragment f = MessagesFragment.newInstance(true, currentUser.getKey());
+            mFragmentManager.beginTransaction().replace(R.id.frmContenido, f, TAG_FR_MSG).commit();
         }
     }
 
     private void enviarMensaje() {
-        if (mensaje instanceof MessagePojoWithoutAnswer) {
-            MessagePojo m = new MessagePojo(user, mensaje.getTituloAnuncio(), txtMensaje.getText().toString(), new Date());
-            m.setKeyReceptor(mensaje.getKeyReceptor());
-            mPresenter.sendMessage(m, mensaje.getKeyReceptor(), true);
-        } else
-            mPresenter.sendMessage(new MessagePojo(user, mensaje.getTituloAnuncio(), txtMensaje.getText().toString(), new Date()), mensaje.getEmisor().getKey(), false);
+        if (mensaje != null) {
+            if (mensaje instanceof MessagePojoWithoutAnswer) {
+                MessagePojo m = new MessagePojo(currentUser, mensaje.getTituloAnuncio(), txtMensaje.getText().toString(), new Date());
+                m.setKeyReceptor(mensaje.getKeyReceptor());
+                mPresenter.sendMessage(m, mensaje.getKeyReceptor(), true);
+            } else
+                mPresenter.sendMessage(new MessagePojo(currentUser, mensaje.getTituloAnuncio(), txtMensaje.getText().toString(), new Date()), mensaje.getEmisor().getKey(), false);
+        } else if (mAnuncio != null){
+            mPresenter.sendMessage(new MessagePojo(currentUser, mAnuncio.getTitulo(),txtMensaje.getText().toString(), new Date()), mAnuncio.getAnunciante(), false);
+        }
 
         txtMensaje.setText("");
     }
@@ -116,11 +141,16 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
     private void confToolbar() {
         final Usuario usuarioAux;
 
-        lblTituloAnuncio.setText(mensaje.getTituloAnuncio());
-        if (mensaje instanceof MessagePojoWithoutAnswer)
-            usuarioAux = ((MessagePojoWithoutAnswer) mensaje).getReceptor();
-        else
-            usuarioAux = mensaje.getEmisor();
+        if (mAnuncio == null) {
+            lblTituloAnuncio.setText(mensaje.getTituloAnuncio());
+            if (mensaje instanceof MessagePojoWithoutAnswer)
+                usuarioAux = ((MessagePojoWithoutAnswer) mensaje).getReceptor();
+            else
+                usuarioAux = mensaje.getEmisor();
+        } else {
+            lblTituloAnuncio.setText(mAnuncio.getTitulo());
+            usuarioAux = userAnunciante;
+        }
 
         lblNombreContacto.setText(usuarioAux.getNombre());
         Picasso.with(this).load(usuarioAux.getFoto()).fit().centerCrop().error(R.drawable.default_user).into(imgContacto);
@@ -145,13 +175,13 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
     @Override
     public void advertObtained(Anuncio a) {
         if (a != null)
-            if (!a.getAnunciante().equals(user.getKey())) {
-                if (a.getSolicitantes().containsKey(user.getKey()))
-                    DetallesAnuncioActivity.start(this, a, AdvertsRecyclerViewAdapter.ADAPTER_TYPE_SUBS, user, true);
+            if (!a.getAnunciante().equals(currentUser.getKey())) {
+                if (a.getSolicitantes().containsKey(currentUser.getKey()))
+                    DetallesAnuncioActivity.start(this, a, AdvertsRecyclerViewAdapter.ADAPTER_TYPE_SUBS, currentUser, true);
                 else
-                    DetallesAnuncioActivity.start(this, a, AdvertsRecyclerViewAdapter.ADAPTER_TYPE_ADVS, user, true);
+                    DetallesAnuncioActivity.start(this, a, AdvertsRecyclerViewAdapter.ADAPTER_TYPE_ADVS, currentUser, true);
             } else
-                DetallesAnuncioActivity.start(this, a, AdvertsRecyclerViewAdapter.ADAPTER_TYPE_MY_ADVS, user, true);
+                DetallesAnuncioActivity.start(this, a, AdvertsRecyclerViewAdapter.ADAPTER_TYPE_MY_ADVS, currentUser, true);
     }
 
     @Override

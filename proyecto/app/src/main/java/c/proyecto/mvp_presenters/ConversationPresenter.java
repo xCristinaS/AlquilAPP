@@ -47,6 +47,11 @@ public class ConversationPresenter implements ConversationPresenterOps, MyPresen
     }
 
     @Override
+    public void userConversationRequested(Anuncio anuncio, Usuario usuarioAnunciante) {
+        messagesManager.getUserConversation(anuncio, usuarioAnunciante);
+    }
+
+    @Override
     public void messageHasBeenObtained(MessagePojo m) {
         if (activity.get() != null)
             activity.get().messageHasBeenObtained(m);
