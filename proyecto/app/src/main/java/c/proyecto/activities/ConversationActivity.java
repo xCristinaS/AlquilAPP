@@ -12,6 +12,7 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -116,7 +117,7 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
             mPresenter.userConversationRequested(mensaje);
             MessagesFragment f = MessagesFragment.newInstance(true, mensaje.getKeyReceptor());
             mFragmentManager.beginTransaction().replace(R.id.frmContenido, f, TAG_FR_MSG).commit();
-        } else if (mAnuncio != null){
+        } else if (mAnuncio != null) {
             mPresenter.userConversationRequested(mAnuncio, userAnunciante);
             MessagesFragment f = MessagesFragment.newInstance(true, currentUser.getKey());
             mFragmentManager.beginTransaction().replace(R.id.frmContenido, f, TAG_FR_MSG).commit();
@@ -131,8 +132,8 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
                 mPresenter.sendMessage(m, mensaje.getKeyReceptor(), true);
             } else
                 mPresenter.sendMessage(new MessagePojo(currentUser, mensaje.getTituloAnuncio(), txtMensaje.getText().toString(), new Date()), mensaje.getEmisor().getKey(), false);
-        } else if (mAnuncio != null){
-            mPresenter.sendMessage(new MessagePojo(currentUser, mAnuncio.getTitulo(),txtMensaje.getText().toString(), new Date()), mAnuncio.getAnunciante(), false);
+        } else if (mAnuncio != null) {
+            mPresenter.sendMessage(new MessagePojo(currentUser, mAnuncio.getTitulo(), txtMensaje.getText().toString(), new Date()), mAnuncio.getAnunciante(), false);
         }
 
         txtMensaje.setText("");
@@ -167,14 +168,17 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
         lblTituloAnuncio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mPresenter.getAdvertFromTitle(mensaje.getTituloAnuncio());
+                if (mensaje != null)
+                    mPresenter.getAdvertFromTitle(mensaje.getTituloAnuncio());
+                else
+                    onBackPressed();
             }
         });
     }
 
     @Override
     public void advertObtained(Anuncio a) {
-        if (a != null)
+        if (a != null) {
             if (!a.getAnunciante().equals(currentUser.getKey())) {
                 if (a.getSolicitantes().containsKey(currentUser.getKey()))
                     DetallesAnuncioActivity.start(this, a, AdvertsRecyclerViewAdapter.ADAPTER_TYPE_SUBS, currentUser, true);
@@ -182,6 +186,8 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
                     DetallesAnuncioActivity.start(this, a, AdvertsRecyclerViewAdapter.ADAPTER_TYPE_ADVS, currentUser, true);
             } else
                 DetallesAnuncioActivity.start(this, a, AdvertsRecyclerViewAdapter.ADAPTER_TYPE_MY_ADVS, currentUser, true);
+        } else
+            Toast.makeText(this, "El anuncio fue eliminado", Toast.LENGTH_LONG).show();
     }
 
     @Override

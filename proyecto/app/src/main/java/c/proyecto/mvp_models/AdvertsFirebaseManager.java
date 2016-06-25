@@ -220,8 +220,11 @@ public class AdvertsFirebaseManager {
         new Firebase(URL_ANUNCIOS).orderByChild("titulo").equalTo(tituloAnuncio.trim()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Anuncio a = dataSnapshot.getChildren().iterator().next().getValue(Anuncio.class);
-                ((ConversationPresenter) presenter).advertObtained(a);
+                if (dataSnapshot.getValue() != null && dataSnapshot.getChildren() != null) {
+                    Anuncio a = dataSnapshot.getChildren().iterator().next().getValue(Anuncio.class);
+                    ((ConversationPresenter) presenter).advertObtained(a);
+                } else
+                    ((ConversationPresenter) presenter).advertObtained(null);
             }
 
             @Override
@@ -462,7 +465,7 @@ public class AdvertsFirebaseManager {
 
                 @Override
                 public void onKeyExited(String key) {
-                    
+
                 }
 
                 @Override
