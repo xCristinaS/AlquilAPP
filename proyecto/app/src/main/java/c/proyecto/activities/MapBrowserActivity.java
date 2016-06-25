@@ -68,12 +68,15 @@ public class MapBrowserActivity extends AppCompatActivity implements OnMapReadyC
             public void onReceive(Context context, Intent intent) {
                 Anuncio a = intent.getParcelableExtra(MainActivity.EXTRA_ANUNCIO_ELIMINADO);
                 for (Marker m: markersList)
-                    if (m.getTitle().equals(a.getKey())) {
+                    if (m.getTitle().trim().equals(a.getKey().trim())) {
                         m.remove();
                         markersList.remove(m);
                     }
             }
         };
+
+        IntentFilter filtro = new IntentFilter(MainActivity.ACTION_ANUNCIO_ELIMINADO);
+        registerReceiver(receiver, filtro);
     }
 
     private void confMap() {
@@ -96,7 +99,7 @@ public class MapBrowserActivity extends AppCompatActivity implements OnMapReadyC
         mGoogleMap.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
             @Override
             public void onCameraChange(CameraPosition cameraPosition) {
-                mPresenter.getLocations(new GeoLocation(cameraPosition.target.latitude, cameraPosition.target.longitude), cameraPosition.zoom*10);
+                mPresenter.getLocations(new GeoLocation(cameraPosition.target.latitude, cameraPosition.target.longitude), cameraPosition.zoom * 10);
             }
         });
     }
@@ -137,20 +140,20 @@ public class MapBrowserActivity extends AppCompatActivity implements OnMapReadyC
     @Override
     protected void onResume() {
         super.onResume();
-        IntentFilter filtro = new IntentFilter(MainActivity.ACTION_ANUNCIO_ELIMINADO);
-        registerReceiver(receiver, filtro);
+
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        unregisterReceiver(receiver);
+
     }
 
     @Override
     protected void onDestroy() {
         mPresenter.detachGeolocationListener();
         mPresenter.liberarMemoria();
+        unregisterReceiver(receiver);
         super.onDestroy();
     }
 }

@@ -462,7 +462,7 @@ public class AdvertsFirebaseManager {
 
                 @Override
                 public void onKeyExited(String key) {
-
+                    
                 }
 
                 @Override
