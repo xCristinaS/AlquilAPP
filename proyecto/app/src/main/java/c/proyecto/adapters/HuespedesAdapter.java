@@ -75,7 +75,7 @@ public class HuespedesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         }
 
         public void onBind(final Usuario user) {
-            Picasso.with(itemView.getContext()).load(user.getFoto()).fit().error(R.drawable.default_user).into(imgHuesped);
+            Picasso.with(itemView.getContext()).load(user.getFoto()).fit().centerCrop().error(R.drawable.default_user).into(imgHuesped);
             lblNombre.setText(user.getNombre() + " " + user.getApellidos());
 
             itemView.setOnClickListener(new View.OnClickListener() {
