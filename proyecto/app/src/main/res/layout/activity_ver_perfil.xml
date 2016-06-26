@@ -98,28 +98,19 @@
 
         <TextView
             android:id="@+id/lblNombre"
-            android:layout_width="240dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/groupDescripcion"
             android:layout_marginLeft="25dp"
             android:layout_marginStart="25dp"
+            android:layout_marginRight="25dp"
+            android:layout_marginEnd="25dp"
             android:layout_marginTop="14dp"
-            android:maxLines="1"
             android:textStyle="bold" />
 
-
         <TextView
-            android:id="@+id/lblNacionalidad"
+            android:id="@+id/lblEdad"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@id/lblNombre"
-            android:layout_alignStart="@id/lblNombre"
-            android:layout_below="@id/lblNombre"
-            android:layout_marginTop="8dp" />
-
-        <TextView
-            android:id="@+id/lblProfesion"
-            android:layout_width="170dp"
             android:layout_height="wrap_content"
             android:gravity="end"
             android:layout_below="@id/lblNombre"
@@ -128,6 +119,30 @@
             android:layout_alignParentRight="true"
             android:layout_marginRight="25dp"
             android:layout_marginEnd="25dp"/>
+
+        <TextView
+            android:id="@+id/lblNacionalidad"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_toLeftOf="@id/lblEdad"
+            android:layout_toStartOf="@id/lblEdad"
+            android:layout_alignLeft="@id/lblNombre"
+            android:layout_alignStart="@id/lblNombre"
+            android:layout_below="@id/lblNombre"
+            android:layout_marginTop="8dp" />
+
+
+        <TextView
+            android:id="@+id/lblProfesion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/lblNacionalidad"
+            android:layout_marginLeft="25dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginRight="25dp"
+            android:layout_marginEnd="25dp"
+            android:layout_marginTop="8dp"
+            />
 
         <!-- Descripción -->
         <RelativeLayout

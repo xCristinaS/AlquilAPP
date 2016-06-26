@@ -63,6 +63,7 @@
             android:label="Localización" />
 
         <activity android:name=".activities.PreferencesActivity"
+
             android:label="Preferencias"/>
 
         <activity android:name=".activities.MapBrowserActivity"

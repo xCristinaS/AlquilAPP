@@ -4,6 +4,7 @@
 
     <!-- PREFERENCIAS-->
     <string name="pref_ratio">prefRatio</string>
+    <string name="pref_edad">prefFecha</string>
 
     <!-- TabLayout -->
     <string name="tab_solicitudes">Suscripciones</string>
@@ -160,6 +161,7 @@
 
     <!-- MessageFragment-->
     <string name="text_emptyViewMensajes">Cargando mensajes</string>
+
 
 
 </resources>

@@ -2,12 +2,11 @@ package c.proyecto.activities;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,11 +19,11 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 import c.proyecto.R;
 import c.proyecto.dialog_fragments.CaracteristicasUsuarioDialogFragment;
-import c.proyecto.mvp_models.AdvertsFirebaseManager;
 import c.proyecto.mvp_models.MessagesFirebaseManager;
 import c.proyecto.mvp_presenters.ProfilePresenter;
 import c.proyecto.pojo.Anuncio;
@@ -37,7 +36,7 @@ public class VerPerfilActivity extends AppCompatActivity {
     private static final String EXTRA_ANUNCIO = "extra_anuncio";
     private static final String EXTRA_CURRENT_USER = "current_user";
 
-    private TextView lblNombre, lblNacionalidad, lblDescripcionNoDisponible, lblDescripcion, lblProfesion;
+    private TextView lblNombre, lblNacionalidad, lblDescripcionNoDisponible, lblDescripcion, lblProfesion, lblEdad;
     private ImageView imgFoto, imgDescripcion1, imgDescripcion2, imgDescripcion3;
     private Usuario mUser, currentUser;
     private Anuncio mAnuncio;
@@ -82,6 +81,7 @@ public class VerPerfilActivity extends AppCompatActivity {
         lblNombre = (TextView) findViewById(R.id.lblNombre);
         lblNacionalidad = (TextView) findViewById(R.id.lblNacionalidad);
         lblProfesion = (TextView) findViewById(R.id.lblProfesion);
+        lblEdad = (TextView) findViewById(R.id.lblEdad);
         lblDescripcionNoDisponible = (TextView) findViewById(R.id.lblDescripcionNoDisponible);
         lblDescripcion = (TextView) findViewById(R.id.lblDescripcion);
         imgDescripcion1 = (ImageView) findViewById(R.id.imgDescripcion1);
@@ -119,11 +119,21 @@ public class VerPerfilActivity extends AppCompatActivity {
     }
 
     private void recuperarDatos() {
+        int edad;
         Picasso.with(this).load(mUser.getFoto()).fit().centerCrop().error(R.drawable.default_user).into(imgFoto);
         cargarBarritas();
         cargarItemsDescriptivos();
         lblNombre.setText(mUser.getNombre() + " " + mUser.getApellidos());
         lblNacionalidad.setText(mUser.getNacionalidad());
+        if(PreferenceManager.getDefaultSharedPreferences(this).getBoolean(getString(R.string.pref_edad), false)){
+            edad = getEdad();
+            if(edad > 1)
+                lblEdad.setText(getEdad() + " años");
+            else
+                lblEdad.setText(getEdad() + " año");
+        }
+        else
+            lblEdad.setVisibility(View.GONE);
         if (mUser.getComentario_desc().isEmpty())
             lblDescripcionNoDisponible.setVisibility(View.VISIBLE);
         else
@@ -132,6 +142,29 @@ public class VerPerfilActivity extends AppCompatActivity {
         if (mUser.getProfesion() != null)
             lblProfesion.setText(mUser.getProfesion());
 
+    }
+    private int getEdad(){
+        Calendar cal = Calendar.getInstance();
+        int anioActual, anioNacimiento, mesActual, mesNacimiento, diaActual, diaNacimiento, edad;
+
+        cal.setTime(new Date());
+        anioActual = cal.get(Calendar.YEAR);
+        mesActual = cal.get(Calendar.MONTH);
+        diaActual = cal.get(Calendar.DAY_OF_MONTH);
+
+        cal.setTime(new Date(mUser.getFecha_nacimiento()));
+        anioNacimiento = cal.get(Calendar.YEAR);
+        mesNacimiento = cal.get(Calendar.MONTH);
+        diaNacimiento = cal.get(Calendar.DAY_OF_MONTH);
+
+        edad = anioActual - anioNacimiento - 1;
+
+        if(mesActual == mesNacimiento && diaActual > diaNacimiento)
+            edad++;
+        else if(mesActual > mesNacimiento)
+            edad++;
+
+        return edad;
     }
 
     private void cargarBarritas() {

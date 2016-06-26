@@ -2,6 +2,15 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:sample="http://schemas.android.com/apk/res-auto">
 
+    <SwitchPreference
+        android:key="@string/pref_edad"
+        android:switchTextOff="No"
+        android:switchTextOn="Sí"
+        android:title="Mostrar edad"
+        android:textStyle="bold"
+        android:textSize="10sp"
+        />
+
     <com.pavelsikun.seekbarpreference.SeekBarPreference
         android:key="@string/pref_ratio"
         android:title="Distancia de busqueda"
@@ -9,7 +18,7 @@
         sample:msbp_minValue="1"
         sample:msbp_maxValue="100"
         sample:msbp_interval="1"
-        sample:msbp_measurementUnit="km" />
-
+        sample:msbp_measurementUnit="km"
+        />
 
 </PreferenceScreen>
