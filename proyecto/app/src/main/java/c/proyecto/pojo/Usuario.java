@@ -12,6 +12,7 @@ public class Usuario implements Parcelable, MyModel {
 
     private String key, email, nombre, apellidos, nacionalidad, profesion, comentario_desc, foto;
     private int ordenado, fiestero, sociable, activo;
+    private boolean mostrarEdad;
     private long fecha_nacimiento;
     private ArrayList<String> itemsHabitos;
     private ArrayList<String> idDrawItemsDescriptivos;
@@ -76,6 +77,14 @@ public class Usuario implements Parcelable, MyModel {
 
     public void setComentario_desc(String comentario_desc) {
         this.comentario_desc = comentario_desc;
+    }
+
+    public boolean isMostrarEdad() {
+        return mostrarEdad;
+    }
+
+    public void setMostrarEdad(boolean mostrarEdad) {
+        this.mostrarEdad = mostrarEdad;
     }
 
     public String getFoto() {
@@ -174,6 +183,7 @@ public class Usuario implements Parcelable, MyModel {
         dest.writeInt(this.fiestero);
         dest.writeInt(this.sociable);
         dest.writeInt(this.activo);
+        dest.writeByte(mostrarEdad ? (byte) 1 : (byte) 0);
         dest.writeLong(this.fecha_nacimiento);
         dest.writeStringList(this.itemsHabitos);
         dest.writeStringList(this.idDrawItemsDescriptivos);
@@ -192,6 +202,7 @@ public class Usuario implements Parcelable, MyModel {
         this.fiestero = in.readInt();
         this.sociable = in.readInt();
         this.activo = in.readInt();
+        this.mostrarEdad = in.readByte() != 0;
         this.fecha_nacimiento = in.readLong();
         this.itemsHabitos = in.createStringArrayList();
         this.idDrawItemsDescriptivos = in.createStringArrayList();

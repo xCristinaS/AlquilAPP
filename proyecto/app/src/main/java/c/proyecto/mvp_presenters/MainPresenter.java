@@ -208,4 +208,8 @@ public class MainPresenter implements MainPresenterOps, MyPresenter {
     public void liberarMemoria() {
         presentador = null;
     }
+
+    public void updateUser(Usuario u){
+        usersManager.updateUserProfile(u);
+    }
 }

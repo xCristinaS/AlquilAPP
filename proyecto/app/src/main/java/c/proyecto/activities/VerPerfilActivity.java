@@ -125,7 +125,8 @@ public class VerPerfilActivity extends AppCompatActivity {
         cargarItemsDescriptivos();
         lblNombre.setText(mUser.getNombre() + " " + mUser.getApellidos());
         lblNacionalidad.setText(mUser.getNacionalidad());
-        if(PreferenceManager.getDefaultSharedPreferences(this).getBoolean(getString(R.string.pref_edad), false)){
+        //if(PreferenceManager.getDefaultSharedPreferences(this).getBoolean(getString(R.string.pref_edad), false)){
+        if(mUser.isMostrarEdad() && mUser.getFecha_nacimiento() != 0){
             edad = getEdad();
             if(edad > 1)
                 lblEdad.setText(getEdad() + " años");

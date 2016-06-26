@@ -587,6 +587,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityOps, 
 
                     if (prefCodes.contains(PreferencesFragment.RATIO_CODE))
                         getAdvertsNearUser();
+                    else if(prefCodes.contains(PreferencesFragment.EDAD_CODE)){
+                        mUser.setMostrarEdad(PreferenceManager.getDefaultSharedPreferences(this).getBoolean(getString(R.string.pref_edad), false));
+                        mPresenter.updateUser(mUser);
+                    }
                 }
                 break;
         }
