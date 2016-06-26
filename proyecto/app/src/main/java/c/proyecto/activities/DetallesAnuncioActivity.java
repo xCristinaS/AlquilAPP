@@ -127,6 +127,8 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
         mPresenter.getMessageIfConverExist(anuncio);
 
         configToolbar();
+        confRecyclerview();
+        confMap();
     }
 
     private void configToolbar() {
@@ -142,8 +144,6 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
         else {
             userPropietario = currentUser;
             initViews();
-            confRecyclerview();
-            confMap();
             bindData(true);
         }
     }
@@ -152,8 +152,6 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
     public void onAdvertPublisherRequestedResponsed(Usuario u) {
         userPropietario = u;
         initViews();
-        confRecyclerview();
-        confMap();
         bindData(true);
     }
 
@@ -172,7 +170,6 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
         lblCamas = (TextView) findViewById(R.id.lblCamas);
         lblNumCamas = (TextView) findViewById(R.id.lblNumCamas);
         lblNumToilets = (TextView) findViewById(R.id.lblNumToilets);
-        rvPrestaciones = (RecyclerView) findViewById(R.id.rvPrestaciones);
         lblDescripcionNoDisponible = (TextView) findViewById(R.id.lblDescripcionNoDisponible);
         lblDescripcion = (TextView) findViewById(R.id.lblDescripcion);
 
@@ -262,6 +259,7 @@ public class DetallesAnuncioActivity extends AppCompatActivity implements Advert
     }
 
     private void confRecyclerview() {
+        rvPrestaciones = (RecyclerView) findViewById(R.id.rvPrestaciones);
         rvPrestaciones.setHasFixedSize(true);
         mPrestacionesAdapter = new PrestacionesAdapter(anuncio.getPrestaciones(), DetallesAnuncioActivity.this);
         rvPrestaciones.setAdapter(mPrestacionesAdapter);
